@@ -1,7 +1,42 @@
-require "lotus/validations/version"
+require 'set'
+require 'lotus/validations/version'
+require 'lotus/utils/kernel'
 
 module Lotus
   module Validations
-    # Your code goes here...
+    def self.included(base)
+      base.extend ClassMethods
+    end
+
+    def initialize(attributes)
+      @attributes = attributes
+    end
+
+    def valid?
+      self.class.attributes.each do |attribute, options|
+        if value = @attributes.fetch(attribute) { nil }
+
+          if coercer = options.fetch(:type) { nil }
+            value = Lotus::Utils::Kernel.send(coercer.to_s, value)
+          end
+
+          instance_variable_set(:"@#{ attribute }", value)
+        end
+      end
+    end
+
+    module ClassMethods
+      def attribute(name, options = {})
+        class_eval do
+          attributes << [name, options]
+          attr_reader name
+        end
+      end
+
+      # FIXME make this private
+      def attributes
+        @attributes ||= Set.new
+      end
+    end
   end
 end
