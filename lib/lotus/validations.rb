@@ -7,38 +7,38 @@ module Lotus
       base.extend ClassMethods
     end
 
+    attr_reader :errors
+
     def initialize(attributes)
       @attributes = attributes
+      @errors     = Hash.new {|h,k| h[k] = [] }
     end
 
     def valid?
       self.class.attributes.all? do |attribute, options|
-        valid = if options.fetch(:presence) { nil }
-          !send(attribute).nil?
-        else
-          true
-        end
+        value = __send__(attribute)
 
-        valid &&= if format = options.fetch(:format) { nil }
-          if value = send(attribute)
-            value.to_s.match(format)
-          else
-            true
+        if options[:presence]
+          if value.nil?
+            @errors[attribute].push :presence
           end
-        else
-          true
         end
 
-        if value = send(attribute)
+        if !value.nil?
+          if format = options[:format]
+            if !value.to_s.match(format)
+              @errors[attribute].push :format
+            end
+          end
 
-          if coercer = options.fetch(:type) { nil }
+          if coercer = options[:type]
             value = Lotus::Utils::Kernel.send(coercer.to_s, value)
           end
 
           @attributes[attribute] = value
         end
 
-        valid
+        @errors.empty?
       end
     end
 
