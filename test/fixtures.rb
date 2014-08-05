@@ -42,3 +42,10 @@ class FormatValidatorTest
   attribute :name,                 format: /\A[a-zA-Z]+\z/
   attribute :age,   type: Integer, format: /\A[0-9]+\z/
 end
+
+class ExclusionValidatorTest
+  include Lotus::Validations
+
+  attribute :job,                exclusion: ->(*args) { jobs }
+  attribute :age, type: Integer, exclusion: 0..16
+end

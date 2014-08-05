@@ -36,6 +36,19 @@ module Lotus
             value = Lotus::Utils::Kernel.send(coercer.to_s, value)
           end
 
+          if exclusion = options[:exclusion]
+            values =
+              if exclusion.respond_to?(:call)
+                instance_exec(&exclusion)
+              else
+                exclusion
+              end
+
+            if values.include?(value)
+              @errors[attribute].push :exclusion
+            end
+          end
+
           @attributes[attribute] = value
         end
 
