@@ -32,7 +32,7 @@ module Lotus
 
     module ClassMethods
       def attribute(name, options = {})
-        attributes << [name, options]
+        attributes[name] = options
 
         class_eval %{
           def #{ name }
@@ -43,7 +43,7 @@ module Lotus
 
       # FIXME make this private
       def attributes
-        @attributes ||= Set.new
+        @attributes ||= Hash.new
       end
     end
   end
