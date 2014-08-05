@@ -20,17 +20,20 @@ module Lotus
             value = Lotus::Utils::Kernel.send(coercer.to_s, value)
           end
 
-          instance_variable_set(:"@#{ attribute }", value)
+          @attributes[attribute] = value
         end
       end
     end
 
     module ClassMethods
       def attribute(name, options = {})
-        class_eval do
-          attributes << [name, options]
-          attr_reader name
-        end
+        attributes << [name, options]
+
+        class_eval %{
+          def #{ name }
+            @attributes.fetch(:#{ name })
+          end
+        }
       end
 
       # FIXME make this private

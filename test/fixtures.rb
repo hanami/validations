@@ -1,3 +1,9 @@
+class InitializerTest
+  include Lotus::Validations
+
+  attribute :attr
+end
+
 class TypeValidatorTest
   include Lotus::Validations
 
