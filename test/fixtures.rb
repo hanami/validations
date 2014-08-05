@@ -35,3 +35,10 @@ class PresenceValidatorTest
   attribute :name,                 presence: true
   attribute :age,   type: Integer, presence: true
 end
+
+class FormatValidatorTest
+  include Lotus::Validations
+
+  attribute :name,                 format: /\A[a-zA-Z]+\z/
+  attribute :age,   type: Integer, format: /\A[0-9]+\z/
+end

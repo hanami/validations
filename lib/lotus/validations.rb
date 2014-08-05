@@ -13,7 +13,23 @@ module Lotus
 
     def valid?
       self.class.attributes.all? do |attribute, options|
-        if value = @attributes.fetch(attribute) { nil }
+        valid = if options.fetch(:presence) { nil }
+          !send(attribute).nil?
+        else
+          true
+        end
+
+        valid &&= if format = options.fetch(:format) { nil }
+          if value = send(attribute)
+            value.to_s.match(format)
+          else
+            true
+          end
+        else
+          true
+        end
+
+        if value = send(attribute)
 
           if coercer = options.fetch(:type) { nil }
             value = Lotus::Utils::Kernel.send(coercer.to_s, value)
@@ -22,11 +38,7 @@ module Lotus
           @attributes[attribute] = value
         end
 
-        if options.fetch(:presence) { nil }
-          !send(attribute).nil?
-        else
-          true
-        end
+        valid
       end
     end
 
