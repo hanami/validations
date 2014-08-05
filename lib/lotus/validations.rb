@@ -9,8 +9,9 @@ module Lotus
 
     attr_reader :errors
 
-    def initialize(attributes)
+    def initialize(attributes, locals = {})
       @attributes = attributes
+      @locals     = locals
       @errors     = Hash.new {|h,k| h[k] = [] }
     end
 
@@ -39,6 +40,14 @@ module Lotus
         end
 
         @errors.empty?
+      end
+    end
+
+    def method_missing(m)
+      if @locals.has_key?(m)
+        @locals[m]
+      else
+        super
       end
     end
 
