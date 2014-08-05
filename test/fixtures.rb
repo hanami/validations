@@ -27,3 +27,11 @@ class TypeValidatorTest
   attribute :symbol_attr,   type: Symbol
   attribute :time_attr,     type: Time
 end
+
+class PresenceValidatorTest
+  include Lotus::Validations
+
+  attribute :untyped
+  attribute :name,                 presence: true
+  attribute :age,   type: Integer, presence: true
+end

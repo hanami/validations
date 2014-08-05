@@ -10,6 +10,11 @@ describe Lotus::Validations do
       @validator.attr.must_equal 23
     end
 
+    it 'returns nil when not set' do
+      validator = AnotherValidator.new({})
+      validator.another.must_be_nil
+    end
+
     it "doesn't pollute other validators with the getters" do
       validator = AnotherValidator.new(another: 11)
       validator.wont_respond_to(:attr)

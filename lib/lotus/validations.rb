@@ -1,6 +1,5 @@
-require 'set'
-require 'lotus/validations/version'
 require 'lotus/utils/kernel'
+require 'lotus/validations/version'
 
 module Lotus
   module Validations
@@ -13,7 +12,7 @@ module Lotus
     end
 
     def valid?
-      self.class.attributes.each do |attribute, options|
+      self.class.attributes.all? do |attribute, options|
         if value = @attributes.fetch(attribute) { nil }
 
           if coercer = options.fetch(:type) { nil }
@@ -21,6 +20,12 @@ module Lotus
           end
 
           @attributes[attribute] = value
+        end
+
+        if options.fetch(:presence) { nil }
+          !send(attribute).nil?
+        else
+          true
         end
       end
     end
@@ -31,7 +36,7 @@ module Lotus
 
         class_eval %{
           def #{ name }
-            @attributes.fetch(:#{ name })
+            @attributes[:#{ name }]
           end
         }
       end
