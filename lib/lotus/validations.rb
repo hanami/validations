@@ -35,6 +35,12 @@ module Lotus
             value = Lotus::Utils::Kernel.send(coercer.to_s, value)
           end
 
+          if inclusion = options[:inclusion]
+            if !inclusion.include?(value)
+              @errors[attribute].push(:inclusion)
+            end
+          end
+
           @attributes[attribute] = value
         end
 

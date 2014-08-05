@@ -42,3 +42,10 @@ class FormatValidatorTest
   attribute :name,                 format: /\A[a-zA-Z]+\z/
   attribute :age,   type: Integer, format: /\A[0-9]+\z/
 end
+
+class InclusionValidatorTest
+  include Lotus::Validations
+
+  attribute :job,                inclusion: ['Carpenter', 'Blacksmith']
+  attribute :age, type: Integer, inclusion: 21..65
+end
