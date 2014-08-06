@@ -5,9 +5,7 @@ module Lotus
     class AttributeValidator
       def initialize(validator, name, options)
         @validator, @name, @options = validator, name, options
-
-        @errors = @validator.errors
-        @value  = @validator.__send__(@name)
+        @value = @validator.__send__(@name)
       end
 
       def validate!
@@ -16,6 +14,25 @@ module Lotus
       end
 
       private
+      def presence
+        _validate(__method__) { !skip? }
+      end
+
+      def format
+        _validate(__method__) {|matcher| @value.to_s.match(matcher) }
+      end
+
+      def inclusion
+        _validate(__method__) {|collection| collection.include?(@value) }
+      end
+
+      def coerce
+        _validate(:type) do |coercer|
+          @value = Lotus::Utils::Kernel.send(coercer.to_s, @value)
+          @validator.attributes[@name] = @value
+        end
+      end
+
       def skip?
         @value.nil?
       end
@@ -28,30 +45,12 @@ module Lotus
         inclusion
       end
 
-      def presence
-        if @options[:presence] && skip?
-          @errors[@name].push(:presence)
+      def _validate(validation)
+        if (validator = @options[validation]) && !(yield validator)
+          @validator.errors[@name].push(validation)
         end
       end
 
-      def format
-        if (matcher = @options[:format]) && !@value.to_s.match(matcher)
-          @errors[@name].push(:format)
-        end
-      end
-
-      def inclusion
-        if (collection = @options[:inclusion]) && !collection.include?(@value)
-          @errors[@name].push(:inclusion)
-        end
-      end
-
-      def coerce
-        if coercer = @options[:type]
-          @value = Lotus::Utils::Kernel.send(coercer.to_s, @value)
-          @validator.attributes[@name] = @value
-        end
-      end
     end
   end
 end
