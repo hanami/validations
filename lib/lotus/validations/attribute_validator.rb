@@ -25,6 +25,7 @@ module Lotus
 
         format
         coerce
+        inclusion
       end
 
       def presence
@@ -36,6 +37,12 @@ module Lotus
       def format
         if (matcher = @options[:format]) && !@value.to_s.match(matcher)
           @errors[@name].push(:format)
+        end
+      end
+
+      def inclusion
+        if (collection = @options[:inclusion]) && !collection.include?(@value)
+          @errors[@name].push(:inclusion)
         end
       end
 
