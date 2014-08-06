@@ -10,12 +10,18 @@ module Lotus
 
       def validate!
         presence
+        acceptance
+
         _run_validations
       end
 
       private
       def presence
         _validate(__method__) { !skip? }
+      end
+
+      def acceptance
+        _validate(__method__) { Lotus::Utils::Kernel.Boolean(@value) }
       end
 
       def format

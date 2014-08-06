@@ -52,3 +52,9 @@ class InclusionValidatorTest
   attribute :age,   type: Integer, inclusion: 21..65
   attribute :code,                 inclusion: 'aeiouy'
 end
+
+class AcceptanceValidatorTest
+  include Lotus::Validations
+
+  attribute :tos, acceptance: true
+end
