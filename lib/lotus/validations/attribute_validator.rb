@@ -1,5 +1,11 @@
 require 'lotus/utils/kernel'
 
+class Range
+  def size
+    to_a.size
+  end unless instance_methods.include?(:size)
+end
+
 module Lotus
   module Validations
     class AttributeValidator
