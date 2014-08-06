@@ -58,3 +58,23 @@ class AcceptanceValidatorTest
 
   attribute :tos, acceptance: true
 end
+
+class CfSize
+  def to_int
+    16
+  end
+end
+
+class SizeValidatorTest
+  include Lotus::Validations
+
+  attribute :password, size: 9..56
+  attribute :ssn,      size: 11
+  attribute :cf,       size: CfSize.new
+end
+
+class SizeValidatorErrorTest
+  include Lotus::Validations
+
+  attribute :password, size: 'nine'
+end

@@ -32,6 +32,19 @@ module Lotus
         _validate(__method__) {|collection| collection.include?(@value) }
       end
 
+      def size
+        _validate(__method__) do |validator|
+          case validator
+          when Numeric, ->(v) { v.respond_to?(:to_int) }
+            @value.size == validator.to_int
+          when Range
+            validator.include?(@value.size)
+          else
+            raise ArgumentError.new("Size validator must be a number or a range, it was: #{ validator }")
+          end
+        end
+      end
+
       def coerce
         _validate(:type) do |coercer|
           @value = Lotus::Utils::Kernel.send(coercer.to_s, @value)
@@ -49,6 +62,7 @@ module Lotus
         format
         coerce
         inclusion
+        size
       end
 
       def _validate(validation)
