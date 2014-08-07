@@ -9,6 +9,8 @@ end
 module Lotus
   module Validations
     class AttributeValidator
+      CONFIRMATION_TEMPLATE = '%{name}_confirmation'.freeze
+
       def initialize(validator, name, options)
         @validator, @name, @options = validator, name, options
         @value = @validator.__send__(@name)
@@ -40,6 +42,12 @@ module Lotus
 
       def esclusion
         _validate(__method__) {|collection| !collection.include?(@value) }
+      end
+
+      def confirmation
+        _validate(__method__) do
+          _attribute == _attribute(CONFIRMATION_TEMPLATE % { name: @name })
+        end
       end
 
       def size
@@ -74,6 +82,11 @@ module Lotus
         inclusion
         esclusion
         size
+        confirmation
+      end
+
+      def _attribute(name = @name)
+        @validator.attributes[name.to_sym]
       end
 
       def _validate(validation)
@@ -81,7 +94,6 @@ module Lotus
           @validator.errors[@name].push(validation)
         end
       end
-
     end
   end
 end

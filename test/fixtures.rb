@@ -88,3 +88,9 @@ class SizeValidatorErrorTest
 
   attribute :password, size: 'nine'
 end
+
+class ConfirmationValidatorTest
+  include Lotus::Validations
+
+  attribute :password, confirmation: true
+end
