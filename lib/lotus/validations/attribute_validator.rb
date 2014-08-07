@@ -38,6 +38,10 @@ module Lotus
         _validate(__method__) {|collection| collection.include?(@value) }
       end
 
+      def esclusion
+        _validate(__method__) {|collection| !collection.include?(@value) }
+      end
+
       def size
         _validate(__method__) do |validator|
           case validator
@@ -68,6 +72,7 @@ module Lotus
         format
         coerce
         inclusion
+        esclusion
         size
       end
 
