@@ -94,3 +94,13 @@ class ConfirmationValidatorTest
 
   attribute :password, confirmation: true
 end
+
+class SuperclassValidatorTest
+  include Lotus::Validations
+
+  attribute :name, presence: true
+end
+
+class SubclassValidatorTest < SuperclassValidatorTest
+  attribute :age, type: Integer, inclusion: 18..99
+end
