@@ -4,6 +4,19 @@ class InitializerTest
   attribute :attr
 end
 
+class AttributeTest
+  include Lotus::Validations
+
+  attribute 'attr'
+end
+
+class UniquenessAttributeTest
+  include Lotus::Validations
+
+  attribute :attr
+  attribute :attr
+end
+
 class AnotherValidator
   include Lotus::Validations
 

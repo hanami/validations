@@ -9,7 +9,7 @@ module Lotus
 
     module ClassMethods
       def attribute(name, options = {})
-        attributes[name] = options
+        attributes[name.to_sym] = options
 
         class_eval %{
           def #{ name }
