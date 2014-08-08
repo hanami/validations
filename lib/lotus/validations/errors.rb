@@ -4,11 +4,11 @@ module Lotus
   module Validations
     class Errors
       def initialize
-        @hash = Hash.new {|h,k| h[k] = [] }
+        @errors = Hash.new {|h,k| h[k] = [] }
       end
 
       def empty?
-        @hash.empty?
+        @errors.empty?
       end
 
       def count
@@ -30,18 +30,18 @@ module Lotus
       end
 
       def add(attribute, validation, expected, actual)
-        @hash[attribute].push(
+        @errors[attribute].push(
           Error.new(attribute, validation, expected, actual)
         )
       end
 
       def for(attribute)
-        @hash[attribute]
+        @errors[attribute]
       end
 
       private
       def errors
-        @hash.values.flatten
+        @errors.values.flatten
       end
     end
   end
