@@ -40,7 +40,7 @@ module Lotus
 
     def initialize(attributes)
       @attributes = attributes
-      @errors     = Hash.new {|h,k| h[k] = [] }
+      @errors     = Hash.new {|h,k| h[k] = {} }
     end
 
     def valid?

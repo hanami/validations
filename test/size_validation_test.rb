@@ -73,7 +73,8 @@ describe Lotus::Validations do
         validator = SizeValidatorTest.new({ssn: value})
 
         validator.valid?.must_equal false
-        validator.errors.fetch(:ssn).must_include :size
+        error = validator.errors.fetch(:ssn)
+        error.must_equal Hash[size: [11, value]]
       end
     end
 
@@ -97,7 +98,8 @@ describe Lotus::Validations do
         validator = SizeValidatorTest.new({password: value})
 
         validator.valid?.must_equal false
-        validator.errors.fetch(:password).must_include :size
+        error = validator.errors.fetch(:password)
+        error.must_equal Hash[size: [9..56, value]]
       end
     end
 

@@ -91,7 +91,7 @@ module Lotus
 
       def _validate(validation)
         if (validator = @options[validation]) && !(yield validator)
-          @validator.errors[@name].push(validation)
+          @validator.errors[@name].merge!(validation => [@options.fetch(validation), @value])
         end
       end
     end
