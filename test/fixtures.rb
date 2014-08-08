@@ -23,6 +23,12 @@ class AnotherValidator
   attribute :another
 end
 
+class MultipleValidationsTest
+  include Lotus::Validations
+
+  attribute :email, confirmation: true, format: /@/
+end
+
 class TypeValidatorTest
   include Lotus::Validations
 
