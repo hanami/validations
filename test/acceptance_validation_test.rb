@@ -6,7 +6,8 @@ describe Lotus::Validations do
       validator = AcceptanceValidatorTest.new({})
 
       validator.valid?.must_equal false
-      validator.errors.fetch(:tos).must_include :acceptance
+      error = validator.errors.for(:tos)
+      error.must_include Lotus::Validations::Error.new(:tos, :acceptance, true, nil)
     end
 
     it "is valid if it the value can be coercible to TrueClass" do
@@ -23,7 +24,8 @@ describe Lotus::Validations do
         validator = AcceptanceValidatorTest.new({tos: value})
 
         validator.valid?.must_equal false
-        validator.errors.fetch(:tos).must_include :acceptance
+        error = validator.errors.for(:tos)
+        error.must_include Lotus::Validations::Error.new(:tos, :acceptance, true, value)
       end
     end
   end

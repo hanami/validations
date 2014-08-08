@@ -20,7 +20,8 @@ describe Lotus::Validations do
       validator = InclusionValidatorTest.new(job: 'Weaver', age: '42')
 
       validator.valid?.must_equal false
-      validator.errors.fetch(:job).must_include(:inclusion)
+      error = validator.errors.for(:job)
+      error.must_include Lotus::Validations::Error.new(:job, :inclusion, ['Carpenter', 'Blacksmith'], 'Weaver')
     end
   end
 end

@@ -20,14 +20,16 @@ describe Lotus::Validations do
       validator = ConfirmationValidatorTest.new({ password: 'secret' })
 
       validator.valid?.must_equal false
-      validator.errors.fetch(:password).must_include(:confirmation)
+      error = validator.errors.for(:password)
+      error.must_include Lotus::Validations::Error.new(:password, :confirmation, true, 'secret')
     end
 
     it "isn't valid when the two attributes aren't matching" do
       validator = ConfirmationValidatorTest.new({ password: 'secret', password_confirmation: 'x' })
 
       validator.valid?.must_equal false
-      validator.errors.fetch(:password).must_include(:confirmation)
+      error = validator.errors.for(:password)
+      error.must_include Lotus::Validations::Error.new(:password, :confirmation, true, 'secret')
     end
   end
 end

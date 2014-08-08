@@ -10,6 +10,18 @@ describe Lotus::Validations do
       UniquenessAttributeTest.__send__(:attributes).keys.must_include(:attr)
     end
 
+    it 'collects multiple errors for a single attribute' do
+      validator = MultipleValidationsTest.new(email: 'test', email_confirmation: 'x')
+
+      validator.valid?.must_equal false
+
+      errors = validator.errors.for(:email)
+      errors.must_equal [
+        Lotus::Validations::Error.new(:email, :format, /@/, 'test'),
+        Lotus::Validations::Error.new(:email, :confirmation, true, 'test')
+      ]
+    end
+
     describe 'name checks' do
       it 'checks validation names' do
         -> {
