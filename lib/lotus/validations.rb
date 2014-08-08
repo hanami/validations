@@ -9,7 +9,7 @@ module Lotus
 
     module ClassMethods
       def attribute(name, options = {})
-        attributes[name.to_sym] = options
+        attributes[name.to_sym] = validate_options!(name, options)
 
         class_eval %{
           def #{ name }
@@ -21,6 +21,18 @@ module Lotus
       private
       def attributes
         @attributes ||= Hash.new
+      end
+
+      def validate_options!(name, options)
+        if (unknown = (options.keys - validations)) && unknown.any?
+          raise ArgumentError.new(%(Unknown validation(s): #{ unknown.join ', ' } for "#{ name }" attribute))
+        end
+
+        options
+      end
+
+      def validations
+        [:presence, :acceptance, :format, :inclusion, :esclusion, :confirmation, :size, :type]
       end
     end
 
