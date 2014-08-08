@@ -1,4 +1,5 @@
 require 'lotus/validations/version'
+require 'lotus/validations/errors'
 require 'lotus/validations/attribute_validator'
 
 module Lotus
@@ -40,7 +41,7 @@ module Lotus
 
     def initialize(attributes)
       @attributes = attributes
-      @errors     = Hash.new {|h,k| h[k] = {} }
+      @errors     = Errors.new
     end
 
     def valid?

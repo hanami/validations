@@ -6,7 +6,7 @@ describe Lotus::Validations do
       validator = AcceptanceValidatorTest.new({})
 
       validator.valid?.must_equal false
-      error = validator.errors.fetch(:tos)
+      error = validator.errors.for(:tos)
       error.must_equal Hash[acceptance: [true, nil]]
     end
 
@@ -24,7 +24,7 @@ describe Lotus::Validations do
         validator = AcceptanceValidatorTest.new({tos: value})
 
         validator.valid?.must_equal false
-        error = validator.errors.fetch(:tos)
+        error = validator.errors.for(:tos)
         error.must_equal Hash[acceptance: [true, value]]
       end
     end

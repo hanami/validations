@@ -20,7 +20,7 @@ describe Lotus::Validations do
       validator = InclusionValidatorTest.new(job: 'Weaver', age: '42')
 
       validator.valid?.must_equal false
-      error = validator.errors.fetch(:job)
+      error = validator.errors.for(:job)
       error.must_equal Hash[inclusion: [['Carpenter', 'Blacksmith'], 'Weaver']]
     end
   end

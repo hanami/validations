@@ -20,7 +20,7 @@ describe Lotus::Validations do
       validator = FormatValidatorTest.new({name: 'Luca', age: 'thirtytwo'})
 
       validator.valid?.must_equal false
-      error = validator.errors.fetch(:age)
+      error = validator.errors.for(:age)
       error.must_equal Hash[format: [/\A[0-9]+\z/, 'thirtytwo']]
     end
   end

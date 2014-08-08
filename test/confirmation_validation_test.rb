@@ -20,7 +20,7 @@ describe Lotus::Validations do
       validator = ConfirmationValidatorTest.new({ password: 'secret' })
 
       validator.valid?.must_equal false
-      error = validator.errors.fetch(:password)
+      error = validator.errors.for(:password)
       error.must_equal Hash[confirmation: [true, 'secret']]
     end
 
@@ -28,7 +28,7 @@ describe Lotus::Validations do
       validator = ConfirmationValidatorTest.new({ password: 'secret', password_confirmation: 'x' })
 
       validator.valid?.must_equal false
-      error = validator.errors.fetch(:password)
+      error = validator.errors.for(:password)
       error.must_equal Hash[confirmation: [true, 'secret']]
     end
   end

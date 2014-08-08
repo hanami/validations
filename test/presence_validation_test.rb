@@ -13,7 +13,7 @@ describe Lotus::Validations do
       validator = PresenceValidatorTest.new(name: 'L')
 
       validator.valid?.must_equal false
-      error = validator.errors.fetch(:age)
+      error = validator.errors.for(:age)
       error.must_equal Hash[presence: [true, nil]]
     end
   end
