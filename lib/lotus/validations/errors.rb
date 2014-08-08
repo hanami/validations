@@ -9,6 +9,20 @@ module Lotus
         @hash.empty?
       end
 
+      def each(&blk)
+        @hash.each do |attribute, errors|
+          errors.each do |validation, (expected, actual)|
+            blk.call attribute, validation, expected, actual
+          end
+        end
+      end
+
+      def map(&blk)
+        Array.new.tap do |result|
+          self.each {|*args| result << blk.call(*args) }
+        end
+      end
+
       def add(attribute, validation, expected, actual)
         @hash[attribute].merge!(validation => [expected, actual])
       end
