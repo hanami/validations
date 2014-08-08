@@ -39,7 +39,14 @@ module Lotus
         @errors[attribute]
       end
 
-      private
+      def ==(other)
+        other.is_a?(self.class) &&
+          other.errors == errors
+      end
+
+      alias_method :eql?, :==
+
+      protected
       def errors
         @errors.values.flatten
       end

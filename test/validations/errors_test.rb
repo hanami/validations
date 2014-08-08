@@ -84,5 +84,11 @@ describe Lotus::Validations::Errors do
       @errors.size.must_equal 3
     end
   end
+
+  describe '#==' do
+    it 'compares with other errors' do
+      assert Lotus::Validations::Errors.new == Lotus::Validations::Errors.new
+    end
+  end
 end
 
