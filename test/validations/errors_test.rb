@@ -68,5 +68,21 @@ describe Lotus::Validations::Errors do
       ]
     end
   end
+
+  describe '#count' do
+    before do
+      @errors.add(:email, :format, /@/, 'test')
+      @errors.add(:email, :confirmation, true, 'test')
+      @errors.add(:name,  :presence, true, nil)
+    end
+
+    it 'returns the count of errors' do
+      @errors.count.must_equal 3
+    end
+
+    it 'is aliased as size' do
+      @errors.size.must_equal 3
+    end
+  end
 end
 

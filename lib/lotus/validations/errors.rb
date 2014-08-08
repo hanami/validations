@@ -11,15 +11,21 @@ module Lotus
         @hash.empty?
       end
 
+      def count
+        errors.count
+      end
+
+      alias_method :size, :count
+
       def each(&blk)
-        @hash.values.flatten.each do |error|
+        errors.each do |error|
           blk.call(error)
         end
       end
 
       def map(&blk)
-        Array.new.tap do |result|
-          self.each {|error| result << blk.call(error) }
+        errors.map do |error|
+          blk.call(error)
         end
       end
 
@@ -31,6 +37,11 @@ module Lotus
 
       def for(attribute)
         @hash[attribute]
+      end
+
+      private
+      def errors
+        @hash.values.flatten
       end
     end
   end
