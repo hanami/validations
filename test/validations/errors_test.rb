@@ -23,7 +23,7 @@ describe Lotus::Validations::Errors do
       @errors.add(:email, :format, /@/, 'test')
       @errors.add(:name,  :presence, true, nil)
 
-      @errors.for(:name).must_equal Hash[presence: [true, nil]]
+      @errors.for(:name).must_include Lotus::Validations::Error.new(:name, :presence, true, nil)
     end
   end
 
@@ -35,10 +35,10 @@ describe Lotus::Validations::Errors do
       @errors.add(:email, :confirmation, true, 'test')
       @errors.add(:name,  :presence, true, nil)
 
-      @errors.each do |attribute, validation, expected, actual|
+      @errors.each do |error|
         result << (
           "%{attribute} must match %{validation} (expected %{expected}, was %{actual})" %
-          {attribute: attribute, validation: validation, expected: expected, actual: actual}
+          {attribute: error.attribute, validation: error.validation, expected: error.expected, actual: error.actual}
         )
       end
 
@@ -56,9 +56,9 @@ describe Lotus::Validations::Errors do
       @errors.add(:email, :confirmation, true, 'test')
       @errors.add(:name,  :presence, true, nil)
 
-      result = @errors.map do |attribute, validation, expected, actual|
+      result = @errors.map do |error|
         "%{attribute} must match %{validation} (expected %{expected}, was %{actual})" %
-          {attribute: attribute, validation: validation, expected: expected, actual: actual}
+          {attribute: error.attribute, validation: error.validation, expected: error.expected, actual: error.actual}
       end
 
       result.must_equal [

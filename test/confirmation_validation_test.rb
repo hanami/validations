@@ -21,7 +21,7 @@ describe Lotus::Validations do
 
       validator.valid?.must_equal false
       error = validator.errors.for(:password)
-      error.must_equal Hash[confirmation: [true, 'secret']]
+      error.must_include Lotus::Validations::Error.new(:password, :confirmation, true, 'secret')
     end
 
     it "isn't valid when the two attributes aren't matching" do
@@ -29,7 +29,7 @@ describe Lotus::Validations do
 
       validator.valid?.must_equal false
       error = validator.errors.for(:password)
-      error.must_equal Hash[confirmation: [true, 'secret']]
+      error.must_include Lotus::Validations::Error.new(:password, :confirmation, true, 'secret')
     end
   end
 end

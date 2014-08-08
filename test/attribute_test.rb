@@ -16,7 +16,10 @@ describe Lotus::Validations do
       validator.valid?.must_equal false
 
       errors = validator.errors.for(:email)
-      errors.must_equal Hash[format: [/@/, 'test'], confirmation: [true, 'test']]
+      errors.must_equal [
+        Lotus::Validations::Error.new(:email, :format, /@/, 'test'),
+        Lotus::Validations::Error.new(:email, :confirmation, true, 'test')
+      ]
     end
 
     describe 'name checks' do
