@@ -67,6 +67,7 @@ module Lotus
         _validate(:type) do |coercer|
           @value = Lotus::Utils::Kernel.send(coercer.to_s, @value)
           @validator.attributes[@name] = @value
+          true
         end
       end
 
