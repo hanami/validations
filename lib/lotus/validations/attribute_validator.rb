@@ -40,7 +40,7 @@ module Lotus
         _validate(__method__) {|collection| collection.include?(@value) }
       end
 
-      def esclusion
+      def exclusion
         _validate(__method__) {|collection| !collection.include?(@value) }
       end
 
@@ -80,7 +80,7 @@ module Lotus
         format
         coerce
         inclusion
-        esclusion
+        exclusion
         size
         confirmation
       end
