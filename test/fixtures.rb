@@ -72,14 +72,14 @@ class InclusionValidatorTest
   attribute :code,                 inclusion: 'aeiouy'
 end
 
-class EsclusionValidatorTest
+class ExclusionValidatorTest
   include Lotus::Validations
 
-  attribute :job,                  esclusion: ['Carpenter', 'Blacksmith']
-  attribute :state,                esclusion: { 'ma' => 'Massachussets' }
-  attribute :sport,                esclusion: Set.new(['Football', 'Baseball'])
-  attribute :age,   type: Integer, esclusion: 21..65
-  attribute :code,                 esclusion: 'aeiouy'
+  attribute :job,                  exclusion: ['Carpenter', 'Blacksmith']
+  attribute :state,                exclusion: { 'ma' => 'Massachussets' }
+  attribute :sport,                exclusion: Set.new(['Football', 'Baseball'])
+  attribute :age,   type: Integer, exclusion: 21..65
+  attribute :code,                 exclusion: 'aeiouy'
 end
 
 class AcceptanceValidatorTest

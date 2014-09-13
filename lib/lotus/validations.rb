@@ -33,7 +33,7 @@ module Lotus
       end
 
       def validations
-        [:presence, :acceptance, :format, :inclusion, :esclusion, :confirmation, :size, :type]
+        [:presence, :acceptance, :format, :inclusion, :exclusion, :confirmation, :size, :type]
       end
     end
 
