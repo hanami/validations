@@ -114,6 +114,21 @@ class ConfirmationValidatorTest
   attribute :password, confirmation: true
 end
 
+class BlockValidatorTest
+  include Lotus::Validations
+
+  attribute :name do |value|
+    case value
+    when 'foo'
+      true
+    when 'bar'
+      [true, 'FOO']
+    else
+      [false, 'foo or bar']
+    end
+  end
+end
+
 class SuperclassValidatorTest
   include Lotus::Validations
 

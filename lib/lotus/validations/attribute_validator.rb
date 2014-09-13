@@ -12,7 +12,7 @@ module Lotus
       CONFIRMATION_TEMPLATE = '%{name}_confirmation'.freeze
 
       def initialize(validator, name, options)
-        @validator, @name, @options = validator, name, options
+        @validator, @name, @options = validator, name, options.dup
         @value = @validator.__send__(@name)
       end
 
@@ -63,6 +63,20 @@ module Lotus
         end
       end
 
+      def block
+        _validate(__method__) do |block|
+          is_valid, obj = block.call(@value)
+          unless obj.nil?
+            if is_valid
+              @validator.attributes[@name] = obj
+            else
+              @options[__method__] = obj
+            end
+          end
+          is_valid
+        end
+      end
+
       def coerce
         _validate(:type) do |coercer|
           @value = Lotus::Utils::Kernel.send(coercer.to_s, @value)
@@ -83,6 +97,7 @@ module Lotus
         exclusion
         size
         confirmation
+        block
       end
 
       def _attribute(name = @name)
