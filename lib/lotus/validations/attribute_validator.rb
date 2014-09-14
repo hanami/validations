@@ -1,4 +1,4 @@
-require 'lotus/utils/kernel'
+require 'lotus/validations/coercions'
 
 class Range
   def size
@@ -65,7 +65,7 @@ module Lotus
 
       def coerce
         _validate(:type) do |coercer|
-          @value = Lotus::Utils::Kernel.send(coercer.to_s, @value)
+          @value = Lotus::Validations::Coercions.coerce(coercer, @value)
           @validator.attributes[@name] = @value
         end
       end
