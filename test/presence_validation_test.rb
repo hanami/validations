@@ -16,5 +16,13 @@ describe Lotus::Validations do
       errors = validator.errors.for(:age)
       errors.must_include Lotus::Validations::Error.new(:age, :presence, true, nil)
     end
+
+    it "isn't valid if required attribute is empty" do
+      validator = PresenceValidatorTest.new(name: '', age: '32')
+
+      validator.valid?.must_equal false
+      errors = validator.errors.for(:name)
+      errors.must_include Lotus::Validations::Error.new(:name, :presence, true, '')
+    end
   end
 end

@@ -25,7 +25,7 @@ module Lotus
 
       private
       def presence
-        _validate(__method__) { !skip? }
+        _validate(__method__) { !blank_value? }
       end
 
       def acceptance
@@ -70,8 +70,14 @@ module Lotus
         end
       end
 
-      def skip?
+      def nil_value?
         @value.nil?
+      end
+
+      alias_method :skip?, :nil_value?
+
+      def blank_value?
+        nil_value? || (@value.respond_to?(:empty?) && @value.empty?)
       end
 
       def _run_validations
