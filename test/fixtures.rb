@@ -1,3 +1,13 @@
+class FullName
+  def initialize(*tokens)
+    @tokens = tokens
+  end
+
+  def to_s
+    @tokens.join ' '
+  end
+end
+
 class InitializerTest
   include Lotus::Validations
 
@@ -45,6 +55,7 @@ class TypeValidatorTest
   attribute :string_attr,   type: String
   attribute :symbol_attr,   type: Symbol
   attribute :time_attr,     type: Time
+  attribute :name_attr,     type: FullName
 end
 
 class PresenceValidatorTest

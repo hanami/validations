@@ -17,7 +17,8 @@ describe Lotus::Validations do
         set_attr:       [1, 2],
         string_attr:    23,
         symbol_attr:    'symbol',
-        time_attr:      '1407082408'
+        time_attr:      '1407082408',
+        name_attr:      ['Luca', 'Guidi']
       })
 
       @validator.valid?
@@ -69,6 +70,10 @@ describe Lotus::Validations do
 
     it 'coerces Time' do
       @validator.time_attr.must_be_kind_of(Time)
+    end
+
+    it 'coerces custom type' do
+      @validator.name_attr.must_be_kind_of(FullName)
     end
   end
 end
