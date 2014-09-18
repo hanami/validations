@@ -97,8 +97,12 @@ module Lotus
       end
 
       def _validate(validation)
-        if (validator = @options[validation]) && !(yield validator)
-          @validator.errors.add(@name, validation, @options.fetch(validation), @value)
+        if validator = @options[validation]
+          condition = yield validator
+          if condition && @value.respond_to?(:valid?)
+            condition = @value.valid?
+          end
+          @validator.errors.add(@name, validation, @options.fetch(validation), @value) unless condition
         end
       end
     end

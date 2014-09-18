@@ -135,3 +135,9 @@ end
 class SubclassValidatorTest < SuperclassValidatorTest
   attribute :age, type: Integer, inclusion: 18..99
 end
+
+class NestedValidationTest
+  include Lotus::Validations
+
+  attribute :user, type: PresenceValidatorTest
+end
