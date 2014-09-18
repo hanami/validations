@@ -71,7 +71,7 @@ module Lotus
       end
 
       def skip?
-        @value.nil?
+        @value.nil? || (@value.respond_to?(:empty?) && @value.empty?)
       end
 
       def _run_validations
