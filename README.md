@@ -46,11 +46,10 @@ Or install it yourself as:
 
 ### Attributes
 
-The framework allows to define attributes for each object.
+The framework allows you to define attributes for each object.
 
-It defines an initializer, where those attributes can be passed as a hash.
-All the uknown values are ignored. This is useful to whitelist attributes coming
-from input.
+It defines an initializer, whose attributes can be passed as a hash.
+All unknown values are ignored, which is useful for whitelisting attributes.
 
 ```ruby
 require 'lotus/validations'
@@ -158,11 +157,10 @@ signup.valid? # => false
 
 #### Confirmation
 
-An attribute is valid if its value and the value of a corresponding attribute
+An attribute is valid if it's value and the value of a corresponding attribute
 is valid.
 
-By convention, if you have a `password` attribute, the validation will look for
-a `password_validation` one.
+By convention, if you have a `password` attribute, the validation looks for `password_validation`.
 
 ```ruby
 require 'lotus/validations'
@@ -186,7 +184,7 @@ An attribute is valid, if the value isn't excluded from the value described by
 the validator.
 
 The validator value can be anything that responds to `#include?`.
-In Ruby, most of the core objects like `String`, `Enumerable` (`Array`, `Hash`,
+In Ruby, this includes most of the core objects: `String`, `Enumerable` (`Array`, `Hash`,
 `Range`, `Set`).
 
 See also Inclusion.
@@ -229,11 +227,11 @@ signup.valid? # => false
 
 #### Inclusion
 
-An attribute is valid, if the value is included by the value described by
-the validator.
+An attribute is valid, if the value provided is included in the validator's
+value.
 
 The validator value can be anything that responds to `#include?`.
-In Ruby, most of the core objects like `String`, `Enumerable` (`Array`, `Hash`,
+In Ruby, this includes most of the core objects: like `String`, `Enumerable` (`Array`, `Hash`,
 `Range`, `Set`).
 
 See also Exclusion.
@@ -276,7 +274,7 @@ signup.valid? # => false
 
 #### Size
 
-An attribute is valid if its `#size` falls in the described value.
+An attribute is valid if it's `#size` falls within the described value.
 
 ```ruby
 require 'lotus/validations'
