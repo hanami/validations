@@ -356,6 +356,8 @@ module Lotus
     #
     # @since 0.1.0
     def valid?
+      @errors.clear
+
       _attributes.each do |name, options|
         AttributeValidator.new(self, name, options).validate!
       end

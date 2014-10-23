@@ -38,6 +38,14 @@ module Lotus
 
       alias_method :size, :count
 
+      # Clears the internal state of the errors
+      #
+      # @since 0.1.0
+      # @api private
+      def clear
+        @errors.clear
+      end
+
       # Iterate thru the errors and yields the given block
       #
       # @param blk [Proc] the given block
