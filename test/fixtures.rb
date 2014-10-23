@@ -8,6 +8,16 @@ class FullName
   end
 end
 
+class Params
+  def initialize(attributes)
+    @attributes = Hash[*attributes]
+  end
+
+  def to_h
+    @attributes.to_h
+  end
+end
+
 class InitializerTest
   include Lotus::Validations
 

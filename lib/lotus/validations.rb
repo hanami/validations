@@ -353,12 +353,12 @@ module Lotus
     #   require 'lotus/validations'
     #
     #   class Params
-    #     def initialize(params)
-    #       @params = params
+    #     def initialize(attributes)
+    #       @attributes = Hash[*attributes]
     #     end
     #
     #     def to_h
-    #       @params.to_h
+    #       @attributes.to_h
     #     end
     #   end
     #
@@ -368,10 +368,12 @@ module Lotus
     #     attribute :name
     #   end
     #
-    #   params = Params.new(name: 'Luca')
+    #   params = Params.new([:name, 'Luca'])
     #   signup = Signup.new(params)
+    #
+    #   signup.name # => "Luca"
     def initialize(attributes)
-      @attributes = attributes
+      @attributes = attributes.to_h
       @errors     = Errors.new
     end
 
