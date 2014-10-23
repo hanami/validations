@@ -145,3 +145,13 @@ end
 class SubclassValidatorTest < SuperclassValidatorTest
   attribute :age, type: Integer, inclusion: 18..99
 end
+
+class VisibilityValidatorTest
+  include Lotus::Validations
+
+  attribute :name
+
+  def get_attributes
+    self.attributes
+  end
+end

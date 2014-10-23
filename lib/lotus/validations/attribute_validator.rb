@@ -35,7 +35,7 @@ module Lotus
       # @api private
       def initialize(validator, name, options)
         @validator, @name, @options = validator, name, options
-        @value = @validator.__send__(@name)
+        @value = _attribute(@name)
       end
 
       # Validate the attribute
@@ -212,7 +212,7 @@ module Lotus
       def coerce
         _validate(:type) do |coercer|
           @value = Lotus::Validations::Coercions.coerce(coercer, @value)
-          @validator.attributes[@name] = @value
+          _attributes[@name] = @value
           true
         end
       end
@@ -257,7 +257,13 @@ module Lotus
       # @since 0.1.0
       # @api private
       def _attribute(name = @name)
-        @validator.attributes[name.to_sym]
+        _attributes[name.to_sym]
+      end
+
+      # @since 0.1.0
+      # @api private
+      def _attributes
+        @validator.__send__(:attributes)
       end
 
       # Run a single validation and collects the results.

@@ -255,25 +255,6 @@ module Lotus
       end
     end
 
-    # Returns the attributes passed at the initialize time
-    #
-    # @return [Hash] attributes
-    #
-    # @since 0.1.0
-    #
-    # @example
-    #   require 'lotus/validations'
-    #
-    #   class Signup
-    #     include Lotus::Validations
-    #
-    #     attribute :email
-    #   end
-    #
-    #   signup = Signup.new(email: 'user@example.org')
-    #   signup.attributes # => {:email=>"user@example.org"}
-    attr_reader :attributes
-
     # Validation errors
     #
     # @return [Lotus::Validations::Errors] the set of validation errors
@@ -381,6 +362,27 @@ module Lotus
 
       @errors.empty?
     end
+
+    protected
+    # Returns the attributes passed at the initialize time
+    #
+    # @return [Hash] attributes
+    #
+    # @since 0.1.0
+    # @api private
+    #
+    # @example
+    #   require 'lotus/validations'
+    #
+    #   class Signup
+    #     include Lotus::Validations
+    #
+    #     attribute :email
+    #   end
+    #
+    #   signup = Signup.new(email: 'user@example.org')
+    #   signup.attributes # => {:email=>"user@example.org"}
+    attr_reader :attributes
 
     private
     # @since 0.1.0
