@@ -346,6 +346,41 @@ class Signup
 end
 ```
 
+### Errors
+
+When you invoke `#valid?`, validations errors are available at `#errors`.
+It's a set of errors grouped by attribute. Each error contains the name of the
+invalid attribute, the failed validation, the expected value and the current one.
+
+```ruby
+require 'lotus/validations'
+
+class Signup
+  include Lotus::Validations
+
+  attribute :email, presence: true, format: /\A(.*)@(.*)\.(.*)\z/
+  attribute :age, size: 18..99
+end
+
+signup = Signup.new(email: 'user@example.org')
+signup.valid? # => true
+
+signup = Signup.new(email: '', age: 17)
+signup.valid? # => false
+
+signup.errors
+  # => #<Lotus::Validations::Errors:0x007fe00ced9b78
+  # @errors={
+  #   :email=>[
+  #     #<Lotus::Validations::Error:0x007fe00cee3290 @attribute=:email, @validation=:presence, @expected=true, @actual="">,
+  #     #<Lotus::Validations::Error:0x007fe00cee31f0 @attribute=:email, @validation=:format, @expected=/\A(.*)@(.*)\.(.*)\z/, @actual="">
+  #   ],
+  #   :age=>[
+  #     #<Lotus::Validations::Error:0x007fe00cee30d8 @attribute=:age, @validation=:size, @expected=18..99, @actual=17>
+  #   ]
+  # }>
+```
+
 ## Contributing
 
 1. Fork it ( https://github.com/lotus/lotus-validations/fork )

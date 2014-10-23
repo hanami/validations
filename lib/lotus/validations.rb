@@ -293,15 +293,15 @@ module Lotus
     #
     #   signup.errors
     #     # => #<Lotus::Validations::Errors:0x007fe00ced9b78
-    #       @errors={
-    #         :email=>[
-    #           #<Lotus::Validations::Error:0x007fe00cee3290 @attribute=:email, @validation=:presence, @expected=true, @actual="">,
-    #           #<Lotus::Validations::Error:0x007fe00cee31f0 @attribute=:email, @validation=:format, @expected=/\A(.*)@(.*)\.(.*)\z/, @actual="">
-    #         ],
-    #         :age=>[
-    #           #<Lotus::Validations::Error:0x007fe00cee30d8 @attribute=:age, @validation=:size, @expected=18..99, @actual=17>
-    #         ]
-    #       }>
+    #     # @errors={
+    #     #   :email=>[
+    #     #     #<Lotus::Validations::Error:0x007fe00cee3290 @attribute=:email, @validation=:presence, @expected=true, @actual="">,
+    #     #     #<Lotus::Validations::Error:0x007fe00cee31f0 @attribute=:email, @validation=:format, @expected=/\A(.*)@(.*)\.(.*)\z/, @actual="">
+    #     #   ],
+    #     #   :age=>[
+    #     #     #<Lotus::Validations::Error:0x007fe00cee30d8 @attribute=:age, @validation=:size, @expected=18..99, @actual=17>
+    #     #   ]
+    #     # }>
     attr_reader :errors
 
     # Create a new instance with the given attributes
