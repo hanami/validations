@@ -229,7 +229,7 @@ module Lotus
       # Checks at the loading time if the user defined validations are recognized
       #
       # @param name [Symbol] the attribute name
-      # @param name [Hash] the set of validations associated with the given attribute
+      # @param options [Hash] the set of validations associated with the given attribute
       #
       # @raise [ArgumentError] if at least one of the validations are not
       #   recognized

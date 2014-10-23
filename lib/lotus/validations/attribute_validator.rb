@@ -160,7 +160,7 @@ module Lotus
       #
       # The value is an object which implements `#size`.
       #
-      # @raises [ArgumentError] if the defined quantity isn't a Numeric or a
+      # @raise [ArgumentError] if the defined quantity isn't a Numeric or a
       #   collection
       #
       # @see Lotus::Validations::ClassMethods#attribute

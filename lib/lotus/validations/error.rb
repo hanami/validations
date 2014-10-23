@@ -37,7 +37,7 @@ module Lotus
       # @param attribute [Symbol] the name of the attribute
       # @param validation [Symbol] the name of the validation
       # @param expected [Object] the expected value
-      # @param expected [Object] the actual value
+      # @param actual [Object] the actual value
       #
       # @since 0.1.0
       # @api private
