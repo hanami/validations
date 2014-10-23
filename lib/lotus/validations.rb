@@ -255,14 +255,6 @@ module Lotus
       end
     end
 
-  # => :email
-  # signup = Signup.new(email: 'email')
-  # => #<Signup:0x007ff154da0e10 @attributes={:email=>"email"}, @errors=#<Lotus::Validations::Errors:0x007ff154da0de8 @errors={}>>
-  # irb(main):006:0> signup.attributes
-  # => {:email=>"email"}
-  # irb(main):009:0> signup.attributes.frozen?
-  # => false
-
     # Returns the attributes passed at the initialize time
     #
     # @return [Hash] attributes
