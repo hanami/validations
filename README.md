@@ -142,7 +142,7 @@ validations.
 
 #### Acceptance
 
-An attribute is valid if it's value satisfies [Ruby's _thruthiness_](http://ruby.about.com/od/control/a/Boolean-Expressions.htm).
+An attribute is valid if it's value satisfies [Ruby's _truthiness_](http://ruby.about.com/od/control/a/Boolean-Expressions.htm).
 
 ```ruby
 require 'lotus/validations'
@@ -192,7 +192,7 @@ The validator value can be anything that responds to `#include?`.
 In Ruby, this includes most of the core objects: `String`, `Enumerable` (`Array`, `Hash`,
 `Range`, `Set`).
 
-See also Inclusion.
+See also [Inclusion](#inclusion).
 
 ```ruby
 require 'lotus/validations'
@@ -239,21 +239,39 @@ The validator value can be anything that responds to `#include?`.
 In Ruby, this includes most of the core objects: like `String`, `Enumerable` (`Array`, `Hash`,
 `Range`, `Set`).
 
-See also Exclusion.
+See also [Exclusion](#exclusion).
 
 ```ruby
+require 'prime'
 require 'lotus/validations'
+
+class PrimeNumbers
+  def initialize(limit)
+    @numbers = Prime.each(limit).to_a
+  end
+
+  def include?(number)
+    @numbers.include?(number)
+  end
+end
 
 class Signup
   include Lotus::Validations
 
-  attribute :age, inclusion: 18..99
+  attribute :age,        inclusion: 18..99
+  attribute :fav_number, inclusion: PrimeNumbers.new(100)
 end
 
 signup = Signup.new(age: 32)
 signup.valid? # => true
 
 signup = Signup.new(age: 17)
+signup.valid? # => false
+
+signup = Signup.new(fav_number: 23)
+signup.valid? # => true
+
+signup = Signup.new(fav_number: 8)
 signup.valid? # => false
 ```
 
@@ -272,6 +290,9 @@ end
 
 signup = Signup.new(name: 'Luca')
 signup.valid? # => true
+
+signup = Signup.new(name: '')
+signup.valid? # => false
 
 signup = Signup.new(name: nil)
 signup.valid? # => false
@@ -308,7 +329,7 @@ because Ruby's `File` and `Tempfile` both respond to `#size`.**
 Uniqueness validations aren't implemented because this library doesn't deal with persistence.
 The other reason is that this isn't an effective way to ensure uniqueness of a value in a database.
 
-Please read more at: [The Perils of Uniqueness Validations](http://robots.thoughtbot.com/the-perils-of-uniqueness-validations)
+Please read more at: [The Perils of Uniqueness Validations](http://robots.thoughtbot.com/the-perils-of-uniqueness-validations).
 
 ### Complete example
 
