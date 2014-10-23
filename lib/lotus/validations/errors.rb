@@ -55,9 +55,7 @@ module Lotus
       #
       # @since 0.1.0
       def each(&blk)
-        errors.each do |error|
-          blk.call(error)
-        end
+        errors.each(&blk)
       end
 
       # Iterate thru the errors, yields the given block and collect the
@@ -70,9 +68,7 @@ module Lotus
       #
       # @since 0.1.0
       def map(&blk)
-        errors.map do |error|
-          blk.call(error)
-        end
+        errors.map(&blk)
       end
 
       # Add an error to the set
