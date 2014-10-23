@@ -81,6 +81,8 @@ class Person
 end
 
 person = Person.new(fav_number: '23')
+person.valid?
+
 person.fav_number # => 23
 ```
 
@@ -123,6 +125,9 @@ class Person
   attribute :fav_number, type: FavNumber
   attribute :date,       type: BirthDate
 end
+
+person = Person.new(fav_number: '23', date: 'Oct 23, 2014')
+person.valid?
 
 person.fav_number # => 23
 person.date       # => this raises an error, because BirthDate#initialize doesn't accept any arg
