@@ -311,7 +311,7 @@ class Signup
 
   attribute :ssn,      size: 11    # exact match
   attribute :password, size: 8..64 # range
-  attribute :avatar,   size  1..(5 * MEGABYTE)
+  attribute :avatar,   size: 1..(5 * MEGABYTE)
 end
 
 signup = Signup.new(password: 'a-very-long-password')
