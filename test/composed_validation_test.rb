@@ -18,7 +18,7 @@ describe Lotus::Validations do
 
     describe 'with extra validations' do
       it 'is not valid if no attributes are valid' do
-        validator = ComposedValidationsTestWithExtraAttributes.new({})
+        validator = ComposedValidationsWithExtraAttributesTest.new({})
 
         validator.valid?.must_equal false
         errors = validator.errors
@@ -27,7 +27,7 @@ describe Lotus::Validations do
       end
 
       it 'is not valid if included attributes are not valid' do
-        validator = ComposedValidationsTestWithExtraAttributes.new(name: 'L')
+        validator = ComposedValidationsWithExtraAttributesTest.new(name: 'L')
 
         validator.valid?.must_equal false
         errors = validator.errors
@@ -36,7 +36,7 @@ describe Lotus::Validations do
       end
 
       it 'is valid if all attributes are valid' do
-        validator = ComposedValidationsTestWithExtraAttributes.new(name: 'L', email: '@')
+        validator = ComposedValidationsWithExtraAttributesTest.new(name: 'L', email: '@')
 
         validator.valid?.must_equal true
       end

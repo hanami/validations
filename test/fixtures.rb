@@ -166,7 +166,7 @@ class ComposedValidationsTest
   include EmailValidations
 end
 
-class ComposedValidationsTestWithExtraAttributes
+class ComposedValidationsWithExtraAttributesTest
   include Lotus::Validations
   include EmailValidations
 
