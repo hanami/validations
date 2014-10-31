@@ -18,16 +18,6 @@ module Lotus
     # @see http://www.ruby-doc.org/core/Module.html#method-i-included
     def self.included(base)
       base.extend ClassMethods
-
-      base.class_eval %{
-        def self.included(base)
-          base.include Lotus::Validations
-
-          attributes.each do |attribute, options|
-            base.attribute attribute, options
-          end
-        end
-      }
     end
 
     # Validations DSL
@@ -223,6 +213,14 @@ module Lotus
             @attributes[:#{ name }]
           end
         }
+      end
+
+      def included(base)
+        base.include Lotus::Validations
+
+        attributes.each do |attribute, options|
+          base.attribute attribute, options
+        end
       end
 
       private
