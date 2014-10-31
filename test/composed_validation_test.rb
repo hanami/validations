@@ -41,5 +41,19 @@ describe Lotus::Validations do
         validator.valid?.must_equal true
       end
     end
+
+    describe 'nested composed validations' do
+      it 'is not valid if included attributes are not valid' do
+        validator = NestedComposedValidationsTest.new({})
+
+        validator.valid?.must_equal false
+      end
+
+      it 'is valid if included attributes are valid' do
+        validator = NestedComposedValidationsTest.new(email: '@')
+
+        validator.valid?.must_equal true
+      end
+    end
   end
 end

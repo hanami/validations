@@ -162,6 +162,10 @@ module EmailValidations
   attribute :email, presence: true, format: /@/
 end
 
+module CommonValidations
+  include EmailValidations
+end
+
 class ComposedValidationsTest
   include EmailValidations
 end
@@ -171,4 +175,8 @@ class ComposedValidationsWithExtraAttributesTest
   include EmailValidations
 
   attribute :name, presence: true
+end
+
+class NestedComposedValidationsTest
+  include CommonValidations
 end
