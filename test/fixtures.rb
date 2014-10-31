@@ -155,3 +155,20 @@ class VisibilityValidatorTest
     self.attributes
   end
 end
+
+module EmailValidations
+  include Lotus::Validations
+
+  attribute :email, presence: true, format: /@/
+end
+
+class ComposedValidationsTest
+  include EmailValidations
+end
+
+class ComposedValidationsTestWithExtraAttributes
+  include Lotus::Validations
+  include EmailValidations
+
+  attribute :name, presence: true
+end
