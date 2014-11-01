@@ -331,16 +331,44 @@ The other reason is that this isn't an effective way to ensure uniqueness of a v
 
 Please read more at: [The Perils of Uniqueness Validations](http://robots.thoughtbot.com/the-perils-of-uniqueness-validations).
 
+### Validations in modules
+
+Attributes can also be defined in modules:
+
+```ruby
+require 'lotus/validations'
+
+module NameValidations
+  include Lotus::Validations
+
+  attribute :first_name, presence: true
+  attribute :last_name,  presence: true
+end
+
+class Signup
+  include NameValidations
+end
+
+Signup.new(first_name: '', last_name: '').valid? # => false
+```
+
 ### Complete example
 
 ```ruby
 require 'lotus/validations'
 
-class Signup
+module NameValidations
   include Lotus::Validations
 
   attribute :first_name, presence: true
   attribute :last_name,  presence: true
+end
+
+class Signup
+  include Lotus::Validations
+
+  include NameValidations
+
   attribute :email,      presence: true, format: /\A(.*)@(.*)\.(.*)\z/
   attribute :password,   presence: true, confirmation: true, size: 8..64
 end
