@@ -242,7 +242,7 @@ module Lotus
       #
       #   Signup.new(first_name: '', last_name: '').valid? # => false
       def included(base)
-        base.include Lotus::Validations
+        base.send(:include, Lotus::Validations)
 
         attributes.each do |attribute, options|
           base.attribute attribute, options
