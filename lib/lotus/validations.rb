@@ -221,7 +221,7 @@ module Lotus
       #
       # @param base [Class] the target action
       #
-      # @since 0.2.0
+      # @since x.x.x
       # @api private
       #
       # @see http://www.ruby-doc.org/core/Module.html#method-i-included
