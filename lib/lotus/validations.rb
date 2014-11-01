@@ -215,6 +215,32 @@ module Lotus
         }
       end
 
+      # Override Ruby's hook for modules. When a module includes
+      # Lotus::Validations and it is included in a class or module, this passes
+      # the attributes from the module to the base.
+      #
+      # @param base [Class] the target action
+      #
+      # @since 0.2.0
+      # @api private
+      #
+      # @see http://www.ruby-doc.org/core/Module.html#method-i-included
+      #
+      # @example
+      #   require 'lotus/validations'
+      #
+      #   module NameValidations
+      #     include Lotus::Validations
+      #
+      #     attribute :first_name, presence: true
+      #     attribute :last_name,  presence: true
+      #   end
+      #
+      #   class Signup
+      #     include NameValidations
+      #   end
+      #
+      #   Signup.new(first_name: '', last_name: '').valid? # => false
       def included(base)
         base.include Lotus::Validations
 
