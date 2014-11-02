@@ -232,15 +232,18 @@ module Lotus
       #   module NameValidations
       #     include Lotus::Validations
       #
-      #     attribute :first_name, presence: true
-      #     attribute :last_name,  presence: true
+      #     attribute :name, presence: true
       #   end
       #
       #   class Signup
       #     include NameValidations
       #   end
       #
-      #   Signup.new(first_name: '', last_name: '').valid? # => false
+      #   signup = Signup.new(name: '')
+      #   signup.valid? # => false
+      #
+      #   signup = Signup.new(name: 'Luca')
+      #   signup.valid? # => true
       def included(base)
         base.send(:include, Lotus::Validations)
 
