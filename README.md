@@ -331,6 +331,30 @@ The other reason is that this isn't an effective way to ensure uniqueness of a v
 
 Please read more at: [The Perils of Uniqueness Validations](http://robots.thoughtbot.com/the-perils-of-uniqueness-validations).
 
+### Composable validations
+
+Validations can be composed using modules:
+
+```ruby
+require 'lotus/validations'
+
+module NameValidations
+  include Lotus::Validations
+
+  attribute :name, presence: true
+end
+
+class Signup
+  include NameValidations
+end
+
+signup = Signup.new(name: '')
+signup.valid? # => false
+
+signup = Signup.new(name: 'Luca')
+signup.valid? # => true
+```
+
 ### Complete example
 
 ```ruby
