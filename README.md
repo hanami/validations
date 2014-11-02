@@ -333,7 +333,7 @@ Please read more at: [The Perils of Uniqueness Validations](http://robots.though
 
 ### Composable validations
 
-Validations can be composed using modules:
+Validations can be reused via composition:
 
 ```ruby
 require 'lotus/validations'
@@ -344,15 +344,49 @@ module NameValidations
   attribute :name, presence: true
 end
 
-class Signup
-  include NameValidations
+module EmailValidations
+  include Lotus::Validations
+
+  attribute :email, presence: true, format: /.../
 end
 
-signup = Signup.new(name: '')
-signup.valid? # => false
+module PasswordValidations
+  include Lotus::Validations
 
-signup = Signup.new(name: 'Luca')
-signup.valid? # => true
+  # We validate only the presence here
+  attribute :password, presence: true
+end
+
+module CommonValidations
+  include EmailValidations
+  include PasswordValidations
+end
+
+# A valid signup requires:
+#   * name (presence)
+#   * email (presence and format)
+#   * password (presence and confirmation)
+class Signup
+  include NameValidations
+  include CommonValidations
+
+  # We decorate PasswordValidations behavior, by requiring the confirmation too.
+  # This additional validation is active only in this case.
+  attribute :password, confirmation: true
+end
+
+# A valid signin requires:
+#   * email (presence)
+#   * password (presence)
+class Signin
+  include CommonValidations
+end
+
+# A valid "forgot password" requires:
+#   * email (presence)
+class ForgotPassword
+  include EmailValidations
+end
 ```
 
 ### Complete example

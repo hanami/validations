@@ -170,6 +170,12 @@ class ComposedValidationsTest
   include EmailValidations
 end
 
+module PasswordValidations
+  include Lotus::Validations
+
+  attribute :password, presence: true
+end
+
 class ComposedValidationsWithExtraAttributesTest
   include Lotus::Validations
   include EmailValidations
@@ -179,4 +185,10 @@ end
 
 class NestedComposedValidationsTest
   include CommonValidations
+end
+
+class DecoratedValidations
+  include PasswordValidations
+
+  attribute :password, confirmation: true
 end

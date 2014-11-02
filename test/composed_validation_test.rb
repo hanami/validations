@@ -55,5 +55,16 @@ describe Lotus::Validations do
         validator.valid?.must_equal true
       end
     end
+
+    describe 'decorated composed validations' do
+      it "isn't valid if the password aren't matching" do
+        validator = DecoratedValidations.new(password: 'secret', password_confirmation: 'ops!')
+
+        validator.valid?.must_equal false
+
+        error = validator.errors.for(:password).first
+        error.validation.must_equal(:confirmation)
+      end
+    end
   end
 end
