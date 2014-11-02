@@ -21,7 +21,7 @@ end
 class InitializerTest
   include Lotus::Validations
 
-  attribute :attr
+  attribute :attr, type: Integer
 end
 
 class AttributeTest
@@ -152,7 +152,7 @@ class VisibilityValidatorTest
   attribute :name
 
   def get_attributes
-    self.attributes
+    self._attributes
   end
 end
 
