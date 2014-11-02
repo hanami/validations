@@ -206,7 +206,9 @@ module Lotus
       #   signup = Signup.new(password: 'short')
       #   signup.valid? # => false
       def attribute(name, options = {})
-        attributes[name.to_sym] = validate_options!(name, options)
+        # TODO Those two lines suffer of feature envy and primitive obsession
+        attributes[name.to_sym] ||= {}
+        attributes[name.to_sym].merge!(validate_options!(name, options))
 
         class_eval %{
           def #{ name }

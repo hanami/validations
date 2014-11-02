@@ -57,13 +57,36 @@ describe Lotus::Validations do
     end
 
     describe 'decorated composed validations' do
-      it "isn't valid if the password aren't matching" do
+      it 'inherits composed validation' do
+        validator = DecoratedValidations.new(password: nil)
+        validator.valid?.must_equal false
+
+        error = validator.errors.for(:password).first
+        error.validation.must_equal(:presence)
+      end
+
+      it "validates with the decorated rule" do
         validator = DecoratedValidations.new(password: 'secret', password_confirmation: 'ops!')
 
         validator.valid?.must_equal false
 
         error = validator.errors.for(:password).first
         error.validation.must_equal(:confirmation)
+      end
+
+      it "the original validator keeps the defined rules" do
+        validator = UndecoratedValidations.new(password: nil)
+
+        validator.valid?.must_equal false
+
+        error = validator.errors.for(:password).first
+        error.validation.must_equal(:presence)
+      end
+
+      it "the decorated rules don't interfer with the original one" do
+        validator = UndecoratedValidations.new(password: 'secret', password_confirmation: '123')
+
+        validator.valid?.must_equal true
       end
     end
   end

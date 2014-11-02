@@ -187,6 +187,10 @@ class NestedComposedValidationsTest
   include CommonValidations
 end
 
+class UndecoratedValidations
+  include PasswordValidations
+end
+
 class DecoratedValidations
   include PasswordValidations
 
