@@ -1,3 +1,4 @@
+require 'lotus/utils/hash'
 require 'lotus/validations/version'
 require 'lotus/validations/errors'
 require 'lotus/validations/attribute_validator'
@@ -408,8 +409,11 @@ module Lotus
 
     # @since x.x.x
     def attributes
-      @_attributes.dup
+      Utils::Hash.new(@_attributes).deep_dup
     end
+
+    # @since x.x.x
+    alias_method :to_h, :attributes
 
     protected
     # Returns the attributes passed at the initialize time
