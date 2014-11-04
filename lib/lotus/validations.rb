@@ -1,3 +1,4 @@
+require 'lotus/utils/hash'
 require 'lotus/validations/version'
 require 'lotus/validations/errors'
 require 'lotus/validations/attribute_validator'
@@ -212,7 +213,7 @@ module Lotus
 
         class_eval %{
           def #{ name }
-            @attributes[:#{ name }]
+            @_attributes[:#{ name }]
           end
         }
       end
@@ -387,8 +388,8 @@ module Lotus
     #
     #   signup.name # => "Luca"
     def initialize(attributes)
-      @attributes = attributes.to_h
-      @errors     = Errors.new
+      @_attributes = attributes.to_h.dup
+      @errors      = Errors.new
     end
 
     # Checks if the current data satisfies the defined validations
@@ -399,19 +400,27 @@ module Lotus
     def valid?
       @errors.clear
 
-      _attributes.each do |name, options|
+      __attributes.each do |name, options|
         AttributeValidator.new(self, name, options).validate!
       end
 
       @errors.empty?
     end
 
+    # @since x.x.x
+    def attributes
+      Utils::Hash.new(@_attributes).deep_dup
+    end
+
+    # @since x.x.x
+    alias_method :to_h, :attributes
+
     protected
     # Returns the attributes passed at the initialize time
     #
     # @return [Hash] attributes
     #
-    # @since 0.1.0
+    # @since x.x.x
     # @api private
     #
     # @example
@@ -425,14 +434,14 @@ module Lotus
     #
     #   signup = Signup.new(email: 'user@example.org')
     #   signup.attributes # => {:email=>"user@example.org"}
-    attr_reader :attributes
+    attr_reader :_attributes
 
     private
-    # @since 0.1.0
+    # @since x.x.x
     # @api private
     #
     # @see Lotus::Validations::ClassMethods#attributes
-    def _attributes
+    def __attributes
       self.class.__send__(:attributes)
     end
   end

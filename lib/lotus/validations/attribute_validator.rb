@@ -263,7 +263,7 @@ module Lotus
       # @since 0.1.0
       # @api private
       def _attributes
-        @validator.__send__(:attributes)
+        @validator.__send__(:_attributes)
       end
 
       # Run a single validation and collects the results.
