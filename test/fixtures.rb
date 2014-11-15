@@ -21,7 +21,7 @@ end
 class InitializerTest
   include Lotus::Validations
 
-  attribute :attr
+  attribute :attr, type: Integer
 end
 
 class AttributeTest
@@ -152,6 +152,47 @@ class VisibilityValidatorTest
   attribute :name
 
   def get_attributes
-    self.attributes
+    self._attributes
   end
+end
+
+module EmailValidations
+  include Lotus::Validations
+
+  attribute :email, presence: true, format: /@/
+end
+
+module CommonValidations
+  include EmailValidations
+end
+
+class ComposedValidationsTest
+  include EmailValidations
+end
+
+module PasswordValidations
+  include Lotus::Validations
+
+  attribute :password, presence: true
+end
+
+class ComposedValidationsWithExtraAttributesTest
+  include Lotus::Validations
+  include EmailValidations
+
+  attribute :name, presence: true
+end
+
+class NestedComposedValidationsTest
+  include CommonValidations
+end
+
+class UndecoratedValidations
+  include PasswordValidations
+end
+
+class DecoratedValidations
+  include PasswordValidations
+
+  attribute :password, confirmation: true
 end

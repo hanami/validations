@@ -311,7 +311,7 @@ class Signup
 
   attribute :ssn,      size: 11    # exact match
   attribute :password, size: 8..64 # range
-  attribute :avatar,   size  1..(5 * MEGABYTE)
+  attribute :avatar,   size: 1..(5 * MEGABYTE)
 end
 
 signup = Signup.new(password: 'a-very-long-password')
@@ -330,6 +330,64 @@ Uniqueness validations aren't implemented because this library doesn't deal with
 The other reason is that this isn't an effective way to ensure uniqueness of a value in a database.
 
 Please read more at: [The Perils of Uniqueness Validations](http://robots.thoughtbot.com/the-perils-of-uniqueness-validations).
+
+### Composable validations
+
+Validations can be reused via composition:
+
+```ruby
+require 'lotus/validations'
+
+module NameValidations
+  include Lotus::Validations
+
+  attribute :name, presence: true
+end
+
+module EmailValidations
+  include Lotus::Validations
+
+  attribute :email, presence: true, format: /.../
+end
+
+module PasswordValidations
+  include Lotus::Validations
+
+  # We validate only the presence here
+  attribute :password, presence: true
+end
+
+module CommonValidations
+  include EmailValidations
+  include PasswordValidations
+end
+
+# A valid signup requires:
+#   * name (presence)
+#   * email (presence and format)
+#   * password (presence and confirmation)
+class Signup
+  include NameValidations
+  include CommonValidations
+
+  # We decorate PasswordValidations behavior, by requiring the confirmation too.
+  # This additional validation is active only in this case.
+  attribute :password, confirmation: true
+end
+
+# A valid signin requires:
+#   * email (presence)
+#   * password (presence)
+class Signin
+  include CommonValidations
+end
+
+# A valid "forgot password" requires:
+#   * email (presence)
+class ForgotPassword
+  include EmailValidations
+end
+```
 
 ### Complete example
 

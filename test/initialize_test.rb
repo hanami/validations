@@ -16,10 +16,18 @@ describe Lotus::Validations do
     end
 
     it 'accepts any object that implements #to_h' do
-      params = Params.new([:attr, 23])
+      params    = Params.new([:attr, 23])
       validator = InitializerTest.new(params)
 
       validator.attr.must_equal 23
+    end
+
+    it "doesn't modify the original attributes" do
+      attributes = { attr: '23' }
+      validator  = InitializerTest.new(attributes)
+      validator.valid? # TODO remove this line when coercions will be implicit
+
+      attributes[:attr].must_equal('23')
     end
 
     it "doesn't pollute other validators with the getters" do

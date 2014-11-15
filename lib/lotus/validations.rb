@@ -1,3 +1,4 @@
+require 'lotus/utils/hash'
 require 'lotus/validations/version'
 require 'lotus/validations/errors'
 require 'lotus/validations/attribute_validator'
@@ -206,13 +207,54 @@ module Lotus
       #   signup = Signup.new(password: 'short')
       #   signup.valid? # => false
       def attribute(name, options = {})
-        attributes[name.to_sym] = validate_options!(name, options)
+        # TODO Those two lines suffer of feature envy and primitive obsession
+        attributes[name.to_sym] ||= {}
+        attributes[name.to_sym].merge!(validate_options!(name, options))
 
         class_eval %{
           def #{ name }
-            @attributes[:#{ name }]
+            @_attributes[:#{ name }]
           end
         }
+      end
+
+      # Override Ruby's hook for modules. When a module includes
+      # Lotus::Validations and it is included in a class or module, this passes
+      # the attributes from the module to the base.
+      #
+      # @param base [Class] the target action
+      #
+      # @since x.x.x
+      # @api private
+      #
+      # @see http://www.ruby-doc.org/core/Module.html#method-i-included
+      #
+      # @example
+      #   require 'lotus/validations'
+      #
+      #   module NameValidations
+      #     include Lotus::Validations
+      #
+      #     attribute :name, presence: true
+      #   end
+      #
+      #   class Signup
+      #     include NameValidations
+      #   end
+      #
+      #   signup = Signup.new(name: '')
+      #   signup.valid? # => false
+      #
+      #   signup = Signup.new(name: 'Luca')
+      #   signup.valid? # => true
+      def included(base)
+        base.class_eval do
+          include Lotus::Validations
+        end
+
+        attributes.each do |attribute, options|
+          base.attribute attribute, options
+        end
       end
 
       private
@@ -346,8 +388,8 @@ module Lotus
     #
     #   signup.name # => "Luca"
     def initialize(attributes)
-      @attributes = attributes.to_h
-      @errors     = Errors.new
+      @_attributes = attributes.to_h.dup
+      @errors      = Errors.new
     end
 
     # Checks if the current data satisfies the defined validations
@@ -358,19 +400,27 @@ module Lotus
     def valid?
       @errors.clear
 
-      _attributes.each do |name, options|
+      __attributes.each do |name, options|
         AttributeValidator.new(self, name, options).validate!
       end
 
       @errors.empty?
     end
 
+    # @since x.x.x
+    def attributes
+      Utils::Hash.new(@_attributes).deep_dup
+    end
+
+    # @since x.x.x
+    alias_method :to_h, :attributes
+
     protected
     # Returns the attributes passed at the initialize time
     #
     # @return [Hash] attributes
     #
-    # @since 0.1.0
+    # @since x.x.x
     # @api private
     #
     # @example
@@ -384,14 +434,14 @@ module Lotus
     #
     #   signup = Signup.new(email: 'user@example.org')
     #   signup.attributes # => {:email=>"user@example.org"}
-    attr_reader :attributes
+    attr_reader :_attributes
 
     private
-    # @since 0.1.0
+    # @since x.x.x
     # @api private
     #
     # @see Lotus::Validations::ClassMethods#attributes
-    def _attributes
+    def __attributes
       self.class.__send__(:attributes)
     end
   end
