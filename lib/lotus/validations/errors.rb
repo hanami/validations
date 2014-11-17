@@ -80,10 +80,8 @@ module Lotus
       #
       # @since 0.1.0
       # @api private
-      def add(attribute, validation, expected, actual)
-        @errors[attribute].push(
-          Error.new(attribute, validation, expected, actual)
-        )
+      def add(attribute, *errors)
+        @errors[attribute].push(*errors) if errors.any?
       end
 
       # Return the errors for the given attribute

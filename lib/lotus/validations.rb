@@ -1,8 +1,9 @@
 require 'lotus/utils/hash'
 require 'lotus/validations/version'
+require 'lotus/validations/attribute_set'
 require 'lotus/validations/attributes'
+require 'lotus/validations/attribute'
 require 'lotus/validations/errors'
-require 'lotus/validations/attribute_validator'
 
 module Lotus
   # Lotus::Validations is a set of lightweight validations for Ruby objects.
@@ -250,7 +251,7 @@ module Lotus
 
         class_eval %{
           def #{ name }
-            @_attributes[:#{ name }]
+            @attributes.get(:#{ name })
           end
         }
       end
@@ -263,7 +264,7 @@ module Lotus
       # @since 0.1.0
       # @api private
       def attributes
-        @attributes ||= Attributes.new
+        @attributes ||= AttributeSet.new
       end
     end
 
@@ -358,9 +359,8 @@ module Lotus
     #
     #   signup.name # => "Luca"
     def initialize(attributes)
-      @_attributes = Utils::Hash.new(attributes.to_h.dup)
-        .slice(*__attributes.to_ary)
-      @errors      = Errors.new
+      @attributes = Attributes.new(defined_attributes, attributes)
+      @errors     = Errors.new
     end
 
     # Checks if the current data satisfies the defined validations
@@ -371,48 +371,28 @@ module Lotus
     def valid?
       @errors.clear
 
-      __attributes.each do |name, options|
-        AttributeValidator.new(self, name, options).validate!
+      @attributes.each do |name, attribute|
+        @errors.add(name, *attribute.validate)
       end
 
       @errors.empty?
     end
 
+    # FIXME remove this when GH #25 will be implemented
     # @since x.x.x
     def attributes
-      Utils::Hash.new(@_attributes).deep_dup
+      @attributes.dup
     end
 
     # @since x.x.x
     alias_method :to_h, :attributes
-
-    protected
-    # Returns the attributes passed at the initialize time
-    #
-    # @return [Hash] attributes
-    #
-    # @since x.x.x
-    # @api private
-    #
-    # @example
-    #   require 'lotus/validations'
-    #
-    #   class Signup
-    #     include Lotus::Validations
-    #
-    #     attribute :email
-    #   end
-    #
-    #   signup = Signup.new(email: 'user@example.org')
-    #   signup.attributes # => {:email=>"user@example.org"}
-    attr_reader :_attributes
 
     private
     # @since x.x.x
     # @api private
     #
     # @see Lotus::Validations::ClassMethods#attributes
-    def __attributes
+    def defined_attributes
       self.class.__send__(:attributes)
     end
   end

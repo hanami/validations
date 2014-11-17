@@ -13,15 +13,15 @@ describe Lotus::Validations::Errors do
 
   describe '#add' do
     it 'adds an error for an attribute' do
-      @errors.add(:email, :format, /@/, 'test')
+      @errors.add(:email, Lotus::Validations::Error.new(:email, :format, /@/, 'test'))
       @errors.wont_be_empty
     end
   end
 
   describe '#for' do
     it 'returns errors for the given attribute' do
-      @errors.add(:email, :format, /@/, 'test')
-      @errors.add(:name,  :presence, true, nil)
+      @errors.add(:email, Lotus::Validations::Error.new(:email, :format, /@/, 'test'))
+      @errors.add(:name,  Lotus::Validations::Error.new(:name, :presence, true, nil))
 
       @errors.for(:name).must_include Lotus::Validations::Error.new(:name, :presence, true, nil)
     end
@@ -31,9 +31,14 @@ describe Lotus::Validations::Errors do
     it 'yields the given block for each error' do
       result = []
 
-      @errors.add(:email, :format, /@/, 'test')
-      @errors.add(:email, :confirmation, true, 'test')
-      @errors.add(:name,  :presence, true, nil)
+      @errors.add(:email,
+        Lotus::Validations::Error.new(:email, :format, /@/, 'test'),
+        Lotus::Validations::Error.new(:email, :confirmation, true, 'test')
+      )
+
+      @errors.add(:name,
+        Lotus::Validations::Error.new(:name, :presence, true, nil)
+      )
 
       @errors.each do |error|
         result << (
@@ -52,9 +57,14 @@ describe Lotus::Validations::Errors do
 
   describe '#map' do
     it 'yields the given block for each error' do
-      @errors.add(:email, :format, /@/, 'test')
-      @errors.add(:email, :confirmation, true, 'test')
-      @errors.add(:name,  :presence, true, nil)
+      @errors.add(:email,
+        Lotus::Validations::Error.new(:email, :format, /@/, 'test'),
+        Lotus::Validations::Error.new(:email, :confirmation, true, 'test')
+      )
+
+      @errors.add(:name,
+        Lotus::Validations::Error.new(:name, :presence, true, nil)
+      )
 
       result = @errors.map do |error|
         "%{attribute} must match %{validation} (expected %{expected}, was %{actual})" %
@@ -71,9 +81,14 @@ describe Lotus::Validations::Errors do
 
   describe '#count' do
     before do
-      @errors.add(:email, :format, /@/, 'test')
-      @errors.add(:email, :confirmation, true, 'test')
-      @errors.add(:name,  :presence, true, nil)
+      @errors.add(:email,
+        Lotus::Validations::Error.new(:email, :format, /@/, 'test'),
+        Lotus::Validations::Error.new(:email, :confirmation, true, 'test')
+      )
+
+      @errors.add(:name,
+        Lotus::Validations::Error.new(:name, :presence, true, nil)
+      )
     end
 
     it 'returns the count of errors' do

@@ -11,44 +11,52 @@ end
 
 module Lotus
   module Validations
-    # Validator for a single attribute
+    # A validable attribute
     #
     # @since 0.1.0
     # @api private
-    class AttributeValidator
+    class Attribute
       # Attribute naming convention for "confirmation" validation
       #
-      # @see Lotus::Validations::AttributeValidator#confirmation
+      # @see Lotus::Validations::Attribute#confirmation
       #
-      # @since 0.1.0
+      # @since x.x.x
       # @api private
       CONFIRMATION_TEMPLATE = '%{name}_confirmation'.freeze
 
-      # Initialize a validator
+      # @api private
+      # @since x.x.x
+      attr_reader :value
+
+      # Instantiate an attribute
       #
       # @param validator [Lotus::Validations] an object which included
       #   Lotus::Validations module
       # @param name [Symbol] the name of the attribute
       # @param options [Hash] the set of validations for the attribute
       #
-      # @since 0.1.0
+      # @since x.x.x
       # @api private
-      def initialize(validator, name, options)
-        @validator, @name, @options = validator, name, options
-        @value = _attribute(@name)
+      # def initialize(validator, name, options)
+      #   @validator, @name, @options = validator, name, options
+      #   @value = _attribute(@name)
+      # end
+      def initialize(attributes, name, value, validations)
+        # FIXME coerce at this point
+        @attributes  = attributes
+        @name        = name
+        @value       = value
+        @validations = validations
+        @errors      = []
       end
 
-      # Validate the attribute
-      #
-      # @return [void]
-      #
-      # @since 0.1.0
-      # @api private
-      def validate!
+      def validate
+        @errors.clear
         presence
         acceptance
 
         _run_validations
+        @errors
       end
 
       private
@@ -59,9 +67,9 @@ module Lotus
       # Empty strings and enumerables are an example.
       #
       # @see Lotus::Validations::ClassMethods#attribute
-      # @see Lotus::Validations::AttributeValidator#nil_value?
+      # @see Lotus::Validations::Attribute#nil_value?
       #
-      # @since 0.1.0
+      # @since x.x.x
       # @api private
       def presence
         _validate(__method__) { !blank_value? }
@@ -77,7 +85,7 @@ module Lotus
       # @see Lotus::Validations::ClassMethods#attribute
       # @see http://www.rubydoc.info/gems/lotus-utils/Lotus/Utils/Kernel#Boolean-class_method
       #
-      # @since 0.1.0
+      # @since x.x.x
       # @api private
       def acceptance
         _validate(__method__) { Lotus::Utils::Kernel.Boolean(@value) }
@@ -90,7 +98,7 @@ module Lotus
       #
       # @see Lotus::Validations::ClassMethods#attribute
       #
-      # @since 0.1.0
+      # @since x.x.x
       # @api private
       def format
         _validate(__method__) {|matcher| @value.to_s.match(matcher) }
@@ -102,7 +110,7 @@ module Lotus
       #
       # @see Lotus::Validations::ClassMethods#attribute
       #
-      # @since 0.1.0
+      # @since x.x.x
       # @api private
       def inclusion
         _validate(__method__) {|collection| collection.include?(@value) }
@@ -114,7 +122,7 @@ module Lotus
       #
       # @see Lotus::Validations::ClassMethods#attribute
       #
-      # @since 0.1.0
+      # @since x.x.x
       # @api private
       def exclusion
         _validate(__method__) {|collection| !collection.include?(@value) }
@@ -126,9 +134,9 @@ module Lotus
       # `:password_confirmation` has the same value.
       #
       # @see Lotus::Validations::ClassMethods#attribute
-      # @see Lotus::Validations::AttributeValidator::CONFIRMATION_TEMPLATE
+      # @see Lotus::Validations::Attribute::CONFIRMATION_TEMPLATE
       #
-      # @since 0.1.0
+      # @since x.x.x
       # @api private
       def confirmation
         _validate(__method__) do
@@ -165,7 +173,7 @@ module Lotus
       #
       # @see Lotus::Validations::ClassMethods#attribute
       #
-      # @since 0.1.0
+      # @since x.x.x
       # @api private
       def size
         _validate(__method__) do |validator|
@@ -207,19 +215,18 @@ module Lotus
       # @see Lotus::Validations::ClassMethods#attribute
       # @see Lotus::Validations::Coercions
       #
-      # @since 0.1.0
+      # @since x.x.x
       # @api private
       def coerce
         _validate(:type) do |coercer|
           @value = Lotus::Validations::Coercions.coerce(coercer, @value)
-          _attributes[@name] = @value
           true
         end
       end
 
       # Checks if the value is `nil`.
       #
-      # @since 0.1.0
+      # @since x.x.x
       # @api private
       def nil_value?
         @value.nil?
@@ -229,9 +236,9 @@ module Lotus
 
       # Checks if the value is "blank".
       #
-      # @see Lotus::Validations::AttributeValidator#presence
+      # @see Lotus::Validations::Attribute#presence
       #
-      # @since 0.1.0
+      # @since x.x.x
       # @api private
       def blank_value?
         nil_value? || (@value.respond_to?(:empty?) && @value.empty?)
@@ -239,7 +246,7 @@ module Lotus
 
       # Run the defined validations
       #
-      # @since 0.1.0
+      # @since x.x.x
       # @api private
       def _run_validations
         return if skip?
@@ -254,25 +261,19 @@ module Lotus
 
       # Reads an attribute from the validator.
       #
-      # @since 0.1.0
+      # @since x.x.x
       # @api private
       def _attribute(name = @name)
-        _attributes[name.to_sym]
-      end
-
-      # @since 0.1.0
-      # @api private
-      def _attributes
-        @validator.__send__(:_attributes)
+        @attributes.get(name.to_sym)
       end
 
       # Run a single validation and collects the results.
       #
-      # @since 0.1.0
+      # @since x.x.x
       # @api private
       def _validate(validation)
-        if (validator = @options[validation]) && !(yield validator)
-          @validator.errors.add(@name, validation, @options.fetch(validation), @value)
+        if (validator = @validations[validation]) && !(yield validator)
+          @errors.push(Error.new(@name, validation, @validations.fetch(validation), @value))
         end
       end
     end

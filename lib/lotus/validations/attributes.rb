@@ -1,43 +1,36 @@
-class Attributes
-  VALIDATIONS = [:presence, :acceptance, :format, :inclusion, :exclusion, :confirmation, :size, :type].freeze
+module Lotus
+  module Validations
+    class Attributes
+      def initialize(definitions, attributes)
+        attributes  = attributes.to_h
 
-  def initialize
-    @attributes = Hash.new {|h,k| h[k] = {} }
-  end
+        @attributes = Utils::Hash.new.tap do |result|
+          definitions.each do |name, validations|
+            result[name] = Attribute.new(self, name, attributes[name], validations)
+          end
+        end
+      end
 
-  def add(name, options)
-    @attributes[name.to_sym].merge!(
-      validate_options!(name, options)
-    )
-  end
+      def get(name)
+        @attributes[name].value
+      end
 
-  def each(&blk)
-    @attributes.each(&blk)
-  end
+      def dup
+        Utils::Hash.new(to_h).deep_dup
+      end
 
-  def to_ary
-    @attributes.keys
-  end
+      def each(&blk)
+        @attributes.each(&blk)
+      end
 
-  # Checks at the loading time if the user defined validations are recognized
-  #
-  # @param name [Symbol] the attribute name
-  # @param options [Hash] the set of validations associated with the given attribute
-  #
-  # @raise [ArgumentError] if at least one of the validations are not
-  #   recognized
-  #
-  # @since x.x.x
-  # @api private
-  def validate_options!(name, options)
-    if (unknown = (options.keys - VALIDATIONS)) && unknown.any?
-      raise ArgumentError.new(%(Unknown validation(s): #{ unknown.join ', ' } for "#{ name }" attribute))
+      # FIXME remove
+      def to_h
+        ::Hash.new.tap do |result|
+          each do |name, _|
+            result[name] = get(name)
+          end
+        end
+      end
     end
-
-    if options[:confirmation]
-      add(:"#{ name }_confirmation", {})
-    end
-
-    options
   end
 end

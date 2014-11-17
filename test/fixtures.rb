@@ -151,10 +151,6 @@ class VisibilityValidatorTest
 
   attribute :name
   attribute :password, confirmation: true
-
-  def get_attributes
-    self._attributes
-  end
 end
 
 module EmailValidations
