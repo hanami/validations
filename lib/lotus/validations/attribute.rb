@@ -24,10 +24,6 @@ module Lotus
       # @api private
       CONFIRMATION_TEMPLATE = '%{name}_confirmation'.freeze
 
-      # @api private
-      # @since x.x.x
-      attr_reader :value
-
       # Instantiate an attribute
       #
       # @param validator [Lotus::Validations] an object which included
@@ -42,7 +38,6 @@ module Lotus
       #   @value = _attribute(@name)
       # end
       def initialize(attributes, name, value, validations)
-        # FIXME coerce at this point
         @attributes  = attributes
         @name        = name
         @value       = value
@@ -57,6 +52,16 @@ module Lotus
 
         _run_validations
         @errors
+      end
+
+      # @api private
+      # @since x.x.x
+      def value
+        if (coercer = @validations[:type])
+          Lotus::Validations::Coercions.coerce(coercer, @value)
+        else
+          @value
+        end
       end
 
       private
@@ -209,7 +214,6 @@ module Lotus
       # purposes. The only limitation is that the constructor should have
       # **arity of 1**.
       #
-      # @raise [TypeError] if the coercion fails
       # @raise [ArgumentError] if the custom coercer's `#initialize` has a wrong arity.
       #
       # @see Lotus::Validations::ClassMethods#attribute

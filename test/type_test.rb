@@ -21,8 +21,6 @@ describe Lotus::Validations do
         time_attr:          '1407082408',
         name_attr:          ['Luca', 'Guidi']
       })
-
-      @validator.valid?
     end
 
     it "doesn't coerce un-typed attributes" do
@@ -80,6 +78,23 @@ describe Lotus::Validations do
 
     it 'coerces custom type' do
       @validator.name_attr.must_be_kind_of(FullName)
+    end
+
+    it 'returns nil if the lazy coercion fails' do
+      validator = TypeValidatorTest.new({
+        symbol_attr: 4
+      })
+
+      validator.symbol_attr.must_be_nil
+    end
+
+    it 'returns nil if the validation coercion fails' do
+      validator = TypeValidatorTest.new({
+        symbol_attr: 4
+      })
+      validator.valid?
+
+      validator.symbol_attr.must_be_nil
     end
   end
 end

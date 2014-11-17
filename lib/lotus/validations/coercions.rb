@@ -13,14 +13,15 @@ module Lotus
       # @param values [Array] of objects to be coerced
       # @param blk [Proc] an optional block to pass to the custom coercer
       #
-      # @raise [TypeError] if the coercion fails
+      # @return [Object,nil] The result of the coercion, if possible
+      #
       # @raise [ArgumentError] if the custom coercer's `#initialize` has a wrong arity.
       #
       # @since 0.1.0
       # @api private
       def self.coerce(coercer, *values, &blk)
         if ::Lotus::Utils::Kernel.respond_to?(coercer.to_s)
-          ::Lotus::Utils::Kernel.__send__(coercer.to_s, *values, &blk)
+          ::Lotus::Utils::Kernel.__send__(coercer.to_s, *values, &blk) rescue nil
         else
           coercer.new(*values, &blk)
         end

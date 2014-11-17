@@ -25,7 +25,7 @@ describe Lotus::Validations do
     it "doesn't modify the original attributes" do
       attributes = { attr: '23' }
       validator  = InitializerTest.new(attributes)
-      validator.valid? # TODO remove this line when coercions will be implicit
+      validator.valid?
 
       attributes[:attr].must_equal('23')
     end
