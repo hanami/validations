@@ -1,5 +1,6 @@
 require 'lotus/utils/hash'
 require 'lotus/validations/version'
+require 'lotus/validations/attributes'
 require 'lotus/validations/errors'
 require 'lotus/validations/attribute_validator'
 
@@ -8,7 +9,6 @@ module Lotus
   #
   # @since 0.1.0
   module Validations
-
     # Override Ruby's hook for modules.
     #
     # @param base [Class] the target action
@@ -25,6 +25,45 @@ module Lotus
     #
     # @since 0.1.0
     module ClassMethods
+      # Override Ruby's hook for modules. When a module includes
+      # Lotus::Validations and it is included in a class or module, this passes
+      # the attributes from the module to the base.
+      #
+      # @param base [Class] the target action
+      #
+      # @since x.x.x
+      # @api private
+      #
+      # @see http://www.ruby-doc.org/core/Module.html#method-i-included
+      #
+      # @example
+      #   require 'lotus/validations'
+      #
+      #   module NameValidations
+      #     include Lotus::Validations
+      #
+      #     attribute :name, presence: true
+      #   end
+      #
+      #   class Signup
+      #     include NameValidations
+      #   end
+      #
+      #   signup = Signup.new(name: '')
+      #   signup.valid? # => false
+      #
+      #   signup = Signup.new(name: 'Luca')
+      #   signup.valid? # => true
+      def included(base)
+        base.class_eval do
+          include Lotus::Validations
+        end
+
+        attributes.each do |attribute, options|
+          base.attribute attribute, options
+        end
+      end
+
       # Define an attribute
       #
       # @param name [#to_sym] the name of the attribute
@@ -207,54 +246,13 @@ module Lotus
       #   signup = Signup.new(password: 'short')
       #   signup.valid? # => false
       def attribute(name, options = {})
-        # TODO Those two lines suffer of feature envy and primitive obsession
-        attributes[name.to_sym] ||= {}
-        attributes[name.to_sym].merge!(validate_options!(name, options))
+        attributes.add(name, options)
 
         class_eval %{
           def #{ name }
             @_attributes[:#{ name }]
           end
         }
-      end
-
-      # Override Ruby's hook for modules. When a module includes
-      # Lotus::Validations and it is included in a class or module, this passes
-      # the attributes from the module to the base.
-      #
-      # @param base [Class] the target action
-      #
-      # @since x.x.x
-      # @api private
-      #
-      # @see http://www.ruby-doc.org/core/Module.html#method-i-included
-      #
-      # @example
-      #   require 'lotus/validations'
-      #
-      #   module NameValidations
-      #     include Lotus::Validations
-      #
-      #     attribute :name, presence: true
-      #   end
-      #
-      #   class Signup
-      #     include NameValidations
-      #   end
-      #
-      #   signup = Signup.new(name: '')
-      #   signup.valid? # => false
-      #
-      #   signup = Signup.new(name: 'Luca')
-      #   signup.valid? # => true
-      def included(base)
-        base.class_eval do
-          include Lotus::Validations
-        end
-
-        attributes.each do |attribute, options|
-          base.attribute attribute, options
-        end
       end
 
       private
@@ -265,35 +263,7 @@ module Lotus
       # @since 0.1.0
       # @api private
       def attributes
-        @attributes ||= Hash.new
-      end
-
-      # Checks at the loading time if the user defined validations are recognized
-      #
-      # @param name [Symbol] the attribute name
-      # @param options [Hash] the set of validations associated with the given attribute
-      #
-      # @raise [ArgumentError] if at least one of the validations are not
-      #   recognized
-      #
-      # @since 0.1.0
-      # @api private
-      def validate_options!(name, options)
-        if (unknown = (options.keys - validations)) && unknown.any?
-          raise ArgumentError.new(%(Unknown validation(s): #{ unknown.join ', ' } for "#{ name }" attribute))
-        end
-
-        options
-      end
-
-      # Names of the implemented validations
-      #
-      # @return [Array]
-      #
-      # @since 0.1.0
-      # @api private
-      def validations
-        [:presence, :acceptance, :format, :inclusion, :exclusion, :confirmation, :size, :type]
+        @attributes ||= Attributes.new
       end
     end
 
@@ -388,7 +358,8 @@ module Lotus
     #
     #   signup.name # => "Luca"
     def initialize(attributes)
-      @_attributes = attributes.to_h.dup
+      @_attributes = Utils::Hash.new(attributes.to_h.dup)
+        .slice(*__attributes.to_ary)
       @errors      = Errors.new
     end
 

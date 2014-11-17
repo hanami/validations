@@ -150,6 +150,7 @@ class VisibilityValidatorTest
   include Lotus::Validations
 
   attribute :name
+  attribute :password, confirmation: true
 
   def get_attributes
     self._attributes
