@@ -6,6 +6,6 @@ if !ENV['TRAVIS']
   gem 'yard',   require: false
 end
 
-gem 'lotus-utils', require: false, github: 'lotus/utils', branch: '0.3.x'
+gem 'lotus-utils', require: false, path: '../lotus-utils'#github: 'lotus/utils', branch: '0.3.x'
 gem 'simplecov',   require: false
 gem 'coveralls',   require: false
