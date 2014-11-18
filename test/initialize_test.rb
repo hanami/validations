@@ -36,5 +36,12 @@ describe Lotus::Validations do
 
       @validator.wont_respond_to(:another)
     end
+
+    it "accepts strings as keys, only for the defined attributes" do
+      validator = Signin.new('email' => 'user@example.org', 'password' => '123', 'unknown' => 'blah')
+      validator.must_be :valid?
+
+      validator.to_h.must_equal({ email: 'user@example.org', password: '123' })
+    end
   end
 end

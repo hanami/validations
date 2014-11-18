@@ -6,7 +6,10 @@ module Lotus
 
         @attributes = Utils::Hash.new.tap do |result|
           definitions.each do |name, validations|
-            result[name] = Attribute.new(self, name, attributes[name], validations)
+            value = attributes[name]
+            value = attributes[name.to_s] if value.nil?
+
+            result[name] = Attribute.new(self, name, value, validations)
           end
         end
       end
