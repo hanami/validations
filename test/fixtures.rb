@@ -200,3 +200,10 @@ class Signup
   attribute :email,    presence: true
   attribute :password, presence: true, confirmation: true
 end
+
+class EnumerableValidator
+  include Enumerable
+  include Lotus::Validations
+
+  attribute :name
+end

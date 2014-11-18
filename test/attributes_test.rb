@@ -26,5 +26,10 @@ describe Lotus::Validations do
 
       result.must_equal(@validator.to_h)
     end
+
+    it 'allows developers to mixin Enumerable to enhance API' do
+      validator = EnumerableValidator.new(name: 'Luca')
+      validator.count.must_equal(1)
+    end
   end
 end
