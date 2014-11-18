@@ -194,9 +194,9 @@ class DecoratedValidations
   attribute :password, confirmation: true
 end
 
-class Signin
+class Signup
   include Lotus::Validations
 
   attribute :email,    presence: true
-  attribute :password, presence: true
+  attribute :password, presence: true, confirmation: true
 end

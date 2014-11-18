@@ -9,7 +9,7 @@ module Lotus
             value = attributes[name]
             value = attributes[name.to_s] if value.nil?
 
-            result[name] = Attribute.new(self, name, value, validations)
+            result[name] = Attribute.new(attributes, name, value, validations)
           end
         end
       end
@@ -26,7 +26,6 @@ module Lotus
         @attributes.each(&blk)
       end
 
-      # FIXME remove
       def to_h
         ::Hash.new.tap do |result|
           each do |name, _|

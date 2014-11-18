@@ -45,13 +45,15 @@ module Lotus
         @errors      = []
       end
 
+      # @api private
+      # @since x.x.x
       def validate
-        @errors.clear
-        presence
-        acceptance
+        _with_cleared_errors do
+          presence
+          acceptance
 
-        _run_validations
-        @errors
+          _run_validations
+        end
       end
 
       # @api private
@@ -263,12 +265,20 @@ module Lotus
         confirmation
       end
 
+      # @api private
+      # @since x.x.x
+      def _with_cleared_errors
+        @errors.clear
+        yield
+        @errors.dup.tap {|_| @errors.clear }
+      end
+
       # Reads an attribute from the validator.
       #
       # @since x.x.x
       # @api private
       def _attribute(name = @name)
-        @attributes.get(name.to_sym)
+        @attributes[name.to_sym]
       end
 
       # Run a single validation and collects the results.
