@@ -5,7 +5,7 @@ module Lotus
         attributes  = attributes.to_h
 
         @attributes = Utils::Hash.new.tap do |result|
-          definitions.each do |name, validations|
+          definitions.iterate(attributes) do |name, validations|
             value = attributes[name]
             value = attributes[name.to_s] if value.nil?
 
@@ -15,7 +15,7 @@ module Lotus
       end
 
       def get(name)
-        @attributes[name].value
+        (attr = @attributes[name]) and attr.value
       end
 
       def dup

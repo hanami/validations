@@ -15,10 +15,17 @@ class AttributeSet
     @attributes.each(&blk)
   end
 
-  def to_ary
-    @attributes.keys
+  def iterate(attributes, &blk)
+    if @attributes.any?
+      @attributes.each(&blk)
+    else
+      attributes.each do |name, _|
+        blk.call(name, {})
+      end
+    end
   end
 
+  private
   # Checks at the loading time if the user defined validations are recognized
   #
   # @param name [Symbol] the attribute name

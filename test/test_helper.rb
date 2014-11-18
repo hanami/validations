@@ -19,4 +19,11 @@ end
 require 'minitest/autorun'
 $:.unshift 'lib'
 require 'lotus/validations'
+
+module Lotus::Validations::AttributesIntrospection
+  def defined_attribute?(name)
+    attributes.instance_variable_get(:@attributes).keys.include?(name)
+  end
+end
+
 require 'fixtures'
