@@ -26,12 +26,22 @@ end
 
 class AttributeTest
   include Lotus::Validations
+  extend  Lotus::Validations::AttributesIntrospection
 
   attribute 'attr'
 end
 
+class UndefinedAttributesValidator
+  include Lotus::Validations
+
+  def [](key)
+    @attributes.get(key)
+  end
+end
+
 class UniquenessAttributeTest
   include Lotus::Validations
+  extend  Lotus::Validations::AttributesIntrospection
 
   attribute :attr
   attribute :attr
