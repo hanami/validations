@@ -378,16 +378,30 @@ module Lotus
       @errors.empty?
     end
 
-    # FIXME remove this when GH #25 will be implemented
+    # Iterates thru the defined attributes and their values
+    #
+    # @param blk [Proc] a block
+    # @yieldparam attribute [Symbol] the name of the attribute
+    # @yieldparam value [Object,nil] the value of the attribute
+    #
     # @since x.x.x
-    def attributes
+    def each(&blk)
+      to_h.each(&blk)
+    end
+
+    # Returns a Hash with the defined attributes as symbolized keys, and their
+    # relative values.
+    #
+    # @return [Hash]
+    #
+    # @since x.x.x
+    def to_h
       @attributes.dup
     end
 
-    # @since x.x.x
-    alias_method :to_h, :attributes
-
     private
+    # The set of user defined attributes.
+    #
     # @since x.x.x
     # @api private
     #
