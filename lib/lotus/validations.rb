@@ -254,6 +254,14 @@ module Lotus
             @attributes.get(:#{ name })
           end
         }
+
+        if (options.include?(:writable) && options[:writable] == true)
+          class_eval %{
+            def #{ name }=(value)
+              @attributes.set(:#{ name }, value)
+            end
+          }
+        end
       end
 
       private

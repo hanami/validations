@@ -66,6 +66,10 @@ module Lotus
         end
       end
 
+      def value=(value)
+        @value = value
+      end
+
       private
       # Validates presence of the value.
       # This fails with `nil` and "blank" values.

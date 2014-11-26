@@ -47,6 +47,12 @@ class UniquenessAttributeTest
   attribute :attr
 end
 
+class AttributeAccessorTest
+  include Lotus::Validations
+  extend  Lotus::Validations::AttributesIntrospection
+
+  attribute 'attr', writable: true
+end
 class AnotherValidator
   include Lotus::Validations
 
@@ -216,4 +222,10 @@ class EnumerableValidator
   include Lotus::Validations
 
   attribute :name
+end
+
+class WritablePresenceValidatorTest
+  include Lotus::Validations
+
+  attribute :name,  presence: true, writable: true
 end
