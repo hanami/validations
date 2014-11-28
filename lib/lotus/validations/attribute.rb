@@ -24,6 +24,10 @@ module Lotus
       # @api private
       CONFIRMATION_TEMPLATE = '%{name}_confirmation'.freeze
 
+      # @since x.x.x
+      # @api private
+      BLANK_STRING_MATCHER = /\A[[:space:]]*\z/.freeze
+
       # Instantiate an attribute
       #
       # @param validator [Lotus::Validations] an object which included
@@ -247,7 +251,19 @@ module Lotus
       # @since x.x.x
       # @api private
       def blank_value?
-        nil_value? || (@value.respond_to?(:empty?) && @value.empty?)
+        nil_value? || _blank_string? || _empty_value?
+      end
+
+      # @since x.x.x
+      # @api private
+      def _blank_string?
+        (@value.respond_to?(:match) and @value.match(BLANK_STRING_MATCHER))
+      end
+
+      # @since x.x.x
+      # @api private
+      def _empty_value?
+        (@value.respond_to?(:empty?) and @value.empty?)
       end
 
       # Run the defined validations

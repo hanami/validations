@@ -24,5 +24,13 @@ describe Lotus::Validations do
       errors = validator.errors.for(:name)
       errors.must_include Lotus::Validations::Error.new(:name, :presence, true, '')
     end
+
+    it "isn't valid if required attribute is a long blank string" do
+      validator = PresenceValidatorTest.new(name: '   ', age: '32')
+
+      validator.valid?.must_equal false
+      errors = validator.errors.for(:name)
+      errors.must_include Lotus::Validations::Error.new(:name, :presence, true, '   ')
+    end
   end
 end
