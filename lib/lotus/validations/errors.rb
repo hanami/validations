@@ -23,8 +23,21 @@ module Lotus
       # @return [TrueClass,FalseClass] the result of the check
       #
       # @since 0.1.0
+      #
+      # @see Lotus::Validations::Errors#any?
       def empty?
         @errors.empty?
+      end
+
+      # Check if the set has any entry
+      #
+      # @return [TrueClass,FalseClass] the result of the check
+      #
+      # @since x.x.x
+      #
+      # @see Lotus::Validations::Errors#empty?
+      def any?
+        @errors.any?
       end
 
       # Returns how many validations have failed

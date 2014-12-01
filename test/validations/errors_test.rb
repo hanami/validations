@@ -11,6 +11,38 @@ describe Lotus::Validations::Errors do
     end
   end
 
+  describe '#empty?' do
+    before do
+      @errors.add(:email, Lotus::Validations::Error.new(:email, :format, /@/, 'test'))
+    end
+
+    it 'returns true when the set is empty' do
+      @errors.clear
+
+      assert @errors.empty?, "Expected errors to be empty"
+    end
+
+    it 'returns false when the set is not empty' do
+      assert !@errors.empty?, "Expected errors to be not empty"
+    end
+  end
+
+  describe '#any?' do
+    before do
+      @errors.add(:email, Lotus::Validations::Error.new(:email, :format, /@/, 'test'))
+    end
+
+    it 'returns true when the set is not empty' do
+      assert @errors.any?, "Expected errors to be any"
+    end
+
+    it 'returns false when the set is empty' do
+      @errors.clear
+
+      assert !@errors.any?, "Expected errors to not be any"
+    end
+  end
+
   describe '#add' do
     it 'adds an error for an attribute' do
       @errors.add(:email, Lotus::Validations::Error.new(:email, :format, /@/, 'test'))
