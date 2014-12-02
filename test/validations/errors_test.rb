@@ -137,5 +137,33 @@ describe Lotus::Validations::Errors do
       assert Lotus::Validations::Errors.new == Lotus::Validations::Errors.new
     end
   end
+
+  describe '#to_h' do
+    before do
+      @errors.add(:name,
+        @error = Lotus::Validations::Error.new(:name, :presence, true, nil)
+      )
+
+      @actual = @errors.to_h
+    end
+
+    it 'returns a serialized version of the errors' do
+      @actual.keys.must_equal([:name])
+
+      errors = @actual.fetch(:name)
+      errors.count.must_equal 1
+
+      error = errors.first
+      error.must_equal @error
+    end
+
+    it "returns a result compatible with Ruby's marshalling" do
+      deserialized = Marshal.load(
+        Marshal.dump(@actual)
+      )
+
+      deserialized.must_equal(@actual)
+    end
+  end
 end
 
