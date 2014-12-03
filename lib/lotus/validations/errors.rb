@@ -130,6 +130,15 @@ module Lotus
         Utils::Hash.new(@errors).deep_dup
       end
 
+      # Return a flat collection of errors.
+      #
+      # @return [Array]
+      #
+      # @since x.x.x
+      def to_a
+        errors.dup
+      end
+
       protected
       # A flatten set of errors for all the attributes
       #

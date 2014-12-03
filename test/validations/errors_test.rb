@@ -165,5 +165,33 @@ describe Lotus::Validations::Errors do
       deserialized.must_equal(@actual)
     end
   end
+
+  describe '#to_a' do
+    before do
+      email_format       = Lotus::Validations::Error.new(:email, :format, /@/, 'test')
+      email_confirmation = Lotus::Validations::Error.new(:email, :confirmation, true, 'test')
+      name_presence      = Lotus::Validations::Error.new(:name, :presence, true, nil)
+
+      @errors.add(:email, email_format, email_confirmation)
+      @errors.add(:name,  name_presence)
+
+      @expected = [email_format, email_confirmation, name_presence]
+      @actual   = @errors.to_a
+    end
+
+    it 'returns a serialized version of the errors' do
+      @expected.each do |error|
+        @actual.must_include(error)
+      end
+    end
+
+    it "returns a result compatible with Ruby's marshalling" do
+      deserialized = Marshal.load(
+        Marshal.dump(@actual)
+      )
+
+      deserialized.must_equal(@actual)
+    end
+  end
 end
 
