@@ -121,6 +121,24 @@ module Lotus
 
       alias_method :eql?, :==
 
+      # Return a serializable Hash representation of the errors.
+      #
+      # @return [Lotus::Utils::Hash] the Hash
+      #
+      # @since x.x.x
+      def to_h
+        Utils::Hash.new(@errors).deep_dup
+      end
+
+      # Return a flat collection of errors.
+      #
+      # @return [Array]
+      #
+      # @since x.x.x
+      def to_a
+        errors.dup
+      end
+
       protected
       # A flatten set of errors for all the attributes
       #
