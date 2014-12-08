@@ -96,5 +96,26 @@ describe Lotus::Validations do
 
       validator.symbol_attr.must_be_nil
     end
+
+    it "returns idempotent value for custom type coercion" do
+      @validator.name_attr.tokens.first.must_be_kind_of Array
+      @validator.valid?
+      @validator.name_attr.tokens.first.must_be_kind_of Array
+    end
+
+    it 'returns nil when no value is given' do
+      validator = TypeValidatorTest.new({})
+      validator.integer_attr.must_be_nil
+    end
+
+    it 'returns nil when empty string is given' do
+      validator = TypeValidatorTest.new(integer_attr: '')
+      validator.integer_attr.must_be_nil
+    end
+
+    it 'returns nil when empty array is given' do
+      validator = TypeValidatorTest.new(integer_attr: [])
+      validator.integer_attr.must_be_nil
+    end
   end
 end
