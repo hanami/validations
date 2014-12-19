@@ -1,6 +1,14 @@
 # Lotus::Validations
 Validations mixin for Ruby objects
 
+## v0.2.1 - 2014-12-23
+### Added
+- [Luca Guidi] Introduced `Validations::Errors#to_h` and `to_a`
+- [Luca Guidi] Introduced `Validations::Errors#any?`
+
+### Fixed
+- [Satoshi Amemiya] Made `Validations#valid?` idempotent
+
 ## v0.2.0 - 2014-11-23
 ### Added
 - [Luca Guidi] Skip attribute whitelisting when a validator does not define any attribute

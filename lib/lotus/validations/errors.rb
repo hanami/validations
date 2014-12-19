@@ -33,7 +33,7 @@ module Lotus
       #
       # @return [TrueClass,FalseClass] the result of the check
       #
-      # @since x.x.x
+      # @since 0.2.0
       #
       # @see Lotus::Validations::Errors#empty?
       def any?
@@ -125,7 +125,7 @@ module Lotus
       #
       # @return [Lotus::Utils::Hash] the Hash
       #
-      # @since x.x.x
+      # @since 0.2.1
       def to_h
         Utils::Hash.new(@errors).deep_dup
       end
@@ -134,7 +134,7 @@ module Lotus
       #
       # @return [Array]
       #
-      # @since x.x.x
+      # @since 0.2.1
       def to_a
         errors.dup
       end

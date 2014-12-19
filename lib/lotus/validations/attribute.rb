@@ -20,11 +20,11 @@ module Lotus
       #
       # @see Lotus::Validations::Attribute#confirmation
       #
-      # @since x.x.x
+      # @since 0.2.0
       # @api private
       CONFIRMATION_TEMPLATE = '%{name}_confirmation'.freeze
 
-      # @since x.x.x
+      # @since 0.2.0
       # @api private
       BLANK_STRING_MATCHER = /\A[[:space:]]*\z/.freeze
 
@@ -35,12 +35,8 @@ module Lotus
       # @param name [Symbol] the name of the attribute
       # @param options [Hash] the set of validations for the attribute
       #
-      # @since x.x.x
+      # @since 0.2.0
       # @api private
-      # def initialize(validator, name, options)
-      #   @validator, @name, @options = validator, name, options
-      #   @value = _attribute(@name)
-      # end
       def initialize(attributes, name, value, validations)
         @attributes  = attributes
         @name        = name
@@ -50,7 +46,7 @@ module Lotus
       end
 
       # @api private
-      # @since x.x.x
+      # @since 0.2.0
       def validate
         _with_cleared_errors do
           presence
@@ -61,10 +57,10 @@ module Lotus
       end
 
       # @api private
-      # @since x.x.x
+      # @since 0.2.0
       def value
         if (coercer = @validations[:type])
-          return nil if blank_value? 
+          return nil if blank_value?
           Lotus::Validations::Coercions.coerce(coercer, @value)
         else
           @value
@@ -81,7 +77,7 @@ module Lotus
       # @see Lotus::Validations::ClassMethods#attribute
       # @see Lotus::Validations::Attribute#nil_value?
       #
-      # @since x.x.x
+      # @since 0.2.0
       # @api private
       def presence
         _validate(__method__) { !blank_value? }
@@ -97,7 +93,7 @@ module Lotus
       # @see Lotus::Validations::ClassMethods#attribute
       # @see http://www.rubydoc.info/gems/lotus-utils/Lotus/Utils/Kernel#Boolean-class_method
       #
-      # @since x.x.x
+      # @since 0.2.0
       # @api private
       def acceptance
         _validate(__method__) { Lotus::Utils::Kernel.Boolean(@value) }
@@ -110,7 +106,7 @@ module Lotus
       #
       # @see Lotus::Validations::ClassMethods#attribute
       #
-      # @since x.x.x
+      # @since 0.2.0
       # @api private
       def format
         _validate(__method__) {|matcher| @value.to_s.match(matcher) }
@@ -122,7 +118,7 @@ module Lotus
       #
       # @see Lotus::Validations::ClassMethods#attribute
       #
-      # @since x.x.x
+      # @since 0.2.0
       # @api private
       def inclusion
         _validate(__method__) {|collection| collection.include?(value) }
@@ -134,7 +130,7 @@ module Lotus
       #
       # @see Lotus::Validations::ClassMethods#attribute
       #
-      # @since x.x.x
+      # @since 0.2.0
       # @api private
       def exclusion
         _validate(__method__) {|collection| !collection.include?(value) }
@@ -148,7 +144,7 @@ module Lotus
       # @see Lotus::Validations::ClassMethods#attribute
       # @see Lotus::Validations::Attribute::CONFIRMATION_TEMPLATE
       #
-      # @since x.x.x
+      # @since 0.2.0
       # @api private
       def confirmation
         _validate(__method__) do
@@ -185,7 +181,7 @@ module Lotus
       #
       # @see Lotus::Validations::ClassMethods#attribute
       #
-      # @since x.x.x
+      # @since 0.2.0
       # @api private
       def size
         _validate(__method__) do |validator|
@@ -226,7 +222,7 @@ module Lotus
       # @see Lotus::Validations::ClassMethods#attribute
       # @see Lotus::Validations::Coercions
       #
-      # @since x.x.x
+      # @since 0.2.0
       # @api private
       def coerce
         _validate(:type) do |coercer|
@@ -237,7 +233,7 @@ module Lotus
 
       # Checks if the value is `nil`.
       #
-      # @since x.x.x
+      # @since 0.2.0
       # @api private
       def nil_value?
         @value.nil?
@@ -249,19 +245,19 @@ module Lotus
       #
       # @see Lotus::Validations::Attribute#presence
       #
-      # @since x.x.x
+      # @since 0.2.0
       # @api private
       def blank_value?
         nil_value? || _blank_string? || _empty_value?
       end
 
-      # @since x.x.x
+      # @since 0.2.0
       # @api private
       def _blank_string?
         (@value.respond_to?(:match) and @value.match(BLANK_STRING_MATCHER))
       end
 
-      # @since x.x.x
+      # @since 0.2.0
       # @api private
       def _empty_value?
         (@value.respond_to?(:empty?) and @value.empty?)
@@ -269,7 +265,7 @@ module Lotus
 
       # Run the defined validations
       #
-      # @since x.x.x
+      # @since 0.2.0
       # @api private
       def _run_validations
         return if skip?
@@ -283,7 +279,7 @@ module Lotus
       end
 
       # @api private
-      # @since x.x.x
+      # @since 0.2.0
       def _with_cleared_errors
         @errors.clear
         yield
@@ -292,7 +288,7 @@ module Lotus
 
       # Reads an attribute from the validator.
       #
-      # @since x.x.x
+      # @since 0.2.0
       # @api private
       def _attribute(name = @name)
         @attributes[name.to_sym]
@@ -300,7 +296,7 @@ module Lotus
 
       # Run a single validation and collects the results.
       #
-      # @since x.x.x
+      # @since 0.2.0
       # @api private
       def _validate(validation)
         if (validator = @validations[validation]) && !(yield validator)
