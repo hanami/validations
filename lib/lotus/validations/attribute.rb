@@ -30,10 +30,11 @@ module Lotus
 
       # Instantiate an attribute
       #
-      # @param validator [Lotus::Validations] an object which included
-      #   Lotus::Validations module
+      # @param attributes [Hash] a set of attributes and values coming from the
+      #   input
       # @param name [Symbol] the name of the attribute
-      # @param options [Hash] the set of validations for the attribute
+      # @param value [Object,nil] the value coming from the input
+      # @param validations [Hash] a set of validation rules
       #
       # @since 0.2.0
       # @api private

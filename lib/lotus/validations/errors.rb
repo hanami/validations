@@ -87,12 +87,12 @@ module Lotus
       # Add an error to the set
       #
       # @param attribute [Symbol] the name of the attribute
-      # @param validation [Symbol] the name of the validation
-      # @param expected [Object] the expected value
-      # @param actual [Object] the actual value
+      # @param errors [Array] a collection of errors
       #
       # @since 0.1.0
       # @api private
+      #
+      # @see Lotus::Validations::Error
       def add(attribute, *errors)
         @errors[attribute].push(*errors) if errors.any?
       end
