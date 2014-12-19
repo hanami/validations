@@ -1,4 +1,5 @@
 class FullName
+  attr_reader :tokens
   def initialize(*tokens)
     @tokens = tokens
   end

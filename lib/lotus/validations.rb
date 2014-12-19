@@ -32,7 +32,7 @@ module Lotus
       #
       # @param base [Class] the target action
       #
-      # @since x.x.x
+      # @since 0.1.0
       # @api private
       #
       # @see http://www.ruby-doc.org/core/Module.html#method-i-included
@@ -384,7 +384,7 @@ module Lotus
     # @yieldparam attribute [Symbol] the name of the attribute
     # @yieldparam value [Object,nil] the value of the attribute
     #
-    # @since x.x.x
+    # @since 0.2.0
     def each(&blk)
       to_h.each(&blk)
     end
@@ -394,7 +394,7 @@ module Lotus
     #
     # @return [Hash]
     #
-    # @since x.x.x
+    # @since 0.1.0
     def to_h
       @attributes.dup
     end
@@ -402,7 +402,7 @@ module Lotus
     private
     # The set of user defined attributes.
     #
-    # @since x.x.x
+    # @since 0.1.0
     # @api private
     #
     # @see Lotus::Validations::ClassMethods#attributes

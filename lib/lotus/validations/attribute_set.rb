@@ -34,7 +34,7 @@ class AttributeSet
   # @raise [ArgumentError] if at least one of the validations are not
   #   recognized
   #
-  # @since x.x.x
+  # @since 0.2.0
   # @api private
   def validate_options!(name, options)
     if (unknown = (options.keys - VALIDATIONS)) && unknown.any?

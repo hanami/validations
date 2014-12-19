@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Lotus::Validations::VERSION
   spec.authors       = ['Luca Guidi']
   spec.email         = ['me@lucaguidi.com']
-  spec.summary       = %q{Validations for Lotus}
-  spec.description   = %q{Validate attributes on a class and manage error messages accordingly}
+  spec.summary       = %q{Validations mixin for Ruby objects}
+  spec.description   = %q{Validations mixin for Ruby objects and support for Lotus}
   spec.homepage      = 'http://lotusrb.org'
   spec.license       = 'MIT'
 
@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
   spec.required_ruby_version = '>= 2.0.0'
 
-  spec.add_dependency 'lotus-utils', '~> 0.3', '>= 0.3.1'
+  spec.add_dependency 'lotus-utils', '~> 0.3', '>= 0.3.2'
 
   spec.add_development_dependency 'bundler',  '~> 1.6'
   spec.add_development_dependency 'minitest', '~> 5'
