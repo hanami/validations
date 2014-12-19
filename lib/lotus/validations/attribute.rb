@@ -64,6 +64,7 @@ module Lotus
       # @since x.x.x
       def value
         if (coercer = @validations[:type])
+          return nil if blank_value? 
           Lotus::Validations::Coercions.coerce(coercer, @value)
         else
           @value
@@ -124,7 +125,7 @@ module Lotus
       # @since x.x.x
       # @api private
       def inclusion
-        _validate(__method__) {|collection| collection.include?(@value) }
+        _validate(__method__) {|collection| collection.include?(value) }
       end
 
       # Validates exclusion of the value in the defined collection.
@@ -136,7 +137,7 @@ module Lotus
       # @since x.x.x
       # @api private
       def exclusion
-        _validate(__method__) {|collection| !collection.include?(@value) }
+        _validate(__method__) {|collection| !collection.include?(value) }
       end
 
       # Validates confirmation of the value with another corresponding value.
@@ -190,9 +191,9 @@ module Lotus
         _validate(__method__) do |validator|
           case validator
           when Numeric, ->(v) { v.respond_to?(:to_int) }
-            @value.size == validator.to_int
+            value.size == validator.to_int
           when Range
-            validator.include?(@value.size)
+            validator.include?(value.size)
           else
             raise ArgumentError.new("Size validator must be a number or a range, it was: #{ validator }")
           end
@@ -229,7 +230,7 @@ module Lotus
       # @api private
       def coerce
         _validate(:type) do |coercer|
-          @value = Lotus::Validations::Coercions.coerce(coercer, @value)
+          Lotus::Validations::Coercions.coerce(coercer, @value)
           true
         end
       end
