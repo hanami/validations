@@ -260,16 +260,38 @@ module Lotus
       #   signup = Signup.new(password: 'short')
       #   signup.valid? # => false
       def attribute(name, options = {})
+        define_attribute(name, options)
         attributes.add(name, options)
+      end
 
+      private
+
+      def define_attribute(name, options)
+        type = options.delete(:type)
+        define_accessor(name, type)
+
+        if options[:confirmation]
+          define_accessor("#{ name }_confirmation", type)
+        end
+      end
+
+      def define_accessor(name, type)
+        if type
+          attr_reader name
+          define_coerced_writer(name, type)
+        else
+          attr_accessor name
+        end
+      end
+
+      def define_coerced_writer(name, type)
         class_eval %{
-          def #{ name }
-            @attributes.get(:#{ name })
+          def #{ name }=(value)
+            @#{ name } = Lotus::Validations::Coercions.coerce(#{ type.name }, value)
           end
         }
       end
 
-      private
       # Set of user defined attributes
       #
       # @return [Hash]
@@ -342,7 +364,9 @@ module Lotus
     #     #     #<Lotus::Validations::Error:0x007fe00cee30d8 @attribute=:age, @validation=:size, @expected=18..99, @actual=17>
     #     #   ]
     #     # }>
-    attr_reader :errors
+    def errors
+      @errors ||= Errors.new
+    end
 
     # Create a new instance with the given attributes
     #
@@ -386,8 +410,10 @@ module Lotus
     #
     #   signup.name # => "Luca"
     def initialize(attributes)
-      @attributes = Attributes.new(defined_attributes, attributes)
-      @errors     = Errors.new
+      attributes.to_h.each do |key, value|
+        writer = "#{ key }="
+        public_send(writer, value) if respond_to?(writer)
+      end
     end
 
     # Checks if the current data satisfies the defined validations
@@ -396,13 +422,13 @@ module Lotus
     #
     # @since 0.1.0
     def valid?
-      @errors.clear
+      errors.clear
 
-      @attributes.each do |name, attribute|
-        @errors.add(name, *attribute.validate)
+      build_attributes.each do |name, attribute|
+        errors.add(name, *attribute.validate)
       end
 
-      @errors.empty?
+      errors.empty?
     end
 
     # Iterates thru the defined attributes and their values
@@ -423,7 +449,7 @@ module Lotus
     #
     # @since 0.1.0
     def to_h
-      @attributes.dup
+      build_attributes.dup
     end
 
     private
@@ -435,6 +461,14 @@ module Lotus
     # @see Lotus::Validations::ClassMethods#attributes
     def defined_attributes
       self.class.__send__(:attributes)
+    end
+
+    def build_attributes
+      values = {}
+      defined_attributes.each do |attribute, _|
+        values[attribute] = public_send(attribute)
+      end
+      Attributes.new(defined_attributes, values)
     end
   end
 end

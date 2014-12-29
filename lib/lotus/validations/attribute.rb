@@ -59,14 +59,7 @@ module Lotus
 
       # @api private
       # @since 0.2.0
-      def value
-        if (coercer = @validations[:type])
-          return nil if blank_value?
-          Lotus::Validations::Coercions.coerce(coercer, @value)
-        else
-          @value
-        end
-      end
+      attr_reader :value
 
       private
       # Validates presence of the value.
@@ -197,41 +190,6 @@ module Lotus
         end
       end
 
-      # Coerces the value to the defined type.
-      # Built in types are:
-      #
-      #   * `Array`
-      #   * `BigDecimal`
-      #   * `Boolean`
-      #   * `Date`
-      #   * `DateTime`
-      #   * `Float`
-      #   * `Hash`
-      #   * `Integer`
-      #   * `Pathname`
-      #   * `Set`
-      #   * `String`
-      #   * `Symbol`
-      #   * `Time`
-      #
-      # If a user defined class is specified, it can be freely used for coercion
-      # purposes. The only limitation is that the constructor should have
-      # **arity of 1**.
-      #
-      # @raise [ArgumentError] if the custom coercer's `#initialize` has a wrong arity.
-      #
-      # @see Lotus::Validations::ClassMethods#attribute
-      # @see Lotus::Validations::Coercions
-      #
-      # @since 0.2.0
-      # @api private
-      def coerce
-        _validate(:type) do |coercer|
-          Lotus::Validations::Coercions.coerce(coercer, @value)
-          true
-        end
-      end
-
       # Checks if the value is `nil`.
       #
       # @since 0.2.0
@@ -272,7 +230,6 @@ module Lotus
         return if skip?
 
         format
-        coerce
         inclusion
         exclusion
         size
