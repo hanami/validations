@@ -34,9 +34,10 @@ end
 
 class UndefinedAttributesValidator
   include Lotus::Validations
+  attribute :name
 
   def [](key)
-    @attributes.get(key)
+    build_attributes.get(key)
   end
 end
 
