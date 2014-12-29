@@ -103,17 +103,17 @@ describe Lotus::Validations do
       @validator.name_attr.tokens.first.must_be_kind_of Array
     end
 
-    it 'returns nil when no value is given' do
+    it 'returns nil when no value is given to an integer typed attribute' do
       validator = TypeValidatorTest.new({})
       validator.integer_attr.must_be_nil
     end
 
-    it 'returns nil when empty string is given' do
+    it 'returns nil when empty string is given to an integer typed attribute' do
       validator = TypeValidatorTest.new(integer_attr: '')
       validator.integer_attr.must_be_nil
     end
 
-    it 'returns nil when empty array is given' do
+    it 'returns nil when empty array is given to an integer typed attribute' do
       validator = TypeValidatorTest.new(integer_attr: [])
       validator.integer_attr.must_be_nil
     end
