@@ -237,6 +237,10 @@ module Lotus
       self.class.__send__(:validations)
     end
 
+    # Builds an Attributes object that contains current attribute values.
+    #
+    # @since x.x.x
+    # @api private
     def build_attributes
       values = {}
       defined_validations.each_key do |attribute|
