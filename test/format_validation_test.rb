@@ -10,7 +10,7 @@ describe Lotus::Validations do
     end
 
     it "is valid if it respects given formats" do
-      validator = FormatValidatorTest.new({name: 'Luca', age: 32})
+      validator = FormatValidatorTest.new({name: 'Luca', age: '32'})
 
       validator.valid?.must_equal true
       validator.errors.must_be_empty
