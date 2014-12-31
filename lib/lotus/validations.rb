@@ -465,7 +465,7 @@ module Lotus
 
     def build_attributes
       values = {}
-      defined_attributes.each do |attribute, _|
+      defined_attributes.each_key do |attribute|
         values[attribute] = public_send(attribute)
       end
       Attributes.new(defined_attributes, values)

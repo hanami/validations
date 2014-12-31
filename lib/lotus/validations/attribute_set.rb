@@ -15,6 +15,10 @@ class AttributeSet
     @attributes.each(&blk)
   end
 
+  def each_key(&blk)
+    @attributes.each_key(&blk)
+  end
+
   def iterate(attributes, &blk)
     if @attributes.any?
       @attributes.each(&blk)
