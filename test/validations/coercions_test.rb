@@ -17,4 +17,9 @@ describe Lotus::Validations::Coercions do
       result.to_s.must_equal 'Luca Guidi'
     end
   end
+
+  it 'returns nil for blank values' do
+    result = Lotus::Validations::Coercions.coerce(Integer, '')
+    result.must_equal nil
+  end
 end
