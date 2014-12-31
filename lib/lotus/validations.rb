@@ -26,6 +26,21 @@ module Lotus
     #
     # @since 0.1.0
     module ClassMethods
+      # Override Ruby's hook for class inheritance. When a class includes
+      # Lotus::Validations and it is subclassed, this passes
+      # the attributes from the superclass to the subclass.
+      #
+      # @param base [Class] the target action
+      #
+      # @since x.x.x
+      # @api private
+      #
+      # @see http://www.ruby-doc.org/core/Class.html#method-i-inherited
+      def inherited(base)
+        transfer_attributes_to_base(base)
+        super
+      end
+
       # Override Ruby's hook for modules. When a module includes
       # Lotus::Validations and it is included in a class or module, this passes
       # the attributes from the module to the base.
@@ -60,9 +75,7 @@ module Lotus
           include Lotus::Validations
         end
 
-        attributes.each do |attribute, options|
-          base.attribute attribute, options
-        end
+        transfer_attributes_to_base(base)
       end
 
       # Define an attribute
@@ -265,6 +278,20 @@ module Lotus
       # @api private
       def attributes
         @attributes ||= AttributeSet.new
+      end
+
+      private
+
+      # Transfers attributes to a base class
+      #
+      # @param base [Module] the base class to transfer attributes to
+      #
+      # @since x.x.x
+      # @api private
+      def transfer_attributes_to_base(base)
+        attributes.each do |attribute, options|
+          base.attribute attribute, options
+        end
       end
     end
 
