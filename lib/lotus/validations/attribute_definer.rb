@@ -193,13 +193,6 @@ module Lotus
           validates(name, options)
         end
 
-        def included(base)
-          base.class_eval do
-            include Lotus::Validations::AttributeDefiner
-          end
-          super
-        end
-
         private
 
         def define_attribute(name, options)
