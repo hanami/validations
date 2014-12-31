@@ -1,5 +1,6 @@
 require 'lotus/utils/hash'
 require 'lotus/validations/version'
+require 'lotus/validations/blank_value_checker'
 require 'lotus/validations/attribute_set'
 require 'lotus/validations/attributes'
 require 'lotus/validations/attribute'

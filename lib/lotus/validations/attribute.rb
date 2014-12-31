@@ -24,10 +24,6 @@ module Lotus
       # @api private
       CONFIRMATION_TEMPLATE = '%{name}_confirmation'.freeze
 
-      # @since 0.2.0
-      # @api private
-      BLANK_STRING_MATCHER = /\A[[:space:]]*\z/.freeze
-
       # Instantiate an attribute
       #
       # @param attributes [Hash] a set of attributes and values coming from the
@@ -190,36 +186,12 @@ module Lotus
         end
       end
 
-      # Checks if the value is `nil`.
-      #
-      # @since 0.2.0
-      # @api private
-      def nil_value?
+      def skip?
         @value.nil?
       end
 
-      alias_method :skip?, :nil_value?
-
-      # Checks if the value is "blank".
-      #
-      # @see Lotus::Validations::Attribute#presence
-      #
-      # @since 0.2.0
-      # @api private
       def blank_value?
-        nil_value? || _blank_string? || _empty_value?
-      end
-
-      # @since 0.2.0
-      # @api private
-      def _blank_string?
-        (@value.respond_to?(:match) and @value.match(BLANK_STRING_MATCHER))
-      end
-
-      # @since 0.2.0
-      # @api private
-      def _empty_value?
-        (@value.respond_to?(:empty?) and @value.empty?)
+        BlankValueChecker.new(@value).blank_value?
       end
 
       # Run the defined validations
