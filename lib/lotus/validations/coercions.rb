@@ -19,11 +19,11 @@ module Lotus
       #
       # @since 0.1.0
       # @api private
-      def self.coerce(coercer, *values, &blk)
+      def self.coerce(coercer, value, &blk)
         if ::Lotus::Utils::Kernel.respond_to?(coercer.to_s)
-          ::Lotus::Utils::Kernel.__send__(coercer.to_s, *values, &blk) rescue nil
+          ::Lotus::Utils::Kernel.__send__(coercer.to_s, value, &blk) rescue nil
         else
-          coercer.new(*values, &blk)
+          coercer.new(value, &blk)
         end
       end
     end
