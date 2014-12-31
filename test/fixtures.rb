@@ -27,7 +27,7 @@ end
 
 class AttributeTest
   include Lotus::Validations
-  extend  Lotus::Validations::AttributesIntrospection
+  extend  Lotus::Validations::ValidationIntrospection
 
   attribute 'attr'
 end
@@ -43,7 +43,7 @@ end
 
 class UniquenessAttributeTest
   include Lotus::Validations
-  extend  Lotus::Validations::AttributesIntrospection
+  extend  Lotus::Validations::ValidationIntrospection
 
   attribute :attr
   attribute :attr

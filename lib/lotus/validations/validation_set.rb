@@ -1,29 +1,29 @@
-class AttributeSet
+class ValidationSet
   VALIDATIONS = [:presence, :acceptance, :format, :inclusion, :exclusion, :confirmation, :size, :type].freeze
 
   def initialize
-    @attributes = Hash.new {|h,k| h[k] = {} }
+    @validations = Hash.new {|h,k| h[k] = {} }
   end
 
   def add(name, options)
-    @attributes[name.to_sym].merge!(
+    @validations[name.to_sym].merge!(
       validate_options!(name, options)
     )
   end
 
   def each(&blk)
-    @attributes.each(&blk)
+    @validations.each(&blk)
   end
 
   def each_key(&blk)
-    @attributes.each_key(&blk)
+    @validations.each_key(&blk)
   end
 
-  def iterate(attributes, &blk)
-    if @attributes.any?
-      @attributes.each(&blk)
+  def iterate(validations, &blk)
+    if @validations.any?
+      @validations.each(&blk)
     else
-      attributes.each do |name, _|
+      validations.each do |name, _|
         blk.call(name, {})
       end
     end

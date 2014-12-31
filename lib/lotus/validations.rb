@@ -2,7 +2,7 @@ require 'lotus/utils/hash'
 require 'lotus/validations/version'
 require 'lotus/validations/blank_value_checker'
 require 'lotus/validations/attribute_definer'
-require 'lotus/validations/attribute_set'
+require 'lotus/validations/validation_set'
 require 'lotus/validations/attributes'
 require 'lotus/validations/attribute'
 require 'lotus/validations/errors'
@@ -40,13 +40,13 @@ module Lotus
       #
       # @see http://www.ruby-doc.org/core/Class.html#method-i-inherited
       def inherited(base)
-        transfer_attributes_to_base(base)
+        transfer_validations_to_base(base)
         super
       end
 
       # Override Ruby's hook for modules. When a module includes
       # Lotus::Validations and it is included in a class or module, this passes
-      # the attributes from the module to the base.
+      # the validations from the module to the base.
       #
       # @param base [Class] the target action
       #
@@ -80,7 +80,7 @@ module Lotus
 
         super
 
-        transfer_attributes_to_base(base)
+        transfer_validations_to_base(base)
       end
 
       # Define a validation for an existing attribute
@@ -88,7 +88,7 @@ module Lotus
       # @param name [#to_sym] the name of the attribute
       # @param options [Hash] set of validations
       #
-      # @see Lotus::Validations::ClassMethods#attributes
+      # @see Lotus::Validations::ClassMethods#validations
       #
       # @example Presence
       #   require 'lotus/validations'
@@ -111,17 +111,17 @@ module Lotus
       #   signup = Signup.new(name: nil)
       #   signup.valid? # => false
       def validates(name, options)
-        attributes.add(name, options)
+        validations.add(name, options)
       end
 
-      # Set of user defined attributes
+      # Set of user defined validations
       #
       # @return [Hash]
       #
       # @since 0.1.0
       # @api private
-      def attributes
-        @attributes ||= AttributeSet.new
+      def validations
+        @validations ||= ValidationSet.new
       end
 
       private
@@ -132,9 +132,9 @@ module Lotus
       #
       # @since x.x.x
       # @api private
-      def transfer_attributes_to_base(base)
-        attributes.each do |attribute, options|
-          base.attribute attribute, options
+      def transfer_validations_to_base(base)
+        validations.each do |attribute, options|
+          base.validates attribute, options
         end
       end
     end
@@ -227,22 +227,22 @@ module Lotus
     end
 
     private
-    # The set of user defined attributes.
+    # The set of user defined validations.
     #
     # @since 0.1.0
     # @api private
     #
-    # @see Lotus::Validations::ClassMethods#attributes
-    def defined_attributes
-      self.class.__send__(:attributes)
+    # @see Lotus::Validations::ClassMethods#validations
+    def defined_validations
+      self.class.__send__(:validations)
     end
 
     def build_attributes
       values = {}
-      defined_attributes.each_key do |attribute|
+      defined_validations.each_key do |attribute|
         values[attribute] = public_send(attribute)
       end
-      Attributes.new(defined_attributes, values)
+      Attributes.new(defined_validations, values)
     end
   end
 end
