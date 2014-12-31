@@ -262,6 +262,33 @@ module Lotus
       #   signup.valid? # => false
       def attribute(name, options = {})
         define_attribute(name, options)
+        validates(name, options)
+      end
+
+      # Define a validation for an existing attribute
+      #
+      # @param name [#to_sym] the name of the attribute
+      # @param options [Hash] set of validations
+      #
+      # @see Lotus::Validations::ClassMethods#attributes
+      #
+      # @example Presence
+      #   require 'lotus/validations'
+      #
+      #   class Signup
+      #     include Lotus::Validations
+      #
+      #     attr_accessor :name
+      #
+      #     validates :name, presence: true
+      #   end
+      #
+      #   signup = Signup.new(name: 'Luca')
+      #   signup.valid? # => true
+      #
+      #   signup = Signup.new(name: nil)
+      #   signup.valid? # => false
+      def validates(name, options)
         attributes.add(name, options)
       end
 
