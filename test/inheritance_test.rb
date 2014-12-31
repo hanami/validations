@@ -19,7 +19,7 @@ describe Lotus::Validations do
     end
 
     it "the subclass receive validators from the superclass" do
-      subclass = SuperclassValidatorTest.new({age: 32})
+      subclass = SubclassValidatorTest.new({age: 32})
 
       subclass.valid?.must_equal false
       subclass.errors.for(:name).must_include Lotus::Validations::Error.new(:name, :presence, true, nil)
