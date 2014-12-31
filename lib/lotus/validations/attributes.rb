@@ -1,11 +1,11 @@
 module Lotus
   module Validations
     class Attributes
-      def initialize(definitions, attributes)
+      def initialize(validation_set, attributes)
         attributes  = attributes.to_h
 
         @attributes = Utils::Hash.new.tap do |result|
-          definitions.iterate(attributes) do |name, validations|
+          validation_set.iterate(attributes) do |name, validations|
             value = attributes[name]
             value = attributes[name.to_s] if value.nil?
 
