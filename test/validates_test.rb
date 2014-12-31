@@ -5,6 +5,10 @@ describe Lotus::Validations, 'standalone' do
     @validator_class = Class.new do
       include Lotus::Validations
 
+      def initialize(attributes = {})
+        @name = attributes.fetch(:name)
+      end
+
       attr_accessor :name
 
       validates :name, presence: true
