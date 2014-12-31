@@ -1,5 +1,5 @@
 class AttributeSet
-  VALIDATIONS = [:presence, :acceptance, :format, :inclusion, :exclusion, :confirmation, :size, :type].freeze
+  VALIDATIONS = [:presence, :acceptance, :format, :inclusion, :exclusion, :confirmation, :size, :type, :writable].freeze
 
   def initialize
     @attributes = Hash.new {|h,k| h[k] = {} }
