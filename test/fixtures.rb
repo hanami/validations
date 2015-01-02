@@ -93,7 +93,7 @@ class FormatValidatorTest
   include Lotus::Validations
 
   attribute :name,                 format: /\A[a-zA-Z]+\z/
-  attribute :age,   type: Integer, format: /\A[0-9]+\z/
+  attribute :age,    type: String, format: /\A[0-9]+\z/
 end
 
 class InclusionValidatorTest
