@@ -3,7 +3,7 @@ require 'lotus/validations/version'
 require 'lotus/validations/blank_value_checker'
 require 'lotus/validations/attribute_definer'
 require 'lotus/validations/validation_set'
-require 'lotus/validations/attributes'
+require 'lotus/validations/validator'
 require 'lotus/validations/attribute'
 require 'lotus/validations/errors'
 
@@ -196,12 +196,8 @@ module Lotus
     #
     # @since 0.1.0
     def valid?
-      errors.clear
-
-      attributes = Attributes.new(defined_validations, read_attributes)
-      attributes.each do |name, attribute|
-        errors.add(name, *attribute.validate)
-      end
+      validator = Validator.new(defined_validations, read_attributes)
+      @errors = validator.validate
 
       errors.empty?
     end

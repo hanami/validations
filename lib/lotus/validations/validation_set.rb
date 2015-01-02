@@ -19,16 +19,6 @@ class ValidationSet
     @validations.each_key(&blk)
   end
 
-  def iterate(validations, &blk)
-    if @validations.any?
-      @validations.each(&blk)
-    else
-      validations.each do |name, _|
-        blk.call(name, {})
-      end
-    end
-  end
-
   private
   # Checks at the loading time if the user defined validations are recognized
   #
