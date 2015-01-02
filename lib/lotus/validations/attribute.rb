@@ -46,9 +46,6 @@ module Lotus
       # @since 0.2.0
       def validate
         _with_cleared_errors do
-          presence
-          acceptance
-
           _run_validations
         end
       end
@@ -199,6 +196,9 @@ module Lotus
       # @since 0.2.0
       # @api private
       def _run_validations
+        presence
+        acceptance
+
         return if skip?
 
         format
