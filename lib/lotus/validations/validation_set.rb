@@ -52,6 +52,6 @@ module Lotus
 
         options
       end
-  end
+    end
   end
 end
