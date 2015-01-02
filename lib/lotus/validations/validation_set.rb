@@ -1,7 +1,15 @@
 module Lotus
   module Validations
     class ValidationSet
-      VALIDATIONS = [:presence, :acceptance, :format, :inclusion, :exclusion, :confirmation, :size].freeze
+      VALIDATIONS = [
+        :presence,
+        :acceptance,
+        :format,
+        :inclusion,
+        :exclusion,
+        :confirmation,
+        :size
+      ].freeze
 
       def initialize
         @validations = Hash.new {|h,k| h[k] = {} }
