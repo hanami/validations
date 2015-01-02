@@ -37,7 +37,7 @@ class UndefinedAttributesValidator
   attribute :name
 
   def [](key)
-    build_attributes.get(key)
+    read_attributes[key]
   end
 end
 

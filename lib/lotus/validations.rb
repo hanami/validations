@@ -198,7 +198,8 @@ module Lotus
     def valid?
       errors.clear
 
-      build_attributes.each do |name, attribute|
+      attributes = Attributes.new(defined_validations, read_attributes)
+      attributes.each do |name, attribute|
         errors.add(name, *attribute.validate)
       end
 
@@ -223,7 +224,7 @@ module Lotus
     #
     # @since 0.1.0
     def to_h
-      build_attributes.dup
+      Utils::Hash.new(read_attributes).deep_dup
     end
 
     private
@@ -237,16 +238,16 @@ module Lotus
       self.class.__send__(:validations)
     end
 
-    # Builds an Attributes object that contains current attribute values.
+    # Builds a Hash of current attribute values.
     #
     # @since x.x.x
     # @api private
-    def build_attributes
-      values = {}
-      defined_validations.each_key do |attribute|
-        values[attribute] = public_send(attribute)
+    def read_attributes
+      {}.tap do |attributes|
+        defined_validations.each_key do |attribute|
+          attributes[attribute] = public_send(attribute)
+        end
       end
-      Attributes.new(defined_validations, values)
     end
   end
 end
