@@ -21,8 +21,10 @@ module Lotus
     #
     # @see http://www.ruby-doc.org/core/Module.html#method-i-included
     def self.included(base)
-      base.extend ClassMethods
-      base.send(:include, AttributeDefiner)
+      base.class_eval do
+        extend ClassMethods
+        include AttributeDefiner
+      end
     end
 
     # Validations DSL
