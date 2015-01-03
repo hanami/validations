@@ -120,7 +120,7 @@ module Lotus
       #
       # @return [Hash]
       #
-      # @since 0.1.0
+      # @since x.x.x
       # @api private
       def validations
         @validations ||= ValidationSet.new
