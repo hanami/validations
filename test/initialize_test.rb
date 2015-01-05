@@ -50,14 +50,14 @@ describe Lotus::Validations do
       validator.to_h.must_equal({ email: 'user@example.org', password: '123', password_confirmation: '123' })
     end
 
-    it "doesn't whitelist attributes in case of missing definitions" do
-      validator = UndefinedAttributesValidator.new('a' => 1, :b => 2)
+    it "whitelists attributes on initialize" do
+      validator = UndefinedAttributesValidator.new('a' => 1, :b => 2, :name => 'test')
 
       validator.must_be :valid?
-      validator.to_h.must_equal({ 'a' => 1, :b => 2 })
+      validator.to_h.must_equal({ name: 'test' })
 
-      validator['a'].must_equal 1
-      validator[:a].must_be_nil
+      validator['a'].must_be_nil
+      validator['b'].must_be_nil
     end
   end
 end

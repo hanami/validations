@@ -11,10 +11,15 @@ describe Lotus::Validations::Coercions do
 
   describe 'custom coercions' do
     it 'coerces custom class' do
-      result = Lotus::Validations::Coercions.coerce(FullName, 'Luca', 'Guidi')
+      result = Lotus::Validations::Coercions.coerce(FullName, ['Luca', 'Guidi'])
 
       result.must_be_kind_of(FullName)
       result.to_s.must_equal 'Luca Guidi'
     end
+  end
+
+  it 'returns nil for blank values' do
+    result = Lotus::Validations::Coercions.coerce(Integer, '')
+    result.must_equal nil
   end
 end

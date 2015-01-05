@@ -3,11 +3,11 @@ require 'test_helper'
 describe Lotus::Validations do
   describe '.attribute' do
     it 'coerces attribute names to symbols' do
-      assert AttributeTest.defined_attribute?(:attr)
+      assert AttributeTest.defined_validation?(:attr)
     end
 
     it 'ensures attribute uniqueness' do
-      assert UniquenessAttributeTest.defined_attribute?(:attr)
+      assert UniquenessAttributeTest.defined_validation?(:attr)
     end
 
     it 'collects multiple errors for a single attribute' do

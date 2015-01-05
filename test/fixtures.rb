@@ -27,22 +27,23 @@ end
 
 class AttributeTest
   include Lotus::Validations
-  extend  Lotus::Validations::AttributesIntrospection
+  extend  Lotus::Validations::ValidationIntrospection
 
   attribute 'attr'
 end
 
 class UndefinedAttributesValidator
   include Lotus::Validations
+  attribute :name
 
   def [](key)
-    @attributes.get(key)
+    read_attributes[key]
   end
 end
 
 class UniquenessAttributeTest
   include Lotus::Validations
-  extend  Lotus::Validations::AttributesIntrospection
+  extend  Lotus::Validations::ValidationIntrospection
 
   attribute :attr
   attribute :attr
@@ -92,7 +93,7 @@ class FormatValidatorTest
   include Lotus::Validations
 
   attribute :name,                 format: /\A[a-zA-Z]+\z/
-  attribute :age,   type: Integer, format: /\A[0-9]+\z/
+  attribute :age,    type: String, format: /\A[0-9]+\z/
 end
 
 class InclusionValidatorTest
