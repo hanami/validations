@@ -1,6 +1,14 @@
 module Lotus
   module Validations
+    # A set of validations defined on an object
+    #
+    # @since x.x.x
+    # @api private
     class ValidationSet
+      # Allowed validations
+      #
+      # @since x.x.x
+      # @api private
       VALIDATIONS = [
         :presence,
         :acceptance,
@@ -11,20 +19,28 @@ module Lotus
         :size
       ].freeze
 
+      # @since x.x.x
+      # @api private
       def initialize
         @validations = Hash.new {|h,k| h[k] = {} }
       end
 
+      # @since x.x.x
+      # @api private
       def add(name, options)
         @validations[name.to_sym].merge!(
           validate_options!(name, options)
         )
       end
 
+      # @since x.x.x
+      # @api private
       def each(&blk)
         @validations.each(&blk)
       end
 
+      # @since x.x.x
+      # @api private
       def each_key(&blk)
         @validations.each_key(&blk)
       end
@@ -38,7 +54,7 @@ module Lotus
       # @raise [ArgumentError] if at least one of the validations are not
       #   recognized
       #
-      # @since 0.2.0
+      # @since x.x.x
       # @api private
       def validate_options!(name, options)
         if (unknown = (options.keys - VALIDATIONS)) && unknown.any?

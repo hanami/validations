@@ -57,13 +57,45 @@ require 'lotus/validations'
 class Person
   include Lotus::Validations
 
-  attribute :name
+  attribute :name,  presence: true
+  attribute :email, presence: true
 end
 
-person = Person.new(name: 'Luca', age: 32)
-person.name # => "Luca"
-person.age  # => raises NoMethodError because `:age` wasn't defined as attribute.
+person = Person.new(name: 'Luca', email: 'me@example.org', age: 32)
+person.name  # => "Luca"
+person.email # => "me@example.org"
+person.age   # => raises NoMethodError because `:age` wasn't defined as attribute.
 ```
+
+### Validations
+
+If you prefer Lotus::Validations to **only define validations**, but **not attributes**,
+you can use the following alternative syntax.
+
+```ruby
+require 'lotus/validations'
+
+class Person
+  include Lotus::Validations
+  attr_accessor :name, :email
+
+  # Custom initializer
+  def initialize(attributes = {})
+    @name, @email = attributes.values_at(:name, :email)
+  end
+
+  validates :name,  presence: true
+  validates :email, presence: true
+end
+
+person = Person.new(name: 'Luca', email: 'me@example.org')
+person.name  # => "Luca"
+person.email # => "me@example.org"
+```
+
+This is a bit more verbose, but offers a great level of flexibility for your
+Ruby objects. It also allows to use Lotus::Validations in combination with
+**other frameworks**.
 
 ### Coercions
 

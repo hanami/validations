@@ -228,7 +228,7 @@ module Lotus
     private
     # The set of user defined validations.
     #
-    # @since 0.1.0
+    # @since x.x.x
     # @api private
     #
     # @see Lotus::Validations::ClassMethods#validations

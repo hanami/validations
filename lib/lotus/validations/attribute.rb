@@ -183,10 +183,18 @@ module Lotus
         end
       end
 
+      # @since 0.1.0
+      # @api private
       def skip?
         @value.nil?
       end
 
+      # Checks if the value is "blank".
+      #
+      # @see Lotus::Validations::BlankValueChecker
+      #
+      # @since 0.2.0
+      # @api private
       def blank_value?
         BlankValueChecker.new(@value).blank_value?
       end
