@@ -236,7 +236,8 @@ module Lotus
         def attribute(name, options = {}, &block)
           if block_given?
             nested_class = build_validation_class(&block)
-            define_attribute(name, options.merge(type: nested_class))
+            define_lazy_reader(name, nested_class)
+            define_coerced_writer(name, nested_class)
           else
             define_attribute(name, options)
             validates(name, options)
@@ -296,6 +297,12 @@ module Lotus
         def define_reader(name)
           define_method(name) do
             @attributes.get(name)
+          end
+        end
+
+        def define_lazy_reader(name, type)
+          define_method(name) do
+            @attributes.get(name) || @attributes.set(name, type.new({}))
           end
         end
 

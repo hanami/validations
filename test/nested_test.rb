@@ -21,5 +21,9 @@ describe Lotus::Validations do
       validator.address.line_one.must_equal('10 High Street')
       validator.name.must_equal('John Smith')
     end
+
+    it 'responds with an empty class on nil' do
+      @klass.new({}).address.line_one.must_be_nil
+    end
   end
 end
