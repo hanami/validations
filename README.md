@@ -161,7 +161,7 @@ end
 person = Person.new(fav_number: '23', date: 'Oct 23, 2014')
 person.valid?
 
-person.fav_number # => 23
+person.fav_number # => #<FavNumber:0x007ffc644bba00 @number="23">
 person.date       # => this raises an error, because BirthDate#initialize doesn't accept any arg
 ```
 
