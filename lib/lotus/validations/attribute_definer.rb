@@ -238,6 +238,7 @@ module Lotus
             nested_class = build_validation_class(&block)
             define_lazy_reader(name, nested_class)
             define_coerced_writer(name, nested_class)
+            validates(name, {})
           else
             define_attribute(name, options)
             validates(name, options)

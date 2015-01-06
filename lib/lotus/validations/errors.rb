@@ -97,6 +97,10 @@ module Lotus
         @errors[attribute].push(*errors) if errors.any?
       end
 
+      def add_nested(attribute, errors)
+        @errors[attribute] = errors
+      end
+
       # Return the errors for the given attribute
       #
       # @param attribute [Symbol] the name of the attribute

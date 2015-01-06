@@ -198,10 +198,14 @@ module Lotus
     #
     # @since 0.1.0
     def valid?
-      validator = Validator.new(defined_validations, read_attributes)
-      @errors = validator.validate
+      validate
 
       errors.empty?
+    end
+
+    def validate
+      validator = Validator.new(defined_validations, read_attributes)
+      @errors = validator.validate
     end
 
     # Iterates thru the defined attributes and their values

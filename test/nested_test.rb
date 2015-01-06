@@ -25,5 +25,12 @@ describe Lotus::Validations do
     it 'responds with an empty class on nil' do
       @klass.new({}).address.line_one.must_be_nil
     end
+
+    it 'validates nested attributes' do
+      validator = @klass.new(name: 'John Smith', address: { city: 'Melbourne' })
+      validator.valid?.must_equal(false)
+      line_one_error = validator.errors.for(:address).for(:line_one)
+      line_one_error.must_include(Lotus::Validations::Error.new(:line_one, :presence, true, nil))
+    end
   end
 end
