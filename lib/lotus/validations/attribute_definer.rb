@@ -232,9 +232,15 @@ module Lotus
         #
         #   signup = Signup.new(password: 'short')
         #   signup.valid? # => false
-        def attribute(name, options = {})
-          define_attribute(name, options)
-          validates(name, options)
+
+        def attribute(name, options = {}, &block)
+          if block_given?
+            nested_class = build_validation_class(&block)
+            define_attribute(name, options.merge(type: nested_class))
+          else
+            define_attribute(name, options)
+            validates(name, options)
+          end
         end
 
         def defined_attributes
@@ -291,6 +297,19 @@ module Lotus
           define_method(name) do
             @attributes.get(name)
           end
+        end
+
+        # Creates a validation class and configures it with the
+        # given block.
+        #
+        # @since x.x.x
+        # @api private
+        def build_validation_class(&block)
+          kls = Class.new do
+            include Lotus::Validations
+          end
+          kls.class_eval(&block)
+          kls
         end
       end
 
