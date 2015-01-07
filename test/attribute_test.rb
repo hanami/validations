@@ -24,24 +24,21 @@ describe Lotus::Validations do
 
     describe 'name checks' do
       it 'checks validation names' do
-        -> {
+        exception = -> {
           Class.new {
             include Lotus::Validations
-            attribute :email, pesence: true
+            attribute :email, pesence: true, comfirmation: true
           }
         }.must_raise ArgumentError
-      end
 
-      it 'reports wrong names in error message' do
-        begin
-          Class.new {
-            include Lotus::Validations
-            attribute :email, pesence: true, comfirmation: true, format: /@/
-          }
-        rescue ArgumentError => e
-          e.message.must_equal 'Unknown validation(s): pesence, comfirmation for "email" attribute'
-        end
+        exception.message.must_equal 'Unknown validation(s): pesence, comfirmation for "email" attribute'
       end
+    end
+  end
+
+  describe '.defined_attributes' do
+    it 'returns a set of unique attribute names' do
+      UniquenessAttributeTest.defined_attributes.must_equal(Set.new(%w(attr)))
     end
   end
 end
