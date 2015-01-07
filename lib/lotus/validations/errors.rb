@@ -97,7 +97,11 @@ module Lotus
         @errors[attribute].push(*errors) if errors.any?
       end
 
-      def add_nested(attribute, errors)
+      # Sets the errors for an attribute to a given object
+      #
+      # @since x.x.x
+      # @api private
+      def set(attribute, errors)
         @errors[attribute] = errors
       end
 

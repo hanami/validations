@@ -19,7 +19,7 @@ module Lotus
             value = @attributes[name.to_s] if value.nil?
 
             if value.respond_to?(:validate)
-              errors.add_nested name, value.validate
+              errors.set name, value.validate
             else
               attribute = Attribute.new(@attributes, name, value, validations)
               errors.add name, *attribute.validate
