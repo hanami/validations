@@ -1,3 +1,6 @@
+require 'set'
+require 'lotus/utils/class_attribute'
+
 module Lotus
   module Validations
     # Define attributes and their validations together
@@ -7,7 +10,7 @@ module Lotus
     module AttributeDefiner
       # Override Ruby's hook for modules.
       #
-      # @param base [Class] the target action
+      # @param base [Class] the target class
       #
       # @since 0.2.2
       # @api private
@@ -20,6 +23,27 @@ module Lotus
       # @since 0.2.2
       # @api private
       module ClassMethods
+        # Override Ruby's hook for modules.
+        #
+        # @param base [Class] the target class
+        #
+        # @since 0.2.2
+        # @api private
+        #
+        # @see http://www.ruby-doc.org/core/Module.html#method-i-extended
+        def self.extended(base)
+          base.class_eval do
+            include Utils::ClassAttribute
+
+            # Lotus::Controller compatibility
+            #
+            # @since 0.2.2
+            # @api private
+            class_attribute :defined_attributes
+            self.defined_attributes = Set.new
+          end
+        end
+
         # Define an attribute
         #
         # @param name [#to_sym] the name of the attribute
@@ -215,6 +239,7 @@ module Lotus
         def define_attribute(name, options)
           type = options.delete(:type)
           define_accessor(name, type)
+          defined_attributes.add(name.to_s)
 
           if options[:confirmation]
             define_accessor("#{ name }_confirmation", type)
