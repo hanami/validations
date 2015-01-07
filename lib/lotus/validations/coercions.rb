@@ -10,7 +10,7 @@ module Lotus
       # Coerces the given values with the given type
       #
       # @param coercer [Class] the type
-      # @param values [Array] of objects to be coerced
+      # @param value [Array] of objects to be coerced
       # @param blk [Proc] an optional block to pass to the custom coercer
       #
       # @return [Object,nil] The result of the coercion, if possible
@@ -19,11 +19,12 @@ module Lotus
       #
       # @since 0.1.0
       # @api private
-      def self.coerce(coercer, *values, &blk)
+      def self.coerce(coercer, value, &blk)
+        return nil if BlankValueChecker.new(value).blank_value?
         if ::Lotus::Utils::Kernel.respond_to?(coercer.to_s)
-          ::Lotus::Utils::Kernel.__send__(coercer.to_s, *values, &blk) rescue nil
+          ::Lotus::Utils::Kernel.__send__(coercer.to_s, value, &blk) rescue nil
         else
-          coercer.new(*values, &blk)
+          coercer.new(value, &blk)
         end
       end
     end

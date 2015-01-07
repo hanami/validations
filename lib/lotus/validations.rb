@@ -1,7 +1,9 @@
 require 'lotus/utils/hash'
 require 'lotus/validations/version'
-require 'lotus/validations/attribute_set'
-require 'lotus/validations/attributes'
+require 'lotus/validations/blank_value_checker'
+require 'lotus/validations/attribute_definer'
+require 'lotus/validations/validation_set'
+require 'lotus/validations/validator'
 require 'lotus/validations/attribute'
 require 'lotus/validations/errors'
 
@@ -19,16 +21,34 @@ module Lotus
     #
     # @see http://www.ruby-doc.org/core/Module.html#method-i-included
     def self.included(base)
-      base.extend ClassMethods
+      base.class_eval do
+        extend ClassMethods
+        include AttributeDefiner
+      end
     end
 
     # Validations DSL
     #
     # @since 0.1.0
     module ClassMethods
+      # Override Ruby's hook for class inheritance. When a class includes
+      # Lotus::Validations and it is subclassed, this passes
+      # the attributes from the superclass to the subclass.
+      #
+      # @param base [Class] the target action
+      #
+      # @since 0.2.2
+      # @api private
+      #
+      # @see http://www.ruby-doc.org/core/Class.html#method-i-inherited
+      def inherited(base)
+        transfer_validations_to_base(base)
+        super
+      end
+
       # Override Ruby's hook for modules. When a module includes
       # Lotus::Validations and it is included in a class or module, this passes
-      # the attributes from the module to the base.
+      # the validations from the module to the base.
       #
       # @param base [Class] the target action
       #
@@ -60,159 +80,17 @@ module Lotus
           include Lotus::Validations
         end
 
-        attributes.each do |attribute, options|
-          base.attribute attribute, options
-        end
+        super
+
+        transfer_validations_to_base(base)
       end
 
-      # Define an attribute
+      # Define a validation for an existing attribute
       #
       # @param name [#to_sym] the name of the attribute
-      # @param options [Hash] optional set of validations
-      # @option options [Class] :type the Ruby type used to coerce the value
-      # @option options [TrueClass,FalseClass] :acceptance requires Ruby
-      #   thruthiness of the value
-      # @option options [TrueClass,FalseClass] :confirmation requires the value
-      #   to be confirmed twice
-      # @option options [#include?] :exclusion requires the value NOT be
-      #   included in the given collection
-      # @option options [Regexp] :format requires value to match the given
-      #   Regexp
-      # @option options [#include?] :inclusion requires the value BE included in
-      #   the given collection
-      # @option options [TrueClass,FalseClass] :presence requires the value be
-      #   included in the given collection
-      # @option options [Numeric,Range] :size requires value's to be equal or
-      #   included by the given validator
+      # @param options [Hash] set of validations
       #
-      # @raise [ArgumentError] if an unknown or mispelled validation is given
-      #
-      # @example Attributes
-      #   require 'lotus/validations'
-      #
-      #   class Person
-      #     include Lotus::Validations
-      #
-      #     attribute :name
-      #   end
-      #
-      #   person = Person.new(name: 'Luca', age: 32)
-      #   person.name # => "Luca"
-      #   person.age  # => raises NoMethodError because `:age` wasn't defined as attribute.
-      #
-      # @example Standard coercions
-      #   require 'lotus/validations'
-      #
-      #   class Person
-      #     include Lotus::Validations
-      #
-      #     attribute :fav_number, type: Integer
-      #   end
-      #
-      #   person = Person.new(fav_number: '23')
-      #   person.valid?
-      #
-      #   person.fav_number # => 23
-      #
-      # @example Custom coercions
-      #   require 'lotus/validations'
-      #
-      #   class FavNumber
-      #     def initialize(number)
-      #       @number = number
-      #     end
-      #   end
-      #
-      #   class BirthDate
-      #   end
-      #
-      #   class Person
-      #     include Lotus::Validations
-      #
-      #     attribute :fav_number, type: FavNumber
-      #     attribute :date,       type: BirthDate
-      #   end
-      #
-      #   person = Person.new(fav_number: '23', date: 'Oct 23, 2014')
-      #   person.valid?
-      #
-      #   person.fav_number # => 23
-      #   person.date       # => this raises an error, because BirthDate#initialize doesn't accept any arg
-      #
-      # @example Acceptance
-      #   require 'lotus/validations'
-      #
-      #   class Signup
-      #     include Lotus::Validations
-      #
-      #     attribute :terms_of_service, acceptance: true
-      #   end
-      #
-      #   signup = Signup.new(terms_of_service: '1')
-      #   signup.valid? # => true
-      #
-      #   signup = Signup.new(terms_of_service: '')
-      #   signup.valid? # => false
-      #
-      # @example Confirmation
-      #   require 'lotus/validations'
-      #
-      #   class Signup
-      #     include Lotus::Validations
-      #
-      #     attribute :password, confirmation: true
-      #   end
-      #
-      #   signup = Signup.new(password: 'secret', password_confirmation: 'secret')
-      #   signup.valid? # => true
-      #
-      #   signup = Signup.new(password: 'secret', password_confirmation: 'x')
-      #   signup.valid? # => false
-      #
-      # @example Exclusion
-      #   require 'lotus/validations'
-      #
-      #   class Signup
-      #     include Lotus::Validations
-      #
-      #     attribute :music, exclusion: ['pop']
-      #   end
-      #
-      #   signup = Signup.new(music: 'rock')
-      #   signup.valid? # => true
-      #
-      #   signup = Signup.new(music: 'pop')
-      #   signup.valid? # => false
-      #
-      # @example Format
-      #   require 'lotus/validations'
-      #
-      #   class Signup
-      #     include Lotus::Validations
-      #
-      #     attribute :name, format: /\A[a-zA-Z]+\z/
-      #   end
-      #
-      #   signup = Signup.new(name: 'Luca')
-      #   signup.valid? # => true
-      #
-      #   signup = Signup.new(name: '23')
-      #   signup.valid? # => false
-      #
-      # @example Inclusion
-      #   require 'lotus/validations'
-      #
-      #   class Signup
-      #     include Lotus::Validations
-      #
-      #     attribute :age, inclusion: 18..99
-      #   end
-      #
-      #   signup = Signup.new(age: 32)
-      #   signup.valid? # => true
-      #
-      #   signup = Signup.new(age: 17)
-      #   signup.valid? # => false
+      # @see Lotus::Validations::ClassMethods#validations
       #
       # @example Presence
       #   require 'lotus/validations'
@@ -220,7 +98,13 @@ module Lotus
       #   class Signup
       #     include Lotus::Validations
       #
-      #     attribute :name, presence: true
+      #     def initialize(attributes = {})
+      #       @name = attributes.fetch(:name)
+      #     end
+      #
+      #     attr_accessor :name
+      #
+      #     validates :name, presence: true
       #   end
       #
       #   signup = Signup.new(name: 'Luca')
@@ -228,43 +112,32 @@ module Lotus
       #
       #   signup = Signup.new(name: nil)
       #   signup.valid? # => false
-      #
-      # @example Size
-      #   require 'lotus/validations'
-      #
-      #   class Signup
-      #     MEGABYTE = 1024 ** 2
-      #     include Lotus::Validations
-      #
-      #     attribute :ssn,      size: 11    # exact match
-      #     attribute :password, size: 8..64 # range
-      #     attribute :avatar,   size  1..(5 * MEGABYTE)
-      #   end
-      #
-      #   signup = Signup.new(password: 'a-very-long-password')
-      #   signup.valid? # => true
-      #
-      #   signup = Signup.new(password: 'short')
-      #   signup.valid? # => false
-      def attribute(name, options = {})
-        attributes.add(name, options)
-
-        class_eval %{
-          def #{ name }
-            @attributes.get(:#{ name })
-          end
-        }
+      def validates(name, options)
+        validations.add(name, options)
       end
 
-      private
-      # Set of user defined attributes
+      # Set of user defined validations
       #
       # @return [Hash]
       #
-      # @since 0.1.0
+      # @since 0.2.2
       # @api private
-      def attributes
-        @attributes ||= AttributeSet.new
+      def validations
+        @validations ||= ValidationSet.new
+      end
+
+      private
+
+      # Transfers attributes to a base class
+      #
+      # @param base [Module] the base class to transfer attributes to
+      #
+      # @since 0.2.2
+      # @api private
+      def transfer_validations_to_base(base)
+        validations.each do |attribute, options|
+          base.validates attribute, options
+        end
       end
     end
 
@@ -315,52 +188,8 @@ module Lotus
     #     #     #<Lotus::Validations::Error:0x007fe00cee30d8 @attribute=:age, @validation=:size, @expected=18..99, @actual=17>
     #     #   ]
     #     # }>
-    attr_reader :errors
-
-    # Create a new instance with the given attributes
-    #
-    # @param attributes [#to_h] an Hash like object which contains the
-    #   attributes
-    #
-    # @since 0.1.0
-    #
-    # @example Initialize with Hash
-    #   require 'lotus/validations'
-    #
-    #   class Signup
-    #     include Lotus::Validations
-    #
-    #     attribute :name
-    #   end
-    #
-    #   signup = Signup.new(name: 'Luca')
-    #
-    # @example Initialize with Hash like
-    #   require 'lotus/validations'
-    #
-    #   class Params
-    #     def initialize(attributes)
-    #       @attributes = Hash[*attributes]
-    #     end
-    #
-    #     def to_h
-    #       @attributes.to_h
-    #     end
-    #   end
-    #
-    #   class Signup
-    #     include Lotus::Validations
-    #
-    #     attribute :name
-    #   end
-    #
-    #   params = Params.new([:name, 'Luca'])
-    #   signup = Signup.new(params)
-    #
-    #   signup.name # => "Luca"
-    def initialize(attributes)
-      @attributes = Attributes.new(defined_attributes, attributes)
-      @errors     = Errors.new
+    def errors
+      @errors ||= Errors.new
     end
 
     # Checks if the current data satisfies the defined validations
@@ -369,13 +198,10 @@ module Lotus
     #
     # @since 0.1.0
     def valid?
-      @errors.clear
+      validator = Validator.new(defined_validations, read_attributes)
+      @errors = validator.validate
 
-      @attributes.each do |name, attribute|
-        @errors.add(name, *attribute.validate)
-      end
-
-      @errors.empty?
+      errors.empty?
     end
 
     # Iterates thru the defined attributes and their values
@@ -396,18 +222,30 @@ module Lotus
     #
     # @since 0.1.0
     def to_h
-      @attributes.dup
+      Utils::Hash.new(read_attributes).deep_dup
     end
 
     private
-    # The set of user defined attributes.
+    # The set of user defined validations.
     #
-    # @since 0.1.0
+    # @since 0.2.2
     # @api private
     #
-    # @see Lotus::Validations::ClassMethods#attributes
-    def defined_attributes
-      self.class.__send__(:attributes)
+    # @see Lotus::Validations::ClassMethods#validations
+    def defined_validations
+      self.class.__send__(:validations)
+    end
+
+    # Builds a Hash of current attribute values.
+    #
+    # @since 0.2.2
+    # @api private
+    def read_attributes
+      {}.tap do |attributes|
+        defined_validations.each_key do |attribute|
+          attributes[attribute] = public_send(attribute)
+        end
+      end
     end
   end
 end

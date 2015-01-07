@@ -24,10 +24,6 @@ module Lotus
       # @api private
       CONFIRMATION_TEMPLATE = '%{name}_confirmation'.freeze
 
-      # @since 0.2.0
-      # @api private
-      BLANK_STRING_MATCHER = /\A[[:space:]]*\z/.freeze
-
       # Instantiate an attribute
       #
       # @param attributes [Hash] a set of attributes and values coming from the
@@ -50,23 +46,13 @@ module Lotus
       # @since 0.2.0
       def validate
         _with_cleared_errors do
-          presence
-          acceptance
-
           _run_validations
         end
       end
 
       # @api private
       # @since 0.2.0
-      def value
-        if (coercer = @validations[:type])
-          return nil if blank_value?
-          Lotus::Validations::Coercions.coerce(coercer, @value)
-        else
-          @value
-        end
-      end
+      attr_reader :value
 
       private
       # Validates presence of the value.
@@ -197,71 +183,20 @@ module Lotus
         end
       end
 
-      # Coerces the value to the defined type.
-      # Built in types are:
-      #
-      #   * `Array`
-      #   * `BigDecimal`
-      #   * `Boolean`
-      #   * `Date`
-      #   * `DateTime`
-      #   * `Float`
-      #   * `Hash`
-      #   * `Integer`
-      #   * `Pathname`
-      #   * `Set`
-      #   * `String`
-      #   * `Symbol`
-      #   * `Time`
-      #
-      # If a user defined class is specified, it can be freely used for coercion
-      # purposes. The only limitation is that the constructor should have
-      # **arity of 1**.
-      #
-      # @raise [ArgumentError] if the custom coercer's `#initialize` has a wrong arity.
-      #
-      # @see Lotus::Validations::ClassMethods#attribute
-      # @see Lotus::Validations::Coercions
-      #
-      # @since 0.2.0
+      # @since 0.1.0
       # @api private
-      def coerce
-        _validate(:type) do |coercer|
-          Lotus::Validations::Coercions.coerce(coercer, @value)
-          true
-        end
-      end
-
-      # Checks if the value is `nil`.
-      #
-      # @since 0.2.0
-      # @api private
-      def nil_value?
+      def skip?
         @value.nil?
       end
 
-      alias_method :skip?, :nil_value?
-
       # Checks if the value is "blank".
       #
-      # @see Lotus::Validations::Attribute#presence
+      # @see Lotus::Validations::BlankValueChecker
       #
       # @since 0.2.0
       # @api private
       def blank_value?
-        nil_value? || _blank_string? || _empty_value?
-      end
-
-      # @since 0.2.0
-      # @api private
-      def _blank_string?
-        (@value.respond_to?(:match) and @value.match(BLANK_STRING_MATCHER))
-      end
-
-      # @since 0.2.0
-      # @api private
-      def _empty_value?
-        (@value.respond_to?(:empty?) and @value.empty?)
+        BlankValueChecker.new(@value).blank_value?
       end
 
       # Run the defined validations
@@ -269,10 +204,12 @@ module Lotus
       # @since 0.2.0
       # @api private
       def _run_validations
+        presence
+        acceptance
+
         return if skip?
 
         format
-        coerce
         inclusion
         exclusion
         size

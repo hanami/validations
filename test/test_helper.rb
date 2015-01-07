@@ -20,9 +20,9 @@ require 'minitest/autorun'
 $:.unshift 'lib'
 require 'lotus/validations'
 
-module Lotus::Validations::AttributesIntrospection
-  def defined_attribute?(name)
-    attributes.instance_variable_get(:@attributes).keys.include?(name)
+module Lotus::Validations::ValidationIntrospection
+  def defined_validation?(name)
+    validations.instance_variable_get(:@validations).keys.include?(name)
   end
 end
 
