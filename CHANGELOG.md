@@ -1,6 +1,10 @@
 # Lotus::Validations
 Validations mixin for Ruby objects
 
+## v0.2.2 - 2015-01-07
+### Added
+- [Steve Hodgkiss] Introduced `Validations.validates`. It defines validations, for already existing attributes.
+
 ## v0.2.1 - 2014-12-23
 ### Added
 - [Luca Guidi] Introduced `Validations::Errors#to_h` and `to_a`

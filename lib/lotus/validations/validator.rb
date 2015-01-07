@@ -2,7 +2,7 @@ module Lotus
   module Validations
     # Validate given validations and return a set of errors
     #
-    # @since x.x.x
+    # @since 0.2.2
     # @api private
     class Validator
       def initialize(validation_set, attributes)
@@ -10,7 +10,7 @@ module Lotus
         @attributes = attributes
       end
 
-      # @since x.x.x
+      # @since 0.2.2
       # @api private
       def validate
         Errors.new.tap do |errors|

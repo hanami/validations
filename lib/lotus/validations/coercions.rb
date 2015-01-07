@@ -10,7 +10,7 @@ module Lotus
       # Coerces the given values with the given type
       #
       # @param coercer [Class] the type
-      # @param values [Array] of objects to be coerced
+      # @param value [Array] of objects to be coerced
       # @param blk [Proc] an optional block to pass to the custom coercer
       #
       # @return [Object,nil] The result of the coercion, if possible

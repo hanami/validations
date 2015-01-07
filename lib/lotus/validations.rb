@@ -37,7 +37,7 @@ module Lotus
       #
       # @param base [Class] the target action
       #
-      # @since x.x.x
+      # @since 0.2.2
       # @api private
       #
       # @see http://www.ruby-doc.org/core/Class.html#method-i-inherited
@@ -120,7 +120,7 @@ module Lotus
       #
       # @return [Hash]
       #
-      # @since x.x.x
+      # @since 0.2.2
       # @api private
       def validations
         @validations ||= ValidationSet.new
@@ -132,7 +132,7 @@ module Lotus
       #
       # @param base [Module] the base class to transfer attributes to
       #
-      # @since x.x.x
+      # @since 0.2.2
       # @api private
       def transfer_validations_to_base(base)
         validations.each do |attribute, options|
@@ -228,7 +228,7 @@ module Lotus
     private
     # The set of user defined validations.
     #
-    # @since x.x.x
+    # @since 0.2.2
     # @api private
     #
     # @see Lotus::Validations::ClassMethods#validations
@@ -238,7 +238,7 @@ module Lotus
 
     # Builds a Hash of current attribute values.
     #
-    # @since x.x.x
+    # @since 0.2.2
     # @api private
     def read_attributes
       {}.tap do |attributes|

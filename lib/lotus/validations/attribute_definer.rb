@@ -2,14 +2,14 @@ module Lotus
   module Validations
     # Define attributes and their validations together
     #
-    # @since x.x.x
+    # @since 0.2.2
     # @api private
     module AttributeDefiner
       # Override Ruby's hook for modules.
       #
       # @param base [Class] the target action
       #
-      # @since x.x.x
+      # @since 0.2.2
       # @api private
       #
       # @see http://www.ruby-doc.org/core/Module.html#method-i-included
@@ -17,7 +17,7 @@ module Lotus
         base.extend ClassMethods
       end
 
-      # @since x.x.x
+      # @since 0.2.2
       # @api private
       module ClassMethods
         # Define an attribute
@@ -42,7 +42,7 @@ module Lotus
         #
         # @raise [ArgumentError] if an unknown or mispelled validation is given
         #
-        # @since x.x.x
+        # @since 0.2.2
         #
         # @example Attributes
         #   require 'lotus/validations'
@@ -210,7 +210,7 @@ module Lotus
 
         private
 
-        # @since x.x.x
+        # @since 0.2.2
         # @api private
         def define_attribute(name, options)
           type = options.delete(:type)
@@ -221,7 +221,7 @@ module Lotus
           end
         end
 
-        # @since x.x.x
+        # @since 0.2.2
         # @api private
         def define_accessor(name, type)
           if type
@@ -232,7 +232,7 @@ module Lotus
           end
         end
 
-        # @since x.x.x
+        # @since 0.2.2
         # @api private
         def define_coerced_writer(name, type)
           class_eval %{
@@ -248,7 +248,7 @@ module Lotus
       # @param attributes [#to_h] an Hash like object which contains the
       #   attributes
       #
-      # @since x.x.x
+      # @since 0.2.2
       #
       # @example Initialize with Hash
       #   require 'lotus/validations'
