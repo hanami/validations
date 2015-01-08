@@ -59,5 +59,20 @@ describe Lotus::Validations do
       validator['a'].must_be_nil
       validator['b'].must_be_nil
     end
+
+    it "doesn't assign to unknown attributes that are methods" do
+      validator = MethodAssignmentTest.new('==' => 1)
+      validator.equal_param.must_be_nil
+    end
+
+    it "respects already initialized set of attributes" do
+      validator  = CustomAttributesValidator.new(name: 'Luca', language: 'it')
+      serialized = validator.to_h
+
+      serialized.fetch('already').must_equal('initialized')
+      serialized.fetch('name').must_equal('Luca')
+
+      serialized['language'].must_be_nil
+    end
   end
 end
