@@ -233,3 +233,18 @@ class EnumerableValidator
 
   attribute :name
 end
+
+class CustomAttributesValidator
+  include Lotus::Validations
+
+  attribute :name
+
+  def initialize(attributes)
+    @attributes = Lotus::Utils::Attributes.new({ already: 'initialized' })
+    super
+  end
+
+  def to_h
+    @attributes.to_h
+  end
+end

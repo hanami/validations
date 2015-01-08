@@ -1,5 +1,4 @@
 require 'set'
-require 'lotus/utils/class_attribute'
 require 'lotus/utils/attributes'
 
 module Lotus
@@ -278,12 +277,16 @@ module Lotus
           end
         end
 
+        # @since 0.2.2
+        # @api private
         def define_writer(name)
           define_method("#{ name }=") do |value|
             @attributes.set(name, value)
           end
         end
 
+        # @since 0.2.2
+        # @api private
         def define_reader(name)
           define_method(name) do
             @attributes.get(name)
@@ -334,10 +337,17 @@ module Lotus
       #   signup.name # => "Luca"
       def initialize(attributes)
         @attributes ||= Utils::Attributes.new
+
         attributes.to_h.each do |key, value|
-          writer = "#{ key }="
-          public_send(writer, value) if self.class.defined_attributes.include?(key.to_s)
+          public_send("#{ key }=", value) if assign_attribute?(key)
         end
+      end
+
+      private
+      # @since 0.2.2
+      # @api private
+      def assign_attribute?(attr)
+        self.class.defined_attributes.include?(attr.to_s)
       end
     end
   end
