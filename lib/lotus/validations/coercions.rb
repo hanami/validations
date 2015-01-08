@@ -20,7 +20,7 @@ module Lotus
       # @since 0.1.0
       # @api private
       def self.coerce(coercer, value, &blk)
-        return nil if BlankValueChecker.new(value).blank_value?
+        return nil if BlankValueChecker.new(value).blank_value? && !(coercer == String && String === value)
         if ::Lotus::Utils::Kernel.respond_to?(coercer.to_s)
           ::Lotus::Utils::Kernel.__send__(coercer.to_s, value, &blk) rescue nil
         else

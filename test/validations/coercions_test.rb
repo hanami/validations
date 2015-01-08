@@ -22,4 +22,14 @@ describe Lotus::Validations::Coercions do
     result = Lotus::Validations::Coercions.coerce(Integer, '')
     result.must_equal nil
   end
+
+  it 'returns an empty string when an empty string is given to coerce to String' do
+    result = Lotus::Validations::Coercions.coerce(String, '')
+    result.must_equal ''
+  end
+
+  it 'returns nil when an array is given to coerce to a string' do
+    result = Lotus::Validations::Coercions.coerce(String, [])
+    result.must_equal nil
+  end
 end
