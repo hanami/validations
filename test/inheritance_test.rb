@@ -24,5 +24,10 @@ describe Lotus::Validations do
       subclass.valid?.must_equal false
       subclass.errors.for(:name).must_include Lotus::Validations::Error.new(:name, :presence, true, nil)
     end
+
+    it "receives attributes from the super class" do
+      subclass = SubclassValidatorTest.new({age: 32, name: 'Luca'})
+      subclass.to_h.must_equal({age: 32, name: 'Luca'})
+    end
   end
 end

@@ -32,17 +32,22 @@ module Lotus
         # @api private
         #
         # @see http://www.ruby-doc.org/core/Module.html#method-i-extended
-        def self.extended(base)
-          base.class_eval do
-            include Utils::ClassAttribute
+        def included(base)
+          super
+          base.defined_attributes.merge(defined_attributes)
+        end
 
-            # Lotus::Controller compatibility
-            #
-            # @since 0.2.2
-            # @api private
-            class_attribute :defined_attributes
-            self.defined_attributes = Set.new
-          end
+        # Override Ruby's hook for modules.
+        #
+        # @param base [Class] the target class
+        #
+        # @since 0.2.2
+        # @api private
+        #
+        # @see http://www.ruby-doc.org/core/Module.html#method-i-extended
+        def inherited(base)
+          super
+          base.defined_attributes.merge(defined_attributes)
         end
 
         # Define an attribute
@@ -233,6 +238,10 @@ module Lotus
           validates(name, options)
         end
 
+        def defined_attributes
+          @defined_attributes ||= Set.new
+        end
+
         private
 
         # @since 0.2.2
@@ -243,7 +252,9 @@ module Lotus
           defined_attributes.add(name.to_s)
 
           if options[:confirmation]
-            define_accessor("#{ name }_confirmation", type)
+            confirmation_accessor = "#{ name }_confirmation"
+            define_accessor(confirmation_accessor, type)
+            defined_attributes.add(confirmation_accessor)
           end
         end
 
@@ -325,7 +336,7 @@ module Lotus
         @attributes ||= Utils::Attributes.new
         attributes.to_h.each do |key, value|
           writer = "#{ key }="
-          public_send(writer, value) if respond_to?(writer)
+          public_send(writer, value) if self.class.defined_attributes.include?(key.to_s)
         end
       end
     end

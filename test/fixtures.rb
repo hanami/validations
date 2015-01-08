@@ -41,6 +41,20 @@ class UndefinedAttributesValidator
   end
 end
 
+class MethodAssignmentTest
+  include Lotus::Validations
+  attribute :name
+
+  def ==(other)
+    @equal_param = other
+    true
+  end
+
+  def equal_param
+    @equal_param
+  end
+end
+
 class UniquenessAttributeTest
   include Lotus::Validations
   extend  Lotus::Validations::ValidationIntrospection
