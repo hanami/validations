@@ -1,5 +1,6 @@
 require 'set'
 require 'lotus/utils/class_attribute'
+require 'lotus/utils/attributes'
 
 module Lotus
   module Validations
@@ -250,21 +251,32 @@ module Lotus
         # @api private
         def define_accessor(name, type)
           if type
-            attr_reader name
+            define_reader(name)
             define_coerced_writer(name, type)
           else
-            attr_accessor name
+            define_reader(name)
+            define_writer(name)
           end
         end
 
         # @since 0.2.2
         # @api private
         def define_coerced_writer(name, type)
-          class_eval %{
-            def #{ name }=(value)
-              @#{ name } = Lotus::Validations::Coercions.coerce(#{ type.name }, value)
-            end
-          }
+          define_method("#{ name }=") do |value|
+            @attributes.set(name, Lotus::Validations::Coercions.coerce(type, value))
+          end
+        end
+
+        def define_writer(name)
+          define_method("#{ name }=") do |value|
+            @attributes.set(name, value)
+          end
+        end
+
+        def define_reader(name)
+          define_method(name) do
+            @attributes.get(name)
+          end
         end
       end
 
@@ -310,6 +322,7 @@ module Lotus
       #
       #   signup.name # => "Luca"
       def initialize(attributes)
+        @attributes ||= Utils::Attributes.new
         attributes.to_h.each do |key, value|
           writer = "#{ key }="
           public_send(writer, value) if respond_to?(writer)
