@@ -30,6 +30,12 @@ describe Lotus::Validations::Coercions do
 
   it 'returns nil when an array is given to coerce to a string' do
     result = Lotus::Validations::Coercions.coerce(String, [])
-    result.must_equal nil
+    # This is not ideal behaviour
+    result.must_equal '[]'
+  end
+
+  it 'returns an empty array when coercing to an array' do
+    result = Lotus::Validations::Coercions.coerce(Array, [])
+    result.must_equal []
   end
 end
