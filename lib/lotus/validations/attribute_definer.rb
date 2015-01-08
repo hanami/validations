@@ -37,6 +37,19 @@ module Lotus
           base.defined_attributes.merge(defined_attributes)
         end
 
+        # Override Ruby's hook for modules.
+        #
+        # @param base [Class] the target class
+        #
+        # @since 0.2.2
+        # @api private
+        #
+        # @see http://www.ruby-doc.org/core/Module.html#method-i-extended
+        def inherited(base)
+          super
+          base.defined_attributes.merge(defined_attributes)
+        end
+
         # Define an attribute
         #
         # @param name [#to_sym] the name of the attribute
