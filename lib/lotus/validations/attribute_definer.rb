@@ -301,9 +301,18 @@ module Lotus
           end
         end
 
+        # Defines a reader that will return a new instance of
+        # the given type if one is not already present
+        #
+        # @since x.x.x
+        # @api private
         def define_lazy_reader(name, type)
           define_method(name) do
-            @attributes.get(name) || @attributes.set(name, type.new({}))
+            value = @attributes.get(name)
+            return value if value
+            type.new({}).tap do |value|
+              @attributes.set(name, value)
+            end
           end
         end
 
