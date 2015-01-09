@@ -45,7 +45,18 @@ module Lotus
       # @api private
       # @since 0.2.0
       def validate
-        _run_validations
+        presence
+        acceptance
+
+        return if skip?
+
+        format
+        inclusion
+        exclusion
+        size
+        confirmation
+        nested
+
         @errors
       end
 
@@ -206,24 +217,6 @@ module Lotus
       # @api private
       def blank_value?
         BlankValueChecker.new(@value).blank_value?
-      end
-
-      # Run the defined validations
-      #
-      # @since 0.2.0
-      # @api private
-      def _run_validations
-        presence
-        acceptance
-
-        return if skip?
-
-        format
-        inclusion
-        exclusion
-        size
-        confirmation
-        nested
       end
 
       # Reads an attribute from the validator.
