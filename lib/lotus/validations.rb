@@ -203,6 +203,13 @@ module Lotus
       errors.empty?
     end
 
+    # Validates the object.
+    #
+    # @return [Errors]
+    #
+    # @since x.x.x
+    # @api private
+    # @see Lotus::Attribute#nested
     def validate
       validator = Validator.new(defined_validations, read_attributes, errors)
       validator.validate
