@@ -34,20 +34,19 @@ module Lotus
       #
       # @since 0.2.0
       # @api private
-      def initialize(attributes, name, value, validations)
+      def initialize(attributes, name, value, validations, errors)
         @attributes  = attributes
         @name        = name
         @value       = value
         @validations = validations
-        @errors      = []
+        @errors      = errors
       end
 
       # @api private
       # @since 0.2.0
       def validate
-        _with_cleared_errors do
-          _run_validations
-        end
+        _run_validations
+        @errors
       end
 
       # @api private
@@ -183,6 +182,16 @@ module Lotus
         end
       end
 
+      # Validates nested Lotus Validations objects
+      #
+      # @since x.x.x
+      # @api private
+      def nested
+        _validate(__method__) do |validator|
+          @errors.set @name, value.validate
+        end
+      end
+
       # @since 0.1.0
       # @api private
       def skip?
@@ -214,14 +223,7 @@ module Lotus
         exclusion
         size
         confirmation
-      end
-
-      # @api private
-      # @since 0.2.0
-      def _with_cleared_errors
-        @errors.clear
-        yield
-        @errors.dup.tap {|_| @errors.clear }
+        nested
       end
 
       # Reads an attribute from the validator.
@@ -238,7 +240,7 @@ module Lotus
       # @api private
       def _validate(validation)
         if (validator = @validations[validation]) && !(yield validator)
-          @errors.push(Error.new(@name, validation, @validations.fetch(validation), @value))
+          @errors.add(@name, Error.new(@name, validation, @validations.fetch(validation), @value))
         end
       end
     end

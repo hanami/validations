@@ -270,6 +270,7 @@ module Lotus
           define_lazy_reader(name, nested_class)
           define_coerced_writer(name, nested_class)
           defined_attributes.add(name.to_s)
+          validates(name, nested: true)
         end
 
         # @since 0.2.2

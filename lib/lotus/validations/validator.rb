@@ -18,12 +18,8 @@ module Lotus
             value = @attributes[name]
             value = @attributes[name.to_s] if value.nil?
 
-            if value.respond_to?(:validate)
-              errors.set name, value.validate
-            else
-              attribute = Attribute.new(@attributes, name, value, validations)
-              errors.add name, *attribute.validate
-            end
+            attribute = Attribute.new(@attributes, name, value, validations, errors)
+            attribute.validate
           end
         end
       end
