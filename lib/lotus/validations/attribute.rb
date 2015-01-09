@@ -199,7 +199,11 @@ module Lotus
       # @api private
       def nested
         _validate(__method__) do |validator|
-          @errors.set @name, value.validate
+          errors = value.validate
+          unless errors.empty?
+            @errors.set @name, errors
+          end
+          true
         end
       end
 
