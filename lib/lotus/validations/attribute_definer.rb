@@ -235,10 +235,7 @@ module Lotus
 
         def attribute(name, options = {}, &block)
           if block_given?
-            nested_class = build_validation_class(&block)
-            define_lazy_reader(name, nested_class)
-            define_coerced_writer(name, nested_class)
-            defined_attributes.add(name.to_s)
+            define_nested_attribute(name, options, &block)
             validates(name, {})
           else
             define_attribute(name, options)
@@ -264,6 +261,15 @@ module Lotus
             define_accessor(confirmation_accessor, type)
             defined_attributes.add(confirmation_accessor)
           end
+        end
+
+        # @since x.x.x
+        # @api private
+        def define_nested_attribute(name, options, &block)
+          nested_class = build_validation_class(&block)
+          define_lazy_reader(name, nested_class)
+          define_coerced_writer(name, nested_class)
+          defined_attributes.add(name.to_s)
         end
 
         # @since 0.2.2
