@@ -7,5 +7,6 @@ if !ENV['TRAVIS']
 end
 
 gem 'lotus-utils', require: false, github: 'lotus/utils', branch: '0.3.x'
+gem 'lotus-model', require: false, github: 'lotus/model', branch: 'lotus-validations-compat'
 gem 'simplecov',   require: false
 gem 'coveralls',   require: false
