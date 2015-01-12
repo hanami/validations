@@ -208,10 +208,21 @@ module Lotus
     #
     # @since 0.1.0
     def valid?
-      validator = Validator.new(defined_validations, read_attributes)
-      @errors = validator.validate
+      validate
 
       errors.empty?
+    end
+
+    # Validates the object.
+    #
+    # @return [Errors]
+    #
+    # @since x.x.x
+    # @api private
+    # @see Lotus::Attribute#nested
+    def validate
+      validator = Validator.new(defined_validations, read_attributes, errors)
+      validator.validate
     end
 
     # Iterates thru the defined attributes and their values
