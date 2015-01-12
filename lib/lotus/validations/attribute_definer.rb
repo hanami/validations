@@ -8,6 +8,14 @@ module Lotus
     # @since 0.2.2
     # @api private
     module AttributeDefiner
+      # @since 0.2.3
+      # @api private
+      LOTUS_ENTITY_CLASS_NAME = 'Lotus::Entity'.freeze
+
+      # @since 0.2.3
+      # @api private
+      LOTUS_ENTITY_ID         = 'id'.freeze
+
       # Override Ruby's hook for modules.
       #
       # @param base [Class] the target class
@@ -18,6 +26,19 @@ module Lotus
       # @see http://www.ruby-doc.org/core/Module.html#method-i-included
       def self.included(base)
         base.extend ClassMethods
+        base.extend EntityAttributeDefiner if lotus_entity?(base)
+      end
+
+      # Decide if enable the support for `Lotus::Entity`.
+      #
+      # @param base [Class]
+      #
+      # @since 0.2.3
+      # @api private
+      def self.lotus_entity?(base)
+        base.included_modules.any? do |m|
+          m.to_s == LOTUS_ENTITY_CLASS_NAME
+        end
       end
 
       # @since 0.2.2
@@ -237,8 +258,14 @@ module Lotus
           validates(name, options)
         end
 
+        # Set of user defined attributes
+        #
+        # @return [Array<String>]
+        #
+        # @since 0.2.2
+        # @api private
         def defined_attributes
-          @defined_attributes ||= Set.new
+          @defined_attributes ||= Set.new(super)
         end
 
         private
@@ -246,7 +273,8 @@ module Lotus
         # @since 0.2.2
         # @api private
         def define_attribute(name, options)
-          type = options.delete(:type)
+          type = options.fetch(:type) { nil }
+
           define_accessor(name, type)
           defined_attributes.add(name.to_s)
 
@@ -294,6 +322,53 @@ module Lotus
         end
       end
 
+      # Support for `Lotus::Entity`
+      #
+      # @since 0.2.3
+      # @api private
+      #
+      # @example
+      #   require 'lotus/model'
+      #   require 'lotus/validations'
+      #
+      #   class Product
+      #     include Lotus::Entity
+      #     include Lotus::Validations
+      #
+      #     attribute :name,  type: String,  presence: true
+      #     attribute :price, type: Integer, presence: true
+      #   end
+      #
+      #   product = Product.new(name: 'Computer', price: '100')
+      #
+      #   product.name   # => "Computer"
+      #   product.price  # => 100
+      #   product.valid? # => true
+      module EntityAttributeDefiner
+        def self.extended(base)
+          base.class_eval do
+            include EntityAttributeDefiner::InstanceMethods
+          end
+        end
+
+        def attribute(name, options = {})
+          super
+          attributes name
+        end
+
+        def validates(name, options = {})
+          super
+          define_attribute(name, options)
+        end
+
+        module InstanceMethods
+          private
+          def assign_attribute?(attr)
+            super || attr.to_s == LOTUS_ENTITY_ID
+          end
+        end
+      end
+
       # Create a new instance with the given attributes
       #
       # @param attributes [#to_h] an Hash like object which contains the
@@ -335,7 +410,7 @@ module Lotus
       #   signup = Signup.new(params)
       #
       #   signup.name # => "Luca"
-      def initialize(attributes)
+      def initialize(attributes = {})
         @attributes ||= Utils::Attributes.new
 
         attributes.to_h.each do |key, value|

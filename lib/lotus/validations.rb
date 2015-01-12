@@ -126,6 +126,16 @@ module Lotus
         @validations ||= ValidationSet.new
       end
 
+      # Set of user defined attributes
+      #
+      # @return [Array<String>]
+      #
+      # @since 0.2.3
+      # @api private
+      def defined_attributes
+        validations.names.map(&:to_s)
+      end
+
       private
 
       # Transfers attributes to a base class

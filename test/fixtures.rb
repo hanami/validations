@@ -248,3 +248,10 @@ class CustomAttributesValidator
     @attributes.to_h
   end
 end
+
+class PureValidator
+  include Lotus::Validations
+  attr_accessor :name, :age
+
+  validates :name, presence: true
+end

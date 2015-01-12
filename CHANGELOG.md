@@ -1,6 +1,14 @@
 # Lotus::Validations
 Validations mixin for Ruby objects
 
+## v0.2.3 - 2015-01-12
+### Added
+- [Luca Guidi] Compatibility with Lotus::Entity
+
+### Fixed
+- [Luca Guidi] Ensure `.validates` usage to not raise `ArgumentError` when `:type` option is passed
+- [Luca Guidi] Ensure to assign attributes when only `.validates` is used
+
 ## v0.2.2 - 2015-01-08
 ### Added
 - [Steve Hodgkiss] Introduced `Validations.validates`. It defines validations, for already existing attributes.
