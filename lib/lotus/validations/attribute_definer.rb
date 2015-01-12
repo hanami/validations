@@ -237,8 +237,14 @@ module Lotus
           validates(name, options)
         end
 
+        # Set of user defined attributes
+        #
+        # @return [Array<String>]
+        #
+        # @since 0.2.2
+        # @api private
         def defined_attributes
-          @defined_attributes ||= Set.new
+          @defined_attributes ||= Set.new(super)
         end
 
         private

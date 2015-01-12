@@ -74,5 +74,16 @@ describe Lotus::Validations do
 
       serialized['language'].must_be_nil
     end
+
+    # Regression
+    # See: https://github.com/lotus/validations/issues/44
+    describe 'when only .validates is used' do
+      it 'accepts given whitelisted attributes' do
+        validator = PureValidator.new(name: 'L', age: 32)
+
+        validator.name.must_equal 'L'
+        validator.age.must_be_nil
+      end
+    end
   end
 end
