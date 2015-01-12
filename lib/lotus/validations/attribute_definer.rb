@@ -273,7 +273,8 @@ module Lotus
         # @since 0.2.2
         # @api private
         def define_attribute(name, options)
-          type = options.delete(:type)
+          type = options.fetch(:type) { nil }
+
           define_accessor(name, type)
           defined_attributes.add(name.to_s)
 
@@ -353,6 +354,11 @@ module Lotus
         def attribute(name, options = {})
           super
           attributes name
+        end
+
+        def validates(name, options = {})
+          super
+          define_attribute(name, options)
         end
 
         module InstanceMethods
