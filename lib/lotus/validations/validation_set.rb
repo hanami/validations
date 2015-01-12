@@ -16,7 +16,8 @@ module Lotus
         :inclusion,
         :exclusion,
         :confirmation,
-        :size
+        :size,
+        :type
       ].freeze
 
       # @since 0.2.2
@@ -43,6 +44,12 @@ module Lotus
       # @api private
       def each_key(&blk)
         @validations.each_key(&blk)
+      end
+
+      # @since 0.2.3
+      # @api private
+      def names
+        @validations.keys
       end
 
       private
