@@ -1,7 +1,8 @@
 require 'test_helper'
+require 'lotus/utils'
 require 'lotus/model'
 
-describe 'lotus::entity compatibility' do
+describe 'Lotus::Entity compatibility' do
   describe 'with attributes definition' do
     before do
       class Product
@@ -111,4 +112,4 @@ describe 'lotus::entity compatibility' do
       product.wont_be :valid?
     end
   end
-end
+end unless Lotus::Utils.jruby?
