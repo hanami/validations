@@ -345,24 +345,44 @@ module Lotus
       #   product.price  # => 100
       #   product.valid? # => true
       module EntityAttributeDefiner
+        # Override for Module#extend
+        #
+        # @since 0.2.3
+        # @api private
+        #
+        # @see http://ruby-doc.org/Module.html#method-i-extended
         def self.extended(base)
           base.class_eval do
             include EntityAttributeDefiner::InstanceMethods
           end
         end
 
+        # @since 0.2.3
+        # @api private
+        #
+        # @see Lotus::Validations::AttributeDefiner#attribute
         def attribute(name, options = {})
           super
           attributes name
         end
 
+        # @since 0.2.3
+        # @api private
+        #
+        # @see Lotus::Validations::ClassMethods#validates
         def validates(name, options = {})
           super
           define_attribute(name, options)
         end
 
+        # @since 0.2.3
+        # @api private
         module InstanceMethods
           private
+          # @since 0.2.3
+          # @api private
+          #
+          # @see Lotus::Validations::AttributeDefiner#assign_attribute?
           def assign_attribute?(attr)
             super || attr.to_s == LOTUS_ENTITY_ID
           end

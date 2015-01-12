@@ -471,6 +471,29 @@ signup.errors
   # }>
 ```
 
+### Lotus::Entity
+
+Integration with [`Lotus::Entity`](https://github.com/lotus/model) is activated automatically.
+
+```ruby
+require 'lotus/model'
+require 'lotus/validations'
+
+class Product
+  include Lotus::Entity
+  include Lotus::Validations
+
+  attribute :name,  type: String,  presence: true
+  attribute :price, type: Integer, presence: true
+end
+
+product = Product.new(name: 'Book', price: '100')
+product.valid? # => true
+
+product.name  # => "Book"
+product.price # => 100
+```
+
 ## Contributing
 
 1. Fork it ( https://github.com/lotus/lotus-validations/fork )
@@ -481,4 +504,4 @@ signup.errors
 
 ## Copyright
 
-Copyright 2014 Luca Guidi – Released under MIT License
+Copyright 2014-2015 Luca Guidi – Released under MIT License
