@@ -117,5 +117,28 @@ describe Lotus::Validations do
       validator = TypeValidatorTest.new(integer_attr: [])
       validator.integer_attr.must_be_nil
     end
+
+    # Regression
+    # See: https://github.com/lotus/validations/issues/44
+    describe 'when only .validates is used' do
+      before do
+        class PureValidatorTest
+          include Lotus::Validations
+
+          attr_accessor :attr
+
+          validates :attr, type: String
+        end
+      end
+
+      after do
+        Object.__send__(:remove_const, :PureValidatorTest)
+      end
+
+      it 'allows to set the type' do
+        validator = PureValidatorTest.new(attr: 23)
+        validator.attr.must_equal 23
+      end
+    end
   end
 end
