@@ -100,14 +100,6 @@ module Lotus
         end
       end
 
-      # Sets the errors for an attribute to a given object
-      #
-      # @since x.x.x
-      # @api private
-      def set(attribute, errors)
-        @errors[attribute] = errors
-      end
-
       # Return the errors for the given attribute
       #
       # @param attribute [Symbol] the name of the attribute

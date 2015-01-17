@@ -200,8 +200,10 @@ module Lotus
       def nested
         _validate(__method__) do |validator|
           errors = value.validate
-          unless errors.empty?
-            @errors.set @name, errors
+          if errors.any?
+            errors.each do |error|
+              @errors.add "#{@name}.#{error.attribute}", error
+            end
           end
           true
         end
