@@ -9,7 +9,7 @@ module Lotus
       # @return [Symbol] the name of the attribute
       #
       # @since 0.1.0
-      attr_reader :attribute
+      attr_reader :attribute_name
 
       # The name of the validation
       #
@@ -32,6 +32,25 @@ module Lotus
       # @since 0.1.0
       attr_reader :actual
 
+      # Returns the namespaced attribute name
+      #
+      # In cases where the error was pulled up from nested validators,
+      # `attribute` will be a namespaced string containing
+      # parent attribute names separated by a period.
+      #
+      # @example
+      #   error = Error.new(:name, :presence, true, nil, 'author')
+      #   error.attribute
+      #   => "author.name"
+      #   error.attribute_name
+      #   => "name"
+      #
+      # @api public
+      # @since x.x.x
+      def attribute
+        [@namespace, attribute_name].compact.join('.')
+      end
+
       # Initialize a validation error
       #
       # @param attribute [Symbol] the name of the attribute
@@ -41,9 +60,9 @@ module Lotus
       #
       # @since 0.1.0
       # @api private
-      def initialize(attribute, validation, expected, actual)
-        @attribute, @validation, @expected, @actual =
-          attribute, validation, expected, actual
+      def initialize(attribute_name, validation, expected, actual, namespace = nil)
+        @attribute_name, @validation, @expected, @actual, @namespace =
+          attribute_name, validation, expected, actual, namespace
       end
 
       # Check if self equals to `other`
@@ -55,25 +74,6 @@ module Lotus
           other.validation == validation &&
           other.expected   == expected   &&
           other.actual     == actual
-      end
-
-      # Returns the de-namesapced attribute name
-      #
-      # In cases where the error was pulled up from nested validators,
-      # `attribute` will be a namespaced string with the last element being the
-      # actual attribute name
-      #
-      # @example
-      #   error = Error.new('author.name', :presence, true, nil)
-      #   error.attribute
-      #   => "author.name"
-      #   error.attribute_name
-      #   => "name"
-      #
-      # @api public
-      # @since x.x.x
-      def attribute_name
-        @attribute.to_s.split('.').last
       end
     end
   end

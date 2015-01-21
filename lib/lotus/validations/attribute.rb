@@ -201,9 +201,8 @@ module Lotus
         _validate(__method__) do |validator|
           errors = value.validate
           errors.each do |error|
-            namespaced_attribute_name = "#{@name}.#{error.attribute}"
-            new_error = Error.new(namespaced_attribute_name, error.validation, error.expected, error.actual)
-            @errors.add namespaced_attribute_name, new_error
+            new_error = Error.new(error.attribute, error.validation, error.expected, error.actual, @name)
+            @errors.add new_error.attribute, new_error
           end
           true
         end

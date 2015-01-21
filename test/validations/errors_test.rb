@@ -194,13 +194,17 @@ describe Lotus::Validations::Errors do
     end
   end
 
-  describe '#attribute_name' do
+  describe 'attribute names' do
     it 'returns the attribute string when not namespaced' do
-      Lotus::Validations::Error.new(:name, :presence, true, nil).attribute_name.must_equal('name')
+      error = Lotus::Validations::Error.new(:name, :presence, true, nil)
+      error.attribute_name.must_equal(:name)
+      error.attribute.must_equal('name')
     end
 
     it 'returns the last segment of the attribute name when namespaced' do
-      Lotus::Validations::Error.new('job.author', :presence, true, nil).attribute_name.must_equal('author')
+      error = Lotus::Validations::Error.new('author', :presence, true, nil, :job)
+      error.attribute_name.must_equal('author')
+      error.attribute.must_equal('job.author')
     end
   end
 end
