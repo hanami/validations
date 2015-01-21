@@ -56,6 +56,25 @@ module Lotus
           other.expected   == expected   &&
           other.actual     == actual
       end
+
+      # Returns the de-namesapced attribute name
+      #
+      # In cases where the error was pulled up from nested validators,
+      # `attribute` will be a namespaced string with the last element being the
+      # actual attribute name
+      #
+      # @example
+      #   error = Error.new('author.name', :presence, true, nil)
+      #   error.attribute
+      #   => "author.name"
+      #   error.attribute_name
+      #   => "name"
+      #
+      # @api public
+      # @since x.x.x
+      def attribute_name
+        @attribute.to_s.split('.').last
+      end
     end
   end
 end

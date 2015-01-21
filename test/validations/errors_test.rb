@@ -193,5 +193,15 @@ describe Lotus::Validations::Errors do
       deserialized.must_equal(@actual)
     end
   end
+
+  describe '#attribute_name' do
+    it 'returns the attribute string when not namespaced' do
+      Lotus::Validations::Error.new(:name, :presence, true, nil).attribute_name.must_equal('name')
+    end
+
+    it 'returns the last segment of the attribute name when namespaced' do
+      Lotus::Validations::Error.new('job.author', :presence, true, nil).attribute_name.must_equal('author')
+    end
+  end
 end
 
