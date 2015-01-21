@@ -197,7 +197,7 @@ describe Lotus::Validations::Errors do
   describe 'attribute names' do
     it 'returns the attribute string when not namespaced' do
       error = Lotus::Validations::Error.new(:name, :presence, true, nil)
-      error.attribute_name.must_equal(:name)
+      error.attribute_name.must_equal('name')
       error.attribute.must_equal('name')
     end
 
