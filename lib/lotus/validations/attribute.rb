@@ -202,7 +202,9 @@ module Lotus
           errors = value.validate
           if errors.any?
             errors.each do |error|
-              @errors.add "#{@name}.#{error.attribute}", error
+              namespaced_attribute_name = "#{@name}.#{error.attribute}"
+              new_error = Error.new(namespaced_attribute_name, error.validation, error.expected, error.actual)
+              @errors.add namespaced_attribute_name, new_error
             end
           end
           true
