@@ -59,8 +59,11 @@ module Lotus
       # @since 0.1.0
       # @api private
       def initialize(attribute_name, validation, expected, actual, namespace = nil)
-        @attribute_name, @validation, @expected, @actual, @namespace =
-          attribute_name.to_s, validation, expected, actual, namespace
+        @attribute_name = attribute_name.to_s
+        @validation = validation
+        @expected = expected
+        @actual = actual
+        @namespace = namespace
         @attribute = [@namespace, attribute_name].compact.join('.')
       end
 
