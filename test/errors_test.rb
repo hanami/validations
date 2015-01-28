@@ -16,5 +16,18 @@ describe Lotus::Validations do
       3.times { @validator.valid? }
       @validator.errors.count.must_equal(2)
     end
+
+    it "doesn't have errors after requesting an attribute that doesn't have errors" do
+      @validator.name = 'Luca'
+      @validator.age = 32
+      @validator.valid?.must_equal(true)
+
+      # Triggers the behaviour of making Errors think it now
+      # has errors
+      @validator.errors.for(:name).must_equal([])
+
+      @validator.errors.any?.must_equal(false)
+      @validator.errors.to_h.must_equal({})
+    end
   end
 end

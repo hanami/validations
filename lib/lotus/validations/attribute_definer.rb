@@ -253,9 +253,15 @@ module Lotus
         #
         #   signup = Signup.new(password: 'short')
         #   signup.valid? # => false
-        def attribute(name, options = {})
-          define_attribute(name, options)
-          validates(name, options)
+
+        def attribute(name, options = {}, &block)
+          if block_given?
+            define_nested_attribute(name, options, &block)
+            validates(name, {})
+          else
+            define_attribute(name, options)
+            validates(name, options)
+          end
         end
 
         # Set of user defined attributes
@@ -283,6 +289,16 @@ module Lotus
             define_accessor(confirmation_accessor, type)
             defined_attributes.add(confirmation_accessor)
           end
+        end
+
+        # @since x.x.x
+        # @api private
+        def define_nested_attribute(name, options, &block)
+          nested_class = build_validation_class(&block)
+          define_lazy_reader(name, nested_class)
+          define_coerced_writer(name, nested_class)
+          defined_attributes.add(name.to_s)
+          validates(name, nested: true)
         end
 
         # @since 0.2.2
@@ -319,6 +335,34 @@ module Lotus
           define_method(name) do
             @attributes.get(name)
           end
+        end
+
+        # Defines a reader that will return a new instance of
+        # the given type if one is not already present
+        #
+        # @since x.x.x
+        # @api private
+        def define_lazy_reader(name, type)
+          define_method(name) do
+            value = @attributes.get(name)
+            return value if value
+            type.new({}).tap do |value|
+              @attributes.set(name, value)
+            end
+          end
+        end
+
+        # Creates a validation class and configures it with the
+        # given block.
+        #
+        # @since x.x.x
+        # @api private
+        def build_validation_class(&block)
+          kls = Class.new do
+            include Lotus::Validations
+          end
+          kls.class_eval(&block)
+          kls
         end
       end
 

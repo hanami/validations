@@ -504,4 +504,4 @@ product.price # => 100
 
 ## Copyright
 
-Copyright 2014-2015 Luca Guidi – Released under MIT License
+Copyright © 2014-2015 Luca Guidi – Released under MIT License

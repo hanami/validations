@@ -17,7 +17,8 @@ module Lotus
         :exclusion,
         :confirmation,
         :size,
-        :type
+        :type,
+        :nested
       ].freeze
 
       # @since 0.2.2

@@ -15,7 +15,7 @@ module Lotus
       # @since 0.1.0
       # @api private
       def initialize
-        @errors = Hash.new {|h,k| h[k] = [] }
+        @errors = Hash.new
       end
 
       # Check if the set is empty
@@ -94,7 +94,10 @@ module Lotus
       #
       # @see Lotus::Validations::Error
       def add(attribute, *errors)
-        @errors[attribute].push(*errors) if errors.any?
+        if errors.any?
+          @errors[attribute] ||= []
+          @errors[attribute].push(*errors)
+        end
       end
 
       # Return the errors for the given attribute
@@ -103,7 +106,7 @@ module Lotus
       #
       # @since 0.1.0
       def for(attribute)
-        @errors[attribute]
+        @errors.fetch(attribute) { [] }
       end
 
       # Check if the current set of errors equals to the one who belongs to
