@@ -195,7 +195,7 @@ module Lotus
 
       # Validates nested Lotus Validations objects
       #
-      # @since x.x.x
+      # @since 0.2.4
       # @api private
       def nested
         _validate(__method__) do |validator|

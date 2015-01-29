@@ -253,7 +253,6 @@ module Lotus
         #
         #   signup = Signup.new(password: 'short')
         #   signup.valid? # => false
-
         def attribute(name, options = {}, &block)
           if block_given?
             define_nested_attribute(name, options, &block)
@@ -291,7 +290,7 @@ module Lotus
           end
         end
 
-        # @since x.x.x
+        # @since 0.2.4
         # @api private
         def define_nested_attribute(name, options, &block)
           nested_class = build_validation_class(&block)
@@ -340,14 +339,15 @@ module Lotus
         # Defines a reader that will return a new instance of
         # the given type if one is not already present
         #
-        # @since x.x.x
+        # @since 0.2.4
         # @api private
         def define_lazy_reader(name, type)
           define_method(name) do
             value = @attributes.get(name)
             return value if value
-            type.new({}).tap do |value|
-              @attributes.set(name, value)
+
+            type.new({}).tap do |val|
+              @attributes.set(name, val)
             end
           end
         end
@@ -355,7 +355,7 @@ module Lotus
         # Creates a validation class and configures it with the
         # given block.
         #
-        # @since x.x.x
+        # @since 0.2.4
         # @api private
         def build_validation_class(&block)
           kls = Class.new do

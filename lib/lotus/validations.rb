@@ -217,8 +217,9 @@ module Lotus
     #
     # @return [Errors]
     #
-    # @since x.x.x
+    # @since 0.2.4
     # @api private
+    #
     # @see Lotus::Attribute#nested
     def validate
       validator = Validator.new(defined_validations, read_attributes, errors)

@@ -363,6 +363,51 @@ The other reason is that this isn't an effective way to ensure uniqueness of a v
 
 Please read more at: [The Perils of Uniqueness Validations](http://robots.thoughtbot.com/the-perils-of-uniqueness-validations).
 
+### Nested validations
+
+Nested validations are handled with a nested block syntax.
+
+```ruby
+class ShippingDetails
+  include Lotus::Validations
+
+  attribute :full_name, presence: true
+
+  attribute :address do
+    attribute :street,      presence: true
+    attribute :city,        presence: true
+    attribute :country,     presence: true
+    attribute :postal_code, presence: true, format: /.../
+  end
+end
+
+validator = ShippingDetails.new
+validator.valid? # => false
+```
+
+Bulk operations on errors are guaranteed by `#each`.
+This method yields a **flatten collection of errors**.
+
+```ruby
+validator.errors.each do |error|
+  error.name
+    # => on the first iteration it returns "full_name"
+    # => the second time it returns "address.street" and so on..
+end
+```
+
+Errors for a specific attribute can be accessed via `#for`.
+
+```ruby
+error = validator.errors.for('full_name').first
+error.name           # => "full_name"
+error.attribute_name # => "full_name"
+
+error = validator.errors.for('address.street').first
+error.name           # => "address.street"
+error.attribute_name # => "street"
+```
+
 ### Composable validations
 
 Validations can be reused via composition:

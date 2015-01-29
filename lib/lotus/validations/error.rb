@@ -4,11 +4,23 @@ module Lotus
     #
     # @since 0.1.0
     class Error
+      # @since 0.2.4
+      # @api private
+      NAMESPACE_SEPARATOR = '.'.freeze
+
       # The name of the attribute
       #
       # @return [Symbol] the name of the attribute
       #
-      # @since 0.1.0
+      # @since 0.2.4
+      #
+      # @see Lotus::Validations::Error#attribute
+      #
+      # @example
+      #   error = Error.new(:name, :presence, true, nil, 'author')
+      #
+      #   error.attribute      # => "author.name"
+      #   error.attribute_name # => "name"
       attr_reader :attribute_name
 
       # The name of the validation
@@ -38,15 +50,15 @@ module Lotus
       # `attribute` will be a namespaced string containing
       # parent attribute names separated by a period.
       #
+      # @since 0.1.0
+      #
+      # @see Lotus::Validations::Error#attribute_name
+      #
       # @example
       #   error = Error.new(:name, :presence, true, nil, 'author')
-      #   error.attribute
-      #   => "author.name"
-      #   error.attribute_name
-      #   => "name"
       #
-      # @api public
-      # @since x.x.x
+      #   error.attribute      # => "author.name"
+      #   error.attribute_name # => "name"
       attr_accessor :attribute
 
       # Initialize a validation error
@@ -55,6 +67,7 @@ module Lotus
       # @param validation [Symbol] the name of the validation
       # @param expected [Object] the expected value
       # @param actual [Object] the actual value
+      # @param namespace [String] the optional namespace
       #
       # @since 0.1.0
       # @api private
@@ -64,7 +77,7 @@ module Lotus
         @expected = expected
         @actual = actual
         @namespace = namespace
-        @attribute = [@namespace, attribute_name].compact.join('.')
+        @attribute = [@namespace, attribute_name].compact.join(NAMESPACE_SEPARATOR)
       end
 
       # Check if self equals to `other`
