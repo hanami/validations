@@ -1,6 +1,14 @@
 # Lotus::Validations
 Validations mixin for Ruby objects
 
+## v0.2.4 - 2015-01-30
+### Added
+- [Steve Hodgkiss] Introduced `Lotus::Validations::Error#attribute_name`
+- [Steve Hodgkiss] Nested validations
+
+### Changed
+- [Steve Hodgkiss] `Lotus::Validations::Error#name` returns the complete attribute name (Eg. `first_name` or `address.street`)
+
 ## v0.2.3 - 2015-01-12
 ### Added
 - [Luca Guidi] Compatibility with Lotus::Entity
