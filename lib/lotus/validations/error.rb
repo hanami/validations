@@ -63,7 +63,7 @@ module Lotus
 
       # Initialize a validation error
       #
-      # @param attribute [Symbol] the name of the attribute
+      # @param attribute_name [Symbol] the name of the attribute
       # @param validation [Symbol] the name of the validation
       # @param expected [Object] the expected value
       # @param actual [Object] the actual value
