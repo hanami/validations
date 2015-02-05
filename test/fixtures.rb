@@ -255,3 +255,30 @@ class PureValidator
 
   validates :name, presence: true
 end
+
+
+class CustomPresenceValidator
+  include Lotus::Validations::Validator
+
+  def valid?(value)
+    !value.empty?
+  end
+end
+
+class CustomAttributesValidation
+  include Lotus::Validations
+
+  attribute :name, with: CustomPresenceValidator
+end
+
+class CustomPresenceValidation
+  include Lotus::Validations
+
+  def initialize(attributes = {})
+    @name = attributes.fetch(:name)
+  end
+
+  attr_accessor :name
+
+  validates :name, with: CustomPresenceValidator
+end

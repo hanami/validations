@@ -5,6 +5,7 @@ require 'lotus/validations/attribute_definer'
 require 'lotus/validations/validation_set'
 require 'lotus/validations/attribute'
 require 'lotus/validations/errors'
+require 'lotus/validations/validator'
 
 module Lotus
   # Lotus::Validations is a set of lightweight validations for Ruby objects.

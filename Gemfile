@@ -12,5 +12,5 @@ gem 'simplecov',   require: false
 gem 'coveralls',   require: false
 
 group :development do
-  gem 'pry', require: false
+  gem 'pry'
 end

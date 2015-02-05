@@ -18,7 +18,8 @@ module Lotus
         :confirmation,
         :size,
         :type,
-        :nested
+        :nested,
+        :with
       ].freeze
 
       # @since 0.2.2

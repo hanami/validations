@@ -46,6 +46,7 @@ module Lotus
       def validate
         presence
         acceptance
+        with
 
         return if skip?
 
@@ -204,6 +205,16 @@ module Lotus
             @errors.add new_error.attribute, new_error
           end
           true
+        end
+      end
+
+      # Validates custom Lotus Validator objects
+      #
+      # @since 0.2.5
+      # @api private
+      def with
+        _validate(__method__) do |validator|
+          validator.call(@value)
         end
       end
 
