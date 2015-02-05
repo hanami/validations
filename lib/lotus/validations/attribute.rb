@@ -29,15 +29,14 @@ module Lotus
       # @param attributes [Hash] a set of attributes and values coming from the
       #   input
       # @param name [Symbol] the name of the attribute
-      # @param value [Object,nil] the value coming from the input
       # @param validations [Hash] a set of validation rules
       #
       # @since 0.2.0
       # @api private
-      def initialize(attributes, name, value, validations, errors)
+      def initialize(attributes, name, validations, errors)
         @attributes  = attributes
         @name        = name
-        @value       = value
+        @value       = attributes[name]
         @validations = validations
         @errors      = errors
       end

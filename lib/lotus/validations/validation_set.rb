@@ -53,7 +53,18 @@ module Lotus
         @validations.keys
       end
 
+      def validate(attributes, errors)
+        errors.clear
+
+        @validations.each do |name, validators|
+          Attribute.new(attributes, name, validators, errors).validate
+        end
+
+        errors
+      end
+
       private
+
       # Checks at the loading time if the user defined validations are recognized
       #
       # @param name [Symbol] the attribute name
