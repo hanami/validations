@@ -366,14 +366,14 @@ require 'lotus/validations'
 class CustomPresenceValidator
   include Lotus::Validations::Validator
 
-  def valid?(value)
-    !value.empty?
+  def valid?
+    !@value.empty?
   end
 end
 
 ```
 
-And utilise it using `with` option
+And utilize it using `with` option
 
 ```ruby
 require 'lotus/validations'
@@ -383,7 +383,7 @@ class User
 end
 
 user = User.new(name: '')
-user.valid? # => falase
+user.valid? # => false
 
 user = User.new(name: 'marcin')
 user.valid? # => true

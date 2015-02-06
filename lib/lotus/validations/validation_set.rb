@@ -54,6 +54,11 @@ module Lotus
         @validations.keys
       end
 
+      # For each attribute it creates new Attribute object and runs all
+      # associated validations
+      #
+      # @since 0.2.5
+      # @api private
       def validate(attributes, errors)
         errors.clear
 
