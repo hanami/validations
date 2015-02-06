@@ -24,6 +24,8 @@ module Lotus
       # @api private
       CONFIRMATION_TEMPLATE = '%{name}_confirmation'.freeze
 
+      attr_accessor :errors
+
       # Instantiate an attribute
       #
       # @param attributes [Hash] a set of attributes and values coming from the
@@ -33,12 +35,12 @@ module Lotus
       #
       # @since 0.2.0
       # @api private
-      def initialize(attributes, name, validations, errors)
+      def initialize(attributes, name, validations)
         @attributes  = attributes
         @name        = name
         @value       = attributes[name]
         @validations = validations
-        @errors      = errors
+        @errors      = []
       end
 
       # @api private
@@ -48,7 +50,8 @@ module Lotus
         acceptance
         with
 
-        return if skip?
+
+        
 
         format
         inclusion
@@ -77,7 +80,7 @@ module Lotus
       # @since 0.2.0
       # @api private
       def presence
-        _validate(__method__) { !blank_value? }
+        _validate(__method__) { |validation| Lotus::Validations::Validator::Presence.call(@value, { validation: validation }) }
       end
 
       # Validates acceptance of the value.
@@ -93,7 +96,7 @@ module Lotus
       # @since 0.2.0
       # @api private
       def acceptance
-        _validate(__method__) { Lotus::Utils::Kernel.Boolean(@value) }
+        _validate(__method__) { |validation| Lotus::Validations::Validator::Acceptance.call(@value, { validation: validation }) }
       end
 
       # Validates format of the value.
@@ -106,7 +109,9 @@ module Lotus
       # @since 0.2.0
       # @api private
       def format
-        _validate(__method__) {|matcher| @value.to_s.match(matcher) }
+        _validate(__method__)  do |validation|
+          Lotus::Validations::Validator::Format.call(@value, { validation: validation })
+        end
       end
 
       # Validates inclusion of the value in the defined collection.
@@ -118,7 +123,9 @@ module Lotus
       # @since 0.2.0
       # @api private
       def inclusion
-        _validate(__method__) {|collection| collection.include?(value) }
+        _validate(__method__)  do |validation|
+          Lotus::Validations::Validator::Inclusion.call(@value, { validation: validation })
+        end
       end
 
       # Validates exclusion of the value in the defined collection.
@@ -130,7 +137,9 @@ module Lotus
       # @since 0.2.0
       # @api private
       def exclusion
-        _validate(__method__) {|collection| !collection.include?(value) }
+        _validate(__method__)  do |validation|
+          Lotus::Validations::Validator::Exclusion.call(@value, { validation: validation })
+        end
       end
 
       # Validates confirmation of the value with another corresponding value.
@@ -145,7 +154,9 @@ module Lotus
       # @api private
       def confirmation
         _validate(__method__) do
-          _attribute == _attribute(CONFIRMATION_TEMPLATE % { name: @name })
+          Lotus::Validations::Validator::Confirmation.call(
+            @value, { validation: _attribute(CONFIRMATION_TEMPLATE % { name: @name }) }
+          )
         end
       end
 
@@ -182,14 +193,7 @@ module Lotus
       # @api private
       def size
         _validate(__method__) do |validator|
-          case validator
-          when Numeric, ->(v) { v.respond_to?(:to_int) }
-            value.size == validator.to_int
-          when Range
-            validator.include?(value.size)
-          else
-            raise ArgumentError.new("Size validator must be a number or a range, it was: #{ validator }")
-          end
+          Lotus::Validations::Validator::Size.call(@value, { validation: validator })
         end
       end
 
@@ -199,11 +203,9 @@ module Lotus
       # @api private
       def nested
         _validate(__method__) do |validator|
-          errors = value.validate
-          errors.each do |error|
-            new_error = Error.new(error.attribute, error.validation, error.expected, error.actual, @name)
-            @errors.add new_error.attribute, new_error
-          end
+
+          @errors = Lotus::Validations::Validator::Nested.call(@value)
+
           true
         end
       end
@@ -214,7 +216,7 @@ module Lotus
       # @api private
       def with
         _validate(__method__) do |validator|
-          validator.call(@value)
+          Lotus::Validations::Validator::With.call(@value, { validation: validator})
         end
       end
 
@@ -222,16 +224,6 @@ module Lotus
       # @api private
       def skip?
         @value.nil?
-      end
-
-      # Checks if the value is "blank".
-      #
-      # @see Lotus::Validations::BlankValueChecker
-      #
-      # @since 0.2.0
-      # @api private
-      def blank_value?
-        BlankValueChecker.new(@value).blank_value?
       end
 
       # Reads an attribute from the validator.
@@ -247,8 +239,8 @@ module Lotus
       # @since 0.2.0
       # @api private
       def _validate(validation)
-        if (validator = @validations[validation]) && !(yield validator)
-          @errors.add(@name, Error.new(@name, validation, @validations.fetch(validation), @value))
+        if (validator = @validations[validation])
+          @errors << yield(validator)
         end
       end
     end

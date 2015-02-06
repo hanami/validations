@@ -27,3 +27,4 @@ module Lotus::Validations::ValidationIntrospection
 end
 
 require 'fixtures'
+require 'pry'

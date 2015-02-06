@@ -44,8 +44,9 @@ describe Lotus::Validations do
         'password_confirmation' => '123',
         'unknown'               => 'blah'
       )
-
+      
       validator.must_be :valid?
+
 
       validator.to_h.must_equal({ email: 'user@example.org', password: '123', password_confirmation: '123' })
     end

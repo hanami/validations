@@ -63,7 +63,9 @@ module Lotus
         errors.clear
 
         @validations.each do |name, validators|
-          Attribute.new(attributes, name, validators, errors).validate
+          validators.each do |type, value|
+            errors.populate(name, type, Lotus::Validations::Validator.const_get(type.capitalize).call(attributes, name, value))
+          end
         end
 
         errors

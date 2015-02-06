@@ -1,11 +1,20 @@
 require 'lotus/utils/hash'
 require 'lotus/validations/version'
-require 'lotus/validations/blank_value_checker'
 require 'lotus/validations/attribute_definer'
 require 'lotus/validations/validation_set'
 require 'lotus/validations/attribute'
 require 'lotus/validations/errors'
 require 'lotus/validations/validator'
+require 'lotus/validations/validator/presence'
+require 'lotus/validations/validator/format'
+require 'lotus/validations/validator/acceptance'
+require 'lotus/validations/validator/inclusion'
+require 'lotus/validations/validator/exclusion'
+require 'lotus/validations/validator/confirmation'
+require 'lotus/validations/validator/size'
+require 'lotus/validations/validator/nested'
+require 'lotus/validations/validator/with'
+require 'lotus/validations/validator/type'
 
 module Lotus
   # Lotus::Validations is a set of lightweight validations for Ruby objects.

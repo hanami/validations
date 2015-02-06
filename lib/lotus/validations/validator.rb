@@ -7,15 +7,30 @@ module Lotus
         end
       end
 
-      attr_reader :value, :error
+      attr_reader :value, :validator
 
-      def initialize(value)
-        @value = value
+      def initialize(attributes, name, value)
+        @attributes = attributes
+        @name = name
+        @validator_value = value
+        @value = @attributes[@name]
+      end
+
+      def validator_name
+        self.class.to_s
+      end
+
+      def generate_errors
+        Error.new(validator_name, @validator_value, @value)
+      end
+
+      def validate
+        valid? || generate_errors
       end
 
       module ClassMethods
-        def call(value)
-          new(value).valid?
+        def call(attributes, name, value)
+          new(attributes, name, value).validate
         end
       end
     end

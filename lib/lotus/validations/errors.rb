@@ -10,6 +10,8 @@ module Lotus
     #
     # @since 0.1.0
     class Errors
+      include Enumerable
+
       # Initialize the errors
       #
       # @since 0.1.0
@@ -68,20 +70,7 @@ module Lotus
       #
       # @since 0.1.0
       def each(&blk)
-        errors.each(&blk)
-      end
-
-      # Iterate thru the errors, yields the given block and collect the
-      # returning value.
-      #
-      # @param blk [Proc] the given block
-      # @yield [error] a Lotus::Validations::Error
-      #
-      # @see Lotus::Validations::Error
-      #
-      # @since 0.1.0
-      def map(&blk)
-        errors.map(&blk)
+        @errors.each(&blk)
       end
 
       # Add an error to the set
@@ -94,9 +83,25 @@ module Lotus
       #
       # @see Lotus::Validations::Error
       def add(attribute, *errors)
+        errors = errors.select { |e| e.is_a? Error }
         if errors.any?
           @errors[attribute] ||= []
           @errors[attribute].push(*errors)
+        end
+      end
+
+      def add_nested(name, errors = {})
+        errors.each do |key, value|
+          @errors["#{name}.#{key}"] ||= []
+          @errors["#{name}.#{key}"].push(*value.select { |e| e.is_a? Error})
+        end
+      end
+
+      def populate(name, type, errors)
+        if type == :nested
+          add_nested(name, errors)
+        else
+          add(name, *errors)
         end
       end
 
