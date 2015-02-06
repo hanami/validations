@@ -356,6 +356,39 @@ signup.valid? # => false
 **Note that in the example above you are able to validate the weight of the file,
 because Ruby's `File` and `Tempfile` both respond to `#size`.**
 
+#### Custom Validators
+
+You can specify your custom validation
+
+```ruby
+require 'lotus/validations'
+
+class CustomPresenceValidator
+  include Lotus::Validations::Validator
+
+  def valid?(value)
+    !value.empty?
+  end
+end
+
+```
+
+And utilise it using `with` option
+
+```ruby
+require 'lotus/validations'
+
+class User
+  attribute :name, with: CustomPresenceValidator
+end
+
+user = User.new(name: '')
+user.valid? # => falase
+
+user = User.new(name: 'marcin')
+user.valid? # => true
+```
+
 #### Uniqueness
 
 Uniqueness validations aren't implemented because this library doesn't deal with persistence.
