@@ -13,13 +13,9 @@ module Lotus
         @value = value
       end
 
-      def call
-        valid?(@value)
-      end
-
       module ClassMethods
         def call(value)
-          new(value).call
+          new(value).valid?
         end
       end
     end

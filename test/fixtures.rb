@@ -260,8 +260,8 @@ end
 class CustomPresenceValidator
   include Lotus::Validations::Validator
 
-  def valid?(value)
-    !value.empty?
+  def valid?
+    !@value.empty?
   end
 end
 
