@@ -133,7 +133,7 @@ module Lotus
       # @since 0.2.3
       # @api private
       def defined_attributes
-        validations.names.map(&:to_s)
+        validations.names.map(&:to_sym)
       end
 
       private

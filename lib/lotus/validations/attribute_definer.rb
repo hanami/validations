@@ -1,5 +1,5 @@
 require 'set'
-require 'lotus/utils/attributes'
+require 'lotus/utils/hash'
 
 module Lotus
   module Validations
@@ -281,10 +281,10 @@ module Lotus
           type = options.fetch(:type) { nil }
 
           define_accessor(name, type)
-          defined_attributes.add(name.to_s)
+          defined_attributes.add(name.to_sym)
 
           if options[:confirmation]
-            confirmation_accessor = "#{ name }_confirmation"
+            confirmation_accessor = "#{ name }_confirmation".to_sym
             define_accessor(confirmation_accessor, type)
             defined_attributes.add(confirmation_accessor)
           end
@@ -296,7 +296,7 @@ module Lotus
           nested_class = build_validation_class(&block)
           define_lazy_reader(name, nested_class)
           define_coerced_writer(name, nested_class)
-          defined_attributes.add(name.to_s)
+          defined_attributes.add(name.to_sym)
           validates(name, nested: true)
         end
 
@@ -316,7 +316,7 @@ module Lotus
         # @api private
         def define_coerced_writer(name, type)
           define_method("#{ name }=") do |value|
-            @attributes.set(name, Lotus::Validations::Coercions.coerce(type, value))
+            @attributes[name] = Lotus::Validations::Coercions.coerce(type, value)
           end
         end
 
@@ -324,7 +324,7 @@ module Lotus
         # @api private
         def define_writer(name)
           define_method("#{ name }=") do |value|
-            @attributes.set(name, value)
+            @attributes[name] = value
           end
         end
 
@@ -332,7 +332,7 @@ module Lotus
         # @api private
         def define_reader(name)
           define_method(name) do
-            @attributes.get(name)
+            @attributes[name]
           end
         end
 
@@ -343,11 +343,11 @@ module Lotus
         # @api private
         def define_lazy_reader(name, type)
           define_method(name) do
-            value = @attributes.get(name)
+            value = @attributes[name]
             return value if value
 
             type.new({}).tap do |val|
-              @attributes.set(name, val)
+              @attributes[name] = val
             end
           end
         end
@@ -475,7 +475,7 @@ module Lotus
       #
       #   signup.name # => "Luca"
       def initialize(attributes = {})
-        @attributes ||= Utils::Attributes.new
+        @attributes ||= Utils::Hash.new
 
         attributes.to_h.each do |key, value|
           public_send("#{ key }=", value) if assign_attribute?(key)
@@ -486,7 +486,7 @@ module Lotus
       # @since 0.2.2
       # @api private
       def assign_attribute?(attr)
-        self.class.defined_attributes.include?(attr.to_s)
+        self.class.defined_attributes.include?(attr.to_sym)
       end
     end
   end

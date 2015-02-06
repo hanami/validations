@@ -38,7 +38,7 @@ describe Lotus::Validations do
 
   describe '.defined_attributes' do
     it 'returns a set of unique attribute names' do
-      UniquenessAttributeTest.defined_attributes.must_equal(Set.new(%w(attr)))
+      UniquenessAttributeTest.defined_attributes.must_equal(Set.new([:attr]))
     end
   end
 end

@@ -22,7 +22,7 @@ Validations mixins for objects
 
 ## Rubies
 
-__Lotus::Validations__ supports Ruby (MRI) 2+, JRuby 1.7 (with 2.0 mode) and Rubinius 2.3.0+.
+__Lotus::Validations__ supports Ruby (MRI) 2.2+ and JRuby 9000+
 
 ## Installation
 

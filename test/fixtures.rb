@@ -240,7 +240,7 @@ class CustomAttributesValidator
   attribute :name
 
   def initialize(attributes)
-    @attributes = Lotus::Utils::Attributes.new({ already: 'initialized' })
+    @attributes = Lotus::Utils::Hash.new({ already: 'initialized' })
     super
   end
 

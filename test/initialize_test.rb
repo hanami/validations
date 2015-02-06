@@ -45,6 +45,7 @@ describe Lotus::Validations do
         'unknown'               => 'blah'
       )
 
+      validator.email.must_equal 'user@example.org'
       validator.must_be :valid?
 
       validator.to_h.must_equal({ email: 'user@example.org', password: '123', password_confirmation: '123' })
@@ -69,8 +70,8 @@ describe Lotus::Validations do
       validator  = CustomAttributesValidator.new(name: 'Luca', language: 'it')
       serialized = validator.to_h
 
-      serialized.fetch('already').must_equal('initialized')
-      serialized.fetch('name').must_equal('Luca')
+      serialized.fetch(:already).must_equal('initialized')
+      serialized.fetch(:name).must_equal('Luca')
 
       serialized['language'].must_be_nil
     end
