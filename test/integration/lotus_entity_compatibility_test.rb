@@ -13,7 +13,7 @@ describe 'Lotus::Entity compatibility' do
         attribute :price, type: Integer, presence: true
       end
 
-      class ProductRepository
+      module ProductRepository
         include Lotus::Repository
       end
 
@@ -74,7 +74,7 @@ describe 'Lotus::Entity compatibility' do
         validates  :price, type: Integer, presence: true
       end
 
-      class ProductRepository
+      module ProductRepository
         include Lotus::Repository
       end
 
@@ -135,7 +135,7 @@ describe 'Lotus::Entity compatibility' do
         attribute  :price, type: Integer, presence: true
       end
 
-      class ProductRepository
+      module ProductRepository
         include Lotus::Repository
       end
 
