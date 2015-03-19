@@ -1,6 +1,8 @@
 # Lotus::Validations
 Validations mixin for Ruby objects
 
+## v0.3.0 - 2015-03-23
+
 ## v0.2.4 - 2015-01-30
 ### Added
 - [Steve Hodgkiss] Introduced `Lotus::Validations::Error#attribute_name`
