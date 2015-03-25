@@ -278,14 +278,12 @@ module Lotus
         # @since 0.2.2
         # @api private
         def define_attribute(name, options)
-          type = options.fetch(:type) { nil }
-
-          define_accessor(name, type)
+          define_accessor(name, options)
           defined_attributes.add(name.to_s)
 
           if options[:confirmation]
             confirmation_accessor = "#{ name }_confirmation"
-            define_accessor(confirmation_accessor, type)
+            define_accessor(confirmation_accessor, options)
             defined_attributes.add(confirmation_accessor)
           end
         end
@@ -302,12 +300,12 @@ module Lotus
 
         # @since 0.2.2
         # @api private
-        def define_accessor(name, type)
-          if type
-            define_reader(name)
-            define_coerced_writer(name, type)
+        def define_accessor(name, options = {})
+          if options[:type]
+            define_reader(name, options)
+            define_coerced_writer(name, options[:type])
           else
-            define_reader(name)
+            define_reader(name, options)
             define_writer(name)
           end
         end
@@ -330,9 +328,16 @@ module Lotus
 
         # @since 0.2.2
         # @api private
-        def define_reader(name)
+        def define_reader(name, options = {})
           define_method(name) do
-            @attributes.get(name)
+            attribute = @attributes.get(name)
+            if attribute.nil? && !options[:type].nil? && !options[:default].nil?
+              Lotus::Validations::Coercions.coerce(options[:type], options[:default])
+            elsif attribute.nil? && !options[:default].nil?
+              options[:default]
+            else
+              attribute
+            end
           end
         end
 

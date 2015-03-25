@@ -10,15 +10,16 @@ module Lotus
       # @since 0.2.2
       # @api private
       VALIDATIONS = [
-        :presence,
         :acceptance,
+        :confirmation,
+        :default,
+        :exclusion,
         :format,
         :inclusion,
-        :exclusion,
-        :confirmation,
+        :nested,
+        :presence,
         :size,
-        :type,
-        :nested
+        :type
       ].freeze
 
       # @since 0.2.2
