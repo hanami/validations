@@ -122,6 +122,11 @@ describe 'Lotus::Entity compatibility' do
       product = Product.new(price: '200')
       product.price.must_equal 200
     end
+
+    it '#to_h returns correct attributes' do
+      product = Product.new(name: 'lotus', price: '200')
+      product.to_h.must_equal({ id: nil, name: 'lotus', price: 200 })
+    end
   end
 
   describe 'with both attributes and validations' do
@@ -182,6 +187,11 @@ describe 'Lotus::Entity compatibility' do
     it 'coerces values' do
       product = Product.new(price: '300')
       product.price.must_equal 300
+    end
+
+    it '#to_h returns correct attributes' do
+      product = Product.new(name: 'lotus', price: '200')
+      product.to_h.must_equal({ id: nil, name: 'lotus', price: 200 })
     end
   end
 end unless Lotus::Utils.jruby?
