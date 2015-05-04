@@ -244,7 +244,10 @@ module Lotus
     #
     # @since 0.1.0
     def to_h
-      Utils::Hash.new(read_attributes_hash).deep_dup
+      # TODO remove this symbolization when we'll support Ruby 2.2+ only
+      Utils::Hash.new(
+        @attributes.to_h
+      ).deep_dup.symbolize!
     end
 
     private
@@ -267,30 +270,6 @@ module Lotus
         defined_validations.each_key do |attribute|
           attributes[attribute] = public_send(attribute)
         end
-      end
-    end
-
-    # Builds a Hash of current attribute values and forces nested values to be
-    # Hash instances as well.
-    #
-    # @since x.x.x
-    # @api private
-    def read_attributes_hash
-      {}.tap do |attributes|
-        defined_validations.each_key do |attribute|
-          attributes[attribute] = read_attribute(attribute)
-        end
-      end
-    end
-
-    # @since x.x.x
-    # @api private
-    def read_attribute(name)
-      case value = public_send(name)
-      when ->(v) { !v.nil? && v.respond_to?(:to_h) }
-        value.to_h
-      else
-        value
       end
     end
   end

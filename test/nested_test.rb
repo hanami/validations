@@ -49,8 +49,10 @@ describe Lotus::Validations do
     # Bug
     # See https://github.com/lotus/validations/issues/58
     it 'safely serialize to Hash' do
-      validator = @klass.new(name: 'John Smith', address: { line_one: '10 High Street' })
-      validator.to_h.must_equal({name: 'John Smith', address: { line_one: '10 High Street', city: nil, country: nil, post_code: nil }})
+      data      = {name: 'John Smith', address: { line_one: '10 High Street' }}
+      validator = @klass.new(data)
+
+      validator.to_h.must_equal(data)
     end
   end
 end
