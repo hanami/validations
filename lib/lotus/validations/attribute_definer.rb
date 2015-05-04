@@ -254,6 +254,16 @@ module Lotus
         #   signup = Signup.new(password: 'short')
         #   signup.valid? # => false
         def attribute(name, options = {}, &block)
+          _attribute(name, options, &block)
+        end
+
+        # Define an attribute
+        #
+        # @see Lotus::Validations::AttributeDefiner#attribute
+        #
+        # @since x.x.x
+        # @api private
+        def _attribute(name, options = {}, &block)
           if block_given?
             define_nested_attribute(name, options, &block)
             validates(name, {})
@@ -401,13 +411,39 @@ module Lotus
           end
         end
 
+        # @return [Array<String>]
+        #
+        # @since x.x.x
+        # @api private
+        def defined_attributes
+          super
+          @defined_attributes.merge(attributes.map(&:to_s))
+        end
+
+        # @since x.x.x
+        # @api private
+        #
+        # @see Lotus::Model::Entity#attributes
+        def attributes(*attrs)
+          if attrs.any?
+            attrs = Lotus::Utils::Kernel.Array(attrs)
+            attrs.each do |attr|
+              _attribute(attr)
+              attr_accessor(attr) if define_attribute?(attr)
+            end
+            self.attributes.merge attrs
+          else
+            @attributes ||= Set.new
+          end
+        end
+
         # @since 0.2.3
         # @api private
         #
         # @see Lotus::Validations::AttributeDefiner#attribute
         def attribute(name, options = {})
-          super
           attributes name
+          super
         end
 
         # @since 0.2.3
@@ -429,6 +465,12 @@ module Lotus
           # @see Lotus::Validations::AttributeDefiner#assign_attribute?
           def assign_attribute?(attr)
             super || attr.to_s == LOTUS_ENTITY_ID
+          end
+
+          def initialize(attributes = {})
+            super
+            @attributes.set(LOTUS_ENTITY_ID, id)
+            self.class.attribute(LOTUS_ENTITY_ID)
           end
         end
       end

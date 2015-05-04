@@ -244,7 +244,10 @@ module Lotus
     #
     # @since 0.1.0
     def to_h
-      Utils::Hash.new(read_attributes).deep_dup
+      # TODO remove this symbolization when we'll support Ruby 2.2+ only
+      Utils::Hash.new(
+        @attributes.to_h
+      ).deep_dup.symbolize!
     end
 
     private
