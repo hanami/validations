@@ -1,5 +1,6 @@
 require 'set'
 require 'lotus/utils/attributes'
+require 'lotus/validations/nested_attributes'
 
 module Lotus
   module Validations
@@ -367,12 +368,8 @@ module Lotus
         #
         # @since 0.2.4
         # @api private
-        def build_validation_class(&block)
-          kls = Class.new do
-            include Lotus::Validations
-          end
-          kls.class_eval(&block)
-          kls
+        def build_validation_class(&blk)
+          NestedAttributes.fabricate(&blk)
         end
       end
 

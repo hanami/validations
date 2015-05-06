@@ -7,6 +7,7 @@ describe Lotus::Validations do
         include Lotus::Validations
 
         attribute :name, type: String
+        attribute :tags, type: Array
         attribute :address do
           attribute :line_one, type: String, presence: true
           attribute :city, type: String
@@ -50,6 +51,15 @@ describe Lotus::Validations do
     # See https://github.com/lotus/validations/issues/58
     it 'safely serialize to Hash' do
       data      = {name: 'John Smith', address: { line_one: '10 High Street' }}
+      validator = @klass.new(data)
+
+      validator.to_h.must_equal(data)
+    end
+
+    # Bug
+    # See https://github.com/lotus/validations/issues/58#issuecomment-99144243
+    it 'safely serialize to Hash' do
+      data      = {name: 'John Smith', tags: [1, 2]}
       validator = @klass.new(data)
 
       validator.to_h.must_equal(data)
