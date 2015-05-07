@@ -1,5 +1,6 @@
 require 'set'
 require 'lotus/utils/attributes'
+require 'lotus/validations/nested_attributes'
 
 module Lotus
   module Validations
@@ -367,12 +368,8 @@ module Lotus
         #
         # @since 0.2.4
         # @api private
-        def build_validation_class(&block)
-          kls = Class.new do
-            include Lotus::Validations
-          end
-          kls.class_eval(&block)
-          kls
+        def build_validation_class(&blk)
+          NestedAttributes.fabricate(&blk)
         end
       end
 
@@ -420,21 +417,15 @@ module Lotus
           @defined_attributes.merge(attributes.map(&:to_s))
         end
 
-        # @since x.x.x
-        # @api private
+        # Override attribute accessors function.
         #
-        # @see Lotus::Model::Entity#attributes
-        def attributes(*attrs)
-          if attrs.any?
-            attrs = Lotus::Utils::Kernel.Array(attrs)
-            attrs.each do |attr|
-              _attribute(attr)
-              attr_accessor(attr) if define_attribute?(attr)
-            end
-            self.attributes.merge attrs
-          else
-            @attributes ||= Set.new
-          end
+        # @since x.x.x
+        # 
+        # @api private
+        # @see Lotus::Model::Entity#define_attr_accessor
+        def define_attr_accessor(attr)
+          _attribute(attr)
+          super
         end
 
         # @since 0.2.3
