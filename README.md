@@ -197,7 +197,7 @@ signup.valid? # => false
 An attribute is valid if it's value and the value of a corresponding attribute
 is valid.
 
-By convention, if you have a `password` attribute, the validation looks for `password_validation`.
+By convention, if you have a `password` attribute, the validation looks for `password_confirmation`.
 
 ```ruby
 require 'lotus/validations'
