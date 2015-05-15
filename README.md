@@ -485,7 +485,7 @@ end
 
 When you invoke `#valid?`, validation errors are available at `#errors`.
 It's a set of errors grouped by attribute. Each error contains the name of the
-invalid attribute, the failed validation, the expected value and the current one.
+invalid attribute, the failed validation, the expected value, and the current one.
 
 ```ruby
 require 'lotus/validations'
