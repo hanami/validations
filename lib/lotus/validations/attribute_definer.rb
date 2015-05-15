@@ -262,7 +262,7 @@ module Lotus
         #
         # @see Lotus::Validations::AttributeDefiner#attribute
         #
-        # @since x.x.x
+        # @since 0.3.1
         # @api private
         def _attribute(name, options = {}, &block)
           if block_given?
@@ -410,7 +410,7 @@ module Lotus
 
         # @return [Array<String>]
         #
-        # @since x.x.x
+        # @since 0.3.1
         # @api private
         def defined_attributes
           super
@@ -419,8 +419,8 @@ module Lotus
 
         # Override attribute accessors function.
         #
-        # @since x.x.x
-        # 
+        # @since 0.3.1
+        #
         # @api private
         # @see Lotus::Model::Entity#define_attr_accessor
         def define_attr_accessor(attr)

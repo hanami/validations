@@ -1,9 +1,9 @@
 module Lotus
   module Validations
-    # @since x.x.x
+    # @since 0.3.1
     # @api private
     class NestedAttributes
-      # @since x.x.x
+      # @since 0.3.1
       # @api private
       def self.fabricate(&blk)
         dup.tap do |klass|
@@ -12,7 +12,7 @@ module Lotus
         end
       end
 
-      # @since x.x.x
+      # @since 0.3.1
       # @api private
       def lotus_nested_attributes?
         true

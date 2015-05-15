@@ -1,6 +1,11 @@
 # Lotus::Validations
 Validations mixin for Ruby objects
 
+## v0.3.1 - 2015-05-15
+### Fixed
+- [Luca Guidi] Fixed Hash serialization for nested validations. It always return nested `::Hash` structure.
+- [Alfonso Uceda Pompa & Dmitry Tymchuk] Fixed Hash serialization when `Lotus::Entity` is included in the same class.
+
 ## v0.3.0 - 2015-03-23
 
 ## v0.2.4 - 2015-01-30
