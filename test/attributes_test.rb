@@ -6,8 +6,8 @@ describe Lotus::Validations do
   end
 
   describe '#to_h' do
-    it 'returns an instance of ::Lotus::Utils::Hash' do
-      @validator.to_h.must_be_instance_of(Lotus::Utils::Hash)
+    it 'returns an instance of ::Hash' do
+      @validator.to_h.must_be_instance_of(::Hash)
     end
 
     it 'returns a Hash of the internal attributes' do

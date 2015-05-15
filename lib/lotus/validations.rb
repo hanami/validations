@@ -246,8 +246,8 @@ module Lotus
     def to_h
       # TODO remove this symbolization when we'll support Ruby 2.2+ only
       Utils::Hash.new(
-        @attributes.to_h
-      ).deep_dup.symbolize!
+        @attributes
+      ).deep_dup.symbolize!.to_h
     end
 
     private
