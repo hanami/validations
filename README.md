@@ -518,7 +518,7 @@ signup.errors
 
 ### Lotus::Entity
 
-Integration with [`Lotus::Entity`](https://github.com/lotus/model) is activated automatically.
+Integration with [`Lotus::Entity`](https://github.com/lotus/model) is straight forward.
 
 ```ruby
 require 'lotus/model'
