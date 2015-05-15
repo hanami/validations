@@ -386,7 +386,7 @@ validator.valid? # => false
 ```
 
 Bulk operations on errors are guaranteed by `#each`.
-This method yields a **flatten collection of errors**.
+This method yields a **flattened collection of errors**.
 
 ```ruby
 validator.errors.each do |error|
@@ -483,7 +483,7 @@ end
 
 ### Errors
 
-When you invoke `#valid?`, validations errors are available at `#errors`.
+When you invoke `#valid?`, validation errors are available at `#errors`.
 It's a set of errors grouped by attribute. Each error contains the name of the
 invalid attribute, the failed validation, the expected value and the current one.
 
