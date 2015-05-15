@@ -197,7 +197,7 @@ signup.valid? # => false
 An attribute is valid if it's value and the value of a corresponding attribute
 is valid.
 
-By convention, if you have a `password` attribute, the validation looks for `password_validation`.
+By convention, if you have a `password` attribute, the validation looks for `password_confirmation`.
 
 ```ruby
 require 'lotus/validations'
@@ -386,7 +386,7 @@ validator.valid? # => false
 ```
 
 Bulk operations on errors are guaranteed by `#each`.
-This method yields a **flatten collection of errors**.
+This method yields a **flattened collection of errors**.
 
 ```ruby
 validator.errors.each do |error|
@@ -483,9 +483,9 @@ end
 
 ### Errors
 
-When you invoke `#valid?`, validations errors are available at `#errors`.
+When you invoke `#valid?`, validation errors are available at `#errors`.
 It's a set of errors grouped by attribute. Each error contains the name of the
-invalid attribute, the failed validation, the expected value and the current one.
+invalid attribute, the failed validation, the expected value, and the current one.
 
 ```ruby
 require 'lotus/validations'
@@ -518,7 +518,7 @@ signup.errors
 
 ### Lotus::Entity
 
-Integration with [`Lotus::Entity`](https://github.com/lotus/model) is activated automatically.
+Integration with [`Lotus::Entity`](https://github.com/lotus/model) is straight forward.
 
 ```ruby
 require 'lotus/model'
