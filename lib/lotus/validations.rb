@@ -198,6 +198,26 @@ module Lotus
     #     #     #<Lotus::Validations::Error:0x007fe00cee30d8 @attribute=:age, @validation=:size, @expected=18..99, @actual=17>
     #     #   ]
     #     # }>
+    #
+    # @example Invalid attributes
+    #   require 'lotus/validations'
+    #
+    #   class Post
+    #     include Lotus::Validations
+    #
+    #     attribute :title, presence: true
+    #   end
+    #
+    #   post = Post.new
+    #   post.invalid? # => true
+    #
+    #   post.errors
+    #     # => #<Lotus::Validations::Errors:0x2931522b
+    #     # @errors={
+    #     #   :title=>[
+    #     #     #<Lotus::Validations::Error:0x662706a7 @actual=nil, @attribute_name="title", @validation=:presence, @expected=true, @namespace=nil, @attribute="title">
+    #     #   ]
+    #     # }>
     def errors
       @errors ||= Errors.new
     end
@@ -211,6 +231,15 @@ module Lotus
       validate
 
       errors.empty?
+    end
+
+    # Checks if the current data dissatisfies the defined validations
+    #
+    # @return [TrueClass,FalseClass] the result of the validations
+    #
+    # @since x.x.x
+    def invalid?
+      !valid?
     end
 
     # Validates the object.
