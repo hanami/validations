@@ -20,5 +20,10 @@ describe Lotus::Validations, 'standalone' do
     validator.valid?.must_equal false
     validator.name = 'Luca'
     validator.valid?.must_equal true
+
+    another_validator = @validator_class.new(name: '')
+    another_validator.invalid?.must_equal true
+    another_validator.name = 'Luca'
+    another_validator.invalid?.must_equal false
   end
 end
