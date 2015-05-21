@@ -1,6 +1,9 @@
 # Lotus::Validations
 Validations mixin for Ruby objects
 
+## v0.3.2 - 2015-05-22
+### Added [deepj] Introduced `Lotus::Validations#invalid?`
+
 ## v0.3.1 - 2015-05-15
 ### Fixed
 - [Luca Guidi] Fixed Hash serialization for nested validations. It always return nested `::Hash` structure.

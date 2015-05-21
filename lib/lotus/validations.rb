@@ -233,11 +233,11 @@ module Lotus
       errors.empty?
     end
 
-    # Checks if the current data dissatisfies the defined validations
+    # Checks if the current data doesn't satisfies the defined validations
     #
     # @return [TrueClass,FalseClass] the result of the validations
     #
-    # @since x.x.x
+    # @since 0.3.2
     def invalid?
       !valid?
     end
