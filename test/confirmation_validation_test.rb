@@ -11,7 +11,7 @@ describe Lotus::Validations do
 
     it "is valid when the two attributes are matching" do
       validator = ConfirmationValidatorTest.new({ password: 'secret', password_confirmation: 'secret' })
-      
+
       validator.valid?.must_equal true
       validator.errors.must_be_empty
     end

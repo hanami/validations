@@ -1,6 +1,11 @@
 module Lotus
   module Validations
     module Validator
+      # Build-in custom validator for checking size
+      #
+      # @see Lotus::Validations::Validator::Size
+      #
+      # @since x.x.x
       class Size
         include Lotus::Validations::Validator
 

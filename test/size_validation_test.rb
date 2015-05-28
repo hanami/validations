@@ -68,7 +68,7 @@ describe Lotus::Validations do
         File.new(__FILE__),
         Pathname.new(__FILE__)
       ]
-      
+
       values.each do |value|
         validator = SizeValidatorTest.new({ssn: value})
 

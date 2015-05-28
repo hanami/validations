@@ -4,9 +4,6 @@ module Lotus
     #
     # @since 0.1.0
     class Error
-      # @since 0.2.4
-      # @api private
-      NAMESPACE_SEPARATOR = '.'.freeze
 
       # The name of the attribute
       #
@@ -69,7 +66,7 @@ module Lotus
       #
       # @since 0.1.0
       # @api private
-      def initialize(validation, expected, actual, namespace = nil)
+      def initialize(validation, expected, actual)
         @validation = validation
         @expected = expected
         @actual = actual

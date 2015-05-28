@@ -1,6 +1,11 @@
 module Lotus
   module Validations
     module Validator
+      # Build-in custom validator for checking specific match
+      #
+      # @see Lotus::Validations::Validator::Format
+      #
+      # @since x.x.x
       class Format
         include Lotus::Validations::Validator
 

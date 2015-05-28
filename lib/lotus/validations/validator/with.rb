@@ -1,6 +1,11 @@
 module Lotus
   module Validations
     module Validator
+      # Build-in custom validator making possible to use custom validators
+      #
+      # @see Lotus::Validations::Validator::With
+      #
+      # @since x.x.x
       class With
         include Lotus::Validations::Validator
 
@@ -9,7 +14,7 @@ module Lotus
         end
 
         def validator_name
-          :size
+          :with
         end
       end
     end

@@ -1,6 +1,11 @@
 module Lotus
   module Validations
     module Validator
+      # Build-in custom validator for checking confirmation
+      #
+      # @see Lotus::Validations::Validator::Confirmation
+      #
+      # @since x.x.x
       class Confirmation
         include Lotus::Validations::Validator
 

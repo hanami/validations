@@ -1,6 +1,11 @@
 module Lotus
   module Validations
     module Validator
+      # Build-in custom validator for checking inclusion
+      #
+      # @see Lotus::Validations::Validator::Inclusion
+      #
+      # @since x.x.x
       class Inclusion
         include Lotus::Validations::Validator
 

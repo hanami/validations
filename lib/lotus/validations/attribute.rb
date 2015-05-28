@@ -49,10 +49,6 @@ module Lotus
         presence
         acceptance
         with
-
-
-        
-
         format
         inclusion
         exclusion
@@ -212,7 +208,7 @@ module Lotus
 
       # Validates custom Lotus Validator objects
       #
-      # @since 0.2.5
+      # @since x.x.x
       # @api private
       def with
         _validate(__method__) do |validator|

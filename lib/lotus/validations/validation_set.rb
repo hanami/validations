@@ -57,7 +57,7 @@ module Lotus
       # For each attribute it creates new Attribute object and runs all
       # associated validations
       #
-      # @since 0.2.5
+      # @since x.x.x
       # @api private
       def validate(attributes, errors)
         errors.clear

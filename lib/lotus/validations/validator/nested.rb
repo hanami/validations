@@ -1,6 +1,11 @@
 module Lotus
   module Validations
     module Validator
+      # Build-in custom validator for nested validators
+      #
+      # @see Lotus::Validations::Validator::Nested
+      #
+      # @since x.x.x
       class Nested
         include Lotus::Validations::Validator
 
