@@ -19,7 +19,6 @@ describe Lotus::Validations do
 
       errors.must_include Lotus::Validations::Error.new(:format, /@/, 'test')
       errors.must_include Lotus::Validations::Error.new(:confirmation, true, 'test')
-
     end
 
     describe 'name checks' do

@@ -201,7 +201,6 @@ module Lotus
         _validate(__method__) do |validator|
 
           @errors = Lotus::Validations::Validator::Nested.call(@value)
-
           true
         end
       end
