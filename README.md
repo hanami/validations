@@ -200,7 +200,7 @@ signup.valid? # => false
 
 #### Confirmation
 
-An attribute is valid if it's value and the value of a corresponding attribute
+An attribute is valid if its value and the value of a corresponding attribute
 is valid.
 
 By convention, if you have a `password` attribute, the validation looks for `password_confirmation`.
@@ -338,7 +338,7 @@ signup.valid? # => false
 
 #### Size
 
-An attribute is valid if it's `#size` falls within the described value.
+An attribute is valid if its `#size` falls within the described value.
 
 ```ruby
 require 'lotus/validations'
