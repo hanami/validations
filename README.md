@@ -174,7 +174,7 @@ validations.
 
 #### Acceptance
 
-An attribute is valid if it's value satisfies [Ruby's _truthiness_](http://ruby.about.com/od/control/a/Boolean-Expressions.htm).
+An attribute is valid if its value is _truthy_.
 
 ```ruby
 require 'lotus/validations'
@@ -188,13 +188,19 @@ end
 signup = Signup.new(terms_of_service: '1')
 signup.valid? # => true
 
+signup = Signup.new(terms_of_service: 'true')
+signup.valid? # => true
+
 signup = Signup.new(terms_of_service: '')
+signup.valid? # => false
+
+signup = Signup.new(terms_of_service: '0')
 signup.valid? # => false
 ```
 
 #### Confirmation
 
-An attribute is valid if it's value and the value of a corresponding attribute
+An attribute is valid if its value and the value of a corresponding attribute
 is valid.
 
 By convention, if you have a `password` attribute, the validation looks for `password_confirmation`.
@@ -332,7 +338,7 @@ signup.valid? # => false
 
 #### Size
 
-An attribute is valid if it's `#size` falls within the described value.
+An attribute is valid if its `#size` falls within the described value.
 
 ```ruby
 require 'lotus/validations'
