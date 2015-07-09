@@ -21,7 +21,7 @@ describe Lotus::Validations do
 
       validator.valid?.must_equal false
       error = validator.errors.for(:job)
-      error.must_include Lotus::Validations::Error.new(:job, :exclusion, ['Carpenter', 'Blacksmith'], 'Carpenter')
+      error.must_include Lotus::Validations::Error.new(:exclusion, ['Carpenter', 'Blacksmith'], 'Carpenter')
     end
   end
 end

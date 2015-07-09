@@ -1,11 +1,20 @@
 require 'lotus/utils/hash'
 require 'lotus/validations/version'
-require 'lotus/validations/blank_value_checker'
 require 'lotus/validations/attribute_definer'
 require 'lotus/validations/validation_set'
-require 'lotus/validations/validator'
 require 'lotus/validations/attribute'
 require 'lotus/validations/errors'
+require 'lotus/validations/validator'
+require 'lotus/validations/validator/presence'
+require 'lotus/validations/validator/format'
+require 'lotus/validations/validator/acceptance'
+require 'lotus/validations/validator/inclusion'
+require 'lotus/validations/validator/exclusion'
+require 'lotus/validations/validator/confirmation'
+require 'lotus/validations/validator/size'
+require 'lotus/validations/validator/nested'
+require 'lotus/validations/validator/with'
+require 'lotus/validations/validator/type'
 
 module Lotus
   # Lotus::Validations is a set of lightweight validations for Ruby objects.
@@ -113,7 +122,7 @@ module Lotus
       #   signup = Signup.new(name: nil)
       #   signup.valid? # => false
       def validates(name, options)
-        validations.add(name, options)
+        validations.add(name.to_sym, options)
       end
 
       # Set of user defined validations
@@ -251,8 +260,7 @@ module Lotus
     #
     # @see Lotus::Attribute#nested
     def validate
-      validator = Validator.new(defined_validations, read_attributes, errors)
-      validator.validate
+      defined_validations.validate(read_attributes, errors)
     end
 
     # Iterates thru the defined attributes and their values
@@ -287,7 +295,7 @@ module Lotus
     #
     # @see Lotus::Validations::ClassMethods#validations
     def defined_validations
-      self.class.__send__(:validations)
+      self.class.validations
     end
 
     # Builds a Hash of current attribute values.

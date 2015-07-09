@@ -1,28 +1,37 @@
 module Lotus
   module Validations
-    # Validate given validations and return a set of errors
-    #
-    # @since 0.2.2
-    # @api private
-    class Validator
-      def initialize(validation_set, attributes, errors)
-        @validation_set = validation_set
-        @attributes = attributes
-        @errors = errors
+    module Validator
+      def self.included(base)
+        base.class_eval do
+          extend ClassMethods
+        end
       end
 
-      # @since 0.2.2
-      # @api private
-      def validate
-        @errors.clear
-        @validation_set.each do |name, validations|
-          value = @attributes[name]
-          value = @attributes[name.to_s] if value.nil?
+      attr_reader :value, :validator
 
-          attribute = Attribute.new(@attributes, name, value, validations, @errors)
-          attribute.validate
+      def initialize(attributes, name, value)
+        @attributes = attributes
+        @name = name
+        @validator_value = value
+        @value = @attributes[@name]
+      end
+
+      def validator_name
+        self.class.to_s
+      end
+
+      def generate_errors
+        Error.new(validator_name, @validator_value, @value)
+      end
+
+      def validate
+        valid? || generate_errors
+      end
+
+      module ClassMethods
+        def call(attributes, name, value)
+          new(attributes, name, value).validate
         end
-        @errors
       end
     end
   end

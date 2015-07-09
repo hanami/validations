@@ -18,7 +18,8 @@ module Lotus
         :confirmation,
         :size,
         :type,
-        :nested
+        :nested,
+        :with
       ].freeze
 
       # @since 0.2.2
@@ -53,7 +54,25 @@ module Lotus
         @validations.keys
       end
 
+      # For each attribute it creates new Attribute object and runs all
+      # associated validations
+      #
+      # @since x.x.x
+      # @api private
+      def validate(attributes, errors)
+        errors.clear
+
+        @validations.each do |name, validators|
+          validators.each do |type, value|
+            errors.populate(name, type, Lotus::Validations::Validator.const_get(type.capitalize).call(attributes, name, value))
+          end
+        end
+
+        errors
+      end
+
       private
+
       # Checks at the loading time if the user defined validations are recognized
       #
       # @param name [Symbol] the attribute name
