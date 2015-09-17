@@ -56,6 +56,7 @@ module Lotus
         size
         confirmation
         nested
+        user_defined
 
         @errors
       end
@@ -205,6 +206,17 @@ module Lotus
             @errors.add new_error.attribute, new_error
           end
           true
+        end
+      end
+
+      # Validates user defined validations
+      #
+      # @api private
+      def user_defined
+        @validations.each do |name, validation|
+          break unless validation.respond_to? :call
+          result = validation.call(self)
+          @errors.add(@name, Error.new(@name, name, result, @value)) unless result
         end
       end
 

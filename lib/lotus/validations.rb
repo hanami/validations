@@ -102,18 +102,21 @@ module Lotus
       #       @name = attributes.fetch(:name)
       #     end
       #
-      #     attr_accessor :name
+      #     attr_accessor :name, :email
       #
       #     validates :name, presence: true
+      #     validates :email, :unique do |attr|
+      #       UserRepository.where(email: attr.value).any?
+      #     end
       #   end
       #
-      #   signup = Signup.new(name: 'Luca')
+      #   signup = Signup.new(name: 'Luca', email: 'luca@brasi.com')
       #   signup.valid? # => true
       #
       #   signup = Signup.new(name: nil)
       #   signup.valid? # => false
-      def validates(name, options)
-        validations.add(name, options)
+      def validates(*args, &block)
+        validations.add(*args, &block)
       end
 
       # Set of user defined validations

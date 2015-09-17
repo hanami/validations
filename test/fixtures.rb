@@ -255,3 +255,12 @@ class PureValidator
 
   validates :name, presence: true
 end
+
+class UserDefinedValidationTest
+  include Lotus::Validations
+  attr_accessor :foo
+
+  validates :foo, :is_bar do |attribute|
+    attribute.value == "bar"
+  end
+end
