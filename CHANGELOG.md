@@ -1,6 +1,9 @@
 # Lotus::Validations
 Validations mixin for Ruby objects
 
+## v0.3.3 - 2015-09-23
+### Added [Luca Guidi] Official support for JRuby 9k+
+
 ## v0.3.2 - 2015-05-22
 ### Added [deepj] Introduced `Lotus::Validations#invalid?`
 

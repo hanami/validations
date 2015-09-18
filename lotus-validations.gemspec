@@ -6,8 +6,8 @@ require 'lotus/validations/version'
 Gem::Specification.new do |spec|
   spec.name          = 'lotus-validations'
   spec.version       = Lotus::Validations::VERSION
-  spec.authors       = ['Luca Guidi', 'Trung Lê']
-  spec.email         = ['me@lucaguidi.com', 'trung.le@ruby-journal.com']
+  spec.authors       = ['Luca Guidi', 'Trung Lê', 'Alfonso Uceda']
+  spec.email         = ['me@lucaguidi.com', 'trung.le@ruby-journal.com', 'uceda73@gmail.com']
   spec.summary       = %q{Validations mixin for Ruby objects}
   spec.description   = %q{Validations mixin for Ruby objects and support for Lotus}
   spec.homepage      = 'http://lotusrb.org'
