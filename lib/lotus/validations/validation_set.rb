@@ -31,12 +31,13 @@ module Lotus
       # @api private
       # def add(*args, &block)
       def add(*args, &block)
+        raise ArgumentError.new() if args.count != 2
         if block_given?
-          raise ArgumentError.new() if args.count != 2
           attribute, name = args
           @validations[attribute.to_sym].merge!(name.to_sym => block)
         else
-          @validations[args.first.to_sym].merge!(validate_options!(*args))
+          name, options = args
+          @validations[name.to_sym].merge!(validate_options!(name, options))
         end
       end
 
