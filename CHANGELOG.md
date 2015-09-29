@@ -1,7 +1,7 @@
 # Lotus::Validations
 Validations mixin for Ruby objects
 
-## v0.3.3 - 2015-09-23
+## v0.3.3 - 2015-09-30
 ### Added
 - [Luca Guidi] Official support for JRuby 9k+
 
