@@ -44,6 +44,8 @@ Or install it yourself as:
 
 `Lotus::Validations` is a set of lightweight validations for Ruby objects.
 
+It behaves like a Form Object pattern which decouple your Input validation from Entities or other domain objects.
+
 ### Attributes
 
 The framework allows you to define attributes for each object.
@@ -54,14 +56,14 @@ All unknown values are ignored, which is useful for whitelisting attributes.
 ```ruby
 require 'lotus/validations'
 
-class Person
+class PersonForm
   include Lotus::Validations
 
   attribute :name,  presence: true
   attribute :email, presence: true
 end
 
-person = Person.new(name: 'Luca', email: 'me@example.org', age: 32)
+person = PersonForm.new(name: 'Luca', email: 'me@example.org', age: 32)
 person.name  # => "Luca"
 person.email # => "me@example.org"
 person.age   # => raises NoMethodError because `:age` wasn't defined as attribute.
@@ -75,7 +77,7 @@ you can use the following alternative syntax.
 ```ruby
 require 'lotus/validations'
 
-class Person
+class PersonForm
   include Lotus::Validations
   attr_accessor :name, :email
 
@@ -88,7 +90,7 @@ class Person
   validates :email, presence: true
 end
 
-person = Person.new(name: 'Luca', email: 'me@example.org')
+person = PersonForm.new(name: 'Luca', email: 'me@example.org')
 person.name  # => "Luca"
 person.email # => "me@example.org"
 ```
@@ -106,13 +108,13 @@ If a Ruby class is passed to the `:type` option, the given value is coerced, acc
 ```ruby
 require 'lotus/validations'
 
-class Person
+class PersonForm
   include Lotus::Validations
 
   attribute :fav_number, type: Integer
 end
 
-person = Person.new(fav_number: '23')
+person = PersonForm.new(fav_number: '23')
 person.valid?
 
 person.fav_number # => 23
@@ -151,14 +153,14 @@ end
 class BirthDate
 end
 
-class Person
+class PersonForm
   include Lotus::Validations
 
   attribute :fav_number, type: FavNumber
   attribute :date,       type: BirthDate
 end
 
-person = Person.new(fav_number: '23', date: 'Oct 23, 2014')
+person = PersonForm.new(fav_number: '23', date: 'Oct 23, 2014')
 person.valid?
 
 person.fav_number # => #<FavNumber:0x007ffc644bba00 @number="23">
