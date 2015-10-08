@@ -1,3 +1,5 @@
+require 'lotus/utils/string'
+
 module Lotus
   module Validations
     # Validate given validations and return a set of errors
@@ -5,21 +7,29 @@ module Lotus
     # @since 0.2.2
     # @api private
     class Validator
-      def initialize(validation_set, attributes, errors)
-        @validation_set = validation_set
-        @attributes = attributes
-        @errors = errors
+      # @param validator [Lotus::Validations] the validator
+      #
+      # @since 0.2.2
+      # @api private
+      def initialize(validator)
+        @validations    = validator.__send__(:defined_validations)
+        @attributes     = validator.__send__(:read_attributes)
+        @errors         = validator.errors
+
+        if name = validator.class.name
+          @validator_name = Utils::String.new(name).underscore
+        end
       end
 
       # @since 0.2.2
       # @api private
       def validate
         @errors.clear
-        @validation_set.each do |name, validations|
+        @validations.each do |name, validations|
           value = @attributes[name]
           value = @attributes[name.to_s] if value.nil?
 
-          attribute = Attribute.new(@attributes, name, value, validations, @errors)
+          attribute = Attribute.new(@validator_name, @attributes, name, value, validations, @errors)
           attribute.validate
         end
         @errors

@@ -220,6 +220,19 @@ class DecoratedValidations
   attribute :password, confirmation: true
 end
 
+class NestedValidations
+  include Lotus::Validations
+
+  attribute :name, type: String
+  attribute :tags, type: Array
+  attribute :address do
+    attribute :line_one, type: String, presence: true
+    attribute :city, type: String
+    attribute :country, type: String
+    attribute :post_code, type: String
+  end
+end
+
 class Signup
   include Lotus::Validations
 
@@ -254,4 +267,17 @@ class PureValidator
   attr_accessor :name, :age
 
   validates :name, presence: true
+end
+
+class ErrorMessagesValidator
+  include Lotus::Validations
+  MEGABYTE = 1024 ** 2
+
+  attribute :eula,     acceptance: true
+  attribute :password, confirmation: true
+  attribute :music,    exclusion: ['pop', 'dance']
+  attribute :name,     format: /\A[\w]+\z/
+  attribute :age,      inclusion: 18..99
+  attribute :email,    presence: true
+  attribute :avatar,   size: 1..(5 * MEGABYTE)
 end

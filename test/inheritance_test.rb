@@ -6,7 +6,7 @@ describe Lotus::Validations do
       superclass = SuperclassValidatorTest.new({})
 
       superclass.valid?.must_equal false
-      superclass.errors.for(:name).must_include Lotus::Validations::Error.new(:name, :presence, true, nil)
+      superclass.errors.for(:name).must_include Lotus::Validations::Error.new(:name, :presence, true, nil, 'superclass_validator_test')
     end
 
     it "the superclass doesn't receive validators from the subclass" do
@@ -22,7 +22,7 @@ describe Lotus::Validations do
       subclass = SubclassValidatorTest.new({age: 32})
 
       subclass.valid?.must_equal false
-      subclass.errors.for(:name).must_include Lotus::Validations::Error.new(:name, :presence, true, nil)
+      subclass.errors.for(:name).must_include Lotus::Validations::Error.new(:name, :presence, true, nil, 'subclass_validator_test')
     end
 
     it "receives attributes from the super class" do

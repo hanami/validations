@@ -8,5 +8,6 @@ end
 
 gem 'lotus-utils', '~> 0.6', require: false, github: 'lotus/utils', branch: '0.6.x'
 gem 'lotus-model', '~> 0.5', require: false, github: 'lotus/model', branch: '0.5.x'
+gem 'i18n',        '~> 0.7', require: false
 gem 'simplecov',             require: false
 gem 'coveralls',             require: false

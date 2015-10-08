@@ -26,6 +26,7 @@ module Lotus
 
       # Instantiate an attribute
       #
+      # @param validator_name [String] the name of the validator
       # @param attributes [Hash] a set of attributes and values coming from the
       #   input
       # @param name [Symbol] the name of the attribute
@@ -34,12 +35,13 @@ module Lotus
       #
       # @since 0.2.0
       # @api private
-      def initialize(attributes, name, value, validations, errors)
-        @attributes  = attributes
-        @name        = name
-        @value       = value
-        @validations = validations
-        @errors      = errors
+      def initialize(validator_name, attributes, name, value, validations, errors)
+        @validator_name = validator_name
+        @attributes     = attributes
+        @name           = name
+        @value          = value
+        @validations    = validations
+        @errors         = errors
       end
 
       # @api private
@@ -238,7 +240,7 @@ module Lotus
       # @api private
       def _validate(validation)
         if (validator = @validations[validation]) && !(yield validator)
-          @errors.add(@name, Error.new(@name, validation, @validations.fetch(validation), @value))
+          @errors.add(@name, Error.new(@name, validation, @validations.fetch(validation), @value, @validator_name))
         end
       end
     end

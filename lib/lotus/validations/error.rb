@@ -1,3 +1,5 @@
+require 'lotus/utils/string'
+
 module Lotus
   module Validations
     # A single validation error for an attribute
@@ -67,17 +69,17 @@ module Lotus
       # @param validation [Symbol] the name of the validation
       # @param expected [Object] the expected value
       # @param actual [Object] the actual value
-      # @param namespace [String] the optional namespace
+      # @param namespace [String] the namespace
       #
       # @since 0.1.0
       # @api private
-      def initialize(attribute_name, validation, expected, actual, namespace = nil)
+      def initialize(attribute_name, validation, expected, actual, namespace)
         @attribute_name = attribute_name.to_s
-        @validation = validation
-        @expected = expected
-        @actual = actual
-        @namespace = namespace
-        @attribute = [@namespace, attribute_name].compact.join(NAMESPACE_SEPARATOR)
+        @validation     = validation
+        @expected       = expected
+        @actual         = actual
+        @namespace      = namespace
+        @attribute      = [@namespace, attribute_name].flatten.compact.join(NAMESPACE_SEPARATOR)
       end
 
       # Check if self equals to `other`
@@ -89,6 +91,32 @@ module Lotus
           other.validation == validation &&
           other.expected   == expected   &&
           other.actual     == actual
+      end
+
+      # FIXME if I18n isn't defined
+      def to_s
+        # i18n_key
+        error_message
+      end
+
+      private
+
+      def i18n_key
+        [@validator, @attribute].join(NAMESPACE_SEPARATOR)
+      end
+
+      def error_message
+        messages = {
+          acceptance:   ->(expected) { " must be accepted" },
+          confirmation: ->(expected) { " doesn't match" },
+          exclusion:    ->(expected) { " shouldn't belong to #{ Array(expected).join(', ') }" },
+          format:       ->(expected) { " doesn't match expected format" },
+          inclusion:    ->(expected) { " isn't included" },
+          presence:     ->(expected) { " must be present" },
+          size:         ->(expected) { " doesn't match expected size" },
+        }
+
+        Utils::String.new(@attribute_name).capitalize + messages.fetch(@validation).call(@expected)
       end
     end
   end

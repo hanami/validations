@@ -27,3 +27,5 @@ module Lotus::Validations::ValidationIntrospection
 end
 
 require 'fixtures'
+require 'i18n'
+I18n.backend.load_translations(__dir__ + '/fixtures/error_messages.rb')
