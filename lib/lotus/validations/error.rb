@@ -93,19 +93,20 @@ module Lotus
           other.actual     == actual
       end
 
-      # FIXME if I18n isn't defined
+      # FIXME for Luca - What to do when I18n isn't defined?
       def to_s
-        # i18n_key
-        error_message
+        I18n.translate(i18n_key, default: error_message)
       end
 
       private
 
       def i18n_key
-        [@validator, @attribute].join(NAMESPACE_SEPARATOR)
+        [@validator, @attribute, @validation].join(NAMESPACE_SEPARATOR)
       end
 
       def error_message
+        # TODO extract into a constant
+        # TODO pass `self` instead of just `expected`. This will allow a complete interpolation.
         messages = {
           acceptance:   ->(expected) { " must be accepted" },
           confirmation: ->(expected) { " doesn't match" },

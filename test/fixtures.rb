@@ -229,7 +229,7 @@ class NestedValidations
     attribute :line_one, type: String, presence: true
     attribute :city, type: String
     attribute :country, type: String
-    attribute :post_code, type: String
+    attribute :post_code, type: String, format: /\A[\d]{5}\z/
   end
 end
 
