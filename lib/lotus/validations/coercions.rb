@@ -22,6 +22,8 @@ module Lotus
       def self.coerce(coercer, value, &blk)
         if ::Lotus::Utils::Kernel.respond_to?(coercer.to_s)
           ::Lotus::Utils::Kernel.__send__(coercer.to_s, value, &blk) rescue nil
+        elsif coercer.is_a?(Array)
+          value.map { |v| coerce(coercer[0], v) }
         else
           coercer.new(value, &blk)
         end
