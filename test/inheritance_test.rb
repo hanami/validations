@@ -3,10 +3,15 @@ require 'test_helper'
 describe Lotus::Validations do
   describe 'inheritance' do
     it "the superclass is able to validate" do
+      error = Lotus::Validations::Error.new(
+        attribute_name: :name,
+        validation: :presence,
+        expected: true,
+        validator_name: 'superclass_validator_test')
       superclass = SuperclassValidatorTest.new({})
 
       superclass.valid?.must_equal false
-      superclass.errors.for(:name).must_include Lotus::Validations::Error.new(:name, :presence, true, nil, 'superclass_validator_test')
+      superclass.errors.for(:name).must_include error
     end
 
     it "the superclass doesn't receive validators from the subclass" do
@@ -19,10 +24,15 @@ describe Lotus::Validations do
     end
 
     it "the subclass receive validators from the superclass" do
+      error = Lotus::Validations::Error.new(
+        attribute_name: :name,
+        validation: :presence,
+        expected: true,
+        validator_name: 'subclass_validator_test')
       subclass = SubclassValidatorTest.new({age: 32})
 
       subclass.valid?.must_equal false
-      subclass.errors.for(:name).must_include Lotus::Validations::Error.new(:name, :presence, true, nil, 'subclass_validator_test')
+      subclass.errors.for(:name).must_include error
     end
 
     it "receives attributes from the super class" do

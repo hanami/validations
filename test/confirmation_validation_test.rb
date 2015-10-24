@@ -21,7 +21,12 @@ describe Lotus::Validations do
 
       validator.valid?.must_equal false
       error = validator.errors.for(:password)
-      error.must_include Lotus::Validations::Error.new(:password, :confirmation, true, 'secret', 'confirmation_validator_test')
+      error.must_include Lotus::Validations::Error.new(
+        attribute_name: :password,
+        validation: :confirmation,
+        expected: true,
+        actual: 'secret',
+        validator_name: 'confirmation_validator_test')
     end
 
     it "isn't valid when the two attributes aren't matching" do
@@ -29,7 +34,12 @@ describe Lotus::Validations do
 
       validator.valid?.must_equal false
       error = validator.errors.for(:password)
-      error.must_include Lotus::Validations::Error.new(:password, :confirmation, true, 'secret', 'confirmation_validator_test')
+      error.must_include Lotus::Validations::Error.new(
+        attribute_name: :password,
+        validation: :confirmation,
+        expected: true,
+        actual: 'secret',
+        validator_name: 'confirmation_validator_test')
     end
   end
 end

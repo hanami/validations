@@ -107,16 +107,23 @@ module Lotus
       end
 
       # FIXME for Luca - What to do when I18n isn't defined?
+      #
+      # @since x.x.x
+      # @api private
       def to_s
         I18n.translate(i18n_key, default: error_message)
       end
 
       private
 
+      # @since x.x.x
+      # @api private
       def i18n_key
         [@validator_name, @attribute, @validation].join(NAMESPACE_SEPARATOR)
       end
 
+      # @since x.x.x
+      # @api private
       def error_message
         "#{Utils::String.new(@attribute_name).capitalize} #{DEFAULT_ERROR_MESSAGES.fetch(@validation).call(self)}"
       end

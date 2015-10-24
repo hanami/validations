@@ -14,7 +14,11 @@ describe Lotus::Validations do
 
       validator.valid?.must_equal false
       errors = validator.errors.for(:age)
-      errors.must_include Lotus::Validations::Error.new(:age, :presence, true, nil, 'presence_validator_test')
+      errors.must_include Lotus::Validations::Error.new(
+        attribute_name: :age,
+        validation: :presence,
+        expected: true,
+        validator_name: 'presence_validator_test')
     end
 
     it "isn't valid if required attribute is empty" do
@@ -22,7 +26,12 @@ describe Lotus::Validations do
 
       validator.valid?.must_equal false
       errors = validator.errors.for(:name)
-      errors.must_include Lotus::Validations::Error.new(:name, :presence, true, '', 'presence_validator_test')
+      errors.must_include Lotus::Validations::Error.new(
+        attribute_name: :name,
+        validation: :presence,
+        expected: true,
+        actual: '',
+        validator_name: 'presence_validator_test')
     end
 
     it "isn't valid if required attribute is a long blank string" do
@@ -30,7 +39,12 @@ describe Lotus::Validations do
 
       validator.valid?.must_equal false
       errors = validator.errors.for(:name)
-      errors.must_include Lotus::Validations::Error.new(:name, :presence, true, '   ', 'presence_validator_test')
+      errors.must_include Lotus::Validations::Error.new(
+        attribute_name: :name,
+        validation: :presence,
+        expected: true,
+        actual: '   ',
+        validator_name: 'presence_validator_test')
     end
   end
 end

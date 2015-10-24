@@ -15,11 +15,21 @@ describe Lotus::Validations do
     it 'is invalid when nested attributes fail validation' do
       validator = NestedValidations.new(name: 'John Smith', address: { city: 'Melbourne' })
       validator.valid?.must_equal(false)
-      expected_error = Lotus::Validations::Error.new('line_one', :presence, true, nil, :address)
+
+      expected_error = Lotus::Validations::Error.new(
+        attribute_name: 'line_one',
+        validation: :presence,
+        expected: true,
+        namespace: :address)
       line_one_errors = validator.errors.for('address.line_one')
       line_one_errors.must_include(expected_error)
+
       validator.errors.to_h.must_equal({
-        'address.line_one' => [Lotus::Validations::Error.new('line_one', :presence, true, nil, :address)]
+        'address.line_one' => [Lotus::Validations::Error.new(
+        attribute_name: 'line_one',
+        validation: :presence,
+        expected: true,
+        namespace: :address)]
       })
     end
 
