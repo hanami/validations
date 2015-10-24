@@ -39,14 +39,14 @@ describe 'Error messages' do
     message.must_equal 'Please accept our Terms of Service'
   end
 
-  it "returns customized error for nested attributes"
-  # it "returns customized error for nested attributes" do
-  #   validator = NestedValidations.new({address: {post_code: 'x'}})
-  #   validator.valid?.must_equal false
+  # it "returns customized error for nested attributes"
+  it "returns customized error for nested attributes" do
+    validator = NestedValidations.new({address: {post_code: 'x'}})
+    validator.valid?.must_equal false
 
-  #   message = validator.errors.for('address.post_code').last.to_s
-  #   message.must_equal 'Post code must be of five numbers'
-  # end
+    message = validator.errors.for('address.post_code').last.to_s
+    message.must_equal 'Post code must be of five numbers'
+  end
 
   it "returns customized error with different lang" do
     I18n.locale = :it

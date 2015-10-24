@@ -10,6 +10,18 @@ module Lotus
       # @api private
       NAMESPACE_SEPARATOR = '.'.freeze
 
+      # @since x.x.x
+      # @api private
+      DEFAULT_ERROR_MESSAGES = {
+        acceptance:   ->(error) { "must be accepted" },
+        confirmation: ->(error) { "doesn't match" },
+        exclusion:    ->(error) { "shouldn't belong to #{ Array(error.expected).join(', ') }" },
+        format:       ->(error) { "doesn't match expected format" },
+        inclusion:    ->(error) { "isn't included" },
+        presence:     ->(error) { "must be present" },
+        size:         ->(error) { "doesn't match expected size" },
+      }
+
       # The name of the attribute
       #
       # @return [Symbol] the name of the attribute
@@ -73,12 +85,13 @@ module Lotus
       #
       # @since 0.1.0
       # @api private
-      def initialize(attribute_name, validation, expected, actual, namespace)
-        @attribute_name = attribute_name.to_s
-        @validation     = validation
-        @expected       = expected
-        @actual         = actual
-        @namespace      = namespace
+      def initialize(options = {})
+        @attribute_name = options[:attribute_name].to_s
+        @validation     = options[:validation]
+        @expected       = options[:expected]
+        @actual         = options[:actual]
+        @validator_name = options[:validator_name]
+        @namespace      = options[:namespace]
         @attribute      = [@namespace, attribute_name].flatten.compact.join(NAMESPACE_SEPARATOR)
       end
 
@@ -101,23 +114,11 @@ module Lotus
       private
 
       def i18n_key
-        [@validator, @attribute, @validation].join(NAMESPACE_SEPARATOR)
+        [@validator_name, @attribute, @validation].join(NAMESPACE_SEPARATOR)
       end
 
       def error_message
-        # TODO extract into a constant
-        # TODO pass `self` instead of just `expected`. This will allow a complete interpolation.
-        messages = {
-          acceptance:   ->(expected) { " must be accepted" },
-          confirmation: ->(expected) { " doesn't match" },
-          exclusion:    ->(expected) { " shouldn't belong to #{ Array(expected).join(', ') }" },
-          format:       ->(expected) { " doesn't match expected format" },
-          inclusion:    ->(expected) { " isn't included" },
-          presence:     ->(expected) { " must be present" },
-          size:         ->(expected) { " doesn't match expected size" },
-        }
-
-        Utils::String.new(@attribute_name).capitalize + messages.fetch(@validation).call(@expected)
+        "#{Utils::String.new(@attribute_name).capitalize} #{DEFAULT_ERROR_MESSAGES.fetch(@validation).call(self)}"
       end
     end
   end

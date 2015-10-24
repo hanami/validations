@@ -11,12 +11,6 @@ module Lotus
           klass.class_eval(&blk)
         end
       end
-
-      # @since 0.3.1
-      # @api private
-      def lotus_nested_attributes?
-        true
-      end
     end
   end
 end
