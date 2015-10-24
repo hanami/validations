@@ -31,7 +31,11 @@ module Lotus
       # @see Lotus::Validations::Error#attribute
       #
       # @example
-      #   error = Error.new(:name, :presence, true, nil, 'author')
+      #   error = Error.new(
+      #     attribute_name: :name,
+      #     validation: :presence,
+      #     actual: true,
+      #     namespace: 'author')
       #
       #   error.attribute      # => "author.name"
       #   error.attribute_name # => "name"
@@ -69,7 +73,11 @@ module Lotus
       # @see Lotus::Validations::Error#attribute_name
       #
       # @example
-      #   error = Error.new(:name, :presence, true, nil, 'author')
+      #   error = Error.new(
+      #     attribute_name: :name,
+      #     validation: :presence,
+      #     actual: true,
+      #     namespace: 'author')
       #
       #   error.attribute      # => "author.name"
       #   error.attribute_name # => "name"
@@ -77,13 +85,15 @@ module Lotus
 
       # Initialize a validation error
       #
-      # @param attribute_name [Symbol] the name of the attribute
-      # @param validation [Symbol] the name of the validation
-      # @param expected [Object] the expected value
-      # @param actual [Object] the actual value
-      # @param namespace [String] the namespace
+      # @param options [Hash]
+      # @option attribute_name [Symbol] the name of the attribute
+      # @option validation [Symbol] the name of the validation
+      # @option expected [Object] the expected value
+      # @option actual [Object] the actual value
+      # @option namespace [String] the namespace
+      # @option validator_name [String] validator name
       #
-      # @since 0.1.0
+      # @since x.x.x
       # @api private
       def initialize(options = {})
         @attribute_name = options[:attribute_name].to_s
