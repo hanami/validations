@@ -202,13 +202,15 @@ module Lotus
       def nested
         _validate(__method__) do |validator|
           errors = value.validate
+          validator_name = Utils::String.new(value.class.instance_variable_get(:@parent_validator_klass)).underscore
           errors.each do |error|
             new_error = Error.new(
               attribute_name: error.attribute,
               validation: error.validation,
               expected: error.expected,
               actual: error.actual,
-              namespace: @name)
+              namespace: @name,
+              validator_name: validator_name)
             @errors.add new_error.attribute, new_error
           end
           true

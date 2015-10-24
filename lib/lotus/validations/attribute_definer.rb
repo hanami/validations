@@ -369,7 +369,7 @@ module Lotus
         # @since 0.2.4
         # @api private
         def build_validation_class(&blk)
-          NestedAttributes.fabricate(&blk)
+          NestedAttributes.fabricate(self, &blk)
         end
       end
 
