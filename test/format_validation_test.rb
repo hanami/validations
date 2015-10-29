@@ -9,6 +9,14 @@ describe Lotus::Validations do
       validator.errors.must_be_empty
     end
 
+    # Bug https://github.com/lotus/validations/issues/77
+    it "is valid if has blank value" do
+      validator = FormatValidatorTest.new({name: ''})
+
+      validator.valid?.must_equal true
+      validator.errors.must_be_empty
+    end
+
     it "is valid if it respects given formats" do
       validator = FormatValidatorTest.new({name: 'Luca', age: '32'})
 
