@@ -106,7 +106,7 @@ module Lotus
       # @since 0.2.0
       # @api private
       def format
-        _validate(__method__) {|matcher| @value.to_s.match(matcher) }
+        _validate(__method__) {|matcher| @value.to_s.match(matcher) } unless blank_value?
       end
 
       # Validates inclusion of the value in the defined collection.
