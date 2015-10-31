@@ -21,6 +21,11 @@ module Lotus
 
           attribute = Attribute.new(@attributes, name, value, validations, @errors)
           attribute.validate
+
+          if validation_class = validations[:with]
+            validation = validation_class.new(name, @attributes, @errors)
+            validation.call
+          end
         end
         @errors
       end
