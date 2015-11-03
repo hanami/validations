@@ -2,7 +2,10 @@ require "lotus/utils/string"
 module Lotus
   module Validations
     module Validation
-      attr_reader :attribute_name, :value, :attributes, :errors
+      attr_reader :attribute_name
+      attr_reader :value
+      attr_reader :attributes
+      attr_reader :errors
 
       def initialize(attribute_name, attributes, errors)
         @attribute_name = attribute_name
@@ -25,8 +28,8 @@ module Lotus
                              end
       end
 
-      def add_error(expected)
-        error = Error.new(attribute_name, validation_name, expected, value)
+      def add_error(expected, namespace = nil)
+        error = Error.new(attribute_name, validation_name, expected, value, namespace)
         @errors.add(attribute_name, error)
       end
     end
