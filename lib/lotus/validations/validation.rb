@@ -1,3 +1,4 @@
+require "lotus/utils/string"
 module Lotus
   module Validations
     module Validation
@@ -16,10 +17,9 @@ module Lotus
 
       def validation_name
         @validation_name ||= begin
-                               class_name = self.class.name.split('::').last
-                               class_name.gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2')
-                                 .gsub(/([a-z\d])([A-Z])/,'\1_\2')
-                                 .downcase
+                               class_name = Utils::String.new(self.class.name)
+                                 .demodulize
+                                 .underscore
                                  .gsub('_validator', '')
                                  .to_sym
                              end
