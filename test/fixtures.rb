@@ -272,7 +272,7 @@ class UserDefinedValidatorTest
 
     def call
       if value != 'foo'
-        add_error('foo', value)
+        add_error('foo')
       end
     end
   end
@@ -281,13 +281,4 @@ class UserDefinedValidatorTest
   attr_accessor :bar
 
   validates :bar, with: IsFooValidator
-end
-
-class UserDefinedValidationTest
-  include Lotus::Validations
-  attr_accessor :foo
-
-  validates :foo, :is_bar do |attribute|
-    attribute.value == "bar"
-  end
 end

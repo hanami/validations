@@ -25,8 +25,8 @@ module Lotus
                              end
       end
 
-      def add_error(expected, actual)
-        error = Error.new(attribute_name, validation_name, expected, actual)
+      def add_error(expected)
+        error = Error.new(attribute_name, validation_name, expected, value)
         @errors.add(attribute_name, error)
       end
     end
