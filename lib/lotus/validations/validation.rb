@@ -9,7 +9,7 @@ module Lotus
     #
     #     def call
     #       if BannedWordsRepository.where(word: value.downcase).any?
-    #         add_error(false, validation_name: :banned_user_name)
+    #         add_error(expected: false, validation_name: :banned_user_name)
     #       end
     #     end
     #   end
@@ -100,15 +100,16 @@ module Lotus
 
       # Adds an error to the error set
       #
-      # @param expected [Object] the expected valued
       # @param options [Hash] options optional options to create the error with
+      # @option options [Object] expected the expected value
       # @option options [String] namespace optional namespace that is passed to the error
       # @option options [Symbol] validation_name optional validation_name that is passed
       #   to the error. It defaults to Lotus::Validatios::Validation#default_validation_name
       #
       # @see Lotus::Validations::Error#initialize
       #
-      def add_error(expected, options = {})
+      def add_error(options = {})
+        expected = options.fetch(:expected)
         validation_name = options.fetch(:validation_name) { default_validation_name }
         namespace = options.fetch(:namespace, nil)
         error = Error.new(attribute_name, validation_name, expected, value, namespace)

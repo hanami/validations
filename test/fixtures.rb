@@ -272,7 +272,7 @@ class UserDefinedValidatorTest
 
     def call
       if value != 'foo'
-        add_error('foo')
+        add_error(expected: 'foo')
       end
     end
   end
