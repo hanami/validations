@@ -5,7 +5,7 @@ module Lotus
     #
     # @example
     #   class UserNamePolicyValidator
-    #     include Lotus::Validatios::Validation
+    #     include Lotus::Validations::Validation
     #
     #     def call
     #       if BannedWordsRepository.where(word: value.downcase).any?
@@ -29,7 +29,7 @@ module Lotus
     #
     #   signup = Signup.new(name: "very offensive user name")
     #   signup.valid? # => false
-    #   signup.erros.for(:name) => [#<Lotus::Validations::Error:0x00000001a1d1b8
+    #   signup.errors.for(:name) => [#<Lotus::Validations::Error:0x00000001a1d1b8
     #                                @actual=false",
     #                                @attribute="name",
     #                                @attribute_name="name",
