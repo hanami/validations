@@ -1,4 +1,3 @@
-require "lotus/utils/string"
 module Lotus
   module Validations
     # A mixin for defining validations.
