@@ -121,7 +121,7 @@ module Lotus
       # @since x.x.x
       # @api private
       def to_s
-        I18n.translate(i18n_key, default: error_message)
+        I18n.translate(i18n_key, attribute: attribute_name, actual: actual, expected: expected, default: error_message)
       end
 
       private

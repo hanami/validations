@@ -11,6 +11,11 @@
           format: "Post code must be of five numbers"
         }
       }
+    },
+    custom_validator_test: {
+      age: {
+        inclusion: "%{attribute} should be between %{expected} and got %{actual}"
+      }
     }
   },
 

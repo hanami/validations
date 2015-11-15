@@ -39,6 +39,14 @@ describe 'Error messages' do
     message.must_equal 'Please accept our Terms of Service'
   end
 
+  it "returns customized error" do
+    validator = CustomValidatorTest.new({age: 15})
+    validator.valid?
+
+    message = validator.errors.for(:age).first.to_s
+    message.must_equal "age should be between 18..99 and got 15"
+  end
+
   # it "returns customized error for nested attributes"
   it "returns customized error for nested attributes" do
     validator = NestedValidations.new({address: {post_code: 'x'}})

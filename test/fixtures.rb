@@ -136,6 +136,13 @@ class AcceptanceValidatorTest
   attribute :tos, acceptance: true
 end
 
+class CustomValidatorTest
+  include Lotus::Validations
+
+  attribute :age, type: Integer
+  validates :age, presence: true, inclusion: 18..99
+end
+
 class CfSize
   def to_int
     16
