@@ -67,6 +67,35 @@ person.email # => "me@example.org"
 person.age   # => raises NoMethodError because `:age` wasn't defined as attribute.
 ```
 
+#### Blank Values
+
+The framework will treat as valid any blank attributes, __without__ `presence`, for both `format` and `size` predicates.
+
+```ruby
+require 'lotus/validations'
+
+class Person
+  include Lotus::Validations
+
+  attribute :name,    type: String, size: 5..45
+  attribute :email,   type: String, size: 20..80, format: /@/
+  attribute :skills,  type: Array,  size: 1..3
+  attribute :keys,    type: Hash,   size: 1..3
+end
+
+Person.new.valid?                             # < true
+Person.new(name: '').valid?                   # < true
+Person.new(email: '@').valid?                 # < true
+Person.new(skills: '').valid?                 # < true
+Person.new(skills: ['ruby', 'lotus']).valid?  # < true
+
+Person.new(skills: []).valid?                 # < false
+Person.new(keys: {}).valid?                   # < false
+Person.new(keys: {a: :b}, skills: []).valid?  # < false
+```
+
+If you want to _disable_ this behaviour, please, refer to [presence](https://github.com/lotus/validations#presence).
+
 ### Validations
 
 If you prefer Lotus::Validations to **only define validations**, but **not attributes**,
