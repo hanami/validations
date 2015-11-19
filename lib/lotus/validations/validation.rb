@@ -7,8 +7,8 @@ module Lotus
     #   class UserNamePolicyValidator
     #     include Lotus::Validations::Validation
     #
-    #     def call
-    #       if BannedWordsRepository.where(word: value.downcase).any?
+    #     def call(name)
+    #       if BannedWordsRepository.where(word: name.downcase).any?
     #         add_error(expected: false, validation_name: :banned_user_name)
     #       end
     #     end
@@ -71,10 +71,12 @@ module Lotus
 
       # This method must be overriden. It should implement
       # the validation logic and add an error by calling #add_error
+      # 
+      # @param [Object] value the value to validate
       #
       # @see Lotus::Validatios::Validation#add_error
       #
-      def call
+      def call(value)
         fail NotImplementedError
       end
 

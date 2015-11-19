@@ -270,8 +270,8 @@ class UserDefinedValidatorTest
   class IsFooValidator
     include Lotus::Validations::Validation
 
-    def call
-      if value != 'foo'
+    def call(input)
+      if input != 'foo'
         add_error(expected: 'foo')
       end
     end

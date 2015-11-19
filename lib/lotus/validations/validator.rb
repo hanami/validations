@@ -24,7 +24,7 @@ module Lotus
 
           if validation_class = validations[:with]
             validation = validation_class.new(name, @attributes, @errors)
-            validation.call
+            validation.call(value)
           end
         end
         @errors
