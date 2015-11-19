@@ -103,6 +103,22 @@ describe Lotus::Validations do
       end
     end
 
+    # Bug https://github.com/lotus/validations/issues/81
+    it 'is valid if attribute is defined as blank' do
+      validator = SizeValidatorTest.new(password: 'foobarbazqux', ssn: '')
+
+      validator.valid?.must_equal true
+      validator.errors.must_be_empty
+    end
+
+    it 'is not valid if attribute is an empty collection' do
+      validator = SizeValidatorTest.new(password: 'quxbazbarfoo', ssn: [])
+
+      validator.valid?.must_equal false
+      errors = validator.errors.for(:ssn)
+      errors.must_include Lotus::Validations::Error.new(:ssn, :size, 11, [])
+    end
+
     it "raises an error when the validator can't be coerced into an integer" do
       -> { SizeValidatorErrorTest.new(password: 'secret').valid? }.must_raise ArgumentError
     end

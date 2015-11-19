@@ -106,8 +106,8 @@ end
 class FormatValidatorTest
   include Lotus::Validations
 
-  attribute :name,                 format: /\A[a-zA-Z]+\z/
-  attribute :age,    type: String, format: /\A[0-9]+\z/
+  attribute :name,               format: /\A[a-zA-Z]+\z/
+  attribute :age,  type: String, format: /\A[0-9]+\z/
 end
 
 class InclusionValidatorTest
@@ -185,12 +185,24 @@ module EmailValidations
   attribute :email, presence: true, format: /@/
 end
 
+module EmailValidationsWithoutPresence
+  include Lotus::Validations
+
+  attribute :email, format: /@/
+end
+
 module CommonValidations
   include EmailValidations
 end
 
 class ComposedValidationsTest
   include EmailValidations
+end
+
+class ComposedValidationsWithoutPresenceTest
+  include EmailValidationsWithoutPresence
+
+  attribute :name, size: 8..50
 end
 
 module PasswordValidations

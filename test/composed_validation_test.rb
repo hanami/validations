@@ -40,6 +40,19 @@ describe Lotus::Validations do
 
         validator.valid?.must_equal true
       end
+
+      # Bug https://github.com/lotus/validations/issues/81
+      it 'is valid if included attributes are blank and does not define presence constraint' do
+        validator = ComposedValidationsWithoutPresenceTest.new(email: '', name: '')
+
+        validator.valid?.must_equal true
+      end
+
+      it 'is not valid if included attributes are invalid' do
+        validator = ComposedValidationsWithoutPresenceTest.new(email: 'fo', name: 'o')
+
+        validator.valid?.must_equal false
+      end
     end
 
     describe 'nested composed validations' do
