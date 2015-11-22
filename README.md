@@ -85,7 +85,6 @@ end
 
 Person.new.valid?                             # < true
 Person.new(name: '').valid?                   # < true
-Person.new(email: '@').valid?                 # < true
 Person.new(skills: '').valid?                 # < true
 Person.new(skills: ['ruby', 'lotus']).valid?  # < true
 
