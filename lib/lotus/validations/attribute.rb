@@ -171,6 +171,8 @@ module Lotus
       #
       # If the quantity is a Range, the size of the value MUST be included.
       #
+      # If the attribute's value is blank, the size will not be considered
+      #
       # The value is an object which implements `#size`.
       #
       # @raise [ArgumentError] if the defined quantity isn't a Numeric or a
@@ -181,6 +183,8 @@ module Lotus
       # @since 0.2.0
       # @api private
       def size
+        return if blank_value?
+
         _validate(__method__) do |validator|
           case validator
           when Numeric, ->(v) { v.respond_to?(:to_int) }
