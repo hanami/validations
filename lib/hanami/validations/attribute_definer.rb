@@ -1,6 +1,7 @@
 require 'set'
 require 'hanami/utils/attributes'
 require 'hanami/validations/nested_attributes'
+require 'hanami/validations/array_attribute'
 
 module Hanami
   module Validations
@@ -379,6 +380,9 @@ module Hanami
         private
         def attribute_validable?(type)
           return false if type.nil?
+          if type.is_a?(Array)
+            return type.all?{ |member_type| member_type.instance_methods.include?(:valid?) }
+          end
           type.instance_methods.include?(:valid?)
         end
       end

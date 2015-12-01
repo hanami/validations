@@ -1,10 +1,10 @@
-require 'lotus/validations/attribute'
+require 'hanami/validations/attribute'
 
-module Lotus
+module Hanami
   module Validations
     class ArrayAttribute < Attribute
 
-      # Validates nested Array of Lotus Validations objects
+      # Validates nested Array of Hanami Validations objects
       #
       # @since 0.3.3
       # @api private

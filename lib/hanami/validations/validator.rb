@@ -19,7 +19,11 @@ module Hanami
           value = @attributes[name]
           value = @attributes[name.to_s] if value.nil?
 
-          attribute = Attribute.new(@attributes, name, value, validations, @errors)
+          attribute = if value.is_a?(Array)
+            ArrayAttribute.new(@attributes, name, value, validations, @errors)
+          else
+            Attribute.new(@attributes, name, value, validations, @errors)
+          end
           attribute.validate
         end
         @errors
