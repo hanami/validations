@@ -294,6 +294,10 @@ module Hanami
           define_accessor(name, type)
           defined_attributes.add(name.to_s)
 
+          if attribute_validable?(type)
+            options[:nested] = true
+          end
+
           if options[:confirmation]
             confirmation_accessor = "#{ name }_confirmation"
             define_accessor(confirmation_accessor, type)
@@ -370,6 +374,12 @@ module Hanami
         # @api private
         def build_validation_class(&blk)
           NestedAttributes.fabricate(&blk)
+        end
+
+        private
+        def attribute_validable?(type)
+          return false if type.nil?
+          type.instance_methods.include?(:valid?)
         end
       end
 
