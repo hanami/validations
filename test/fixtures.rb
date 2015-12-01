@@ -267,3 +267,23 @@ class PureValidator
 
   validates :name, presence: true
 end
+
+class NestedValidations
+  include Lotus::Validations
+
+  attribute :name, presence: true
+end
+
+class NestedWithCoercion
+  include Lotus::Validations
+
+  attribute :name, presence: true
+  attribute :nested, type: NestedValidations
+end
+
+class NestedArrayWithCoercion
+  include Lotus::Validations
+
+  attribute :name, presence: true
+  attribute :nested, type: Array[NestedValidations]
+end
