@@ -297,6 +297,8 @@ module Hanami
 
           if attribute_validable?(type)
             options[:nested] = true
+            define_lazy_reader(name, type)
+            define_coerced_writer(name, type)
           end
 
           if options[:confirmation]
