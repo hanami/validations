@@ -282,3 +282,20 @@ class UserDefinedValidatorTest
 
   validates :bar, with: IsFooValidator
 end
+
+class ExplicitValidationNameTest
+  class IsFooValidator
+    include Lotus::Validations::Validation
+
+    def call(input)
+      if input != 'foo'
+        add_error(expected: 'foo', validation_name: :custom_validation)
+      end
+    end
+  end
+
+  include Lotus::Validations
+  attr_accessor :bar
+
+  validates :bar, with: IsFooValidator
+end
