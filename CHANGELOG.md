@@ -1,6 +1,10 @@
 # Lotus::Validations
 Validations mixin for Ruby objects
 
+## v0.4.0 - 2016-01-12
+## Changed
+- [Hélio Costa e Silva & Luca Guidi] Ignore blank values for format and size validation
+
 ## v0.3.3 - 2015-09-30
 ### Added
 - [Luca Guidi] Official support for JRuby 9k+
