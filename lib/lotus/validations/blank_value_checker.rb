@@ -45,7 +45,7 @@ module Lotus
       # Collectable classes should not be considered as blank value
       # even if it's responds _true_ to its own `empty?` method.
       #
-      # @since x.x.x
+      # @since 0.4.0
       # @api private
       def _enumerable?
         @value.respond_to?(:each)
