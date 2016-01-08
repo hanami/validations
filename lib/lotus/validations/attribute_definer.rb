@@ -76,8 +76,8 @@ module Lotus
         # @param name [#to_sym] the name of the attribute
         # @param options [Hash] optional set of validations
         # @option options [Class] :type the Ruby type used to coerce the value
-        # @option options [TrueClass,FalseClass] :acceptance requires Ruby
-        #   thruthiness of the value
+        # @option options [TrueClass,FalseClass] :acceptance requires a non-empty
+        # value which coerces to TrueClass
         # @option options [TrueClass,FalseClass] :confirmation requires the value
         #   to be confirmed twice
         # @option options [#include?] :exclusion requires the value NOT be
