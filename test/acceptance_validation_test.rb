@@ -20,7 +20,7 @@ describe Lotus::Validations do
     end
 
     it "isn't valid if it isn't equal to true" do
-      [0, '0', false, nil].each do |value|
+      [0, '0', false, nil, '', '  '].each do |value|
         validator = AcceptanceValidatorTest.new({tos: value})
 
         validator.valid?.must_equal false

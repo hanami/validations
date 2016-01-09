@@ -85,7 +85,7 @@ module Lotus
       # This passes if the value is "truthy", it fails if not.
       #
       # Truthy examples: `Object.new`, `1`, `"1"`, `true`.
-      # Falsey examples: `nil`, `0`, `"0"`, `false`.
+      # Falsy examples: `nil`, `0`, `"0"`, `false`, `""`.
       #
       # @see Lotus::Validations::ClassMethods#attribute
       # @see http://www.rubydoc.info/gems/lotus-utils/Lotus/Utils/Kernel#Boolean-class_method
@@ -93,7 +93,9 @@ module Lotus
       # @since 0.2.0
       # @api private
       def acceptance
-        _validate(__method__) { Lotus::Utils::Kernel.Boolean(@value) }
+        _validate(__method__) do
+          !blank_value? && Lotus::Utils::Kernel.Boolean(@value)
+        end
       end
 
       # Validates format of the value.
