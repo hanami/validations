@@ -5,6 +5,9 @@ Validations mixin for Ruby objects
 ## Changed
 - [Hélio Costa e Silva & Luca Guidi] Ignore blank values for format and size validation
 
+### Fixed
+- [Pascal Betz] Ensure acceptance validation to reject blank strings
+
 ## v0.3.3 - 2015-09-30
 ### Added
 - [Luca Guidi] Official support for JRuby 9k+
