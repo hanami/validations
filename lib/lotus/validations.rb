@@ -251,8 +251,7 @@ module Lotus
     #
     # @see Lotus::Attribute#nested
     def validate
-      validator = Validator.new(defined_validations, read_attributes, errors)
-      validator.validate
+      Validator.new(self).validate
     end
 
     # Iterates thru the defined attributes and their values

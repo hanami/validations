@@ -13,7 +13,12 @@ describe Lotus::Validations::Errors do
 
   describe '#empty?' do
     before do
-      @errors.add(:email, Lotus::Validations::Error.new(:email, :format, /@/, 'test'))
+      @errors.add(:email,
+        Lotus::Validations::Error.new(
+          attribute_name: :email,
+          validation: :format,
+          expected: /@/,
+          actual: 'test'))
     end
 
     it 'returns true when the set is empty' do
@@ -29,7 +34,12 @@ describe Lotus::Validations::Errors do
 
   describe '#any?' do
     before do
-      @errors.add(:email, Lotus::Validations::Error.new(:email, :format, /@/, 'test'))
+      @errors.add(:email,
+        Lotus::Validations::Error.new(
+          attribute_name: :email,
+          validation: :format,
+          expected: /@/,
+          actual: 'test'))
     end
 
     it 'returns true when the set is not empty' do
@@ -45,17 +55,34 @@ describe Lotus::Validations::Errors do
 
   describe '#add' do
     it 'adds an error for an attribute' do
-      @errors.add(:email, Lotus::Validations::Error.new(:email, :format, /@/, 'test'))
+      @errors.add(:email,
+        Lotus::Validations::Error.new(
+          attribute_name: :email,
+          validation: :format,
+          expected: /@/,
+          actual: 'test'))
       @errors.wont_be_empty
     end
   end
 
   describe '#for' do
     it 'returns errors for the given attribute' do
-      @errors.add(:email, Lotus::Validations::Error.new(:email, :format, /@/, 'test'))
-      @errors.add(:name,  Lotus::Validations::Error.new(:name, :presence, true, nil))
+      @errors.add(:email,
+        Lotus::Validations::Error.new(
+          attribute_name: :email,
+          validation: :format,
+          expected: /@/,
+          actual: 'test'))
+      @errors.add(:name,
+        Lotus::Validations::Error.new(
+          attribute_name: :name,
+          validation: :presence,
+          expected: true))
 
-      @errors.for(:name).must_include Lotus::Validations::Error.new(:name, :presence, true, nil)
+      @errors.for(:name).must_include Lotus::Validations::Error.new(
+        attribute_name: :name,
+        validation: :presence,
+        expected: true)
     end
   end
 
@@ -64,12 +91,23 @@ describe Lotus::Validations::Errors do
       result = []
 
       @errors.add(:email,
-        Lotus::Validations::Error.new(:email, :format, /@/, 'test'),
-        Lotus::Validations::Error.new(:email, :confirmation, true, 'test')
+        Lotus::Validations::Error.new(
+          attribute_name: :email,
+          validation: :format,
+          expected: /@/,
+          actual: 'test'),
+        Lotus::Validations::Error.new(
+          attribute_name: :email,
+          validation: :confirmation,
+          expected: true,
+          actual: 'test')
       )
 
       @errors.add(:name,
-        Lotus::Validations::Error.new(:name, :presence, true, nil)
+        Lotus::Validations::Error.new(
+          attribute_name: :name,
+          validation: :presence,
+          expected: true)
       )
 
       @errors.each do |error|
@@ -90,12 +128,23 @@ describe Lotus::Validations::Errors do
   describe '#map' do
     it 'yields the given block for each error' do
       @errors.add(:email,
-        Lotus::Validations::Error.new(:email, :format, /@/, 'test'),
-        Lotus::Validations::Error.new(:email, :confirmation, true, 'test')
+        Lotus::Validations::Error.new(
+          attribute_name: :email,
+          validation: :format,
+          expected: /@/,
+          actual: 'test'),
+        Lotus::Validations::Error.new(
+          attribute_name: :email,
+          validation: :confirmation,
+          expected: true,
+          actual: 'test')
       )
 
       @errors.add(:name,
-        Lotus::Validations::Error.new(:name, :presence, true, nil)
+        Lotus::Validations::Error.new(
+          attribute_name: :name,
+          validation: :presence,
+          expected: true)
       )
 
       result = @errors.map do |error|
@@ -114,12 +163,23 @@ describe Lotus::Validations::Errors do
   describe '#count' do
     before do
       @errors.add(:email,
-        Lotus::Validations::Error.new(:email, :format, /@/, 'test'),
-        Lotus::Validations::Error.new(:email, :confirmation, true, 'test')
+        Lotus::Validations::Error.new(
+          attribute_name: :email,
+          validation: :format,
+          expected: /@/,
+          actual: 'test'),
+        Lotus::Validations::Error.new(
+          attribute_name: :email,
+          validation: :confirmation,
+          expected: true,
+          actual: 'test')
       )
 
       @errors.add(:name,
-        Lotus::Validations::Error.new(:name, :presence, true, nil)
+        Lotus::Validations::Error.new(
+          attribute_name: :name,
+          validation: :presence,
+          expected: true)
       )
     end
 
@@ -141,7 +201,10 @@ describe Lotus::Validations::Errors do
   describe '#to_h' do
     before do
       @errors.add(:name,
-        @error = Lotus::Validations::Error.new(:name, :presence, true, nil)
+        @error = Lotus::Validations::Error.new(
+          attribute_name: :name,
+          validation: :presence,
+          expected: true)
       )
 
       @actual = @errors.to_h
@@ -168,9 +231,20 @@ describe Lotus::Validations::Errors do
 
   describe '#to_a' do
     before do
-      email_format       = Lotus::Validations::Error.new(:email, :format, /@/, 'test')
-      email_confirmation = Lotus::Validations::Error.new(:email, :confirmation, true, 'test')
-      name_presence      = Lotus::Validations::Error.new(:name, :presence, true, nil)
+      email_format = Lotus::Validations::Error.new(
+        attribute_name: :email,
+        validation: :format,
+        expected: /@/,
+        actual: 'test')
+      email_confirmation = Lotus::Validations::Error.new(
+        attribute_name: :email,
+        validation: :confirmation,
+        expected: true,
+        actual: 'test')
+      name_presence = Lotus::Validations::Error.new(
+        attribute_name: :name,
+        validation: :presence,
+        expected: true)
 
       @errors.add(:email, email_format, email_confirmation)
       @errors.add(:name,  name_presence)
@@ -196,13 +270,20 @@ describe Lotus::Validations::Errors do
 
   describe 'attribute names' do
     it 'returns the attribute string when not namespaced' do
-      error = Lotus::Validations::Error.new(:name, :presence, true, nil)
+      error = Lotus::Validations::Error.new(
+        attribute_name: :name,
+        validation: :presence,
+        expected: true)
       error.attribute_name.must_equal('name')
       error.attribute.must_equal('name')
     end
 
     it 'returns the last segment of the attribute name when namespaced' do
-      error = Lotus::Validations::Error.new('author', :presence, true, nil, :job)
+      error = Lotus::Validations::Error.new(
+        attribute_name: 'author',
+        validation: :presence,
+        expected: true,
+        namespace: :job)
       error.attribute_name.must_equal('author')
       error.attribute.must_equal('job.author')
     end

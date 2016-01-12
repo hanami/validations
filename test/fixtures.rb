@@ -136,6 +136,13 @@ class AcceptanceValidatorTest
   attribute :tos, acceptance: true
 end
 
+class CustomValidatorTest
+  include Lotus::Validations
+
+  attribute :age, type: Integer
+  validates :age, presence: true, inclusion: 18..99
+end
+
 class CfSize
   def to_int
     16
@@ -232,6 +239,19 @@ class DecoratedValidations
   attribute :password, confirmation: true
 end
 
+class NestedValidations
+  include Lotus::Validations
+
+  attribute :name, type: String
+  attribute :tags, type: Array
+  attribute :address do
+    attribute :line_one, type: String, presence: true
+    attribute :city, type: String
+    attribute :country, type: String
+    attribute :post_code, type: String, format: /\A[\d]{5}\z/
+  end
+end
+
 class Signup
   include Lotus::Validations
 
@@ -266,4 +286,17 @@ class PureValidator
   attr_accessor :name, :age
 
   validates :name, presence: true
+end
+
+class ErrorMessagesValidator
+  include Lotus::Validations
+  MEGABYTE = 1024 ** 2
+
+  attribute :eula,     acceptance: true
+  attribute :password, confirmation: true
+  attribute :music,    exclusion: ['pop', 'dance']
+  attribute :name,     format: /\A[\w]+\z/
+  attribute :age,      inclusion: 18..99
+  attribute :email,    presence: true
+  attribute :avatar,   size: 1..(5 * MEGABYTE)
 end

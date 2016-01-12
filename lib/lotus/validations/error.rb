@@ -1,3 +1,5 @@
+require 'lotus/utils/string'
+
 module Lotus
   module Validations
     # A single validation error for an attribute
@@ -8,6 +10,18 @@ module Lotus
       # @api private
       NAMESPACE_SEPARATOR = '.'.freeze
 
+      # @since x.x.x
+      # @api private
+      DEFAULT_ERROR_MESSAGES = {
+        acceptance:   ->(error) { "must be accepted" },
+        confirmation: ->(error) { "doesn't match" },
+        exclusion:    ->(error) { "shouldn't belong to #{ Array(error.expected).join(', ') }" },
+        format:       ->(error) { "doesn't match expected format" },
+        inclusion:    ->(error) { "isn't included" },
+        presence:     ->(error) { "must be present" },
+        size:         ->(error) { "doesn't match expected size" },
+      }
+
       # The name of the attribute
       #
       # @return [Symbol] the name of the attribute
@@ -17,7 +31,11 @@ module Lotus
       # @see Lotus::Validations::Error#attribute
       #
       # @example
-      #   error = Error.new(:name, :presence, true, nil, 'author')
+      #   error = Error.new(
+      #     attribute_name: :name,
+      #     validation: :presence,
+      #     actual: true,
+      #     namespace: 'author')
       #
       #   error.attribute      # => "author.name"
       #   error.attribute_name # => "name"
@@ -55,7 +73,11 @@ module Lotus
       # @see Lotus::Validations::Error#attribute_name
       #
       # @example
-      #   error = Error.new(:name, :presence, true, nil, 'author')
+      #   error = Error.new(
+      #     attribute_name: :name,
+      #     validation: :presence,
+      #     actual: true,
+      #     namespace: 'author')
       #
       #   error.attribute      # => "author.name"
       #   error.attribute_name # => "name"
@@ -63,21 +85,24 @@ module Lotus
 
       # Initialize a validation error
       #
-      # @param attribute_name [Symbol] the name of the attribute
-      # @param validation [Symbol] the name of the validation
-      # @param expected [Object] the expected value
-      # @param actual [Object] the actual value
-      # @param namespace [String] the optional namespace
+      # @param options [Hash]
+      # @option attribute_name [Symbol] the name of the attribute
+      # @option validation [Symbol] the name of the validation
+      # @option expected [Object] the expected value
+      # @option actual [Object] the actual value
+      # @option namespace [String] the namespace
+      # @option validator_name [String] validator name
       #
-      # @since 0.1.0
+      # @since x.x.x
       # @api private
-      def initialize(attribute_name, validation, expected, actual, namespace = nil)
-        @attribute_name = attribute_name.to_s
-        @validation = validation
-        @expected = expected
-        @actual = actual
-        @namespace = namespace
-        @attribute = [@namespace, attribute_name].compact.join(NAMESPACE_SEPARATOR)
+      def initialize(options = {})
+        @attribute_name = options[:attribute_name].to_s
+        @validation     = options[:validation]
+        @expected       = options[:expected]
+        @actual         = options[:actual]
+        @validator_name = options[:validator_name]
+        @namespace      = options[:namespace]
+        @attribute      = [@namespace, attribute_name].flatten.compact.join(NAMESPACE_SEPARATOR)
       end
 
       # Check if self equals to `other`
@@ -89,6 +114,28 @@ module Lotus
           other.validation == validation &&
           other.expected   == expected   &&
           other.actual     == actual
+      end
+
+      # FIXME for Luca - What to do when I18n isn't defined?
+      #
+      # @since x.x.x
+      # @api private
+      def to_s
+        I18n.translate(i18n_key, attribute: attribute_name, actual: actual, expected: expected, default: error_message)
+      end
+
+      private
+
+      # @since x.x.x
+      # @api private
+      def i18n_key
+        [@validator_name, @attribute, @validation].join(NAMESPACE_SEPARATOR)
+      end
+
+      # @since x.x.x
+      # @api private
+      def error_message
+        "#{Utils::String.new(@attribute_name).capitalize} #{DEFAULT_ERROR_MESSAGES.fetch(@validation).call(self)}"
       end
     end
   end

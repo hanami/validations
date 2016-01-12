@@ -29,7 +29,12 @@ describe Lotus::Validations do
 
       validator.valid?.must_equal false
       error = validator.errors.for(:age)
-      error.must_include Lotus::Validations::Error.new(:age, :format, /\A[0-9]+\z/, 'thirtytwo')
+      error.must_include Lotus::Validations::Error.new(
+        attribute_name: :age,
+        validation: :format,
+        expected: /\A[0-9]+\z/,
+        actual: 'thirtytwo',
+        validator_name: 'format_validator_test')
     end
   end
 end

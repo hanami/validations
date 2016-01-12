@@ -26,6 +26,7 @@ module Lotus
 
       # Instantiate an attribute
       #
+      # @param validator_name [String] the name of the validator
       # @param attributes [Hash] a set of attributes and values coming from the
       #   input
       # @param name [Symbol] the name of the attribute
@@ -34,12 +35,13 @@ module Lotus
       #
       # @since 0.2.0
       # @api private
-      def initialize(attributes, name, value, validations, errors)
-        @attributes  = attributes
-        @name        = name
-        @value       = value
-        @validations = validations
-        @errors      = errors
+      def initialize(validator_name, attributes, name, value, validations, errors)
+        @validator_name = validator_name
+        @attributes     = attributes
+        @name           = name
+        @value          = value
+        @validations    = validations
+        @errors         = errors
       end
 
       # @api private
@@ -206,8 +208,15 @@ module Lotus
       def nested
         _validate(__method__) do |validator|
           errors = value.validate
+          validator_name = Utils::String.new(value.class.instance_variable_get(:@parent_validator_klass)).underscore
           errors.each do |error|
-            new_error = Error.new(error.attribute, error.validation, error.expected, error.actual, @name)
+            new_error = Error.new(
+              attribute_name: error.attribute,
+              validation: error.validation,
+              expected: error.expected,
+              actual: error.actual,
+              namespace: @name,
+              validator_name: validator_name)
             @errors.add new_error.attribute, new_error
           end
           true
@@ -244,7 +253,13 @@ module Lotus
       # @api private
       def _validate(validation)
         if (validator = @validations[validation]) && !(yield validator)
-          @errors.add(@name, Error.new(@name, validation, @validations.fetch(validation), @value))
+          new_error = Error.new(
+            attribute_name: @name,
+            validation: validation,
+            expected: @validations.fetch(validation),
+            actual: @value,
+            validator_name: @validator_name)
+          @errors.add(@name, new_error)
         end
       end
     end

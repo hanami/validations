@@ -17,8 +17,18 @@ describe Lotus::Validations do
 
       errors = validator.errors.for(:email)
       errors.must_equal [
-        Lotus::Validations::Error.new(:email, :format, /@/, 'test'),
-        Lotus::Validations::Error.new(:email, :confirmation, true, 'test')
+        Lotus::Validations::Error.new(
+          attribute_name: :email,
+          validation: :format,
+          expected: /@/,
+          actual: 'test',
+          validator_name: 'multiple_validations_test'),
+        Lotus::Validations::Error.new(
+          attribute_name: :email,
+          validation: :confirmation,
+          expected: true,
+          actual: 'test',
+          validator_name: 'multiple_validations_test')
       ]
     end
 

@@ -74,7 +74,12 @@ describe Lotus::Validations do
 
         validator.valid?.must_equal false
         errors = validator.errors.for(:ssn)
-        errors.must_include Lotus::Validations::Error.new(:ssn, :size, 11, value)
+        errors.must_include Lotus::Validations::Error.new(
+          attribute_name: :ssn,
+          validation: :size,
+          expected: 11,
+          actual: value,
+          validator_name: 'size_validator_test')
       end
     end
 
@@ -99,7 +104,12 @@ describe Lotus::Validations do
 
         validator.valid?.must_equal false
         errors = validator.errors.for(:password)
-        errors.must_include Lotus::Validations::Error.new(:password, :size, 9..56, value)
+        errors.must_include Lotus::Validations::Error.new(
+          attribute_name: :password,
+          validation: :size,
+          expected: 9..56,
+          actual: value,
+          validator_name: 'size_validator_test')
       end
     end
 
