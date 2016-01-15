@@ -18,7 +18,8 @@ module Lotus
         :confirmation,
         :size,
         :type,
-        :nested
+        :nested,
+        :with
       ].freeze
 
       # @since 0.2.2
@@ -29,10 +30,16 @@ module Lotus
 
       # @since 0.2.2
       # @api private
-      def add(name, options)
-        @validations[name.to_sym].merge!(
-          validate_options!(name, options)
-        )
+      # def add(*args, &block)
+      def add(*args, &block)
+        raise ArgumentError.new() if args.count != 2
+        if block_given?
+          attribute, name = args
+          @validations[attribute.to_sym].merge!(name.to_sym => block)
+        else
+          name, options = args
+          @validations[name.to_sym].merge!(validate_options!(name, options))
+        end
       end
 
       # @since 0.2.2

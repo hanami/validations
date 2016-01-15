@@ -3,6 +3,7 @@ require 'lotus/validations/version'
 require 'lotus/validations/blank_value_checker'
 require 'lotus/validations/attribute_definer'
 require 'lotus/validations/validation_set'
+require 'lotus/validations/validation'
 require 'lotus/validations/validator'
 require 'lotus/validations/attribute'
 require 'lotus/validations/errors'
@@ -102,18 +103,21 @@ module Lotus
       #       @name = attributes.fetch(:name)
       #     end
       #
-      #     attr_accessor :name
+      #     attr_accessor :name, :email
       #
       #     validates :name, presence: true
+      #     validates :email, :unique do |attr|
+      #       UserRepository.where(email: attr.value).any?
+      #     end
       #   end
       #
-      #   signup = Signup.new(name: 'Luca')
+      #   signup = Signup.new(name: 'Luca', email: 'luca@brasi.com')
       #   signup.valid? # => true
       #
       #   signup = Signup.new(name: nil)
       #   signup.valid? # => false
-      def validates(name, options)
-        validations.add(name, options)
+      def validates(*args, &block)
+        validations.add(*args, &block)
       end
 
       # Set of user defined validations
