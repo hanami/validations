@@ -1,4 +1,4 @@
-# Lotus::Validations
+# Hanami::Validations
 Validations mixin for Ruby objects
 
 ## v0.4.0 - 2016-01-12
@@ -14,26 +14,26 @@ Validations mixin for Ruby objects
 
 ## v0.3.2 - 2015-05-22
 ### Added
-- [deepj] Introduced `Lotus::Validations#invalid?`
+- [deepj] Introduced `Hanami::Validations#invalid?`
 
 ## v0.3.1 - 2015-05-15
 ### Fixed
 - [Luca Guidi] Fixed Hash serialization for nested validations. It always return nested `::Hash` structure.
-- [Alfonso Uceda Pompa & Dmitry Tymchuk] Fixed Hash serialization when `Lotus::Entity` is included in the same class.
+- [Alfonso Uceda Pompa & Dmitry Tymchuk] Fixed Hash serialization when `Hanami::Entity` is included in the same class.
 
 ## v0.3.0 - 2015-03-23
 
 ## v0.2.4 - 2015-01-30
 ### Added
-- [Steve Hodgkiss] Introduced `Lotus::Validations::Error#attribute_name`
+- [Steve Hodgkiss] Introduced `Hanami::Validations::Error#attribute_name`
 - [Steve Hodgkiss] Nested validations
 
 ### Changed
-- [Steve Hodgkiss] `Lotus::Validations::Error#name` returns the complete attribute name (Eg. `first_name` or `address.street`)
+- [Steve Hodgkiss] `Hanami::Validations::Error#name` returns the complete attribute name (Eg. `first_name` or `address.street`)
 
 ## v0.2.3 - 2015-01-12
 ### Added
-- [Luca Guidi] Compatibility with Lotus::Entity
+- [Luca Guidi] Compatibility with Hanami::Entity
 
 ### Fixed
 - [Luca Guidi] Ensure `.validates` usage to not raise `ArgumentError` when `:type` option is passed
@@ -82,4 +82,4 @@ Validations mixin for Ruby objects
 
 ### Fixed
 - [Jeremy Stephens] Ensure to not fail validations when coerce falsey values
-- [Luca Guidi] Ensure `Lotus::Validations#valid?` to be idempotent
+- [Luca Guidi] Ensure `Hanami::Validations#valid?` to be idempotent

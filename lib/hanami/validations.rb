@@ -1,14 +1,14 @@
-require 'lotus/utils/hash'
-require 'lotus/validations/version'
-require 'lotus/validations/blank_value_checker'
-require 'lotus/validations/attribute_definer'
-require 'lotus/validations/validation_set'
-require 'lotus/validations/validator'
-require 'lotus/validations/attribute'
-require 'lotus/validations/errors'
+require 'hanami/utils/hash'
+require 'hanami/validations/version'
+require 'hanami/validations/blank_value_checker'
+require 'hanami/validations/attribute_definer'
+require 'hanami/validations/validation_set'
+require 'hanami/validations/validator'
+require 'hanami/validations/attribute'
+require 'hanami/validations/errors'
 
-module Lotus
-  # Lotus::Validations is a set of lightweight validations for Ruby objects.
+module Hanami
+  # Hanami::Validations is a set of lightweight validations for Ruby objects.
   #
   # @since 0.1.0
   module Validations
@@ -32,7 +32,7 @@ module Lotus
     # @since 0.1.0
     module ClassMethods
       # Override Ruby's hook for class inheritance. When a class includes
-      # Lotus::Validations and it is subclassed, this passes
+      # Hanami::Validations and it is subclassed, this passes
       # the attributes from the superclass to the subclass.
       #
       # @param base [Class] the target action
@@ -47,7 +47,7 @@ module Lotus
       end
 
       # Override Ruby's hook for modules. When a module includes
-      # Lotus::Validations and it is included in a class or module, this passes
+      # Hanami::Validations and it is included in a class or module, this passes
       # the validations from the module to the base.
       #
       # @param base [Class] the target action
@@ -58,10 +58,10 @@ module Lotus
       # @see http://www.ruby-doc.org/core/Module.html#method-i-included
       #
       # @example
-      #   require 'lotus/validations'
+      #   require 'hanami/validations'
       #
       #   module NameValidations
-      #     include Lotus::Validations
+      #     include Hanami::Validations
       #
       #     attribute :name, presence: true
       #   end
@@ -77,7 +77,7 @@ module Lotus
       #   signup.valid? # => true
       def included(base)
         base.class_eval do
-          include Lotus::Validations
+          include Hanami::Validations
         end
 
         super
@@ -90,13 +90,13 @@ module Lotus
       # @param name [#to_sym] the name of the attribute
       # @param options [Hash] set of validations
       #
-      # @see Lotus::Validations::ClassMethods#validations
+      # @see Hanami::Validations::ClassMethods#validations
       #
       # @example Presence
-      #   require 'lotus/validations'
+      #   require 'hanami/validations'
       #
       #   class Signup
-      #     include Lotus::Validations
+      #     include Hanami::Validations
       #
       #     def initialize(attributes = {})
       #       @name = attributes.fetch(:name)
@@ -153,17 +153,17 @@ module Lotus
 
     # Validation errors
     #
-    # @return [Lotus::Validations::Errors] the set of validation errors
+    # @return [Hanami::Validations::Errors] the set of validation errors
     #
     # @since 0.1.0
     #
-    # @see Lotus::Validations::Errors
+    # @see Hanami::Validations::Errors
     #
     # @example Valid attributes
-    #   require 'lotus/validations'
+    #   require 'hanami/validations'
     #
     #   class Signup
-    #     include Lotus::Validations
+    #     include Hanami::Validations
     #
     #     attribute :email, presence: true, format: /\A(.*)@(.*)\.(.*)\z/
     #   end
@@ -172,13 +172,13 @@ module Lotus
     #   signup.valid? # => true
     #
     #   signup.errors
-    #     # => #<Lotus::Validations::Errors:0x007fd594ba9228 @errors={}>
+    #     # => #<Hanami::Validations::Errors:0x007fd594ba9228 @errors={}>
     #
     # @example Invalid attributes
-    #   require 'lotus/validations'
+    #   require 'hanami/validations'
     #
     #   class Signup
-    #     include Lotus::Validations
+    #     include Hanami::Validations
     #
     #     attribute :email, presence: true, format: /\A(.*)@(.*)\.(.*)\z/
     #     attribute :age, size: 18..99
@@ -188,22 +188,22 @@ module Lotus
     #   signup.valid? # => false
     #
     #   signup.errors
-    #     # => #<Lotus::Validations::Errors:0x007fe00ced9b78
+    #     # => #<Hanami::Validations::Errors:0x007fe00ced9b78
     #     # @errors={
     #     #   :email=>[
-    #     #     #<Lotus::Validations::Error:0x007fe00cee3290 @attribute=:email, @validation=:presence, @expected=true, @actual="">,
-    #     #     #<Lotus::Validations::Error:0x007fe00cee31f0 @attribute=:email, @validation=:format, @expected=/\A(.*)@(.*)\.(.*)\z/, @actual="">
+    #     #     #<Hanami::Validations::Error:0x007fe00cee3290 @attribute=:email, @validation=:presence, @expected=true, @actual="">,
+    #     #     #<Hanami::Validations::Error:0x007fe00cee31f0 @attribute=:email, @validation=:format, @expected=/\A(.*)@(.*)\.(.*)\z/, @actual="">
     #     #   ],
     #     #   :age=>[
-    #     #     #<Lotus::Validations::Error:0x007fe00cee30d8 @attribute=:age, @validation=:size, @expected=18..99, @actual=17>
+    #     #     #<Hanami::Validations::Error:0x007fe00cee30d8 @attribute=:age, @validation=:size, @expected=18..99, @actual=17>
     #     #   ]
     #     # }>
     #
     # @example Invalid attributes
-    #   require 'lotus/validations'
+    #   require 'hanami/validations'
     #
     #   class Post
-    #     include Lotus::Validations
+    #     include Hanami::Validations
     #
     #     attribute :title, presence: true
     #   end
@@ -212,10 +212,10 @@ module Lotus
     #   post.invalid? # => true
     #
     #   post.errors
-    #     # => #<Lotus::Validations::Errors:0x2931522b
+    #     # => #<Hanami::Validations::Errors:0x2931522b
     #     # @errors={
     #     #   :title=>[
-    #     #     #<Lotus::Validations::Error:0x662706a7 @actual=nil, @attribute_name="title", @validation=:presence, @expected=true, @namespace=nil, @attribute="title">
+    #     #     #<Hanami::Validations::Error:0x662706a7 @actual=nil, @attribute_name="title", @validation=:presence, @expected=true, @namespace=nil, @attribute="title">
     #     #   ]
     #     # }>
     def errors
@@ -249,7 +249,7 @@ module Lotus
     # @since 0.2.4
     # @api private
     #
-    # @see Lotus::Attribute#nested
+    # @see Hanami::Attribute#nested
     def validate
       validator = Validator.new(defined_validations, read_attributes, errors)
       validator.validate
@@ -285,7 +285,7 @@ module Lotus
     # @since 0.2.2
     # @api private
     #
-    # @see Lotus::Validations::ClassMethods#validations
+    # @see Hanami::Validations::ClassMethods#validations
     def defined_validations
       self.class.__send__(:validations)
     end

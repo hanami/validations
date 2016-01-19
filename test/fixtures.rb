@@ -20,20 +20,20 @@ class Params
 end
 
 class InitializerTest
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :attr, type: Integer
 end
 
 class AttributeTest
-  include Lotus::Validations
-  extend  Lotus::Validations::ValidationIntrospection
+  include Hanami::Validations
+  extend  Hanami::Validations::ValidationIntrospection
 
   attribute 'attr'
 end
 
 class UndefinedAttributesValidator
-  include Lotus::Validations
+  include Hanami::Validations
   attribute :name
 
   def [](key)
@@ -42,7 +42,7 @@ class UndefinedAttributesValidator
 end
 
 class MethodAssignmentTest
-  include Lotus::Validations
+  include Hanami::Validations
   attribute :name
 
   def ==(other)
@@ -56,27 +56,27 @@ class MethodAssignmentTest
 end
 
 class UniquenessAttributeTest
-  include Lotus::Validations
-  extend  Lotus::Validations::ValidationIntrospection
+  include Hanami::Validations
+  extend  Hanami::Validations::ValidationIntrospection
 
   attribute :attr
   attribute :attr
 end
 
 class AnotherValidator
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :another
 end
 
 class MultipleValidationsTest
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :email, confirmation: true, format: /@/
 end
 
 class TypeValidatorTest
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :untyped
   attribute :array_attr,         type: Array
@@ -96,7 +96,7 @@ class TypeValidatorTest
 end
 
 class PresenceValidatorTest
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :untyped
   attribute :name,                 presence: true
@@ -104,14 +104,14 @@ class PresenceValidatorTest
 end
 
 class FormatValidatorTest
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :name,               format: /\A[a-zA-Z]+\z/
   attribute :age,  type: String, format: /\A[0-9]+\z/
 end
 
 class InclusionValidatorTest
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :job,                  inclusion: ['Carpenter', 'Blacksmith']
   attribute :state,                inclusion: { 'ma' => 'Massachussets' }
@@ -121,7 +121,7 @@ class InclusionValidatorTest
 end
 
 class ExclusionValidatorTest
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :job,                  exclusion: ['Carpenter', 'Blacksmith']
   attribute :state,                exclusion: { 'ma' => 'Massachussets' }
@@ -131,7 +131,7 @@ class ExclusionValidatorTest
 end
 
 class AcceptanceValidatorTest
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :tos, acceptance: true
 end
@@ -143,7 +143,7 @@ class CfSize
 end
 
 class SizeValidatorTest
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :password, size: 9..56
   attribute :ssn,      size: 11
@@ -151,19 +151,19 @@ class SizeValidatorTest
 end
 
 class SizeValidatorErrorTest
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :password, size: 'nine'
 end
 
 class ConfirmationValidatorTest
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :password, confirmation: true
 end
 
 class SuperclassValidatorTest
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :name, presence: true
 end
@@ -173,20 +173,20 @@ class SubclassValidatorTest < SuperclassValidatorTest
 end
 
 class VisibilityValidatorTest
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :name
   attribute :password, confirmation: true
 end
 
 module EmailValidations
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :email, presence: true, format: /@/
 end
 
 module EmailValidationsWithoutPresence
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :email, format: /@/
 end
@@ -206,13 +206,13 @@ class ComposedValidationsWithoutPresenceTest
 end
 
 module PasswordValidations
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :password, presence: true
 end
 
 class ComposedValidationsWithExtraAttributesTest
-  include Lotus::Validations
+  include Hanami::Validations
   include EmailValidations
 
   attribute :name, presence: true
@@ -233,7 +233,7 @@ class DecoratedValidations
 end
 
 class Signup
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :email,    presence: true
   attribute :password, presence: true, confirmation: true
@@ -241,18 +241,18 @@ end
 
 class EnumerableValidator
   include Enumerable
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :name
 end
 
 class CustomAttributesValidator
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :name
 
   def initialize(attributes)
-    @attributes = Lotus::Utils::Attributes.new({ already: 'initialized' })
+    @attributes = Hanami::Utils::Attributes.new({ already: 'initialized' })
     super
   end
 
@@ -262,7 +262,7 @@ class CustomAttributesValidator
 end
 
 class PureValidator
-  include Lotus::Validations
+  include Hanami::Validations
   attr_accessor :name, :age
 
   validates :name, presence: true

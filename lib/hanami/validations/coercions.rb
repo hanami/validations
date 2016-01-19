@@ -1,6 +1,6 @@
-require 'lotus/utils/kernel'
+require 'hanami/utils/kernel'
 
-module Lotus
+module Hanami
   module Validations
     # Coercions for attribute's values.
     #
@@ -20,8 +20,8 @@ module Lotus
       # @since 0.1.0
       # @api private
       def self.coerce(coercer, value, &blk)
-        if ::Lotus::Utils::Kernel.respond_to?(coercer.to_s)
-          ::Lotus::Utils::Kernel.__send__(coercer.to_s, value, &blk) rescue nil
+        if ::Hanami::Utils::Kernel.respond_to?(coercer.to_s)
+          ::Hanami::Utils::Kernel.__send__(coercer.to_s, value, &blk) rescue nil
         else
           coercer.new(value, &blk)
         end

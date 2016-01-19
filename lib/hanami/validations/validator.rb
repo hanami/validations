@@ -1,4 +1,4 @@
-module Lotus
+module Hanami
   module Validations
     # Validate given validations and return a set of errors
     #

@@ -1,12 +1,12 @@
-require 'lotus/validations/error'
+require 'hanami/validations/error'
 
-module Lotus
+module Hanami
   module Validations
     # A set of errors for a validator
     #
     # This is the result of calling `#valid?` on a validator.
     #
-    # @see Lotus::Validations::Error
+    # @see Hanami::Validations::Error
     #
     # @since 0.1.0
     class Errors
@@ -24,7 +24,7 @@ module Lotus
       #
       # @since 0.1.0
       #
-      # @see Lotus::Validations::Errors#any?
+      # @see Hanami::Validations::Errors#any?
       def empty?
         @errors.empty?
       end
@@ -35,7 +35,7 @@ module Lotus
       #
       # @since 0.2.0
       #
-      # @see Lotus::Validations::Errors#empty?
+      # @see Hanami::Validations::Errors#empty?
       def any?
         @errors.any?
       end
@@ -62,9 +62,9 @@ module Lotus
       # Iterate thru the errors and yields the given block
       #
       # @param blk [Proc] the given block
-      # @yield [error] a Lotus::Validations::Error
+      # @yield [error] a Hanami::Validations::Error
       #
-      # @see Lotus::Validations::Error
+      # @see Hanami::Validations::Error
       #
       # @since 0.1.0
       def each(&blk)
@@ -75,9 +75,9 @@ module Lotus
       # returning value.
       #
       # @param blk [Proc] the given block
-      # @yield [error] a Lotus::Validations::Error
+      # @yield [error] a Hanami::Validations::Error
       #
-      # @see Lotus::Validations::Error
+      # @see Hanami::Validations::Error
       #
       # @since 0.1.0
       def map(&blk)
@@ -92,7 +92,7 @@ module Lotus
       # @since 0.1.0
       # @api private
       #
-      # @see Lotus::Validations::Error
+      # @see Hanami::Validations::Error
       def add(attribute, *errors)
         if errors.any?
           @errors[attribute] ||= []
@@ -126,7 +126,7 @@ module Lotus
 
       # Return a serializable Hash representation of the errors.
       #
-      # @return [Lotus::Utils::Hash] the Hash
+      # @return [Hanami::Utils::Hash] the Hash
       #
       # @since 0.2.1
       def to_h

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe Lotus::Validations do
+describe Hanami::Validations do
   describe 'format' do
     it "is valid if it doesn't have attributes" do
       validator = FormatValidatorTest.new({})
@@ -9,7 +9,7 @@ describe Lotus::Validations do
       validator.errors.must_be_empty
     end
 
-    # Bug https://github.com/lotus/validations/issues/77
+    # Bug https://github.com/hanami/validations/issues/77
     it "is valid if has blank value" do
       validator = FormatValidatorTest.new({name: ''})
 
@@ -29,7 +29,7 @@ describe Lotus::Validations do
 
       validator.valid?.must_equal false
       error = validator.errors.for(:age)
-      error.must_include Lotus::Validations::Error.new(:age, :format, /\A[0-9]+\z/, 'thirtytwo')
+      error.must_include Hanami::Validations::Error.new(:age, :format, /\A[0-9]+\z/, 'thirtytwo')
     end
   end
 end

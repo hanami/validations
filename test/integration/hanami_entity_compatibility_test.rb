@@ -1,23 +1,23 @@
 require 'test_helper'
-require 'lotus/utils'
-require 'lotus/model'
+require 'hanami/utils'
+require 'hanami/model'
 
-describe 'Lotus::Entity compatibility' do
+describe 'Hanami::Entity compatibility' do
   describe 'with attributes definition' do
     before do
       class Product
-        include Lotus::Entity
-        include Lotus::Validations
+        include Hanami::Entity
+        include Hanami::Validations
 
         attribute :name,  type: String,  presence: true
         attribute :price, type: Integer, presence: true
       end
 
       class ProductRepository
-        include Lotus::Repository
+        include Hanami::Repository
       end
 
-      Lotus::Model.configure do
+      Hanami::Model.configure do
         adapter type: :memory, uri: 'memory://localhost/test'
 
         mapping do
@@ -33,7 +33,7 @@ describe 'Lotus::Entity compatibility' do
     end
 
     after do
-      Lotus::Model.unload!
+      Hanami::Model.unload!
 
       Object.__send__(:remove_const, :Product)
       Object.__send__(:remove_const, :ProductRepository)
@@ -66,8 +66,8 @@ describe 'Lotus::Entity compatibility' do
   describe 'with only validations' do
     before do
       class Product
-        include Lotus::Entity
-        include Lotus::Validations
+        include Hanami::Entity
+        include Hanami::Validations
 
         attributes :name, :price
         validates  :name,  type: String,  presence: true
@@ -75,10 +75,10 @@ describe 'Lotus::Entity compatibility' do
       end
 
       class ProductRepository
-        include Lotus::Repository
+        include Hanami::Repository
       end
 
-      Lotus::Model.configure do
+      Hanami::Model.configure do
         adapter type: :memory, uri: 'memory://localhost/test'
 
         mapping do
@@ -94,7 +94,7 @@ describe 'Lotus::Entity compatibility' do
     end
 
     after do
-      Lotus::Model.unload!
+      Hanami::Model.unload!
 
       Object.__send__(:remove_const, :Product)
       Object.__send__(:remove_const, :ProductRepository)
@@ -124,16 +124,16 @@ describe 'Lotus::Entity compatibility' do
     end
 
     it '#to_h returns correct attributes' do
-      product = Product.new(name: 'lotus', price: '200')
-      product.to_h.must_equal({ id: nil, name: 'lotus', price: 200 })
+      product = Product.new(name: 'hanami', price: '200')
+      product.to_h.must_equal({ id: nil, name: 'hanami', price: 200 })
     end
   end
 
   describe 'with both attributes and validations' do
     before do
       class Product
-        include Lotus::Entity
-        include Lotus::Validations
+        include Hanami::Entity
+        include Hanami::Validations
 
         attributes :name, :price
         attribute  :name,  type: String,  presence: true
@@ -141,10 +141,10 @@ describe 'Lotus::Entity compatibility' do
       end
 
       class ProductRepository
-        include Lotus::Repository
+        include Hanami::Repository
       end
 
-      Lotus::Model.configure do
+      Hanami::Model.configure do
         adapter type: :memory, uri: 'memory://localhost/test'
 
         mapping do
@@ -160,7 +160,7 @@ describe 'Lotus::Entity compatibility' do
     end
 
     after do
-      Lotus::Model.unload!
+      Hanami::Model.unload!
 
       Object.__send__(:remove_const, :Product)
       Object.__send__(:remove_const, :ProductRepository)
@@ -190,8 +190,8 @@ describe 'Lotus::Entity compatibility' do
     end
 
     it '#to_h returns correct attributes' do
-      product = Product.new(name: 'lotus', price: '200')
-      product.to_h.must_equal({ id: nil, name: 'lotus', price: 200 })
+      product = Product.new(name: 'hanami', price: '200')
+      product.to_h.must_equal({ id: nil, name: 'hanami', price: 200 })
     end
   end
-end unless Lotus::Utils.jruby?
+end unless Hanami::Utils.jruby?

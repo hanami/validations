@@ -1,8 +1,8 @@
 require 'test_helper'
 
-describe Lotus::Validations::Errors do
+describe Hanami::Validations::Errors do
   before do
-    @errors = Lotus::Validations::Errors.new
+    @errors = Hanami::Validations::Errors.new
   end
 
   describe '#initialize' do
@@ -13,7 +13,7 @@ describe Lotus::Validations::Errors do
 
   describe '#empty?' do
     before do
-      @errors.add(:email, Lotus::Validations::Error.new(:email, :format, /@/, 'test'))
+      @errors.add(:email, Hanami::Validations::Error.new(:email, :format, /@/, 'test'))
     end
 
     it 'returns true when the set is empty' do
@@ -29,7 +29,7 @@ describe Lotus::Validations::Errors do
 
   describe '#any?' do
     before do
-      @errors.add(:email, Lotus::Validations::Error.new(:email, :format, /@/, 'test'))
+      @errors.add(:email, Hanami::Validations::Error.new(:email, :format, /@/, 'test'))
     end
 
     it 'returns true when the set is not empty' do
@@ -45,17 +45,17 @@ describe Lotus::Validations::Errors do
 
   describe '#add' do
     it 'adds an error for an attribute' do
-      @errors.add(:email, Lotus::Validations::Error.new(:email, :format, /@/, 'test'))
+      @errors.add(:email, Hanami::Validations::Error.new(:email, :format, /@/, 'test'))
       @errors.wont_be_empty
     end
   end
 
   describe '#for' do
     it 'returns errors for the given attribute' do
-      @errors.add(:email, Lotus::Validations::Error.new(:email, :format, /@/, 'test'))
-      @errors.add(:name,  Lotus::Validations::Error.new(:name, :presence, true, nil))
+      @errors.add(:email, Hanami::Validations::Error.new(:email, :format, /@/, 'test'))
+      @errors.add(:name,  Hanami::Validations::Error.new(:name, :presence, true, nil))
 
-      @errors.for(:name).must_include Lotus::Validations::Error.new(:name, :presence, true, nil)
+      @errors.for(:name).must_include Hanami::Validations::Error.new(:name, :presence, true, nil)
     end
   end
 
@@ -64,12 +64,12 @@ describe Lotus::Validations::Errors do
       result = []
 
       @errors.add(:email,
-        Lotus::Validations::Error.new(:email, :format, /@/, 'test'),
-        Lotus::Validations::Error.new(:email, :confirmation, true, 'test')
+        Hanami::Validations::Error.new(:email, :format, /@/, 'test'),
+        Hanami::Validations::Error.new(:email, :confirmation, true, 'test')
       )
 
       @errors.add(:name,
-        Lotus::Validations::Error.new(:name, :presence, true, nil)
+        Hanami::Validations::Error.new(:name, :presence, true, nil)
       )
 
       @errors.each do |error|
@@ -90,12 +90,12 @@ describe Lotus::Validations::Errors do
   describe '#map' do
     it 'yields the given block for each error' do
       @errors.add(:email,
-        Lotus::Validations::Error.new(:email, :format, /@/, 'test'),
-        Lotus::Validations::Error.new(:email, :confirmation, true, 'test')
+        Hanami::Validations::Error.new(:email, :format, /@/, 'test'),
+        Hanami::Validations::Error.new(:email, :confirmation, true, 'test')
       )
 
       @errors.add(:name,
-        Lotus::Validations::Error.new(:name, :presence, true, nil)
+        Hanami::Validations::Error.new(:name, :presence, true, nil)
       )
 
       result = @errors.map do |error|
@@ -114,12 +114,12 @@ describe Lotus::Validations::Errors do
   describe '#count' do
     before do
       @errors.add(:email,
-        Lotus::Validations::Error.new(:email, :format, /@/, 'test'),
-        Lotus::Validations::Error.new(:email, :confirmation, true, 'test')
+        Hanami::Validations::Error.new(:email, :format, /@/, 'test'),
+        Hanami::Validations::Error.new(:email, :confirmation, true, 'test')
       )
 
       @errors.add(:name,
-        Lotus::Validations::Error.new(:name, :presence, true, nil)
+        Hanami::Validations::Error.new(:name, :presence, true, nil)
       )
     end
 
@@ -134,14 +134,14 @@ describe Lotus::Validations::Errors do
 
   describe '#==' do
     it 'compares with other errors' do
-      assert Lotus::Validations::Errors.new == Lotus::Validations::Errors.new
+      assert Hanami::Validations::Errors.new == Hanami::Validations::Errors.new
     end
   end
 
   describe '#to_h' do
     before do
       @errors.add(:name,
-        @error = Lotus::Validations::Error.new(:name, :presence, true, nil)
+        @error = Hanami::Validations::Error.new(:name, :presence, true, nil)
       )
 
       @actual = @errors.to_h
@@ -168,9 +168,9 @@ describe Lotus::Validations::Errors do
 
   describe '#to_a' do
     before do
-      email_format       = Lotus::Validations::Error.new(:email, :format, /@/, 'test')
-      email_confirmation = Lotus::Validations::Error.new(:email, :confirmation, true, 'test')
-      name_presence      = Lotus::Validations::Error.new(:name, :presence, true, nil)
+      email_format       = Hanami::Validations::Error.new(:email, :format, /@/, 'test')
+      email_confirmation = Hanami::Validations::Error.new(:email, :confirmation, true, 'test')
+      name_presence      = Hanami::Validations::Error.new(:name, :presence, true, nil)
 
       @errors.add(:email, email_format, email_confirmation)
       @errors.add(:name,  name_presence)
@@ -196,13 +196,13 @@ describe Lotus::Validations::Errors do
 
   describe 'attribute names' do
     it 'returns the attribute string when not namespaced' do
-      error = Lotus::Validations::Error.new(:name, :presence, true, nil)
+      error = Hanami::Validations::Error.new(:name, :presence, true, nil)
       error.attribute_name.must_equal('name')
       error.attribute.must_equal('name')
     end
 
     it 'returns the last segment of the attribute name when namespaced' do
-      error = Lotus::Validations::Error.new('author', :presence, true, nil, :job)
+      error = Hanami::Validations::Error.new('author', :presence, true, nil, :job)
       error.attribute_name.must_equal('author')
       error.attribute.must_equal('job.author')
     end

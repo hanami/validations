@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe Lotus::Validations do
+describe Hanami::Validations do
   before do
     @validator = PresenceValidatorTest.new(name: nil)
     @validator.valid?
@@ -8,7 +8,7 @@ describe Lotus::Validations do
 
   describe '#errors' do
     it 'exposes the error set' do
-      @validator.errors.must_be_kind_of(Lotus::Validations::Errors)
+      @validator.errors.must_be_kind_of(Hanami::Validations::Errors)
       @validator.errors.count.must_equal(2)
     end
 

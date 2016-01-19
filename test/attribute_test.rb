@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe Lotus::Validations do
+describe Hanami::Validations do
   describe '.attribute' do
     it 'coerces attribute names to symbols' do
       assert AttributeTest.defined_validation?(:attr)
@@ -17,8 +17,8 @@ describe Lotus::Validations do
 
       errors = validator.errors.for(:email)
       errors.must_equal [
-        Lotus::Validations::Error.new(:email, :format, /@/, 'test'),
-        Lotus::Validations::Error.new(:email, :confirmation, true, 'test')
+        Hanami::Validations::Error.new(:email, :format, /@/, 'test'),
+        Hanami::Validations::Error.new(:email, :confirmation, true, 'test')
       ]
     end
 
@@ -26,7 +26,7 @@ describe Lotus::Validations do
       it 'checks validation names' do
         exception = -> {
           Class.new {
-            include Lotus::Validations
+            include Hanami::Validations
             attribute :email, pesence: true, comfirmation: true
           }
         }.must_raise ArgumentError

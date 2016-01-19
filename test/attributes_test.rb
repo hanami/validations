@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe Lotus::Validations do
+describe Hanami::Validations do
   before do
     @validator = VisibilityValidatorTest.new(name: 'Luca', unwanted: 'nope', password: 'secret', password_confirmation: 'secret')
   end
