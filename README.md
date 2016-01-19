@@ -442,6 +442,31 @@ error.name           # => "address.street"
 error.attribute_name # => "street"
 ```
 
+Also you can use validations nested in Lotus Validations object.
+```ruby
+class Address
+  include Lotus::Validations
+
+  attribute :street,      presence: true
+  attribute :city,        presence: true
+  attribute :country,     presence: true
+  attribute :postal_code, presence: true, format: /.../
+end
+
+class ShippingDetails
+  include Lotus::Validations
+
+  attribute :full_name, presence: true
+  attribute :address,   type: Address
+end
+
+validator = ShippingDetails.new
+validator.valid? # => false
+```
+
+Errors are handled the same way as for nested block syntax.
+```
+
 ### Composable validations
 
 Validations can be reused via composition:
