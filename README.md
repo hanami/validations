@@ -465,7 +465,6 @@ validator.valid? # => false
 ```
 
 Errors are handled the same way as for nested block syntax.
-```
 
 ### Composable validations
 
