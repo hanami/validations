@@ -1,4 +1,4 @@
-module Lotus
+module Hanami
   module Validations
     # A single validation error for an attribute
     #
@@ -14,7 +14,7 @@ module Lotus
       #
       # @since 0.2.4
       #
-      # @see Lotus::Validations::Error#attribute
+      # @see Hanami::Validations::Error#attribute
       #
       # @example
       #   error = Error.new(:name, :presence, true, nil, 'author')
@@ -52,7 +52,7 @@ module Lotus
       #
       # @since 0.1.0
       #
-      # @see Lotus::Validations::Error#attribute_name
+      # @see Hanami::Validations::Error#attribute_name
       #
       # @example
       #   error = Error.new(:name, :presence, true, nil, 'author')

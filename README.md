@@ -1,35 +1,35 @@
-# Lotus::Validations
+# Hanami::Validations
 
 Validations mixins for objects
 
 ## Status
 
-[![Gem Version](http://img.shields.io/gem/v/lotus-validations.svg)](https://badge.fury.io/rb/lotus-validations)
-[![Build Status](http://img.shields.io/travis/lotus/validations/master.svg)](https://travis-ci.org/lotus/validations?branch=master)
-[![Coverage](http://img.shields.io/coveralls/lotus/validations/master.svg)](https://coveralls.io/r/lotus/validations)
-[![Code Climate](http://img.shields.io/codeclimate/github/lotus/validations.svg)](https://codeclimate.com/github/lotus/validations)
-[![Dependencies](http://img.shields.io/gemnasium/lotus/validations.svg)](https://gemnasium.com/lotus/validations)
-[![Inline Docs](http://inch-ci.org/github/lotus/validations.svg)](http://inch-ci.org/github/lotus/validations)
+[![Gem Version](http://img.shields.io/gem/v/hanami-validations.svg)](https://badge.fury.io/rb/hanami-validations)
+[![Build Status](http://img.shields.io/travis/hanami/validations/master.svg)](https://travis-ci.org/hanami/validations?branch=master)
+[![Coverage](http://img.shields.io/coveralls/hanami/validations/master.svg)](https://coveralls.io/r/hanami/validations)
+[![Code Climate](http://img.shields.io/codeclimate/github/hanami/validations.svg)](https://codeclimate.com/github/hanami/validations)
+[![Dependencies](http://img.shields.io/gemnasium/hanami/validations.svg)](https://gemnasium.com/hanami/validations)
+[![Inline Docs](http://inch-ci.org/github/hanami/validations.svg)](http://inch-ci.org/github/hanami/validations)
 
 ## Contact
 
-* Home page: http://lotusrb.org
-* Mailing List: http://lotusrb.org/mailing-list
-* API Doc: http://rdoc.info/gems/lotus-validations
-* Bugs/Issues: https://github.com/lotus/validations/issues
-* Support: http://stackoverflow.com/questions/tagged/lotus-ruby
-* Chat: https://gitter.im/lotus/chat
+* Home page: http://hanamirb.org
+* Mailing List: http://hanamirb.org/mailing-list
+* API Doc: http://rdoc.info/gems/hanami-validations
+* Bugs/Issues: https://github.com/hanami/validations/issues
+* Support: http://stackoverflow.com/questions/tagged/hanami
+* Chat: http://chat.hanamirb.org
 
 ## Rubies
 
-__Lotus::Validations__ supports Ruby (MRI) 2+, JRuby 9k+ & Rubinius 2.3+
+__Hanami::Validations__ supports Ruby (MRI) 2+, JRuby 9k+
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'lotus-validations'
+gem 'hanami-validations'
 ```
 
 And then execute:
@@ -38,11 +38,11 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install lotus-validations
+    $ gem install hanami-validations
 
 ## Usage
 
-`Lotus::Validations` is a set of lightweight validations for Ruby objects.
+`Hanami::Validations` is a set of lightweight validations for Ruby objects.
 
 ### Attributes
 
@@ -52,10 +52,10 @@ It defines an initializer, whose attributes can be passed as a hash.
 All unknown values are ignored, which is useful for whitelisting attributes.
 
 ```ruby
-require 'lotus/validations'
+require 'hanami/validations'
 
 class Person
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :name,  presence: true
   attribute :email, presence: true
@@ -72,10 +72,10 @@ person.age   # => raises NoMethodError because `:age` wasn't defined as attribut
 The framework will treat as valid any blank attributes, __without__ `presence`, for both `format` and `size` predicates.
 
 ```ruby
-require 'lotus/validations'
+require 'hanami/validations'
 
 class Person
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :name,    type: String, size: 5..45
   attribute :email,   type: String, size: 20..80, format: /@/
@@ -86,25 +86,25 @@ end
 Person.new.valid?                             # < true
 Person.new(name: '').valid?                   # < true
 Person.new(skills: '').valid?                 # < true
-Person.new(skills: ['ruby', 'lotus']).valid?  # < true
+Person.new(skills: ['ruby', 'hanami']).valid?  # < true
 
 Person.new(skills: []).valid?                 # < false
 Person.new(keys: {}).valid?                   # < false
 Person.new(keys: {a: :b}, skills: []).valid?  # < false
 ```
 
-If you want to _disable_ this behaviour, please, refer to [presence](https://github.com/lotus/validations#presence).
+If you want to _disable_ this behaviour, please, refer to [presence](https://github.com/hanami/validations#presence).
 
 ### Validations
 
-If you prefer Lotus::Validations to **only define validations**, but **not attributes**,
+If you prefer Hanami::Validations to **only define validations**, but **not attributes**,
 you can use the following alternative syntax.
 
 ```ruby
-require 'lotus/validations'
+require 'hanami/validations'
 
 class Person
-  include Lotus::Validations
+  include Hanami::Validations
   attr_accessor :name, :email
 
   # Custom initializer
@@ -122,7 +122,7 @@ person.email # => "me@example.org"
 ```
 
 This is a bit more verbose, but offers a great level of flexibility for your
-Ruby objects. It also allows to use Lotus::Validations in combination with
+Ruby objects. It also allows to use Hanami::Validations in combination with
 **other frameworks**.
 
 ### Coercions
@@ -132,10 +132,10 @@ If a Ruby class is passed to the `:type` option, the given value is coerced, acc
 #### Standard coercions
 
 ```ruby
-require 'lotus/validations'
+require 'hanami/validations'
 
 class Person
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :fav_number, type: Integer
 end
@@ -168,7 +168,7 @@ If a user defined class is specified, it can be freely used for coercion purpose
 The only limitation is that the constructor should have **arity of 1**.
 
 ```ruby
-require 'lotus/validations'
+require 'hanami/validations'
 
 class FavNumber
   def initialize(number)
@@ -180,7 +180,7 @@ class BirthDate
 end
 
 class Person
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :fav_number, type: FavNumber
   attribute :date,       type: BirthDate
@@ -205,10 +205,10 @@ validations.
 An attribute is valid if its value is _truthy_.
 
 ```ruby
-require 'lotus/validations'
+require 'hanami/validations'
 
 class Signup
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :terms_of_service, acceptance: true
 end
@@ -234,10 +234,10 @@ is valid.
 By convention, if you have a `password` attribute, the validation looks for `password_confirmation`.
 
 ```ruby
-require 'lotus/validations'
+require 'hanami/validations'
 
 class Signup
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :password, confirmation: true
 end
@@ -261,10 +261,10 @@ In Ruby, this includes most of the core objects: `String`, `Enumerable` (`Array`
 See also [Inclusion](#inclusion).
 
 ```ruby
-require 'lotus/validations'
+require 'hanami/validations'
 
 class Signup
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :music, exclusion: ['pop']
 end
@@ -281,10 +281,10 @@ signup.valid? # => false
 An attribute is valid if it matches the given Regular Expression.
 
 ```ruby
-require 'lotus/validations'
+require 'hanami/validations'
 
 class Signup
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :name, format: /\A[a-zA-Z]+\z/
 end
@@ -309,7 +309,7 @@ See also [Exclusion](#exclusion).
 
 ```ruby
 require 'prime'
-require 'lotus/validations'
+require 'hanami/validations'
 
 class PrimeNumbers
   def initialize(limit)
@@ -322,7 +322,7 @@ class PrimeNumbers
 end
 
 class Signup
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :age,        inclusion: 18..99
   attribute :fav_number, inclusion: PrimeNumbers.new(100)
@@ -346,10 +346,10 @@ signup.valid? # => false
 An attribute is valid if present.
 
 ```ruby
-require 'lotus/validations'
+require 'hanami/validations'
 
 class Signup
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :name, presence: true
 end
@@ -369,11 +369,11 @@ signup.valid? # => false
 An attribute is valid if its `#size` falls within the described value.
 
 ```ruby
-require 'lotus/validations'
+require 'hanami/validations'
 
 class Signup
   MEGABYTE = 1024 ** 2
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :ssn,      size: 11    # exact match
   attribute :password, size: 8..64 # range
@@ -403,7 +403,7 @@ Nested validations are handled with a nested block syntax.
 
 ```ruby
 class ShippingDetails
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :full_name, presence: true
 
@@ -447,22 +447,22 @@ error.attribute_name # => "street"
 Validations can be reused via composition:
 
 ```ruby
-require 'lotus/validations'
+require 'hanami/validations'
 
 module NameValidations
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :name, presence: true
 end
 
 module EmailValidations
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :email, presence: true, format: /.../
 end
 
 module PasswordValidations
-  include Lotus::Validations
+  include Hanami::Validations
 
   # We validate only the presence here
   attribute :password, presence: true
@@ -503,10 +503,10 @@ end
 ### Complete example
 
 ```ruby
-require 'lotus/validations'
+require 'hanami/validations'
 
 class Signup
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :first_name, presence: true
   attribute :last_name,  presence: true
@@ -522,10 +522,10 @@ It's a set of errors grouped by attribute. Each error contains the name of the
 invalid attribute, the failed validation, the expected value, and the current one.
 
 ```ruby
-require 'lotus/validations'
+require 'hanami/validations'
 
 class Signup
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :email, presence: true, format: /\A(.*)@(.*)\.(.*)\z/
   attribute :age, size: 18..99
@@ -538,29 +538,29 @@ signup = Signup.new(email: '', age: 17)
 signup.valid? # => false
 
 signup.errors
-  # => #<Lotus::Validations::Errors:0x007fe00ced9b78
+  # => #<Hanami::Validations::Errors:0x007fe00ced9b78
   # @errors={
   #   :email=>[
-  #     #<Lotus::Validations::Error:0x007fe00cee3290 @attribute=:email, @validation=:presence, @expected=true, @actual="">,
-  #     #<Lotus::Validations::Error:0x007fe00cee31f0 @attribute=:email, @validation=:format, @expected=/\A(.*)@(.*)\.(.*)\z/, @actual="">
+  #     #<Hanami::Validations::Error:0x007fe00cee3290 @attribute=:email, @validation=:presence, @expected=true, @actual="">,
+  #     #<Hanami::Validations::Error:0x007fe00cee31f0 @attribute=:email, @validation=:format, @expected=/\A(.*)@(.*)\.(.*)\z/, @actual="">
   #   ],
   #   :age=>[
-  #     #<Lotus::Validations::Error:0x007fe00cee30d8 @attribute=:age, @validation=:size, @expected=18..99, @actual=17>
+  #     #<Hanami::Validations::Error:0x007fe00cee30d8 @attribute=:age, @validation=:size, @expected=18..99, @actual=17>
   #   ]
   # }>
 ```
 
-### Lotus::Entity
+### Hanami::Entity
 
-Integration with [`Lotus::Entity`](https://github.com/lotus/model) is straight forward.
+Integration with [`Hanami::Entity`](https://github.com/hanami/model) is straight forward.
 
 ```ruby
-require 'lotus/model'
-require 'lotus/validations'
+require 'hanami/model'
+require 'hanami/validations'
 
 class Product
-  include Lotus::Entity
-  include Lotus::Validations
+  include Hanami::Entity
+  include Hanami::Validations
 
   attribute :name,  type: String,  presence: true
   attribute :price, type: Integer, presence: true
@@ -575,7 +575,7 @@ product.price # => 100
 
 ## Contributing
 
-1. Fork it ( https://github.com/lotus/lotus-validations/fork )
+1. Fork it ( https://github.com/hanami/hanami-validations/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
@@ -584,3 +584,5 @@ product.price # => 100
 ## Copyright
 
 Copyright © 2014-2016 Luca Guidi – Released under MIT License
+
+This project was formerly known as Lotus (`lotus-validations`).

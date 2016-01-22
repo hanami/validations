@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe Lotus::Validations do
+describe Hanami::Validations do
   describe 'confirmation' do
     it "is valid when the attributes are missing" do
       validator = ConfirmationValidatorTest.new({})
@@ -21,7 +21,7 @@ describe Lotus::Validations do
 
       validator.valid?.must_equal false
       error = validator.errors.for(:password)
-      error.must_include Lotus::Validations::Error.new(:password, :confirmation, true, 'secret')
+      error.must_include Hanami::Validations::Error.new(:password, :confirmation, true, 'secret')
     end
 
     it "isn't valid when the two attributes aren't matching" do
@@ -29,7 +29,7 @@ describe Lotus::Validations do
 
       validator.valid?.must_equal false
       error = validator.errors.for(:password)
-      error.must_include Lotus::Validations::Error.new(:password, :confirmation, true, 'secret')
+      error.must_include Hanami::Validations::Error.new(:password, :confirmation, true, 'secret')
     end
   end
 end

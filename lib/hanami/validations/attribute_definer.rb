@@ -1,8 +1,8 @@
 require 'set'
-require 'lotus/utils/attributes'
-require 'lotus/validations/nested_attributes'
+require 'hanami/utils/attributes'
+require 'hanami/validations/nested_attributes'
 
-module Lotus
+module Hanami
   module Validations
     # Define attributes and their validations together
     #
@@ -11,11 +11,11 @@ module Lotus
     module AttributeDefiner
       # @since 0.2.3
       # @api private
-      LOTUS_ENTITY_CLASS_NAME = 'Lotus::Entity'.freeze
+      HANAMI_ENTITY_CLASS_NAME = 'Hanami::Entity'.freeze
 
       # @since 0.2.3
       # @api private
-      LOTUS_ENTITY_ID         = 'id'.freeze
+      HANAMI_ENTITY_ID         = 'id'.freeze
 
       # Override Ruby's hook for modules.
       #
@@ -27,18 +27,18 @@ module Lotus
       # @see http://www.ruby-doc.org/core/Module.html#method-i-included
       def self.included(base)
         base.extend ClassMethods
-        base.extend EntityAttributeDefiner if lotus_entity?(base)
+        base.extend EntityAttributeDefiner if hanami_entity?(base)
       end
 
-      # Decide if enable the support for `Lotus::Entity`.
+      # Decide if enable the support for `Hanami::Entity`.
       #
       # @param base [Class]
       #
       # @since 0.2.3
       # @api private
-      def self.lotus_entity?(base)
+      def self.hanami_entity?(base)
         base.included_modules.any? do |m|
-          m.to_s == LOTUS_ENTITY_CLASS_NAME
+          m.to_s == HANAMI_ENTITY_CLASS_NAME
         end
       end
 
@@ -96,10 +96,10 @@ module Lotus
         # @since 0.2.2
         #
         # @example Attributes
-        #   require 'lotus/validations'
+        #   require 'hanami/validations'
         #
         #   class Person
-        #     include Lotus::Validations
+        #     include Hanami::Validations
         #
         #     attribute :name
         #   end
@@ -109,10 +109,10 @@ module Lotus
         #   person.age  # => raises NoMethodError because `:age` wasn't defined as attribute.
         #
         # @example Standard coercions
-        #   require 'lotus/validations'
+        #   require 'hanami/validations'
         #
         #   class Person
-        #     include Lotus::Validations
+        #     include Hanami::Validations
         #
         #     attribute :fav_number, type: Integer
         #   end
@@ -123,7 +123,7 @@ module Lotus
         #   person.fav_number # => 23
         #
         # @example Custom coercions
-        #   require 'lotus/validations'
+        #   require 'hanami/validations'
         #
         #   class FavNumber
         #     def initialize(number)
@@ -135,7 +135,7 @@ module Lotus
         #   end
         #
         #   class Person
-        #     include Lotus::Validations
+        #     include Hanami::Validations
         #
         #     attribute :fav_number, type: FavNumber
         #     attribute :date,       type: BirthDate
@@ -148,10 +148,10 @@ module Lotus
         #   person.date       # => this raises an error, because BirthDate#initialize doesn't accept any arg
         #
         # @example Acceptance
-        #   require 'lotus/validations'
+        #   require 'hanami/validations'
         #
         #   class Signup
-        #     include Lotus::Validations
+        #     include Hanami::Validations
         #
         #     attribute :terms_of_service, acceptance: true
         #   end
@@ -163,10 +163,10 @@ module Lotus
         #   signup.valid? # => false
         #
         # @example Confirmation
-        #   require 'lotus/validations'
+        #   require 'hanami/validations'
         #
         #   class Signup
-        #     include Lotus::Validations
+        #     include Hanami::Validations
         #
         #     attribute :password, confirmation: true
         #   end
@@ -178,10 +178,10 @@ module Lotus
         #   signup.valid? # => false
         #
         # @example Exclusion
-        #   require 'lotus/validations'
+        #   require 'hanami/validations'
         #
         #   class Signup
-        #     include Lotus::Validations
+        #     include Hanami::Validations
         #
         #     attribute :music, exclusion: ['pop']
         #   end
@@ -193,10 +193,10 @@ module Lotus
         #   signup.valid? # => false
         #
         # @example Format
-        #   require 'lotus/validations'
+        #   require 'hanami/validations'
         #
         #   class Signup
-        #     include Lotus::Validations
+        #     include Hanami::Validations
         #
         #     attribute :name, format: /\A[a-zA-Z]+\z/
         #   end
@@ -208,10 +208,10 @@ module Lotus
         #   signup.valid? # => false
         #
         # @example Inclusion
-        #   require 'lotus/validations'
+        #   require 'hanami/validations'
         #
         #   class Signup
-        #     include Lotus::Validations
+        #     include Hanami::Validations
         #
         #     attribute :age, inclusion: 18..99
         #   end
@@ -223,10 +223,10 @@ module Lotus
         #   signup.valid? # => false
         #
         # @example Presence
-        #   require 'lotus/validations'
+        #   require 'hanami/validations'
         #
         #   class Signup
-        #     include Lotus::Validations
+        #     include Hanami::Validations
         #
         #     attribute :name, presence: true
         #   end
@@ -238,11 +238,11 @@ module Lotus
         #   signup.valid? # => false
         #
         # @example Size
-        #   require 'lotus/validations'
+        #   require 'hanami/validations'
         #
         #   class Signup
         #     MEGABYTE = 1024 ** 2
-        #     include Lotus::Validations
+        #     include Hanami::Validations
         #
         #     attribute :ssn,      size: 11    # exact match
         #     attribute :password, size: 8..64 # range
@@ -260,7 +260,7 @@ module Lotus
 
         # Define an attribute
         #
-        # @see Lotus::Validations::AttributeDefiner#attribute
+        # @see Hanami::Validations::AttributeDefiner#attribute
         #
         # @since 0.3.1
         # @api private
@@ -327,7 +327,7 @@ module Lotus
         # @api private
         def define_coerced_writer(name, type)
           define_method("#{ name }=") do |value|
-            @attributes.set(name, Lotus::Validations::Coercions.coerce(type, value))
+            @attributes.set(name, Hanami::Validations::Coercions.coerce(type, value))
           end
         end
 
@@ -373,18 +373,18 @@ module Lotus
         end
       end
 
-      # Support for `Lotus::Entity`
+      # Support for `Hanami::Entity`
       #
       # @since 0.2.3
       # @api private
       #
       # @example
-      #   require 'lotus/model'
-      #   require 'lotus/validations'
+      #   require 'hanami/model'
+      #   require 'hanami/validations'
       #
       #   class Product
-      #     include Lotus::Entity
-      #     include Lotus::Validations
+      #     include Hanami::Entity
+      #     include Hanami::Validations
       #
       #     attribute :name,  type: String,  presence: true
       #     attribute :price, type: Integer, presence: true
@@ -422,7 +422,7 @@ module Lotus
         # @since 0.3.1
         #
         # @api private
-        # @see Lotus::Model::Entity#define_attr_accessor
+        # @see Hanami::Model::Entity#define_attr_accessor
         def define_attr_accessor(attr)
           _attribute(attr)
           super
@@ -431,7 +431,7 @@ module Lotus
         # @since 0.2.3
         # @api private
         #
-        # @see Lotus::Validations::AttributeDefiner#attribute
+        # @see Hanami::Validations::AttributeDefiner#attribute
         def attribute(name, options = {})
           attributes name
           super
@@ -440,7 +440,7 @@ module Lotus
         # @since 0.2.3
         # @api private
         #
-        # @see Lotus::Validations::ClassMethods#validates
+        # @see Hanami::Validations::ClassMethods#validates
         def validates(name, options = {})
           super
           define_attribute(name, options)
@@ -453,15 +453,15 @@ module Lotus
           # @since 0.2.3
           # @api private
           #
-          # @see Lotus::Validations::AttributeDefiner#assign_attribute?
+          # @see Hanami::Validations::AttributeDefiner#assign_attribute?
           def assign_attribute?(attr)
-            super || attr.to_s == LOTUS_ENTITY_ID
+            super || attr.to_s == HANAMI_ENTITY_ID
           end
 
           def initialize(attributes = {})
             super
-            @attributes.set(LOTUS_ENTITY_ID, id)
-            self.class.attribute(LOTUS_ENTITY_ID)
+            @attributes.set(HANAMI_ENTITY_ID, id)
+            self.class.attribute(HANAMI_ENTITY_ID)
           end
         end
       end
@@ -474,10 +474,10 @@ module Lotus
       # @since 0.2.2
       #
       # @example Initialize with Hash
-      #   require 'lotus/validations'
+      #   require 'hanami/validations'
       #
       #   class Signup
-      #     include Lotus::Validations
+      #     include Hanami::Validations
       #
       #     attribute :name
       #   end
@@ -485,7 +485,7 @@ module Lotus
       #   signup = Signup.new(name: 'Luca')
       #
       # @example Initialize with Hash like
-      #   require 'lotus/validations'
+      #   require 'hanami/validations'
       #
       #   class Params
       #     def initialize(attributes)
@@ -498,7 +498,7 @@ module Lotus
       #   end
       #
       #   class Signup
-      #     include Lotus::Validations
+      #     include Hanami::Validations
       #
       #     attribute :name
       #   end

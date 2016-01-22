@@ -1,4 +1,4 @@
-module Lotus
+module Hanami
   module Validations
     # A set of validations defined on an object
     #

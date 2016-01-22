@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe Lotus::Validations do
+describe Hanami::Validations do
   describe 'composable' do
     describe 'without extra validations' do
       it 'is not valid if included attributes are not valid' do
@@ -41,7 +41,7 @@ describe Lotus::Validations do
         validator.valid?.must_equal true
       end
 
-      # Bug https://github.com/lotus/validations/issues/81
+      # Bug https://github.com/hanami/validations/issues/81
       it 'is valid if included attributes are blank and does not define presence constraint' do
         validator = ComposedValidationsWithoutPresenceTest.new(email: '', name: '')
 

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe Lotus::Validations do
+describe Hanami::Validations do
   describe '.type' do
     before do
       @validator = TypeValidatorTest.new({
@@ -119,11 +119,11 @@ describe Lotus::Validations do
     end
 
     # Regression
-    # See: https://github.com/lotus/validations/issues/44
+    # See: https://github.com/hanami/validations/issues/44
     describe 'when only .validates is used' do
       before do
         class PureValidatorTest
-          include Lotus::Validations
+          include Hanami::Validations
 
           attr_accessor :attr
 

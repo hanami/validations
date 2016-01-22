@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe Lotus::Validations do
+describe Hanami::Validations do
   describe 'size' do
     it "is valid if it doesn't have attributes" do
       validator = SizeValidatorTest.new({})
@@ -74,7 +74,7 @@ describe Lotus::Validations do
 
         validator.valid?.must_equal false
         errors = validator.errors.for(:ssn)
-        errors.must_include Lotus::Validations::Error.new(:ssn, :size, 11, value)
+        errors.must_include Hanami::Validations::Error.new(:ssn, :size, 11, value)
       end
     end
 
@@ -99,11 +99,11 @@ describe Lotus::Validations do
 
         validator.valid?.must_equal false
         errors = validator.errors.for(:password)
-        errors.must_include Lotus::Validations::Error.new(:password, :size, 9..56, value)
+        errors.must_include Hanami::Validations::Error.new(:password, :size, 9..56, value)
       end
     end
 
-    # Bug https://github.com/lotus/validations/issues/81
+    # Bug https://github.com/hanami/validations/issues/81
     it 'is valid if attribute is defined as blank' do
       validator = SizeValidatorTest.new(password: 'foobarbazqux', ssn: '')
 
@@ -116,7 +116,7 @@ describe Lotus::Validations do
 
       validator.valid?.must_equal false
       errors = validator.errors.for(:ssn)
-      errors.must_include Lotus::Validations::Error.new(:ssn, :size, 11, [])
+      errors.must_include Hanami::Validations::Error.new(:ssn, :size, 11, [])
     end
 
     it "raises an error when the validator can't be coerced into an integer" do

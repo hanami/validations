@@ -18,9 +18,9 @@ end
 
 require 'minitest/autorun'
 $:.unshift 'lib'
-require 'lotus/validations'
+require 'hanami/validations'
 
-module Lotus::Validations::ValidationIntrospection
+module Hanami::Validations::ValidationIntrospection
   def defined_validation?(name)
     validations.instance_variable_get(:@validations).keys.include?(name)
   end

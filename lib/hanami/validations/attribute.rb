@@ -1,4 +1,4 @@
-require 'lotus/validations/coercions'
+require 'hanami/validations/coercions'
 
 # Quick fix for non MRI VMs that don't implement Range#size
 #
@@ -9,7 +9,7 @@ class Range
   end unless instance_methods.include?(:size)
 end
 
-module Lotus
+module Hanami
   module Validations
     # A validable attribute
     #
@@ -18,7 +18,7 @@ module Lotus
     class Attribute
       # Attribute naming convention for "confirmation" validation
       #
-      # @see Lotus::Validations::Attribute#confirmation
+      # @see Hanami::Validations::Attribute#confirmation
       #
       # @since 0.2.0
       # @api private
@@ -71,8 +71,8 @@ module Lotus
       # An object is blank if it isn't `nil`, but doesn't hold a value.
       # Empty strings and enumerables are an example.
       #
-      # @see Lotus::Validations::ClassMethods#attribute
-      # @see Lotus::Validations::Attribute#nil_value?
+      # @see Hanami::Validations::ClassMethods#attribute
+      # @see Hanami::Validations::Attribute#nil_value?
       #
       # @since 0.2.0
       # @api private
@@ -87,14 +87,14 @@ module Lotus
       # Truthy examples: `Object.new`, `1`, `"1"`, `true`.
       # Falsy examples: `nil`, `0`, `"0"`, `false`, `""`.
       #
-      # @see Lotus::Validations::ClassMethods#attribute
-      # @see http://www.rubydoc.info/gems/lotus-utils/Lotus/Utils/Kernel#Boolean-class_method
+      # @see Hanami::Validations::ClassMethods#attribute
+      # @see http://www.rubydoc.info/gems/hanami-utils/Hanami/Utils/Kernel#Boolean-class_method
       #
       # @since 0.2.0
       # @api private
       def acceptance
         _validate(__method__) do
-          !blank_value? && Lotus::Utils::Kernel.Boolean(@value)
+          !blank_value? && Hanami::Utils::Kernel.Boolean(@value)
         end
       end
 
@@ -103,7 +103,7 @@ module Lotus
       # Coerces the value to a string and then check if it satisfies the defined
       # matcher.
       #
-      # @see Lotus::Validations::ClassMethods#attribute
+      # @see Hanami::Validations::ClassMethods#attribute
       #
       # @since 0.2.0
       # @api private
@@ -115,7 +115,7 @@ module Lotus
       #
       # The collection is an objects which implements `#include?`.
       #
-      # @see Lotus::Validations::ClassMethods#attribute
+      # @see Hanami::Validations::ClassMethods#attribute
       #
       # @since 0.2.0
       # @api private
@@ -127,7 +127,7 @@ module Lotus
       #
       # The collection is an objects which implements `#include?`.
       #
-      # @see Lotus::Validations::ClassMethods#attribute
+      # @see Hanami::Validations::ClassMethods#attribute
       #
       # @since 0.2.0
       # @api private
@@ -140,8 +140,8 @@ module Lotus
       # Given a `:password` attribute, it passes if the corresponding attribute
       # `:password_confirmation` has the same value.
       #
-      # @see Lotus::Validations::ClassMethods#attribute
-      # @see Lotus::Validations::Attribute::CONFIRMATION_TEMPLATE
+      # @see Hanami::Validations::ClassMethods#attribute
+      # @see Hanami::Validations::Attribute::CONFIRMATION_TEMPLATE
       #
       # @since 0.2.0
       # @api private
@@ -180,7 +180,7 @@ module Lotus
       # @raise [ArgumentError] if the defined quantity isn't a Numeric or a
       #   collection
       #
-      # @see Lotus::Validations::ClassMethods#attribute
+      # @see Hanami::Validations::ClassMethods#attribute
       #
       # @since 0.2.0
       # @api private
@@ -199,7 +199,7 @@ module Lotus
         end
       end
 
-      # Validates nested Lotus Validations objects
+      # Validates nested Hanami Validations objects
       #
       # @since 0.2.4
       # @api private
@@ -222,7 +222,7 @@ module Lotus
 
       # Checks if the value is "blank".
       #
-      # @see Lotus::Validations::BlankValueChecker
+      # @see Hanami::Validations::BlankValueChecker
       #
       # @since 0.2.0
       # @api private

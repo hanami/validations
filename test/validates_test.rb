@@ -1,9 +1,9 @@
 require 'test_helper'
 
-describe Lotus::Validations, 'standalone' do
+describe Hanami::Validations, 'standalone' do
   before do
     @validator_class = Class.new do
-      include Lotus::Validations
+      include Hanami::Validations
 
       def initialize(attributes = {})
         @name = attributes.fetch(:name)

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe Lotus::Validations do
+describe Hanami::Validations do
   describe '#initialize' do
     before do
       @validator = InitializerTest.new(attr: 23)
@@ -76,7 +76,7 @@ describe Lotus::Validations do
     end
 
     # Regression
-    # See: https://github.com/lotus/validations/issues/44
+    # See: https://github.com/hanami/validations/issues/44
     describe 'when only .validates is used' do
       it 'accepts given whitelisted attributes' do
         validator = PureValidator.new(name: 'L', age: 32)

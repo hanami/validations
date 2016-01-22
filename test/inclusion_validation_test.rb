@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe Lotus::Validations do
+describe Hanami::Validations do
   describe 'inclusion' do
     it "is valid if attribute value is included in specified enumerable" do
       validator = InclusionValidatorTest.new(job: 'Carpenter', age: '42', state: 'ma', sport: 'Football', code: 'y')
@@ -21,7 +21,7 @@ describe Lotus::Validations do
 
       validator.valid?.must_equal false
       error = validator.errors.for(:job)
-      error.must_include Lotus::Validations::Error.new(:job, :inclusion, ['Carpenter', 'Blacksmith'], 'Weaver')
+      error.must_include Hanami::Validations::Error.new(:job, :inclusion, ['Carpenter', 'Blacksmith'], 'Weaver')
     end
   end
 end

@@ -1,4 +1,4 @@
-module Lotus
+module Hanami
   module Validations
     # @since 0.2.2
     # @api private

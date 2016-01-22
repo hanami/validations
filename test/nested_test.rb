@@ -1,10 +1,10 @@
 require 'test_helper'
 
-describe Lotus::Validations do
+describe Hanami::Validations do
   describe 'nested attributes' do
     before do
       @klass = Class.new do
-        include Lotus::Validations
+        include Hanami::Validations
 
         attribute :name, type: String
         attribute :tags, type: Array
@@ -30,11 +30,11 @@ describe Lotus::Validations do
     it 'is invalid when nested attributes fail validation' do
       validator = @klass.new(name: 'John Smith', address: { city: 'Melbourne' })
       validator.valid?.must_equal(false)
-      expected_error = Lotus::Validations::Error.new('address.line_one', :presence, true, nil)
+      expected_error = Hanami::Validations::Error.new('address.line_one', :presence, true, nil)
       line_one_errors = validator.errors.for('address.line_one')
       line_one_errors.must_include(expected_error)
       validator.errors.to_h.must_equal({
-        'address.line_one' => [Lotus::Validations::Error.new('address.line_one', :presence, true, nil)]
+        'address.line_one' => [Hanami::Validations::Error.new('address.line_one', :presence, true, nil)]
       })
     end
 
@@ -48,7 +48,7 @@ describe Lotus::Validations do
     end
 
     # Bug
-    # See https://github.com/lotus/validations/issues/58
+    # See https://github.com/hanami/validations/issues/58
     it 'safely serialize to Hash' do
       data      = {name: 'John Smith', address: { line_one: '10 High Street' }}
       validator = @klass.new(data)
@@ -57,7 +57,7 @@ describe Lotus::Validations do
     end
 
     # Bug
-    # See https://github.com/lotus/validations/issues/58#issuecomment-99144243
+    # See https://github.com/hanami/validations/issues/58#issuecomment-99144243
     it 'safely serialize to Hash' do
       data      = {name: 'John Smith', tags: [1, 2]}
       validator = @klass.new(data)
