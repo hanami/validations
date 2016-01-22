@@ -1,6 +1,11 @@
 # Hanami::Validations
 Validations mixin for Ruby objects
 
+## v0.5.0 - (unreleased)
+### Changed
+- [Luca Guidi] Drop support for Rubinius
+- [Luca Guidi] Drop support MRI 2.0, 2.1
+
 ## v0.4.0 - 2016-01-12
 ## Changed
 - [Hélio Costa e Silva & Luca Guidi] Ignore blank values for format and size validation

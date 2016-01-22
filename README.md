@@ -22,7 +22,7 @@ Validations mixins for objects
 
 ## Rubies
 
-__Hanami::Validations__ supports Ruby (MRI) 2+, JRuby 9k+ & Rubinius 2.3+
+__Hanami::Validations__ supports Ruby (MRI) 2+, JRuby 9k+
 
 ## Installation
 
@@ -584,4 +584,5 @@ product.price # => 100
 ## Copyright
 
 Copyright © 2014-2016 Luca Guidi – Released under MIT License
+
 This project was formerly known as Lotus (`lotus-validations`).
