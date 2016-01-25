@@ -287,9 +287,6 @@ module Hanami
     #
     # @see Hanami::Validations::ClassMethods#validations
     def defined_validations
-      if self.class.is_a?(Array)
-        return self[0].class.__send__(:validations)
-      end
       self.class.__send__(:validations)
     end
 
