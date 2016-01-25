@@ -269,20 +269,20 @@ class PureValidator
 end
 
 class NestedValidations
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :name, presence: true
 end
 
 class NestedWithCoercion
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :name, presence: true
   attribute :nested, type: NestedValidations
 end
 
 class NestedArrayWithCoercion
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :name, presence: true
   attribute :nested, type: Array[NestedValidations]

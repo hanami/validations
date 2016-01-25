@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe Lotus::Validations do
+describe Hanami::Validations do
 
   describe 'nested attributes' do
     before do
@@ -67,8 +67,8 @@ describe Lotus::Validations do
       it 'collects errors for nested attributes' do
         @validable.valid?
         @validable.errors.to_a.must_equal [
-          Lotus::Validations::Error.new(:name, :presence, true, nil, 'nested[0]'),
-          Lotus::Validations::Error.new(:name, :presence, true, nil, 'nested[2]')
+          Hanami::Validations::Error.new(:name, :presence, true, nil, 'nested[0]'),
+          Hanami::Validations::Error.new(:name, :presence, true, nil, 'nested[2]')
         ]
       end
     end

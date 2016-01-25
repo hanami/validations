@@ -442,10 +442,10 @@ error.name           # => "address.street"
 error.attribute_name # => "street"
 ```
 
-Also you can use validations nested in Lotus Validations object.
+Also you can use validations nested in Hanami Validations object.
 ```ruby
 class Address
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :street,      presence: true
   attribute :city,        presence: true
@@ -454,7 +454,7 @@ class Address
 end
 
 class ShippingDetails
-  include Lotus::Validations
+  include Hanami::Validations
 
   attribute :full_name, presence: true
   attribute :address,   type: Address
