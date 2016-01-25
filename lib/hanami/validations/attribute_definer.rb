@@ -295,7 +295,7 @@ module Hanami
           define_accessor(name, type)
           defined_attributes.add(name.to_s)
 
-          if attribute_validable?(type)
+          if attribute_validatable?(type)
             options[:nested] = true
             define_lazy_reader(name, type)
             define_coerced_writer(name, type)
@@ -380,7 +380,7 @@ module Hanami
         end
 
         private
-        def attribute_validable?(type)
+        def attribute_validatable?(type)
           return false if type.nil?
           if type.is_a?(Array)
             return type.all?{ |member_type| member_type.instance_methods.include?(:valid?) }
