@@ -1,6 +1,10 @@
 # Hanami::Validations
 Validations mixin for Ruby objects
 
+## v0.6.0 - (unreleased)
+### Changed
+– [Luca Guidi] Drop support for Ruby 2.0, 2.1 and Rubinius
+
 ## v0.5.0 - 2016-01-22
 ### Changed
 - [Luca Guidi] Renamed the project
