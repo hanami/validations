@@ -125,6 +125,39 @@ This is a bit more verbose, but offers a great level of flexibility for your
 Ruby objects. It also allows to use Hanami::Validations in combination with
 **other frameworks**.
 
+### Custom validations
+
+You may define custom validations for your own, just override `def validate`.
+
+```ruby
+require 'hanami/validations'
+
+class Person
+  include Hanami::Validations
+  
+  attribute :password, type: String, presence: true, size: 3..10
+  
+  def validate
+    super
+    if %w(password 123456).include?(password)
+      errors.add(:password, Error.new(:password, :ease, 'strong password', password))
+    end
+  end
+end
+
+person = Person.new(password: nil)
+person.valid? # => false
+
+person = Person.new(password: '12')
+person.valid? # => false
+
+person = Person.new(password: '123456')
+person.valid? # => false
+
+person = Person.new(password: 'secret')
+person.valid? # => true
+```
+
 ### Coercions
 
 If a Ruby class is passed to the `:type` option, the given value is coerced, accordingly.
