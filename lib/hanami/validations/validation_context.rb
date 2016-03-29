@@ -208,7 +208,7 @@ module Hanami
       #
       # @since 0.x.0
       def add_validation_error(validation_error)
-        errors.add(validation_error.attribute, validation_error)
+        errors.add(validation_error.attribute.to_sym, validation_error)
       end
 
       # Validates another attribute with a specific validation

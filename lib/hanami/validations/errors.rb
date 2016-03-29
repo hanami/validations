@@ -95,8 +95,8 @@ module Hanami
       # @see Hanami::Validations::Error
       def add(attribute, *errors)
         if errors.any?
-          @errors[attribute.to_s] ||= []
-          @errors[attribute.to_s].push(*errors)
+          @errors[attribute.to_sym] ||= []
+          @errors[attribute.to_sym].push(*errors)
         end
       end
 
@@ -106,7 +106,7 @@ module Hanami
       #
       # @since 0.1.0
       def for(attribute)
-        @errors.fetch(attribute.to_s) { [] }
+        @errors.fetch(attribute.to_sym) { [] }
       end
 
       # Check if the current set of errors equals to the one who belongs to
