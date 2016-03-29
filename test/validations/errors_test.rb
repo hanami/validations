@@ -148,9 +148,9 @@ describe Hanami::Validations::Errors do
     end
 
     it 'returns a serialized version of the errors' do
-      @actual.keys.must_equal([:name])
+      @actual.keys.must_equal(['name'])
 
-      errors = @actual.fetch(:name)
+      errors = @actual.fetch('name')
       errors.count.must_equal 1
 
       error = errors.first

@@ -267,3 +267,216 @@ class PureValidator
 
   validates :name, presence: true
 end
+
+# Custom validator class
+class CustomValidator
+  include Hanami::Validations::Validation
+
+  def validate()
+    return is_valid if value == 0
+    return add_error_overriding_default_values if value == 1
+    return add_error_for_another_attribute if value == 2
+    return add_error_for_another_attribute_with_missing_parameters if value == 3
+    return override_validation_name if value == 4
+    return ask_if_previous_validation_failed if blank_value? || value == 5
+    return ask_if_previous_validation_failed_for_another_attribute if value == 6
+    return invoke_another_validation if value == 7
+    return add_error_with_object_id if value == 8
+    return ask_for_another_attribute_value if value == 9
+    return ask_for_a_nested_attribute_value if value == 10
+    return invoke_a_validation_on_a_nested_attribute if value == 11
+
+    add_error
+  end
+
+  def is_valid
+  end
+
+  def add_error_overriding_default_values
+      add_error attribute_name: 'name',
+        validation_name: :another_validation,
+        expected_value: 'expected: 1',
+        actual_value: 'actual: 1',
+        namespace: 'some_namespace'
+  end
+
+  def add_error_for_another_attribute
+      add_error_for 'name',
+        validation_name: :another_validation,
+        expected_value: 'expected: 2',
+        actual_value: 'actual: 2',
+        namespace: 'some_namespace'
+  end
+
+  def add_error_for_another_attribute_with_missing_parameters
+      add_error_for 'name'
+  end
+
+  def override_validation_name
+    validation_name :other_validation
+    add_error
+  end
+
+  def ask_if_previous_validation_failed
+    add_error unless validation_failed_for? :presence
+  end
+
+  def ask_if_previous_validation_failed_for_another_attribute
+    add_error unless validation_failed_for? :presence, on: 'name'
+  end
+
+  def add_error_with_object_id
+    add_error actual_value: object_id
+  end
+
+  def invoke_another_validation
+    validate_attribute 'name', on: :format, with: /abc/
+  end
+
+  def invoke_an_inexistent_validation
+    validate_attribute 'name', on: :not_found
+  end
+
+  def ask_for_another_attribute_value
+    add_error validation_name: :asked_value if value_of('name') == 'martin'
+  end
+
+  def ask_for_a_nested_attribute_value
+    add_error validation_name: :asked_nested_value if value_of('address.street') == 'evergreen'
+  end
+
+  def invoke_a_validation_on_a_nested_attribute
+    validate_attribute 'address.street', on: :format, with: /abc/
+  end
+end
+
+class ValidateWithClassBehaviourTest
+  include Hanami::Validations
+
+  attribute :name,  presence: true
+  attribute :age,   type: Integer, presence: true, validate_custom_with: CustomValidator
+  attribute :address do
+    attribute :street, presence: true
+    attribute :number, presence: true
+  end
+end
+
+class ValidateWithInstanceBehaviourTest
+  include Hanami::Validations
+
+  attribute :name,  presence: true
+  attribute :age,   type: Integer, presence: true, validate_custom_with: CustomValidator.new
+  attribute :address do
+    attribute :street, presence: true
+    attribute :number, presence: true
+  end
+end
+
+# Custom validator block
+class ValidateWithBlockBehaviourTest
+  include Hanami::Validations
+
+  attribute :name,  presence: true
+  attribute :age,   type: Integer, presence: true,
+                    validate_custom_with: proc{
+                      if value == 0
+                      end
+
+                      if value == 1
+                        add_error attribute_name: 'name',
+                          validation_name: :another_validation,
+                          expected_value: 'expected: 1',
+                          actual_value: 'actual: 1',
+                          namespace: 'some_namespace'
+                      end
+
+                      if value == 2
+                        add_error_for 'name',
+                          validation_name: :another_validation,
+                          expected_value: 'expected: 2',
+                          actual_value: 'actual: 2',
+                          namespace: 'some_namespace'
+                      end
+
+                      if value == 3
+                        add_error_for 'name'
+                      end
+
+                      if value == 4
+                        validation_name :other_validation
+                        add_error
+                      end
+
+                      if blank_value? || value == 5
+                        add_error unless validation_failed_for? :presence
+                      end
+
+                      if value == 6
+                        add_error unless validation_failed_for? :presence, on: 'name'
+                      end
+
+                      if value == 7
+                        validate_attribute 'name', on: :format, with: /abc/
+                      end
+
+                      if value == 8
+                        add_error actual_value: object_id
+                      end
+
+                      if value == 9
+                        add_error validation_name: :asked_value if value_of('name') == 'martin'
+                      end
+
+                      if value == 10
+                        if value_of('address.street') == 'evergreen'
+                          add_error validation_name: :asked_nested_value
+                        end
+                      end
+
+                      if value == 11
+                        validate_attribute 'address.street', on: :format, with: /abc/
+                      end
+
+                      if !blank_value? && value >= 12
+                        add_error
+                      end
+                    }
+  attribute :address do
+    attribute :street, presence: true
+    attribute :number, presence: true
+  end
+end
+
+# Multiple custom validators
+class BeginsWithUpcaseValidator
+  include Hanami::Validations::Validation
+
+  def validate()
+    add_error if value[0] != value[0].upcase
+  end
+end
+
+class SingleWordValidator
+  include Hanami::Validations::Validation
+
+  def validate()
+    add_error if value.split.size > 1
+  end
+end
+
+class MultilpeCustomValidationsTest
+  include Hanami::Validations
+
+  attribute :name, validate_case_with: BeginsWithUpcaseValidator,
+                   validate_single_word_with: SingleWordValidator
+end
+
+class ValidationsOrderTest
+  include Hanami::Validations
+  extend  Hanami::Validations::ValidationIntrospection
+
+  attribute :name, presence: true, size: 1..3
+  attribute :last_name, validate_case_with: BeginsWithUpcaseValidator, size: 1..3, presence: true
+
+  validates :name, inclusion: ['abc']
+end

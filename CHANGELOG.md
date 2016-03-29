@@ -5,6 +5,18 @@ Validations mixin for Ruby objects
 ### Changed
 – [Luca Guidi] Drop support for Ruby 2.0, 2.1 and Rubinius
 
+### Changed
+- [Martin Rubi] Refactored validations to run preserving their order of declaration
+
+### Added
+- [Martin Rubi] Support for custom validations with an fully capable protocol
+
+### Changed
+- [Martin Rubi] Rewrote built-in validations to use the same protocol as custom validations
+
+### Added
+- [Martin Rubi] Applications can add new built-in validations dynamically
+
 ## v0.5.0 - 2016-01-22
 ### Changed
 - [Luca Guidi] Renamed the project

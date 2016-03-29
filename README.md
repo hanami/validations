@@ -397,6 +397,207 @@ The other reason is that this isn't an effective way to ensure uniqueness of a v
 
 Please read more at: [The Perils of Uniqueness Validations](http://robots.thoughtbot.com/the-perils-of-uniqueness-validations).
 
+### Custom validations
+
+You can add custom validation in several ways:
+
+#### Using `Hanami::Validations::Validation`
+
+Hanami provides the `Hanami::Validations::Validation` mixin you can include in any class to validate attributes.
+
+To use it, you must define a `#validate` method.
+
+The validation name will be taken from its declaration, for instance, for `validate_address_existence_with:` the validation name will be `:address_existence`.
+
+Example:
+
+```ruby
+require 'hanami/validations'
+
+class Person
+  include Hanami::Validations
+
+  attribute :name,    presence: true
+  attribute :email,   presence: true
+  attribute :address, presence: true,
+                      validate_address_existence_with: AddressExistenceValidator
+end
+
+class AddressExistenceValidator
+  include Hanami::Validations::Validation
+
+  def validate
+    add_error unless address_exists?
+  end
+
+  def address
+    value
+  end
+
+  def address_exists?
+    query_address.matches_count == 1
+  end
+
+  def query_address
+    AddressQueryService.new.query_address(address)
+  end
+end
+```
+
+By including `include Hanami::Validations::Validation` in your class, you have access to the following protocol:
+
+```ruby
+# Get the value of the attribute being validated
+value
+
+# Get the value of any attribute
+value_of('address.street')
+
+# Get the validation name
+validation_name
+
+# Override the validation name
+validation_name :location_existance
+
+# Get the name of the attribute being validate
+attribute_name
+
+# Get the namespace of the attribute being validate
+namespace
+
+# Answer whether the attribute being validated is blank or not
+blank_value?
+
+# Answer whether a previous validation failed for the attribute being validated or not
+validation_failed_for? :size
+
+# Answer whether a previous validation failed for another attribute or not
+validation_failed_for? :size, on: 'address.street'
+
+# Add a default error for the attribute being validated
+add_error
+
+# Add an error for the attribute being validated overriding any of these parameters:
+# :validation_name, :expected_value, :actual_value, :namespace
+add_error expected_value: 'An existent address'
+
+# Add an error for any attribute defining all of these parameters:
+# :validation_name, :expected_value, :actual_value, :namespace
+add_error_for 'name', validation_name: validation_name, expected_value: true, actual_value: value_of('address.street'), namespace: nil
+
+# Validate any attribute with any validation
+validate_attribute 'address.street', on: :format, with: /abc/
+```
+
+#### Using an `Hanami::Validations::Validation` instance
+
+If you need to initialize or configure you validator in a certain way, you can give a validator instance instead of a class.
+
+Example:
+
+```ruby
+require 'hanami/validations'
+
+class Person
+  include Hanami::Validations
+
+  attribute :name,    presence: true
+  attribute :email,   presence: true
+  attribute :address, presence: true, 
+                      validate_address_existence_with: AddressExistenceValidator.new(in_city: 'Buenos Aires')
+end
+```
+
+The instance will be `#dup` every time the validation is invoked.
+
+#### Using a block
+
+If the validation is simple enough, you can give a block.
+
+Example:
+
+```ruby
+require 'hanami/validations'
+
+class Person
+  include Hanami::Validations
+
+  attribute :name,    presence: true
+  attribute :email,   presence: true
+  attribute :age,     type: Integer,  presence: true,
+                      validate_adult_with: proc{ add_error unless value >= 21 }
+end
+```
+
+#### Using many custom validations on the same attribute
+
+You can declare as many custom validations as you wish for each attribute.
+
+Example:
+
+```ruby
+require 'hanami/validations'
+
+class Person
+  include Hanami::Validations
+
+  attribute :name,    presence: true
+  attribute :email,   presence: true
+  attribute :address, presence: true, 
+                      validate_address_format_with: AddressComplexFormatValidator,
+                      validate_address_existence_with: AddressExistanceValidator
+end
+```
+
+The validations, both built-in and custom, for all the attributes will be evaluated in the same order as they were declared. This is usefull if you want to perform a validation only if a previous validation did not failed.
+
+#### Conditional validations
+
+Instead of declaring conditions for a specific validation, you can ask for the value of any attribute and then decide whether to validate an attribute or not:
+
+Example:
+
+```ruby
+require 'hanami/validations'
+
+class Person
+  include Hanami::Validations
+
+  attribute :name,          presence: true
+  attribute :email,         presence: true
+  attribute :document_type, presence: true, inclusion: ['passport', 'id']
+  attribute :document_id,   presence: true, validate_document_id_with: DocumentIdValidator
+end
+
+class DocumentIdValidator
+  include Hanami::Validations::Validation
+
+  def validate
+    return if preconditions_failed?
+
+    is_passport? ? validate_passport : validate_id
+  end
+
+  def preconditions_failed?
+    validation_failed_for? :presence, on: 'document_type'   ||
+    validation_failed_for? :inclusion, on: 'document_type'  ||
+    validation_failed_for? :presence
+  end
+
+  def is_passport?
+    value_of('document_type') == 'passport'
+  end
+
+  def validate_passport
+    validate_attribute 'document_id', on: :format, with: /.../
+  end
+
+  def validate_id
+    validate_attribute 'document_id', on: :format, with: /.../
+  end
+end
+```
+
 ### Nested validations
 
 Nested validations are handled with a nested block syntax.

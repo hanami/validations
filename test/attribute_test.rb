@@ -17,8 +17,8 @@ describe Hanami::Validations do
 
       errors = validator.errors.for(:email)
       errors.must_equal [
-        Hanami::Validations::Error.new(:email, :format, /@/, 'test'),
-        Hanami::Validations::Error.new(:email, :confirmation, true, 'test')
+        Hanami::Validations::Error.new(:email, :confirmation, true, 'test'),
+        Hanami::Validations::Error.new(:email, :format, /@/, 'test')
       ]
     end
 
