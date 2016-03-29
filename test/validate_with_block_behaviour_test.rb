@@ -140,5 +140,23 @@ describe Hanami::Validations do
       error = validator.errors.for('address.street')
       error.must_include Hanami::Validations::Error.new('street', :format, /abc/, 'evergreen', 'address')
     end
+
+    it "asks if any previous validation failed for the default attribute" do
+      validator = ValidateWithClassBehaviourTest.new(
+                    name: 'martin', age: '', address: {street: 'evergreen', number: '742'}
+                  )
+
+      validator.valid?.must_equal false
+      error = validator.errors.for('age')
+      error.must_equal [Hanami::Validations::Error.new('age', :presence, true, nil)]
+
+      validator = ValidateWithClassBehaviourTest.new(
+                    name: 'martin', age: '12', address: {street: 'evergreen', number: '742'}
+                  )
+
+      validator.valid?.must_equal false
+      error = validator.errors.for('age')
+      error.must_equal [Hanami::Validations::Error.new('age', :custom, true, 12)]
+    end
   end
 end

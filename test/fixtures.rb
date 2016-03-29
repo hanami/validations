@@ -285,6 +285,7 @@ class CustomValidator
     return ask_for_another_attribute_value if value == 9
     return ask_for_a_nested_attribute_value if value == 10
     return invoke_a_validation_on_a_nested_attribute if value == 11
+    return ask_if_any_previous_validation_failed if blank_value? || value == 12
 
     add_error
   end
@@ -347,6 +348,10 @@ class CustomValidator
 
   def invoke_a_validation_on_a_nested_attribute
     validate_attribute 'address.street', on: :format, with: /abc/
+  end
+
+  def ask_if_any_previous_validation_failed
+    add_error unless any_validation_failed?
   end
 end
 
@@ -437,7 +442,11 @@ class ValidateWithBlockBehaviourTest
                         validate_attribute 'address.street', on: :format, with: /abc/
                       end
 
-                      if !blank_value? && value >= 12
+                      if value == 12
+                        add_error unless any_validation_failed?
+                      end
+
+                      if !blank_value? && value >= 13
                         add_error
                       end
                     }

@@ -10,42 +10,53 @@ module Hanami
     # @example
     #   # Get the value of the attribute being validated
     #   value
-    #   
+    # 
     #   # Get the value of any attribute
     #   value_of('address.street')
-    #   
+    # 
     #   # Get the validation name
     #   validation_name
-    #   
+    # 
     #   # Override the validation name
     #   validation_name :location_existance
-    #   
-    #   # Get the name of the attribute being validate
+    # 
+    #   # Get the name of the attribute being validated
     #   attribute_name
-    #   
-    #   # Get the namespace of the attribute being validate
+    # 
+    #   # Get the namespace of the attribute being validated
     #   namespace
-    #   
+    # 
     #   # Answer whether the attribute being validated is blank or not
     #   blank_value?
-    #   
+    # 
+    #   # Answer whether any value is blank or not
+    #   blank_value?(value_of 'address.street')
+    # 
     #   # Answer whether a previous validation failed for the attribute being validated or not
     #   validation_failed_for? :size
-    #   
+    # 
     #   # Answer whether a previous validation failed for another attribute or not
     #   validation_failed_for? :size, on: 'address.street'
-    #   
+    # 
+    #   # Answer whether a previous validation failed for the attribute being validated or not
+    #   any_validation_failed?
+    # 
+    #   # Answer whether any previous validation failed for another attribute or not
+    #   any_validation_failed? on: 'address.street'
+    # 
     #   # Add a default error for the attribute being validated
     #   add_error
-    #   
+    # 
     #   # Add an error for the attribute being validated overriding any of these parameters:
     #   # :validation_name, :expected_value, :actual_value, :namespace
     #   add_error expected_value: 'An existent address'
-    #   
+    # 
     #   # Add an error for any attribute defining all of these parameters:
     #   # :validation_name, :expected_value, :actual_value, :namespace
-    #   add_error_for 'name', validation_name: validation_name, expected_value: true, actual_value: value_of('name'), namespace: nil
-    #
+    #   add_error_for 'street',
+    #     namespace: 'address', validation_name: validation_name,
+    #     expected_value: true, actual_value: value_of('address.street')
+    # 
     #   # Validate any attribute with any validation
     #   validate_attribute 'address.street', on: :format, with: /abc/
     #
@@ -237,17 +248,32 @@ module Hanami
           validation_context.validate_attribute(attribute_name, on: on, with: with)
       end
 
-      # Answers wheter the validation for another attribute failed or not
+      # Answers wheter a given validation for an attribute failed or not.
+      # If no attribute name is given, asks for the attribute being validated.
       #
       # @param validation_name [Symbol] the name of the validation. For custom validations,
-      #   it'sthe actual validation name, for intance, :cutom and not :validate_custom_with
-      # @param on [String] the name of the attribute to ask if the validation failed or not
+      #   it's the actual validation name, for intance, :custom and not :validate_custom_with
+      # @param on [String] Optional - the name of the attribute to ask if the 
+      #           validation failed or not
       #
       # @return [Boolean] wheter the attribute validation failed or not
       #
       # @since 0.x.0
       def validation_failed_for?(validation_name, on: nil)
           validation_context.validation_failed_for?(validation_name, on: on)
+      end
+
+      # Answers whether any previous validation failed for an attribute or not
+      # If no attribute name is given, asks for the attribute being validated.
+      #
+      # @param on [String] Optional - the name of the attribute to ask if the 
+      #           validation failed or not
+      #
+      # @return [Boolean] wheter the attribute validation failed or not
+      #
+      # @since 0.x.0
+      def any_validation_failed?(on: nil)
+        validation_context.any_validation_failed?(on: on)
       end
     end
   end

@@ -399,7 +399,7 @@ Please read more at: [The Perils of Uniqueness Validations](http://robots.though
 
 ### Custom validations
 
-You can add custom validation in several ways:
+You can add custom validation in several ways
 
 #### Using `Hanami::Validations::Validation`
 
@@ -459,20 +459,29 @@ validation_name
 # Override the validation name
 validation_name :location_existance
 
-# Get the name of the attribute being validate
+# Get the name of the attribute being validated
 attribute_name
 
-# Get the namespace of the attribute being validate
+# Get the namespace of the attribute being validated
 namespace
 
 # Answer whether the attribute being validated is blank or not
 blank_value?
+
+# Answer whether any value is blank or not
+blank_value?(value_of 'address.street')
 
 # Answer whether a previous validation failed for the attribute being validated or not
 validation_failed_for? :size
 
 # Answer whether a previous validation failed for another attribute or not
 validation_failed_for? :size, on: 'address.street'
+
+# Answer whether a previous validation failed for the attribute being validated or not
+any_validation_failed?
+
+# Answer whether any previous validation failed for another attribute or not
+any_validation_failed? on: 'address.street'
 
 # Add a default error for the attribute being validated
 add_error
@@ -483,7 +492,9 @@ add_error expected_value: 'An existent address'
 
 # Add an error for any attribute defining all of these parameters:
 # :validation_name, :expected_value, :actual_value, :namespace
-add_error_for 'name', validation_name: validation_name, expected_value: true, actual_value: value_of('address.street'), namespace: nil
+add_error_for 'street',
+  namespace: 'address', validation_name: validation_name,
+  expected_value: true, actual_value: value_of('address.street')
 
 # Validate any attribute with any validation
 validate_attribute 'address.street', on: :format, with: /abc/
@@ -549,7 +560,7 @@ class Person
 end
 ```
 
-The validations, both built-in and custom, for all the attributes will be evaluated in the same order as they were declared. This is usefull if you want to perform a validation only if a previous validation did not failed.
+The validations, both built-in and custom, for all the attributes will be evaluated in the same order as they were declared. This is useful if you want to perform a validation only if a previous validation did not fail.
 
 #### Conditional validations
 
