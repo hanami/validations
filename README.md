@@ -550,6 +550,79 @@ signup.errors
   # }>
 ```
 
+### Validation messages
+
+To show the validation error messages you can
+
+#### Send `#to_s` to the `Hanami::Validations::Errors` object
+
+This will show the default validation message for that error
+
+```ruby
+puts error.to_s
+```
+
+#### Include `Hanami::Validations::Messages` in the presentation class
+
+Example
+
+```ruby
+require 'hanami/validations'
+
+module Admin::Views::User
+  class Create
+    include Hanami::Validations::Messages
+
+    # now you have access to the following protocol
+    #
+    # validation_message_for(error)
+  end
+end
+```
+
+#### Overriding default validations messages
+
+To override a validation message for a validation type or a particular attribute 
+validation, define in your presentation class
+
+```ruby
+require 'hanami/validations'
+
+module Admin::Views::User
+  class Create
+    include Hanami::Validations::Messages
+
+    validation_message_at :presence { |error| "#{error.attribute_name} can not be left blank" }
+    validation_message_at :presence, on: 'address.state' do |error|
+      "Please choose a state from the list"
+    end
+
+    # now you have access to the following protocol with the customized messages
+    #
+    # validation_message_for(error)
+  end
+end
+```
+
+#### Configuring the default validations mesasges
+
+To change the global default validation messages or to add global default messages for your
+custom validations, in your application startup do
+
+```ruby
+require 'hanami/validations'
+
+Hanami::Validations::ValidationMessagesLibrary.configure do
+  message_at :address_existence do |error|
+    "we couldn't find this address. Please try re-writting it"
+  end
+
+  message_at :adult do |error|
+    "must be older than #{error.expected}"
+  end
+end
+```
+
 ### Hanami::Entity
 
 Integration with [`Hanami::Entity`](https://github.com/hanami/model) is straight forward.
