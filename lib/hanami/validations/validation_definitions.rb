@@ -64,10 +64,10 @@ module Hanami
         #
         # @since 0.x.0
         def validation(name, with: nil, &block)
-          raise 'At least one validator factory must be provided' if with.nil? && block.nil?
-          raise 'Only one validator factory is admited' if !with.nil? && !block.nil?
+          raise RuntimeError.new('At least one validator factory must be provided') if with.nil? && block.nil?
+          raise RuntimeError.new('Only one validator factory is admited') if !with.nil? && !block.nil?
 
-          with = block if with.nil? && !block.nil?
+          with = block if with.nil?
           validations[name] = with
         end
 

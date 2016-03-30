@@ -273,93 +273,128 @@ class CustomValidator
   include Hanami::Validations::Validation
 
   def validate()
-    return is_valid if value == 0
-    return add_error_overriding_default_values if value == 1
-    return add_error_for_another_attribute if value == 2
-    return add_error_for_another_attribute_with_missing_parameters if value == 3
-    return override_validation_name if value == 4
-    return ask_if_previous_validation_failed if blank_value? || value == 5
-    return ask_if_previous_validation_failed_for_another_attribute if value == 6
-    return invoke_another_validation if value == 7
-    return add_error_with_object_id if value == 8
-    return ask_for_another_attribute_value if value == 9
-    return ask_for_a_nested_attribute_value if value == 10
-    return invoke_a_validation_on_a_nested_attribute if value == 11
-    return ask_if_any_previous_validation_failed if blank_value? || value == 12
+    if value == 'duplicates the validation instance'
+      add_error actual_value: object_id
+    end
 
-    add_error
-  end
+    if value == 'is valid'
+    end
 
-  def is_valid
-  end
+    if value =='adds a default error'
+      add_error
+    end
 
-  def add_error_overriding_default_values
-      add_error attribute_name: 'name',
-        validation_name: :another_validation,
-        expected_value: 'expected: 1',
-        actual_value: 'actual: 1',
-        namespace: 'some_namespace'
-  end
+    if value == 'adds an error overriding its values'
+      add_error(attribute_name: 'name',
+        validation_name: :expected_name,
+        expected_value: 'expected name',
+        actual_value: 'actual name',
+        namespace: 'name_namespace'
+      )
+    end
 
-  def add_error_for_another_attribute
-      add_error_for 'name',
-        validation_name: :another_validation,
-        expected_value: 'expected: 2',
-        actual_value: 'actual: 2',
-        namespace: 'some_namespace'
-  end
+    if value == 'adds an error for another attribute'
+      add_error_for 'age',
+        validation_name: :age_validation,
+        expected_value: 'expected age',
+        actual_value: 'actual age',
+        namespace: 'age_namespace'
+    end
 
-  def add_error_for_another_attribute_with_missing_parameters
-      add_error_for 'name'
-  end
+    if value == 'raises an error when adding an error for another attribute with missing parameters'
+      add_error_for 'age'
+    end
 
-  def override_validation_name
-    validation_name :other_validation
-    add_error
-  end
+    if value == 'overrides the validation name'
+      validation_name :other_validation
+      add_error
+    end
 
-  def ask_if_previous_validation_failed
-    add_error unless validation_failed_for? :presence
-  end
+    if value == 'asks for the value of another attribute'
+      if value_of('age') == 4
+        add_error actual_value: 'asks for the value of another attribute'
+      end
+    end
 
-  def ask_if_previous_validation_failed_for_another_attribute
-    add_error unless validation_failed_for? :presence, on: 'name'
-  end
+    if value == 'asks for the value of a nested attribute'
+      if value_of('address.street') == 'evergreen'
+        add_error actual_value: 'asks for the value of a nested attribute'
+      end
+    end
 
-  def add_error_with_object_id
-    add_error actual_value: object_id
-  end
+    if value == 'asks if a previous validation failed for the default attribute'
+      if validation_failed_for? :format
+        raise RuntimeError.new('should not get here')
+      end
 
-  def invoke_another_validation
-    validate_attribute 'name', on: :format, with: /abc/
-  end
+      validate_attribute 'name', on: :format, with: /abc/
 
-  def invoke_an_inexistent_validation
-    validate_attribute 'name', on: :not_found
-  end
+      if validation_failed_for? :format
+        add_error actual_value: 'asks if a previous validation failed for the default attribute'
+      end
+    end
 
-  def ask_for_another_attribute_value
-    add_error validation_name: :asked_value if value_of('name') == 'martin'
-  end
+    if value == 'asks if a previous validation failed for another attribute'
+      if validation_failed_for? :inclusion, on: 'age'
+        raise RuntimeError.new('should not get here')
+      end
 
-  def ask_for_a_nested_attribute_value
-    add_error validation_name: :asked_nested_value if value_of('address.street') == 'evergreen'
-  end
+      validate_attribute 'age', on: :inclusion, with: 0..1
 
-  def invoke_a_validation_on_a_nested_attribute
-    validate_attribute 'address.street', on: :format, with: /abc/
-  end
+      if validation_failed_for? :inclusion, on: 'age'
+        add_error actual_value: 'asks if a previous validation failed for another attribute'
+      end
+    end
 
-  def ask_if_any_previous_validation_failed
-    add_error unless any_validation_failed?
+    if value == 'invokes another validation'
+      if (validate_on :format, with: /abc/) != false
+        raise RuntimeError.new('should not get here')
+      end
+    end
+
+    if value == 'invokes another validation on an attribute'
+      if (validate_attribute 'name', on: :format, with: /abc/) != false
+        raise RuntimeError.new('should not get here')
+      end
+    end
+
+    if value == 'invokes a validation on a nested attribute'
+      if (validate_attribute 'address.street', on: :format, with: /abc/) != false
+        raise RuntimeError.new('should not get here')
+      end
+    end
+
+    if value == 'asks if any previous validation failed for the default attribute'
+      if any_validation_failed?
+        raise RuntimeError.new('should not get here')
+      end
+
+      validate_attribute 'name', on: :format, with: /abc/
+
+      if any_validation_failed?
+        add_error actual_value: 'asks if any previous validation failed for the default attribute'
+      end
+    end
+
+    if value == 'asks if any previous validation failed for another attribute'
+      if any_validation_failed?
+        raise RuntimeError.new('should not get here')
+      end
+
+      validate_attribute 'age', on: :inclusion, with: 0..1
+
+      if any_validation_failed? on: 'age'
+        add_error actual_value: 'asks if any previous validation failed for another attribute'
+      end
+    end
   end
 end
 
 class ValidateWithClassBehaviourTest
   include Hanami::Validations
 
-  attribute :name,  presence: true
-  attribute :age,   type: Integer, presence: true, validate_custom_with: CustomValidator
+  attribute :name,  presence: true, validate_custom_with: CustomValidator
+  attribute :age,   type: Integer, presence: true
   attribute :address do
     attribute :street, presence: true
     attribute :number, presence: true
@@ -369,8 +404,8 @@ end
 class ValidateWithInstanceBehaviourTest
   include Hanami::Validations
 
-  attribute :name,  presence: true
-  attribute :age,   type: Integer, presence: true, validate_custom_with: CustomValidator.new
+  attribute :name,  presence: true, validate_custom_with: CustomValidator
+  attribute :age,   type: Integer, presence: true
   attribute :address do
     attribute :street, presence: true
     attribute :number, presence: true
@@ -381,75 +416,120 @@ end
 class ValidateWithBlockBehaviourTest
   include Hanami::Validations
 
-  attribute :name,  presence: true
-  attribute :age,   type: Integer, presence: true,
+  attribute :name,  presence: true,
                     validate_custom_with: proc{
-                      if value == 0
+                      if value == 'is valid'
                       end
 
-                      if value == 1
-                        add_error attribute_name: 'name',
-                          validation_name: :another_validation,
-                          expected_value: 'expected: 1',
-                          actual_value: 'actual: 1',
-                          namespace: 'some_namespace'
+                      if value =='adds a default error'
+                        add_error
                       end
 
-                      if value == 2
-                        add_error_for 'name',
-                          validation_name: :another_validation,
-                          expected_value: 'expected: 2',
-                          actual_value: 'actual: 2',
-                          namespace: 'some_namespace'
+                      if value == 'adds an error overriding its values'
+                        add_error(attribute_name: 'name',
+                          validation_name: :expected_name,
+                          expected_value: 'expected name',
+                          actual_value: 'actual name',
+                          namespace: 'name_namespace'
+                        )
                       end
 
-                      if value == 3
-                        add_error_for 'name'
+                      if value == 'adds an error for another attribute'
+                        add_error_for 'age',
+                          validation_name: :age_validation,
+                          expected_value: 'expected age',
+                          actual_value: 'actual age',
+                          namespace: 'age_namespace'
                       end
 
-                      if value == 4
+                      if value == 'raises an error when adding an error for another attribute with missing parameters'
+                        add_error_for 'age'
+                      end
+
+                      if value == 'overrides the validation name'
                         validation_name :other_validation
                         add_error
                       end
 
-                      if blank_value? || value == 5
-                        add_error unless validation_failed_for? :presence
-                      end
-
-                      if value == 6
-                        add_error unless validation_failed_for? :presence, on: 'name'
-                      end
-
-                      if value == 7
-                        validate_attribute 'name', on: :format, with: /abc/
-                      end
-
-                      if value == 8
-                        add_error actual_value: object_id
-                      end
-
-                      if value == 9
-                        add_error validation_name: :asked_value if value_of('name') == 'martin'
-                      end
-
-                      if value == 10
-                        if value_of('address.street') == 'evergreen'
-                          add_error validation_name: :asked_nested_value
+                      if value == 'asks for the value of another attribute'
+                        if value_of('age') == 4
+                          add_error actual_value: 'asks for the value of another attribute'
                         end
                       end
 
-                      if value == 11
-                        validate_attribute 'address.street', on: :format, with: /abc/
+                      if value == 'asks for the value of a nested attribute'
+                        if value_of('address.street') == 'evergreen'
+                          add_error actual_value: 'asks for the value of a nested attribute'
+                        end
                       end
 
-                      if value == 12
-                        add_error unless any_validation_failed?
+                      if value == 'asks if a previous validation failed for the default attribute'
+                        if validation_failed_for? :format
+                          raise RuntimeError.new('should not get here')
+                        end
+
+                        validate_attribute 'name', on: :format, with: /abc/
+
+                        if validation_failed_for? :format
+                          add_error actual_value: 'asks if a previous validation failed for the default attribute'
+                        end
                       end
 
-                      if !blank_value? && value >= 13
-                        add_error
+                      if value == 'asks if a previous validation failed for another attribute'
+                        if validation_failed_for? :inclusion, on: 'age'
+                          raise RuntimeError.new('should not get here')
+                        end
+
+                        validate_attribute 'age', on: :inclusion, with: 0..1
+
+                        if validation_failed_for? :inclusion, on: 'age'
+                          add_error actual_value: 'asks if a previous validation failed for another attribute'
+                        end
+                      end
+
+                      if value == 'invokes another validation'
+                        if (validate_on :format, with: /abc/) != false
+                          raise RuntimeError.new('should not get here')
+                        end
+                      end
+
+                      if value == 'invokes another validation on an attribute'
+                        if (validate_attribute 'name', on: :format, with: /abc/) != false
+                          raise RuntimeError.new('should not get here')
+                        end
+                      end
+
+                      if value == 'invokes a validation on a nested attribute'
+                        if (validate_attribute 'address.street', on: :format, with: /abc/) != false
+                          raise RuntimeError.new('should not get here')
+                        end
+                      end
+
+                      if value == 'asks if any previous validation failed for the default attribute'
+                        if any_validation_failed?
+                          raise RuntimeError.new('should not get here')
+                        end
+
+                        validate_attribute 'name', on: :format, with: /abc/
+
+                        if any_validation_failed?
+                          add_error actual_value: 'asks if any previous validation failed for the default attribute'
+                        end
+                      end
+
+                      if value == 'asks if any previous validation failed for another attribute'
+                        if any_validation_failed?
+                          raise RuntimeError.new('should not get here')
+                        end
+
+                        validate_attribute 'age', on: :inclusion, with: 0..1
+
+                        if any_validation_failed? on: 'age'
+                          add_error actual_value: 'asks if any previous validation failed for another attribute'
+                        end
                       end
                     }
+  attribute :age, type: Integer, presence: true
   attribute :address do
     attribute :street, presence: true
     attribute :number, presence: true

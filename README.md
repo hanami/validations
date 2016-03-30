@@ -401,7 +401,7 @@ Please read more at: [The Perils of Uniqueness Validations](http://robots.though
 
 You can add custom validation in several ways
 
-#### Using `Hanami::Validations::Validation`
+#### Using a validator class
 
 Hanami provides the `Hanami::Validations::Validation` mixin you can include in any class to validate attributes.
 
@@ -498,9 +498,13 @@ add_error_for 'street',
 
 # Validate any attribute with any validation
 validate_attribute 'address.street', on: :format, with: /abc/
+
+# Answers the validation errors for an attribute.
+errors_for 'name'
+errors_for 'address.street'
 ```
 
-#### Using an `Hanami::Validations::Validation` instance
+#### Using a validator instance
 
 If you need to initialize or configure you validator in a certain way, you can give a validator instance instead of a class.
 
@@ -521,7 +525,7 @@ end
 
 The instance will be `#dup` every time the validation is invoked.
 
-#### Using a block
+#### Using a validator block
 
 If the validation is simple enough, you can give a block.
 
@@ -590,9 +594,7 @@ class DocumentIdValidator
   end
 
   def preconditions_failed?
-    validation_failed_for? :presence, on: 'document_type'   ||
-    validation_failed_for? :inclusion, on: 'document_type'  ||
-    validation_failed_for? :presence
+    (any_validation_failed? on: 'document_type') || (any_validation_failed? on: 'document_id')
   end
 
   def is_passport?
@@ -606,6 +608,39 @@ class DocumentIdValidator
   def validate_id
     validate_attribute 'document_id', on: :format, with: /.../
   end
+end
+```
+
+#### Adding new built-in validations
+
+You can define your own built-in validations from scratch or composing existent ones.
+
+```ruby
+Hanami::Validations::ValidationDefinitions.define do
+  validation :address_format do
+    validate_on :format, with: /.../
+  end
+
+  validation :address_existence, with: AddressExistanceValidator
+
+  validation :is_address do
+    (validate_on :presence) &&
+    (validate_on :address_format) &&
+    (validate_on :address_existence)
+  end
+end
+```
+
+Now you can use any of the validations `:address_format`, `:address_existence` 
+and `:is_address` on the attributes.
+
+```ruby
+class Person
+  include Hanami::Validations
+
+  attribute :name,    presence: true
+  attribute :email,   presence: true
+  attribute :address, is_address: true
 end
 ```
 

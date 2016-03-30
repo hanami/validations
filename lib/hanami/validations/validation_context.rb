@@ -58,6 +58,10 @@ module Hanami
     #   # Validate any attribute with any validation
     #   validate_attribute 'address.street', on: :format, with: /abc/
     #
+    #   # Answers the validation errors for an attribute.
+    #   errors_for 'name'
+    #   errors_for 'address.street'
+    #
     # @since 0.x.0
     # @api private
     class ValidationContext
@@ -223,13 +227,29 @@ module Hanami
         errors.add(validation_error.attribute.to_sym, validation_error)
       end
 
+      # Validates the attribute being validated with a specific validation
+      #
+      # @param validation_name [Symbol] the name of the validation. For custom validations, it's
+      #           the validation key, for instance, :validate_custom_with
+      # @param with [Object] Optional - the parameters of the validation. For 
+      #           custom validations, it's the validator class, instance or block
+      #
+      # @return [Boolean]  true if the validation passed, false if failed
+      #
+      # @since 0.x.0
+      def validate_on(validation_name, with: nil)
+        validate_attribute(attribute_name, on: validation_name, with: with)
+      end
+
       # Validates another attribute with a specific validation
       #
       # @param attribute_name [String] the name of the attribute to validate
       # @param on [Symbol] the name of the validation. For custom validations, it's
-      #           the actual validation name, for intance, :cutom and not :validate_custom_with
+      #           the validation key, for instance, :validate_custom_with
       # @param with [Object] Optional - the parameters of the validation. For 
       #           custom validations, it's the validator class, instance or block
+      #
+      # @return [Boolean]  true if the validation passed, false if failed
       #
       # @since 0.x.0
       def validate_attribute(attribute_name, on:, with: nil)
@@ -245,8 +265,9 @@ module Hanami
           attributes = value_of(namespace)
         end
 
-        AttributeValidation.new(attribute, on, with)
-          .validate(attributes, errors, namespace)
+        AttributeValidation.new(attribute, on, with).validate(attributes, errors, namespace)
+
+        !validation_failed_for?(on, on: attribute_name)
       end
 
       # Answers wheter a given validation for an attribute failed or not.
@@ -262,10 +283,10 @@ module Hanami
       # @since 0.x.0
       def validation_failed_for?(validation_name, on: nil)
         attribute_name = on.nil? ? self.attribute_name : on
-        errors.for(attribute_name).any? { |error| error.validation == validation_name }
+        errors_for(attribute_name).any? { |error| error.validation == validation_name }
       end
 
-      # Answers whether any previous validation failed for an attribute or not
+      # Answers whether any previous validation failed for an attribute or not.
       # If no attribute name is given, asks for the attribute being validated.
       #
       # @param on [String] Optional - the name of the attribute to ask if the 
@@ -276,7 +297,34 @@ module Hanami
       # @since 0.x.0
       def any_validation_failed?(on: nil)
         attribute_name = on.nil? ? self.attribute_name : on
-        errors.for(attribute_name).any?
+        errors_for(attribute_name).any?
+      end
+
+      # Answers the validation errors for an attribute.
+      #
+      # @param on [String] Optional - the name of the attribute
+      #
+      # @return [Array] a collection of [Hanami::Validations::Error]
+      #
+      # @since 0.x.0
+      def errors_for(attribute_name)
+        errors.for(fully_qualified_name_of(attribute_name))
+      end
+
+      # Answers the fully quilified name of the attribute being validated.
+      #
+      # @param on [String] Optional - the name of the attribute to ask if the 
+      #           validation failed or not
+      #
+      # @return [Boolean] wheter the attribute validation failed or not
+      #
+      # @since 0.x.0
+      def fully_qualified_name_of(name)
+        if namespace.nil?
+          name
+        else
+          namespace.to_s + '.' + name.to_s
+        end
       end
 
       protected

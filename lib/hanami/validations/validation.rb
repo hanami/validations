@@ -60,6 +60,10 @@ module Hanami
     #   # Validate any attribute with any validation
     #   validate_attribute 'address.street', on: :format, with: /abc/
     #
+    #   # Answers the validation errors for an attribute.
+    #   errors_for 'name'
+    #   errors_for 'address.street'
+    #
     # @example
     #   class AddressExistenceValidator
     #     include Hanami::Validations::Validation
@@ -235,6 +239,20 @@ module Hanami
           validation_context.add_validation_error(validation_error)
       end
 
+      # Validates the attribute being validated with a specific validation
+      #
+      # @param validation_name [Symbol] the name of the validation. For custom validations, it's
+      #           the actual validation name, for intance, :cutom and not :validate_custom_with
+      # @param with [Object] Optional - the parameters of the validation. For 
+      #           custom validations, it's the validator class, instance or block
+      #
+      # @return [Boolean]  true if the validation passed, false if failed
+      #
+      # @since 0.x.0
+      def validate_on(validation_name, with: nil)
+        validation_context.validate_on(validation_name, with: with)
+      end
+
       # Validates another attribute with a specific validation
       #
       # @param attribute_name [String] the name of the attribute to validate
@@ -242,6 +260,8 @@ module Hanami
       #           the actual validation name, for intance, :cutom and not :validate_custom_with
       # @param with [Object] Optional - the parameters of the validation. For 
       #             custom validations, it's the validator class, instance or block
+      #
+      # @return [Boolean]  true if the validation passed, false if failed
       #
       # @since 0.x.0
       def validate_attribute(attribute_name, on:, with: nil)
@@ -274,6 +294,17 @@ module Hanami
       # @since 0.x.0
       def any_validation_failed?(on: nil)
         validation_context.any_validation_failed?(on: on)
+      end
+
+      # Answers the validation errors for an attribute.
+      #
+      # @param on [String] Optional - the name of the attribute
+      #
+      # @return [Array] a collection of [Hanami::Validations::Error]
+      #
+      # @since 0.x.0
+      def errors_for(attribute_name)
+        validation_context.errors_for(attribute_name)
       end
     end
   end
