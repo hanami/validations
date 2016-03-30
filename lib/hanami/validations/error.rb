@@ -90,6 +90,10 @@ module Hanami
           other.expected   == expected   &&
           other.actual     == actual
       end
+
+      def to_s
+        Hanami::Validations::Messages.library.message_for(self)
+      end
     end
   end
 end

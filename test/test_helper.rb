@@ -17,3 +17,4 @@ module Hanami::Validations::ValidationIntrospection
 end
 
 require 'fixtures'
+require 'messages/fixtures'
