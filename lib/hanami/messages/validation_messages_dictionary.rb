@@ -13,17 +13,24 @@ module Hanami
 
       def initialize
         @messages = Hash.new { |hash, key| hash[key] = Hash[] }
+        @parameters_display_strings = Hash[]
       end
 
-      # Sets the message block for a given validation name and attribute 
+      # Defines the validation message for a validation type and optionally an attribute.
       #
-      # @params validation_name  [Symbol] the validation name
-      # @params on  [String] the attribute name
-      # @params put [Proc] the message block
+      # @param validation_name [Symbol] the validation name
+      # @param on [String] Optional - an attribute name
+      # @param &block [Proc] the message block, which receives the validation error as its
+      #        only parameter
       #
       # @since 0.x.0
-      def at(validation_name, on:, put:)
-        @messages[validation_name][on] = put
+      def at(validation_name, on: nil, &block)
+        attribute = on.nil? ? DEFAULT_FLAG : on.to_sym
+        @messages[validation_name][attribute] = block
+      end
+
+      def display(parameter, as:)
+        @parameters_display_strings[parameter.to_sym] = as
       end
 
       # Answers the validation message for an error
@@ -37,7 +44,15 @@ module Hanami
       # @since 0.x.0
       def for(error, if_none:)
         message_block = message_block_for(error)
-        message_block.nil? ? if_none.call : message_block.call(error)
+        message_block.nil? ? if_none.call : message_block.call(error_to_display_on(error))
+      end
+
+      def display_string_for(error)
+        @parameters_display_strings[error.attribute_name.to_sym]
+      end
+
+      def error_to_display_on(error)
+        ErrorToDisplay.on error, display_string: display_string_for(error)
       end
 
       protected

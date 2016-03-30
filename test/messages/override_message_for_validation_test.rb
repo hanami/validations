@@ -20,4 +20,14 @@ describe Hanami::Validations::Messages do
       view.validation_message_for(error).must_equal "number must be defined"
     end
   end
+
+  describe 'when the view overrides an attribute name' do
+    let(:view) { OverrideAttributeNameTest.new }
+
+    it 'uses the overriden attribute name' do
+      error = Hanami::Validations::Error.new(:street, :presence, true, 'Evergreen')
+
+      view.validation_message_for(error).must_equal "Street must be present"
+    end
+  end
 end

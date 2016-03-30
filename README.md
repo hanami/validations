@@ -554,7 +554,7 @@ signup.errors
 
 To show the validation error messages you can
 
-#### Send `#to_s` to the `Hanami::Validations::Errors` object
+#### Send `#to_s` to the `Hanami::Validations::Error` object
 
 This will show the default validation message for that error
 
@@ -583,7 +583,7 @@ end
 #### Overriding default validations messages
 
 To override a validation message for a validation type or a particular attribute 
-validation, define in your presentation class
+validation, or to configure how to display an attribute name define in your presentation class
 
 ```ruby
 require 'hanami/validations'
@@ -592,14 +592,64 @@ module Admin::Views::User
   class Create
     include Hanami::Validations::Messages
 
-    validation_message_at :presence { |error| "#{error.attribute_name} can not be left blank" }
-    validation_message_at :presence, on: 'address.state' do |error|
-      "Please choose a state from the list"
+    validation_messages do
+      display :state, as: 'country state'
+
+      at :presence { |error| "#{error.attribute_name} can not be left blank" }
+      at :presence, on: 'address.state' do |error|
+        "Please choose a #{error.attribute_name} from the list"
+      end
     end
 
     # now you have access to the following protocol with the customized messages
     #
     # validation_message_for(error)
+  end
+end
+```
+
+You can also override the messages in an instance method if you prefer
+
+```ruby
+require 'hanami/validations'
+
+module Admin::Views::User
+  class Create
+    include Hanami::Validations::Messages
+
+    def define_validation_messages
+      validation_messages do
+        display :state, as: 'country state'
+
+        at :presence { |error| "#{error.attribute_name} can not be left blank" }
+        at :presence, on: 'address.state' do |error|
+          "Please choose a #{error.attribute_name} from the list"
+        end
+      end
+    end
+  end
+end
+```
+
+You can use conditional logic to display different messages depending on the actual
+and expected values
+
+```ruby
+require 'hanami/validations'
+
+module Admin::Views::User
+  class Create
+    include Hanami::Validations::Messages
+
+    validation_messages do
+      at :size, on: 'age' do |error|
+        if error.actual < error.expected.min
+          "must be older than #{error.expected.min}"
+        else
+          "must be younger than #{error.expected.max}"
+        end
+      end
+    end
   end
 end
 ```
