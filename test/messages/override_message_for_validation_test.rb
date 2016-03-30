@@ -30,4 +30,15 @@ describe Hanami::Validations::Messages do
       view.validation_message_for(error).must_equal "Street must be present"
     end
   end
+
+  describe 'when the view changes the message library' do
+    let(:view) { OverrideLibraryTest.new }
+
+    it 'uses the overriden library only in the context of a dictionary' do
+      error = Hanami::Validations::Error.new(:street, :presence, true, 'Evergreen')
+
+      view.validation_message_for(error).must_equal "The field street is mandatory"
+      error.to_s.must_equal "can not be left blank"
+    end
+  end
 end

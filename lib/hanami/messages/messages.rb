@@ -16,15 +16,35 @@ module Hanami
         end
       end
 
+      # Sets or gets the validation mesage library
+      #
+      # @param  library  [Hanami::Validations::Messages::Library] Optiomal - the messages library
+      #
+      # @return [Hanami::Validations::Messages::Library] the global messages library
+      #
+      # @since 0.x.0
+      def self.library(library = nil)
+        @library = library unless library.nil?
+        @library ||= Library.new
+      end
+
+      # Defines the default validation messages for each validation type
+      # @param  &block  [Proc]  the configuration block
+      #
+      # @since 0.x.0
+      def self.configure(&block)
+        library.instance_eval(&block)
+      end
+
       module ClassMethods
         # Answers the validation messages dictionary
         #
-        # @param [Hanami::Validations::ValidationMessagesDictionary] the validation messages dictionary
+        # @param [Hanami::Validations::Messages::Dictionary] the validation messages dictionary
         #
         # @since 0.x.0
         # @api private
         def validation_messages(&block)
-          (@validation_messages ||= ValidationMessagesDictionary.new).tap do |messages|
+          (@validation_messages ||= Dictionary.new).tap do |messages|
             messages.instance_eval(&block) unless block.nil?
           end
         end
@@ -32,7 +52,7 @@ module Hanami
 
       # Answers the validation messages dictionary
       #
-      # @param [Hanami::Validations::ValidationMessagesDictionary] the validation messages dictionary
+      # @param [Hanami::Validations::Messages::Dictionary] the validation messages dictionary
       #
       # @since 0.x.0
       # @api private
@@ -49,8 +69,7 @@ module Hanami
       # @since 0.x.0
       # @api private
       def validation_message_for(error)
-        validation_messages.for error,
-          if_none: proc{ ValidationMessagesLibrary.message_for(error) }
+        validation_messages.for error
       end
     end
   end

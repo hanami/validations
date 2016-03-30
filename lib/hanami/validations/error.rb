@@ -92,7 +92,7 @@ module Hanami
       end
 
       def to_s
-        ValidationMessagesLibrary.message_for(self)
+        Hanami::Validations::Messages.library.message_for(self)
       end
     end
   end

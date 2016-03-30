@@ -1,4 +1,4 @@
-Hanami::Validations::ValidationMessagesLibrary.configure do
+Hanami::Validations::Messages.configure do
   message_at :presence do |error|
     "can not be left blank"
   end

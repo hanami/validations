@@ -654,21 +654,57 @@ module Admin::Views::User
 end
 ```
 
-#### Configuring the default validations mesasges
+#### Configuring the default validation messages library
 
-To change the global default validation messages or to add global default messages for your
+To change the global validation messages or to add global messages for your
 custom validations, in your application startup do
 
 ```ruby
 require 'hanami/validations'
 
-Hanami::Validations::ValidationMessagesLibrary.configure do
+Hanami::Validations::Messages.configure do
   message_at :address_existence do |error|
     "we couldn't find this address. Please try re-writting it"
   end
 
   message_at :adult do |error|
     "must be older than #{error.expected}"
+  end
+end
+```
+
+If you don't want to modify the built-in global library but rather use your own global library, you can do
+
+```ruby
+def your_custom_library
+  Hanami::Validations::Messages::Library.new.tap do |library|
+    library.message_at(:presence) do |error|
+      "The field #{error.attribute_name} is mandatory"
+    end
+  end
+end
+
+Hanami::Validations::Messages.library your_custom_library
+```
+
+Finally, if you want to use a different default library only in the context of a presentation class, you can do
+
+```ruby
+require 'hanami/validations'
+
+module Admin::Views::User
+  class Create
+    include Hanami::Validations::Messages
+
+    validation_messages do
+      use_library your_custom_library
+
+      # And of course you can still customize particular validations and attributes
+      at :presence { |error| "#{error.attribute_name} can not be left blank" }
+      at :presence, on: 'address.state' do |error|
+        "Please choose a #{error.attribute_name} from the list"
+      end
+    end
   end
 end
 ```

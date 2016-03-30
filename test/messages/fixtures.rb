@@ -27,3 +27,19 @@ class OverrideAttributeNameTest
     end
   end
 end
+
+class OverrideLibraryTest
+  include Hanami::Validations::Messages
+
+  def self.custom_library
+    Hanami::Validations::Messages::Library.new.tap do |library|
+      library.message_at(:presence) do |error|
+        "The field #{error.attribute_name} is mandatory"
+      end
+    end
+  end
+
+  validation_messages do
+    use_library OverrideLibraryTest.custom_library
+  end
+end

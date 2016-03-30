@@ -8,10 +8,10 @@ require 'hanami/validations/attribute'
 require 'hanami/validations/errors'
 
 require 'hanami/messages/messages'
-require 'hanami/messages/validation_messages_library'
-require 'hanami/messages/default_validation_messages'
-require 'hanami/messages/validation_messages_dictionary'
 require 'hanami/messages/error_to_display'
+require 'hanami/messages/library'
+require 'hanami/messages/dictionary'
+require 'hanami/messages/default_validation_messages'
 
 module Hanami
   # Hanami::Validations is a set of lightweight validations for Ruby objects.
