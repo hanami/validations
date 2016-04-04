@@ -38,8 +38,8 @@ module Hanami
         rules.attr(name.to_sym)
       end
 
-      def optional(name)
-        rules.optional(name.to_sym)
+      def optional(name, &blk)
+        rules.optional(name.to_sym, &blk)
       end
 
       def group(name, &blk)
