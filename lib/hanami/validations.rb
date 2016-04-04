@@ -34,8 +34,8 @@ module Hanami
         rules.key(name.to_sym, &blk)
       end
 
-      def attr(name)
-        rules.attr(name.to_sym)
+      def attr(name, &blk)
+        rules.attr(name.to_sym, &blk)
       end
 
       def optional(name, &blk)

@@ -9,3 +9,11 @@ end
 require 'minitest/autorun'
 $LOAD_PATH.unshift 'lib'
 require 'hanami/validations'
+
+class Input
+  attr_reader :foo
+
+  def initialize(foo)
+    @foo = foo
+  end
+end
