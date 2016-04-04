@@ -1,11 +1,4 @@
-require 'hanami/utils/hash'
-require 'hanami/validations/version'
-require 'hanami/validations/blank_value_checker'
-require 'hanami/validations/attribute_definer'
-require 'hanami/validations/validation_set'
-require 'hanami/validations/validator'
-require 'hanami/validations/attribute'
-require 'hanami/validations/errors'
+require 'dry-validation'
 
 module Hanami
   # Hanami::Validations is a set of lightweight validations for Ruby objects.
@@ -21,134 +14,55 @@ module Hanami
     #
     # @see http://www.ruby-doc.org/core/Module.html#method-i-included
     def self.included(base)
-      base.class_eval do
-        extend ClassMethods
-        include AttributeDefiner
-      end
+      base.extend ClassMethods
     end
 
     # Validations DSL
     #
     # @since 0.1.0
     module ClassMethods
-      # Override Ruby's hook for class inheritance. When a class includes
-      # Hanami::Validations and it is subclassed, this passes
-      # the attributes from the superclass to the subclass.
-      #
-      # @param base [Class] the target action
-      #
-      # @since 0.2.2
-      # @api private
-      #
-      # @see http://www.ruby-doc.org/core/Class.html#method-i-inherited
-      def inherited(base)
-        transfer_validations_to_base(base)
-        super
-      end
-
-      # Override Ruby's hook for modules. When a module includes
-      # Hanami::Validations and it is included in a class or module, this passes
-      # the validations from the module to the base.
-      #
-      # @param base [Class] the target action
-      #
-      # @since 0.1.0
-      # @api private
-      #
-      # @see http://www.ruby-doc.org/core/Module.html#method-i-included
-      #
-      # @example
-      #   require 'hanami/validations'
-      #
-      #   module NameValidations
-      #     include Hanami::Validations
-      #
-      #     attribute :name, presence: true
-      #   end
-      #
-      #   class Signup
-      #     include NameValidations
-      #   end
-      #
-      #   signup = Signup.new(name: '')
-      #   signup.valid? # => false
-      #
-      #   signup = Signup.new(name: 'Luca')
-      #   signup.valid? # => true
-      def included(base)
+      def self.extended(base)
         base.class_eval do
-          include Hanami::Validations
+          @rules  = Dry::Validation::Schema::Value.new
+          @schema = Class.new(Dry::Validation::Schema)
+
+          @schema.configure { |c| c.rules = @rules.rules }
         end
-
-        super
-
-        transfer_validations_to_base(base)
       end
 
-      # Define a validation for an existing attribute
-      #
-      # @param name [#to_sym] the name of the attribute
-      # @param options [Hash] set of validations
-      #
-      # @see Hanami::Validations::ClassMethods#validations
-      #
-      # @example Presence
-      #   require 'hanami/validations'
-      #
-      #   class Signup
-      #     include Hanami::Validations
-      #
-      #     def initialize(attributes = {})
-      #       @name = attributes.fetch(:name)
-      #     end
-      #
-      #     attr_accessor :name
-      #
-      #     validates :name, presence: true
-      #   end
-      #
-      #   signup = Signup.new(name: 'Luca')
-      #   signup.valid? # => true
-      #
-      #   signup = Signup.new(name: nil)
-      #   signup.valid? # => false
-      def validates(name, options)
-        validations.add(name, options)
+      def key(name, &blk)
+        rules.key(name.to_sym, &blk)
       end
 
-      # Set of user defined validations
-      #
-      # @return [Hash]
-      #
-      # @since 0.2.2
-      # @api private
-      def validations
-        @validations ||= ValidationSet.new
+      def attr(name)
+        rules.attr(name.to_sym)
       end
 
-      # Set of user defined attributes
-      #
-      # @return [Array<String>]
-      #
-      # @since 0.2.3
-      # @api private
-      def defined_attributes
-        validations.names.map(&:to_s)
+      def optional(name)
+        rules.optional(name.to_sym)
+      end
+
+      def group(name, &blk)
+        rules.key(name.to_sym).schema(&blk)
+      end
+
+      def rule(name, &blk)
+        rules.rule(name, &blk)
+      end
+
+      def schema
+        @schema
       end
 
       private
 
-      # Transfers attributes to a base class
-      #
-      # @param base [Module] the base class to transfer attributes to
-      #
-      # @since 0.2.2
-      # @api private
-      def transfer_validations_to_base(base)
-        validations.each do |attribute, options|
-          base.validates attribute, options
-        end
+      def rules
+        @rules
       end
+    end
+
+    def initialize(data)
+      @data = data
     end
 
     # Validation errors
@@ -251,8 +165,7 @@ module Hanami
     #
     # @see Hanami::Attribute#nested
     def validate
-      validator = Validator.new(defined_validations, read_attributes, errors)
-      validator.validate
+      self.class.schema.new.call(@data)
     end
 
     # Iterates thru the defined attributes and their values
