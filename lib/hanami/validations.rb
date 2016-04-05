@@ -26,7 +26,7 @@ module Hanami
           @rules  = Dry::Validation::Schema::Value.new
           @schema = Class.new(Dry::Validation::Schema)
 
-          @schema.configure { |c| c.rules = @rules.rules }
+          schema.configure { |c| c.rules = rules.rules }
         end
       end
 

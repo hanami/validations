@@ -9,6 +9,7 @@ end
 require 'minitest/autorun'
 $LOAD_PATH.unshift 'lib'
 require 'hanami/validations'
+require 'hanami/validations/form'
 
 class Input
   attr_reader :foo
