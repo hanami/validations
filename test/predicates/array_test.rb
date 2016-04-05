@@ -312,39 +312,79 @@ describe 'Predicates: Array' do
   end
 
   describe 'as macro' do
-    before do
-      @validator = Class.new do
-        include Hanami::Validations
+    describe 'with key' do
+      before do
+        @validator = Class.new do
+          include Hanami::Validations
 
-        key(:foo).each(:int?)
+          key(:foo).each(:int?)
+        end
+      end
+
+      describe 'with valid input' do
+        let(:input) { { foo: [3] } }
+
+        it 'is successful' do
+          result = @validator.new(input).validate
+          result.must_be :success?
+        end
+
+        it 'has not error messages' do
+          result = @validator.new(input).validate
+          result.messages[:foo].must_be_nil
+        end
+      end
+
+      describe 'with invalid input' do
+        let(:input) { { foo: [:bar] } }
+
+        it 'is not successful' do
+          result = @validator.new(input).validate
+          result.wont_be :success?
+        end
+
+        it 'returns error messages' do
+          result = @validator.new(input).validate
+          result.messages.fetch(:foo).must_equal(0 => ['must be an integer'])
+        end
       end
     end
 
-    describe 'with valid input' do
-      let(:input) { { foo: [3] } }
+    describe 'with optional' do
+      before do
+        @validator = Class.new do
+          include Hanami::Validations
 
-      it 'is successful' do
-        result = @validator.new(input).validate
-        result.must_be :success?
+          optional(:foo).each(:int?)
+        end
       end
 
-      it 'has not error messages' do
-        result = @validator.new(input).validate
-        result.messages[:foo].must_be_nil
+      describe 'with valid input' do
+        let(:input) { { foo: [3] } }
+
+        it 'is successful' do
+          result = @validator.new(input).validate
+          result.must_be :success?
+        end
+
+        it 'has not error messages' do
+          result = @validator.new(input).validate
+          result.messages[:foo].must_be_nil
+        end
       end
-    end
 
-    describe 'with invalid input' do
-      let(:input) { { foo: [:bar] } }
+      describe 'with invalid input' do
+        let(:input) { { foo: [:bar] } }
 
-      it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
+        it 'is not successful' do
+          result = @validator.new(input).validate
+          result.wont_be :success?
+        end
 
-      it 'returns error messages' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal(0 => ['must be an integer'])
+        it 'returns error messages' do
+          result = @validator.new(input).validate
+          result.messages.fetch(:foo).must_equal(0 => ['must be an integer'])
+        end
       end
     end
   end

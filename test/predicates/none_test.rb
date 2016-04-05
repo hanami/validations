@@ -200,134 +200,270 @@ describe 'Predicates: None' do
   end
 
   describe 'as macro' do
-    describe 'with required' do
-      before do
-        @validator = Class.new do
-          include Hanami::Validations
+    describe 'with key' do
+      describe 'with required' do
+        before do
+          @validator = Class.new do
+            include Hanami::Validations
 
-          key(:foo).required(:none?)
+            key(:foo).required(:none?)
+          end
+        end
+
+        describe 'with missing input' do
+          let(:input) { {} }
+
+          it 'is not successful' do
+            result = @validator.new(input).validate
+            result.wont_be :success?
+          end
+
+          it 'returns error message' do
+            result = @validator.new(input).validate
+            result.messages.fetch(:foo).must_equal ['is missing']
+          end
+        end
+
+        describe 'with nil input' do
+          let(:input) { { foo: nil } }
+
+          it 'is not successful' do
+            result = @validator.new(input).validate
+            result.wont_be :success?
+          end
+
+          it 'returns output value' do
+            result = @validator.new(input).validate
+            result.output.fetch(:foo).must_be_nil
+          end
+        end
+
+        describe 'with blank input' do
+          let(:input) { { foo: '' } }
+
+          it 'is not successful' do
+            result = @validator.new(input).validate
+            result.wont_be :success?
+          end
+
+          it 'returns error message' do
+            result = @validator.new(input).validate
+            result.messages.fetch(:foo).must_equal ['must be filled']
+          end
+        end
+
+        describe 'with other input' do
+          let(:input) { { foo: 23 } }
+
+          it 'is not successful' do
+            result = @validator.new(input).validate
+            result.wont_be :success?
+          end
+
+          it 'returns error message' do
+            result = @validator.new(input).validate
+            result.messages.fetch(:foo).must_equal ['cannot be defined']
+          end
         end
       end
 
-      describe 'with missing input' do
-        let(:input) { {} }
+      describe 'with maybe' do
+        before do
+          @validator = Class.new do
+            include Hanami::Validations
 
-        it 'is not successful' do
-          result = @validator.new(input).validate
-          result.wont_be :success?
+            key(:foo).maybe(:none?)
+          end
         end
 
-        it 'returns error message' do
-          result = @validator.new(input).validate
-          result.messages.fetch(:foo).must_equal ['is missing']
-        end
-      end
+        describe 'with missing input' do
+          let(:input) { {} }
 
-      describe 'with nil input' do
-        let(:input) { { foo: nil } }
+          it 'is not successful' do
+            result = @validator.new(input).validate
+            result.wont_be :success?
+          end
 
-        it 'is not successful' do
-          result = @validator.new(input).validate
-          result.wont_be :success?
-        end
-
-        it 'returns output value' do
-          result = @validator.new(input).validate
-          result.output.fetch(:foo).must_be_nil
-        end
-      end
-
-      describe 'with blank input' do
-        let(:input) { { foo: '' } }
-
-        it 'is not successful' do
-          result = @validator.new(input).validate
-          result.wont_be :success?
+          it 'returns error message' do
+            result = @validator.new(input).validate
+            result.messages.fetch(:foo).must_equal ['is missing']
+          end
         end
 
-        it 'returns error message' do
-          result = @validator.new(input).validate
-          result.messages.fetch(:foo).must_equal ['must be filled']
+        describe 'with nil input' do
+          let(:input) { { foo: nil } }
+
+          it 'is successful' do
+            result = @validator.new(input).validate
+            result.must_be :success?
+          end
+
+          it 'returns output value' do
+            result = @validator.new(input).validate
+            result.output.fetch(:foo).must_be_nil
+          end
         end
-      end
 
-      describe 'with other input' do
-        let(:input) { { foo: 23 } }
+        describe 'with blank input' do
+          let(:input) { { foo: '' } }
 
-        it 'is not successful' do
-          result = @validator.new(input).validate
-          result.wont_be :success?
+          it 'is not successful' do
+            result = @validator.new(input).validate
+            result.wont_be :success?
+          end
+
+          it 'returns error message' do
+            result = @validator.new(input).validate
+            result.messages.fetch(:foo).must_equal ['cannot be defined']
+          end
         end
 
-        it 'returns error message' do
-          result = @validator.new(input).validate
-          result.messages.fetch(:foo).must_equal ['cannot be defined']
+        describe 'with other input' do
+          let(:input) { { foo: 23 } }
+
+          it 'is not successful' do
+            result = @validator.new(input).validate
+            result.wont_be :success?
+          end
+
+          it 'returns error message' do
+            result = @validator.new(input).validate
+            result.messages.fetch(:foo).must_equal ['cannot be defined']
+          end
         end
       end
     end
 
-    describe 'with maybe' do
-      before do
-        @validator = Class.new do
-          include Hanami::Validations
+    describe 'with optional' do
+      describe 'with required' do
+        before do
+          @validator = Class.new do
+            include Hanami::Validations
 
-          key(:foo).maybe(:none?)
+            optional(:foo).required(:none?)
+          end
+        end
+
+        describe 'with missing input' do
+          let(:input) { {} }
+
+          it 'is successful' do
+            result = @validator.new(input).validate
+            result.must_be :success?
+          end
+
+          it 'has not error message' do
+            result = @validator.new(input).validate
+            result.messages[:foo].must_be_nil
+          end
+        end
+
+        describe 'with nil input' do
+          let(:input) { { foo: nil } }
+
+          it 'is not successful' do
+            result = @validator.new(input).validate
+            result.wont_be :success?
+          end
+
+          it 'returns output value' do
+            result = @validator.new(input).validate
+            result.output.fetch(:foo).must_be_nil
+          end
+        end
+
+        describe 'with blank input' do
+          let(:input) { { foo: '' } }
+
+          it 'is not successful' do
+            result = @validator.new(input).validate
+            result.wont_be :success?
+          end
+
+          it 'returns error message' do
+            result = @validator.new(input).validate
+            result.messages.fetch(:foo).must_equal ['must be filled']
+          end
+        end
+
+        describe 'with other input' do
+          let(:input) { { foo: 23 } }
+
+          it 'is not successful' do
+            result = @validator.new(input).validate
+            result.wont_be :success?
+          end
+
+          it 'returns error message' do
+            result = @validator.new(input).validate
+            result.messages.fetch(:foo).must_equal ['cannot be defined']
+          end
         end
       end
 
-      describe 'with missing input' do
-        let(:input) { {} }
+      describe 'with maybe' do
+        before do
+          @validator = Class.new do
+            include Hanami::Validations
 
-        it 'is not successful' do
-          result = @validator.new(input).validate
-          result.wont_be :success?
+            optional(:foo).maybe(:none?)
+          end
         end
 
-        it 'returns error message' do
-          result = @validator.new(input).validate
-          result.messages.fetch(:foo).must_equal ['is missing']
-        end
-      end
+        describe 'with missing input' do
+          let(:input) { {} }
 
-      describe 'with nil input' do
-        let(:input) { { foo: nil } }
+          it 'is successful' do
+            result = @validator.new(input).validate
+            result.must_be :success?
+          end
 
-        it 'is successful' do
-          result = @validator.new(input).validate
-          result.must_be :success?
-        end
-
-        it 'returns output value' do
-          result = @validator.new(input).validate
-          result.output.fetch(:foo).must_be_nil
-        end
-      end
-
-      describe 'with blank input' do
-        let(:input) { { foo: '' } }
-
-        it 'is not successful' do
-          result = @validator.new(input).validate
-          result.wont_be :success?
+          it 'has not error message' do
+            result = @validator.new(input).validate
+            result.messages[:foo].must_be_nil
+          end
         end
 
-        it 'returns error message' do
-          result = @validator.new(input).validate
-          result.messages.fetch(:foo).must_equal ['cannot be defined']
+        describe 'with nil input' do
+          let(:input) { { foo: nil } }
+
+          it 'is successful' do
+            result = @validator.new(input).validate
+            result.must_be :success?
+          end
+
+          it 'returns output value' do
+            result = @validator.new(input).validate
+            result.output.fetch(:foo).must_be_nil
+          end
         end
-      end
 
-      describe 'with other input' do
-        let(:input) { { foo: 23 } }
+        describe 'with blank input' do
+          let(:input) { { foo: '' } }
 
-        it 'is not successful' do
-          result = @validator.new(input).validate
-          result.wont_be :success?
+          it 'is not successful' do
+            result = @validator.new(input).validate
+            result.wont_be :success?
+          end
+
+          it 'returns error message' do
+            result = @validator.new(input).validate
+            result.messages.fetch(:foo).must_equal ['cannot be defined']
+          end
         end
 
-        it 'returns error message' do
-          result = @validator.new(input).validate
-          result.messages.fetch(:foo).must_equal ['cannot be defined']
+        describe 'with other input' do
+          let(:input) { { foo: 23 } }
+
+          it 'is not successful' do
+            result = @validator.new(input).validate
+            result.wont_be :success?
+          end
+
+          it 'returns error message' do
+            result = @validator.new(input).validate
+            result.messages.fetch(:foo).must_equal ['cannot be defined']
+          end
         end
       end
     end
