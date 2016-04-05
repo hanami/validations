@@ -80,7 +80,7 @@ describe 'Predicates: Array' do
       end
     end
 
-    describe 'with invalid input' do
+    describe 'with invalid input (integer)' do
       let(:input) { { foo: 4 } }
 
       it 'is not successful' do
@@ -91,6 +91,34 @@ describe 'Predicates: Array' do
       it 'returns error message' do
         result = @validator.new(input).validate
         result.messages.fetch(:foo).must_equal ['must be an array']
+      end
+    end
+
+    describe 'with invalid input (array with non-integers)' do
+      let(:input) { { foo: [:foo, :bar] } }
+
+      it 'is not successful' do
+        result = @validator.new(input).validate
+        result.wont_be :success?
+      end
+
+      it 'returns error message' do
+        result = @validator.new(input).validate
+        result.messages.fetch(:foo).must_equal(0 => ['must be an integer'], 1 => ['must be an integer'])
+      end
+    end
+
+    describe 'with invalid input (miexed array)' do
+      let(:input) { { foo: [1, '2', :bar] } }
+
+      it 'is not successful' do
+        result = @validator.new(input).validate
+        result.wont_be :success?
+      end
+
+      it 'returns error message' do
+        result = @validator.new(input).validate
+        result.messages.fetch(:foo).must_equal(1 => ['must be an integer'], 2 => ['must be an integer'])
       end
     end
   end
