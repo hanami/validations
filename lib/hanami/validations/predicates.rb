@@ -231,6 +231,13 @@ module Hanami
         end
       end
 
+      class Accepted < Type
+        def initialize
+          @name = :accepted
+          @blk  = ->(attr) { coerce(attr, Boolean).value }
+        end
+      end
+
       register(:nil?,       Nil.new)
       register(:presence?,  Presence.new)
       register(:present?,   Presence.new)
@@ -248,6 +255,7 @@ module Hanami
       register(:size?,      Size.new)
       register(:format?,    Format.new)
       register(:type?,      Type.new)
+      register(:accepted?,  Accepted.new)
     end
   end
 end
