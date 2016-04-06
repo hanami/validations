@@ -4,13 +4,13 @@ require 'set'
 module Hanami
   module Validations
     class Rules
-      # FIXME: Inherit from Utils::BasicObject
-      class Context
+      require 'hanami/utils/basic_object'
+      class Context < Utils::BasicObject
         def initialize(key, actual, rules)
           @key    = key
           @actual = actual
           @rules  = rules
-          @errors = Set.new
+          @errors = ::Set.new
         end
 
         def call
@@ -22,10 +22,19 @@ module Hanami
           @errors.to_a
         end
 
-        def method_missing(m, *args)
-          Predicates.call(m, @actual, *args).tap do |ret|
-            next if ret
-            @errors << Error.new(@key, m, args.first, @actual)
+        def size?(size)
+          predicate = ::Hanami::Validations::Predicates.predicate(:size?)
+          predicate.call(@actual, size).tap do |ret|
+            break if ret
+            @errors << ::Hanami::Validations::Rules::Error.new(@key, :size?, size, @actual.size)
+          end
+        end
+
+        def method_missing(m, *args, &blk)
+          predicate = ::Hanami::Validations::Predicates.predicate(m)
+          predicate.call(@actual, *args, &blk).tap do |ret|
+            break if ret
+            @errors << ::Hanami::Validations::Rules::Error.new(@key, m, args.first, @actual)
           end
         end
       end

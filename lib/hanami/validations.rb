@@ -68,6 +68,10 @@ module Hanami
       def group(name, &blk)
         schema.group(name, &blk)
       end
+
+      def predicate(name, &blk)
+        Predicates.register(name, blk)
+      end
     end
 
     def initialize(data)

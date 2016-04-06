@@ -8,8 +8,8 @@ module Hanami
         @blk  = blk
       end
 
-      def call(*args)
-        @blk.call(*args)
+      def call(*args, &blk)
+        @blk.call(*args, &blk)
       end
     end
   end
