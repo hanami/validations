@@ -1,57 +1,43 @@
 require 'test_helper'
 
 describe Hanami::Validations do
-  describe 'nested attributes' do
+  describe 'nested validations' do
     before do
-      @klass = Class.new do
+      @validator = Class.new do
         include Hanami::Validations
 
-        attribute :name, type: String
-        attribute :tags, type: Array
-        attribute :address do
-          attribute :line_one, type: String, presence: true
-          attribute :city, type: String
-          attribute :country, type: String
-          attribute :post_code, type: String
+        validates(:number) { presence? }
+
+        group(:customer) do
+          validates(:name) { presence? }
+
+          group(:address) do
+            validates(:city) { presence? }
+          end
         end
       end
     end
 
-    it 'builds nested attributes' do
-      validator = @klass.new(name: 'John Smith', address: { line_one: '10 High Street' })
-      validator.address.line_one.must_equal('10 High Street')
-      validator.name.must_equal('John Smith')
+    it 'returns successful validation result for valid data' do
+      result = @validator.new(number: 23, customer: { name: 'Luca', address: { city: 'Rome' } }).validate
+      result.must_be :success?
+      result.errors.must_be_empty
     end
 
-    it 'responds with an empty class on nil' do
-      @klass.new({}).address.line_one.must_be_nil
-    end
-
-    it 'is invalid when nested attributes fail validation' do
-      validator = @klass.new(name: 'John Smith', address: { city: 'Melbourne' })
-      validator.valid?.must_equal(false)
-      expected_error = Hanami::Validations::Error.new('address.line_one', :presence, true, nil)
-      line_one_errors = validator.errors.for('address.line_one')
-      line_one_errors.must_include(expected_error)
-      validator.errors.to_h.must_equal({
-        'address.line_one' => [Hanami::Validations::Error.new('address.line_one', :presence, true, nil)]
-      })
-    end
-
-    it 'is valid when nested attributes pass validation' do
-      validator = @klass.new(name: 'John Smith', address: { line_one: '10 High Street' })
-      validator.valid?.must_equal(true)
-      validator.errors.to_h.must_equal({})
-      validator.errors.for('address.line_one').must_equal([])
-      validator.address.errors.for(:line_one).must_equal([])
-      validator.errors.to_h.must_equal({})
+    it 'returns failing validation result for invalid data' do
+      result = @validator.new({}).validate
+      result.wont_be :success?
+      result.errors.keys.must_equal [:number, :'customer.name', :'customer.address.city']
+      result.errors.fetch(:number).must_equal [Hanami::Validations::Rules::Error.new(:number, :presence?, nil, nil)]
+      result.errors.fetch(:'customer.name').must_equal [Hanami::Validations::Rules::Error.new(:'customer.name', :presence?, nil, nil)]
+      result.errors.fetch(:'customer.address.city').must_equal [Hanami::Validations::Rules::Error.new(:'customer.address.city', :presence?, nil, nil)]
     end
 
     # Bug
     # See https://github.com/hanami/validations/issues/58
-    it 'safely serialize to Hash' do
+    it 'safely serialize to nested Hash' do
       data      = {name: 'John Smith', address: { line_one: '10 High Street' }}
-      validator = @klass.new(data)
+      validator = @validator.new(data)
 
       validator.to_h.must_equal(data)
     end
@@ -60,7 +46,7 @@ describe Hanami::Validations do
     # See https://github.com/hanami/validations/issues/58#issuecomment-99144243
     it 'safely serialize to Hash' do
       data      = {name: 'John Smith', tags: [1, 2]}
-      validator = @klass.new(data)
+      validator = @validator.new(data)
 
       validator.to_h.must_equal(data)
     end

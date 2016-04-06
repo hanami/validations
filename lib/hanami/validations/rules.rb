@@ -48,6 +48,8 @@ module Hanami
         end
       end
 
+      PREFIX_SEPARATOR = '.'.freeze
+
       def initialize(key, rules)
         @key   = key
         @rules = rules
@@ -56,12 +58,26 @@ module Hanami
       attr_reader :key
 
       def call(data)
-        Context.new(@key, data.fetch(@key, nil), @rules).call
+        Context.new(@key, dig(data), @rules).call
       end
 
       def add_prefix(prefix)
-        @key = :"#{ prefix }.#{ @key }"
+        @key = :"#{ prefix }#{ PREFIX_SEPARATOR }#{ @key }"
         self
+      end
+
+      private
+
+      def dig(data)
+        key, *keys = @key.to_s.split(PREFIX_SEPARATOR)
+        result     = data.fetch(key.to_sym, nil)
+
+        Array(keys).each do |k|
+          break if result.nil?
+          result = result.fetch(k.to_sym, nil)
+        end
+
+        result
       end
     end
   end

@@ -1,3 +1,5 @@
+require 'hanami/validations/rules'
+
 module Hanami
   module Validations
     class Schema
@@ -15,9 +17,18 @@ module Hanami
 
       attr_reader :name, :rules
 
-      def initialize(name = nil)
+      def initialize(name = nil, &blk)
         @name  = name
         @rules = []
+        instance_eval(&blk) if block_given?
+      end
+
+      def validates(name, &blk)
+        add Validations::Rules.new(name.to_sym, blk)
+      end
+
+      def group(name, &blk)
+        add(self.class.new(name, &blk))
       end
 
       def add(rules)
