@@ -22,6 +22,16 @@ module Hanami
           @errors.to_a
         end
 
+        def type?(type)
+          result = ::Hanami::Validations::Predicates.predicate(:type?).call(@actual, type)
+
+          if result.success?
+            @actual = result.value
+          else
+            @errors << ::Hanami::Validations::Rules::Error.new(@key, :type?, type, @actual)
+          end
+        end
+
         def size?(size)
           predicate = ::Hanami::Validations::Predicates.predicate(:size?)
           predicate.call(@actual, size).tap do |ret|

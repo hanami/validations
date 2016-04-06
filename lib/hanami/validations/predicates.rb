@@ -186,6 +186,51 @@ module Hanami
         end
       end
 
+      require 'hanami/validations/coercions'
+      require 'hanami/utils/blank'
+      class Type < Predicate
+        class Coerced
+          attr_reader :value
+
+          def initialize(success, value)
+            @success = success
+            @value   = value
+          end
+
+          def success?
+            @success
+          end
+        end
+
+        def initialize
+          super(:type, ->(attr, type) { coerce(attr, type) })
+        end
+
+        protected
+
+        def coerce(attr, type)
+          return Coerced.new(true, attr)  if attr.is_a?(type)
+          return Coerced.new(false, attr) if attr.nil? && type != Boolean
+
+          result = if [String, Boolean].include?(type)
+                     Hanami::Validations::Coercions.coerce(type, attr) unless attr.is_a?(Array) || attr.is_a?(Hash)
+                   elsif [Integer, Float].include?(type)
+                     Hanami::Validations::Coercions.coerce(type, attr)
+                   elsif [Date, Time].include?(type)
+                     Hanami::Validations::Coercions.coerce(type, attr) unless attr.is_a?(Float) || attr.is_a?(BigDecimal)
+                   elsif [DateTime].include?(type)
+                     Hanami::Validations::Coercions.coerce(type, attr) unless attr.is_a?(Integer) || attr.is_a?(Float) || attr.is_a?(BigDecimal)
+                   elsif [BigDecimal].include?(type)
+                     Hanami::Validations::Coercions.coerce(type, attr) unless Hanami::Utils::Blank.blank?(attr)
+                   else
+                     Hanami::Validations::Coercions.coerce(type, attr) rescue nil
+                   end
+
+          return Coerced.new(false, result) if result.nil?
+          Coerced.new(true, result)
+        end
+      end
+
       register(:nil?,       Nil.new)
       register(:presence?,  Presence.new)
       register(:present?,   Presence.new)
@@ -202,6 +247,7 @@ module Hanami
       register(:lteq?,      Lteq.new)
       register(:size?,      Size.new)
       register(:format?,    Format.new)
+      register(:type?,      Type.new)
     end
   end
 end
