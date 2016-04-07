@@ -51,7 +51,9 @@ describe Hanami::Validations::Rules do
     ]
 
     result = rules.call(name: 4)
-    result.errors.must_be_empty
+    result.errors.must_equal [
+      Hanami::Validations::Rules::Error.new(:name, :inclusion?, 1..3, 4),
+    ]
 
     result = rules.call(name: 1)
     result.errors.must_be_empty

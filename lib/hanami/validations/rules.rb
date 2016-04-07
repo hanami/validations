@@ -35,16 +35,18 @@ module Hanami
         def size?(size)
           predicate = ::Hanami::Validations::Predicates.predicate(:size?)
           predicate.call(@actual, size).tap do |ret|
-            break if ret
-            @errors << ::Hanami::Validations::Rules::Error.new(@key, :size?, size, @actual.size)
+            unless ret
+              @errors << ::Hanami::Validations::Rules::Error.new(@key, :size?, size, @actual.size)
+            end
           end
         end
 
         def method_missing(m, *args, &blk)
           predicate = ::Hanami::Validations::Predicates.predicate(m)
           predicate.call(@actual, *args, &blk).tap do |ret|
-            break if ret
-            @errors << ::Hanami::Validations::Rules::Error.new(@key, m, args.first, @actual)
+            unless ret
+              @errors << ::Hanami::Validations::Rules::Error.new(@key, m, args.first, @actual)
+            end
           end
         end
       end
