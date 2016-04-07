@@ -54,7 +54,7 @@ describe 'Predicates: lt?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :lt?, 23, 24)
+      Hanami::Validations::Error.new(:name, :lt?, 23, 24)
     ]
   end
 
@@ -63,7 +63,7 @@ describe 'Predicates: lt?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :lt?, 23, 23)
+      Hanami::Validations::Error.new(:name, :lt?, 23, 23)
     ]
   end
 

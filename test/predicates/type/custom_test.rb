@@ -14,7 +14,7 @@ describe 'Predicates: type?(custom)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Url, nil)
+      Hanami::Validations::Error.new(:name, :type?, Url, nil)
     ]
   end
 
@@ -23,7 +23,7 @@ describe 'Predicates: type?(custom)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Url, nil)
+      Hanami::Validations::Error.new(:name, :type?, Url, nil)
     ]
   end
 
@@ -32,7 +32,7 @@ describe 'Predicates: type?(custom)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Url, '')
+      Hanami::Validations::Error.new(:name, :type?, Url, '')
     ]
   end
 
@@ -41,7 +41,7 @@ describe 'Predicates: type?(custom)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Url, [])
+      Hanami::Validations::Error.new(:name, :type?, Url, [])
     ]
   end
 
@@ -50,7 +50,7 @@ describe 'Predicates: type?(custom)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Url, {})
+      Hanami::Validations::Error.new(:name, :type?, Url, {})
     ]
   end
 

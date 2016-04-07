@@ -24,7 +24,7 @@ describe 'Predicates: filled?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :filled?, nil, '')
+      Hanami::Validations::Error.new(:name, :filled?, nil, '')
     ]
   end
 
@@ -33,7 +33,7 @@ describe 'Predicates: filled?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :filled?, nil, [])
+      Hanami::Validations::Error.new(:name, :filled?, nil, [])
     ]
   end
 
@@ -42,7 +42,7 @@ describe 'Predicates: filled?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :filled?, nil, {})
+      Hanami::Validations::Error.new(:name, :filled?, nil, {})
     ]
   end
 

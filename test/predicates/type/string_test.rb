@@ -14,7 +14,7 @@ describe 'Predicates: type?(String)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, String, nil)
+      Hanami::Validations::Error.new(:name, :type?, String, nil)
     ]
   end
 
@@ -23,7 +23,7 @@ describe 'Predicates: type?(String)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, String, nil)
+      Hanami::Validations::Error.new(:name, :type?, String, nil)
     ]
   end
 
@@ -39,7 +39,7 @@ describe 'Predicates: type?(String)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, String, [])
+      Hanami::Validations::Error.new(:name, :type?, String, [])
     ]
   end
 
@@ -48,7 +48,7 @@ describe 'Predicates: type?(String)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, String, {})
+      Hanami::Validations::Error.new(:name, :type?, String, {})
     ]
   end
 

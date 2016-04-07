@@ -28,7 +28,7 @@ describe 'Predicates: nil?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :nil?, nil, '')
+      Hanami::Validations::Error.new(:name, :nil?, nil, '')
     ]
   end
 
@@ -37,7 +37,7 @@ describe 'Predicates: nil?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :nil?, nil, 'X')
+      Hanami::Validations::Error.new(:name, :nil?, nil, 'X')
     ]
   end
 end

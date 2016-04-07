@@ -14,7 +14,7 @@ describe 'Predicates: type?(Hash)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Hash, nil)
+      Hanami::Validations::Error.new(:name, :type?, Hash, nil)
     ]
   end
 
@@ -23,7 +23,7 @@ describe 'Predicates: type?(Hash)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Hash, nil)
+      Hanami::Validations::Error.new(:name, :type?, Hash, nil)
     ]
   end
 
@@ -32,7 +32,7 @@ describe 'Predicates: type?(Hash)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Hash, '')
+      Hanami::Validations::Error.new(:name, :type?, Hash, '')
     ]
   end
 
@@ -41,7 +41,7 @@ describe 'Predicates: type?(Hash)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Hash, [])
+      Hanami::Validations::Error.new(:name, :type?, Hash, [])
     ]
   end
 

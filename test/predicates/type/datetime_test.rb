@@ -14,7 +14,7 @@ describe 'Predicates: type?(DateTime)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, DateTime, nil)
+      Hanami::Validations::Error.new(:name, :type?, DateTime, nil)
     ]
   end
 
@@ -23,7 +23,7 @@ describe 'Predicates: type?(DateTime)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, DateTime, nil)
+      Hanami::Validations::Error.new(:name, :type?, DateTime, nil)
     ]
   end
 
@@ -32,7 +32,7 @@ describe 'Predicates: type?(DateTime)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, DateTime, '')
+      Hanami::Validations::Error.new(:name, :type?, DateTime, '')
     ]
   end
 
@@ -41,7 +41,7 @@ describe 'Predicates: type?(DateTime)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, DateTime, [])
+      Hanami::Validations::Error.new(:name, :type?, DateTime, [])
     ]
   end
 
@@ -50,7 +50,7 @@ describe 'Predicates: type?(DateTime)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, DateTime, {})
+      Hanami::Validations::Error.new(:name, :type?, DateTime, {})
     ]
   end
 
@@ -59,7 +59,7 @@ describe 'Predicates: type?(DateTime)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, DateTime, '1')
+      Hanami::Validations::Error.new(:name, :type?, DateTime, '1')
     ]
   end
 
@@ -89,7 +89,7 @@ describe 'Predicates: type?(DateTime)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, DateTime, 1)
+      Hanami::Validations::Error.new(:name, :type?, DateTime, 1)
     ]
   end
 
@@ -98,7 +98,7 @@ describe 'Predicates: type?(DateTime)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, DateTime, 3.14)
+      Hanami::Validations::Error.new(:name, :type?, DateTime, 3.14)
     ]
   end
 
@@ -107,7 +107,7 @@ describe 'Predicates: type?(DateTime)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, DateTime, BigDecimal.new(1))
+      Hanami::Validations::Error.new(:name, :type?, DateTime, BigDecimal.new(1))
     ]
   end
 

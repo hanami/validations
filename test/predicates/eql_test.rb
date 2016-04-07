@@ -14,7 +14,7 @@ describe 'Predicates: eql?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :eql?, 23, nil)
+      Hanami::Validations::Error.new(:name, :eql?, 23, nil)
     ]
   end
 
@@ -23,7 +23,7 @@ describe 'Predicates: eql?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :eql?, 23, nil)
+      Hanami::Validations::Error.new(:name, :eql?, 23, nil)
     ]
   end
 
@@ -32,7 +32,7 @@ describe 'Predicates: eql?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :eql?, 23, '')
+      Hanami::Validations::Error.new(:name, :eql?, 23, '')
     ]
   end
 

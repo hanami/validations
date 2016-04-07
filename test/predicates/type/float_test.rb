@@ -14,7 +14,7 @@ describe 'Predicates: type?(Float)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Float, nil)
+      Hanami::Validations::Error.new(:name, :type?, Float, nil)
     ]
   end
 
@@ -23,7 +23,7 @@ describe 'Predicates: type?(Float)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Float, nil)
+      Hanami::Validations::Error.new(:name, :type?, Float, nil)
     ]
   end
 
@@ -32,7 +32,7 @@ describe 'Predicates: type?(Float)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Float, '')
+      Hanami::Validations::Error.new(:name, :type?, Float, '')
     ]
   end
 
@@ -41,7 +41,7 @@ describe 'Predicates: type?(Float)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Float, [])
+      Hanami::Validations::Error.new(:name, :type?, Float, [])
     ]
   end
 
@@ -50,7 +50,7 @@ describe 'Predicates: type?(Float)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Float, {})
+      Hanami::Validations::Error.new(:name, :type?, Float, {})
     ]
   end
 
@@ -88,7 +88,7 @@ describe 'Predicates: type?(Float)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Float, now)
+      Hanami::Validations::Error.new(:name, :type?, Float, now)
     ]
   end
 end

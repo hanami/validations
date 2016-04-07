@@ -1,4 +1,5 @@
 require 'hanami/validations/predicate'
+require 'hanami/validations/coercions'
 
 module Hanami
   module Validations
@@ -186,23 +187,15 @@ module Hanami
         end
       end
 
-      require 'hanami/validations/coercions'
       class Type < Predicate
         def initialize
-          super(:type, ->(attr, type) { coerce(attr, type) })
-        end
-
-        protected
-
-        def coerce(attr, type)
-          Coercions.coerce(type, attr)
+          super(:type, ->(attr, type) { Coercions.coerce(type, attr) })
         end
       end
 
-      class Accepted < Type
+      class Accepted < Predicate
         def initialize
-          @name = :accepted
-          @blk  = ->(attr) { coerce(attr, Boolean).value }
+          super(:accepted, ->(attr) { Coercions.coerce(Boolean, attr).value })
         end
       end
 

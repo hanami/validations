@@ -14,7 +14,7 @@ describe 'Predicates: inclusion?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :inclusion?, 1..3, nil)
+      Hanami::Validations::Error.new(:name, :inclusion?, 1..3, nil)
     ]
   end
 
@@ -23,7 +23,7 @@ describe 'Predicates: inclusion?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :inclusion?, 1..3, nil)
+      Hanami::Validations::Error.new(:name, :inclusion?, 1..3, nil)
     ]
   end
 
@@ -32,7 +32,7 @@ describe 'Predicates: inclusion?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :inclusion?, 1..3, '')
+      Hanami::Validations::Error.new(:name, :inclusion?, 1..3, '')
     ]
   end
 
@@ -41,7 +41,7 @@ describe 'Predicates: inclusion?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :inclusion?, 1..3, -1)
+      Hanami::Validations::Error.new(:name, :inclusion?, 1..3, -1)
     ]
   end
 

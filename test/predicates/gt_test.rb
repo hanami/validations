@@ -61,7 +61,7 @@ describe 'Predicates: gt?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :gt?, 23, 23)
+      Hanami::Validations::Error.new(:name, :gt?, 23, 23)
     ]
   end
 
@@ -70,7 +70,7 @@ describe 'Predicates: gt?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :gt?, 23, 22)
+      Hanami::Validations::Error.new(:name, :gt?, 23, 22)
     ]
   end
 end

@@ -21,7 +21,7 @@ describe 'Predicates: present?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :present?, nil, nil)
+      Hanami::Validations::Error.new(:name, :present?, nil, nil)
     ]
   end
 
@@ -30,7 +30,7 @@ describe 'Predicates: present?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :present?, nil, nil)
+      Hanami::Validations::Error.new(:name, :present?, nil, nil)
     ]
   end
 
@@ -39,7 +39,7 @@ describe 'Predicates: present?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :present?, nil, '')
+      Hanami::Validations::Error.new(:name, :present?, nil, '')
     ]
   end
 end

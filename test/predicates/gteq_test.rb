@@ -68,7 +68,7 @@ describe 'Predicates: gteq?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :gteq?, 23, 22)
+      Hanami::Validations::Error.new(:name, :gteq?, 23, 22)
     ]
   end
 end

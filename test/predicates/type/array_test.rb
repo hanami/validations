@@ -14,7 +14,7 @@ describe 'Predicates: type?(Array)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Array, nil)
+      Hanami::Validations::Error.new(:name, :type?, Array, nil)
     ]
   end
 
@@ -23,7 +23,7 @@ describe 'Predicates: type?(Array)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Array, nil)
+      Hanami::Validations::Error.new(:name, :type?, Array, nil)
     ]
   end
 
@@ -32,7 +32,7 @@ describe 'Predicates: type?(Array)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Array, '')
+      Hanami::Validations::Error.new(:name, :type?, Array, '')
     ]
   end
 
@@ -41,7 +41,7 @@ describe 'Predicates: type?(Array)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Array, {})
+      Hanami::Validations::Error.new(:name, :type?, Array, {})
     ]
   end
 

@@ -42,7 +42,7 @@ describe 'Predicates: exclusion?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :exclusion?, 1..3, 3)
+      Hanami::Validations::Error.new(:name, :exclusion?, 1..3, 3)
     ]
   end
 end

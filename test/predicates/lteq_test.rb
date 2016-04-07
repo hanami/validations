@@ -54,7 +54,7 @@ describe 'Predicates: lteq?' do
 
     resulteq.wont_be :success?
     resulteq.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :lteq?, 23, 24)
+      Hanami::Validations::Error.new(:name, :lteq?, 23, 24)
     ]
   end
 

@@ -25,8 +25,8 @@ describe Hanami::Validations::Schema do
       result = schema.call({})
       result.wont_be :success?
       result.errors.keys.must_equal [:first_name, :last_name]
-      result.errors.fetch(:first_name).must_equal [Hanami::Validations::Rules::Error.new(:first_name, :presence?, nil, nil)]
-      result.errors.fetch(:last_name).must_equal  [Hanami::Validations::Rules::Error.new(:last_name, :presence?, nil, nil)]
+      result.errors.fetch(:first_name).must_equal [Hanami::Validations::Error.new(:first_name, :presence?, nil, nil)]
+      result.errors.fetch(:last_name).must_equal  [Hanami::Validations::Error.new(:last_name, :presence?, nil, nil)]
     end
 
     it 'validates data based on nested rules' do
@@ -40,7 +40,7 @@ describe Hanami::Validations::Schema do
       result = schema.call({})
       result.wont_be :success?
       result.errors.keys.must_equal [:'address.city']
-      result.errors.fetch(:'address.city').must_equal [Hanami::Validations::Rules::Error.new(:'address.city', :presence?, nil, nil)]
+      result.errors.fetch(:'address.city').must_equal [Hanami::Validations::Error.new(:'address.city', :presence?, nil, nil)]
     end
 
     it 'validates data based on deep nested rules' do
@@ -57,7 +57,7 @@ describe Hanami::Validations::Schema do
       result = schema.call({})
       result.wont_be :success?
       result.errors.keys.must_equal [:'customer.address.country']
-      result.errors.fetch(:'customer.address.country').must_equal [Hanami::Validations::Rules::Error.new(:'customer.address.country', :presence?, nil, nil)]
+      result.errors.fetch(:'customer.address.country').must_equal [Hanami::Validations::Error.new(:'customer.address.country', :presence?, nil, nil)]
     end
   end
 end

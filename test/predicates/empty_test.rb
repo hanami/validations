@@ -45,7 +45,7 @@ describe 'Predicates: empty?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :empty?, nil, 'foo')
+      Hanami::Validations::Error.new(:name, :empty?, nil, 'foo')
     ]
   end
 
@@ -54,7 +54,7 @@ describe 'Predicates: empty?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :empty?, nil, ['bar'])
+      Hanami::Validations::Error.new(:name, :empty?, nil, ['bar'])
     ]
   end
 
@@ -63,7 +63,7 @@ describe 'Predicates: empty?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :empty?, nil, { 'bar' => 3 })
+      Hanami::Validations::Error.new(:name, :empty?, nil, { 'bar' => 3 })
     ]
   end
 end

@@ -14,7 +14,7 @@ describe 'Predicates: type?(Boolean)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Boolean, nil)
+      Hanami::Validations::Error.new(:name, :type?, Boolean, nil)
     ]
   end
 
@@ -23,7 +23,7 @@ describe 'Predicates: type?(Boolean)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Boolean, nil)
+      Hanami::Validations::Error.new(:name, :type?, Boolean, nil)
     ]
   end
 
@@ -39,7 +39,7 @@ describe 'Predicates: type?(Boolean)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Boolean, [])
+      Hanami::Validations::Error.new(:name, :type?, Boolean, [])
     ]
   end
 
@@ -48,7 +48,7 @@ describe 'Predicates: type?(Boolean)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Boolean, {})
+      Hanami::Validations::Error.new(:name, :type?, Boolean, {})
     ]
   end
 

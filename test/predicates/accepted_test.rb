@@ -14,7 +14,7 @@ describe 'Predicates: accepted?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :accepted?, nil, nil)
+      Hanami::Validations::Error.new(:name, :accepted?, nil, nil)
     ]
   end
 
@@ -23,7 +23,7 @@ describe 'Predicates: accepted?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :accepted?, nil, nil)
+      Hanami::Validations::Error.new(:name, :accepted?, nil, nil)
     ]
   end
 
@@ -32,7 +32,7 @@ describe 'Predicates: accepted?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :accepted?, nil, '')
+      Hanami::Validations::Error.new(:name, :accepted?, nil, '')
     ]
   end
 
@@ -41,7 +41,7 @@ describe 'Predicates: accepted?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :accepted?, nil, [])
+      Hanami::Validations::Error.new(:name, :accepted?, nil, [])
     ]
   end
 
@@ -50,7 +50,7 @@ describe 'Predicates: accepted?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :accepted?, nil, {})
+      Hanami::Validations::Error.new(:name, :accepted?, nil, {})
     ]
   end
 
@@ -59,7 +59,7 @@ describe 'Predicates: accepted?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :accepted?, nil, '0')
+      Hanami::Validations::Error.new(:name, :accepted?, nil, '0')
     ]
   end
 
@@ -75,7 +75,7 @@ describe 'Predicates: accepted?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :accepted?, nil, 0)
+      Hanami::Validations::Error.new(:name, :accepted?, nil, 0)
     ]
   end
 

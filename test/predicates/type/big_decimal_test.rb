@@ -14,7 +14,7 @@ describe 'Predicates: type?(BigDecimal)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, BigDecimal, nil)
+      Hanami::Validations::Error.new(:name, :type?, BigDecimal, nil)
     ]
   end
 
@@ -23,7 +23,7 @@ describe 'Predicates: type?(BigDecimal)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, BigDecimal, nil)
+      Hanami::Validations::Error.new(:name, :type?, BigDecimal, nil)
     ]
   end
 
@@ -32,7 +32,7 @@ describe 'Predicates: type?(BigDecimal)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, BigDecimal, '')
+      Hanami::Validations::Error.new(:name, :type?, BigDecimal, '')
     ]
   end
 
@@ -41,7 +41,7 @@ describe 'Predicates: type?(BigDecimal)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, BigDecimal, [])
+      Hanami::Validations::Error.new(:name, :type?, BigDecimal, [])
     ]
   end
 
@@ -50,7 +50,7 @@ describe 'Predicates: type?(BigDecimal)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, BigDecimal, {})
+      Hanami::Validations::Error.new(:name, :type?, BigDecimal, {})
     ]
   end
 
@@ -87,7 +87,7 @@ describe 'Predicates: type?(BigDecimal)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, BigDecimal, Time.at(0))
+      Hanami::Validations::Error.new(:name, :type?, BigDecimal, Time.at(0))
     ]
   end
 end

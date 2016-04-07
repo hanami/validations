@@ -25,7 +25,7 @@ describe 'Predicates: all?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :all?, nil, '')
+        Hanami::Validations::Error.new(:name, :all?, nil, '')
       ]
     end
 
@@ -34,7 +34,7 @@ describe 'Predicates: all?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :all?, nil, [])
+        Hanami::Validations::Error.new(:name, :all?, nil, [])
       ]
     end
 
@@ -43,7 +43,7 @@ describe 'Predicates: all?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :all?, nil, {})
+        Hanami::Validations::Error.new(:name, :all?, nil, {})
       ]
     end
 
@@ -52,7 +52,7 @@ describe 'Predicates: all?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :all?, nil, 'bca')
+        Hanami::Validations::Error.new(:name, :all?, nil, 'bca')
       ]
     end
 
@@ -68,7 +68,7 @@ describe 'Predicates: all?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :all?, nil, ['abc'])
+        Hanami::Validations::Error.new(:name, :all?, nil, ['abc'])
       ]
     end
 
@@ -84,7 +84,7 @@ describe 'Predicates: all?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :all?, nil, { 'a' => 'abc' })
+        Hanami::Validations::Error.new(:name, :all?, nil, { 'a' => 'abc' })
       ]
     end
   end
@@ -113,7 +113,7 @@ describe 'Predicates: all?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :all?, nil, '')
+        Hanami::Validations::Error.new(:name, :all?, nil, '')
       ]
     end
 
@@ -122,7 +122,7 @@ describe 'Predicates: all?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :all?, nil, [])
+        Hanami::Validations::Error.new(:name, :all?, nil, [])
       ]
     end
 
@@ -131,7 +131,7 @@ describe 'Predicates: all?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :all?, nil, {})
+        Hanami::Validations::Error.new(:name, :all?, nil, {})
       ]
     end
 
@@ -140,7 +140,7 @@ describe 'Predicates: all?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :all?, nil, 'bca')
+        Hanami::Validations::Error.new(:name, :all?, nil, 'bca')
       ]
     end
 
@@ -149,7 +149,7 @@ describe 'Predicates: all?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :all?, nil, ['abc'])
+        Hanami::Validations::Error.new(:name, :all?, nil, ['abc'])
       ]
     end
 
@@ -158,7 +158,7 @@ describe 'Predicates: all?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :all?, nil, ['a'])
+        Hanami::Validations::Error.new(:name, :all?, nil, ['a'])
       ]
     end
 
@@ -167,7 +167,7 @@ describe 'Predicates: all?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :all?, nil, { 'a' => 'no', 'b' => 'yes' })
+        Hanami::Validations::Error.new(:name, :all?, nil, { 'a' => 'no', 'b' => 'yes' })
       ]
     end
 
@@ -203,7 +203,7 @@ describe 'Predicates: all?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :all?, nil, '')
+        Hanami::Validations::Error.new(:name, :all?, nil, '')
       ]
     end
 
@@ -212,7 +212,7 @@ describe 'Predicates: all?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :all?, nil, [])
+        Hanami::Validations::Error.new(:name, :all?, nil, [])
       ]
     end
 
@@ -221,7 +221,7 @@ describe 'Predicates: all?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :all?, nil, {})
+        Hanami::Validations::Error.new(:name, :all?, nil, {})
       ]
     end
 
@@ -247,7 +247,7 @@ describe 'Predicates: all?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :all?, nil, [1, 2])
+        Hanami::Validations::Error.new(:name, :all?, nil, [1, 2])
       ]
     end
 

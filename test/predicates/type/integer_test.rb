@@ -14,7 +14,7 @@ describe 'Predicates: type?(Integer)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Integer, nil)
+      Hanami::Validations::Error.new(:name, :type?, Integer, nil)
     ]
   end
 
@@ -23,7 +23,7 @@ describe 'Predicates: type?(Integer)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Integer, nil)
+      Hanami::Validations::Error.new(:name, :type?, Integer, nil)
     ]
   end
 
@@ -32,7 +32,7 @@ describe 'Predicates: type?(Integer)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Integer, '')
+      Hanami::Validations::Error.new(:name, :type?, Integer, '')
     ]
   end
 
@@ -41,7 +41,7 @@ describe 'Predicates: type?(Integer)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Integer, [])
+      Hanami::Validations::Error.new(:name, :type?, Integer, [])
     ]
   end
 
@@ -50,7 +50,7 @@ describe 'Predicates: type?(Integer)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Integer, {})
+      Hanami::Validations::Error.new(:name, :type?, Integer, {})
     ]
   end
 
@@ -88,7 +88,7 @@ describe 'Predicates: type?(Integer)' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :type?, Integer, now)
+      Hanami::Validations::Error.new(:name, :type?, Integer, now)
     ]
   end
 end

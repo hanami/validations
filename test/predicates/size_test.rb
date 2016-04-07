@@ -30,7 +30,7 @@ describe 'Predicates: size?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :size?, 4, 0)
+        Hanami::Validations::Error.new(:name, :size?, 4, 0)
       ]
     end
 
@@ -39,7 +39,7 @@ describe 'Predicates: size?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :size?, 4, 0)
+        Hanami::Validations::Error.new(:name, :size?, 4, 0)
       ]
     end
 
@@ -48,7 +48,7 @@ describe 'Predicates: size?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :size?, 4, 0)
+        Hanami::Validations::Error.new(:name, :size?, 4, 0)
       ]
     end
 
@@ -57,7 +57,7 @@ describe 'Predicates: size?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :size?, 4, 5)
+        Hanami::Validations::Error.new(:name, :size?, 4, 5)
       ]
     end
 
@@ -66,7 +66,7 @@ describe 'Predicates: size?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :size?, 4, 6)
+        Hanami::Validations::Error.new(:name, :size?, 4, 6)
       ]
     end
 
@@ -75,7 +75,7 @@ describe 'Predicates: size?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :size?, 4, 5)
+        Hanami::Validations::Error.new(:name, :size?, 4, 5)
       ]
     end
 
@@ -130,7 +130,7 @@ describe 'Predicates: size?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :size?, 4..5, 0)
+        Hanami::Validations::Error.new(:name, :size?, 4..5, 0)
       ]
     end
 
@@ -139,7 +139,7 @@ describe 'Predicates: size?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :size?, 4..5, 0)
+        Hanami::Validations::Error.new(:name, :size?, 4..5, 0)
       ]
     end
 
@@ -148,7 +148,7 @@ describe 'Predicates: size?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :size?, 4..5, 0)
+        Hanami::Validations::Error.new(:name, :size?, 4..5, 0)
       ]
     end
 
@@ -157,7 +157,7 @@ describe 'Predicates: size?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :size?, 4..5, 8)
+        Hanami::Validations::Error.new(:name, :size?, 4..5, 8)
       ]
     end
 
@@ -166,7 +166,7 @@ describe 'Predicates: size?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :size?, 4..5, 6)
+        Hanami::Validations::Error.new(:name, :size?, 4..5, 6)
       ]
     end
 
@@ -175,7 +175,7 @@ describe 'Predicates: size?' do
 
       result.wont_be :success?
       result.errors.fetch(:name).must_equal [
-        Hanami::Validations::Rules::Error.new(:name, :size?, 4..5, 6)
+        Hanami::Validations::Error.new(:name, :size?, 4..5, 6)
       ]
     end
 

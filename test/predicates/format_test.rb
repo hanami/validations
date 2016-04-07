@@ -24,7 +24,7 @@ describe 'Predicates: format?' do
 
     result.wont_be :success?
     result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Rules::Error.new(:name, :format?, /\Afoo\z/, '')
+      Hanami::Validations::Error.new(:name, :format?, /\Afoo\z/, '')
     ]
   end
 
