@@ -82,10 +82,13 @@ describe 'Predicates: type?(Float)' do
     result.errors.must_be_empty
   end
 
-  it 'returns successful result for time' do
-    result = @validator.new(name: Time.now).validate
+  it 'returns failing result for time' do
+    now    = Time.now
+    result = @validator.new(name: now).validate
 
-    result.must_be :success?
-    result.errors.must_be_empty
+    result.wont_be :success?
+    result.errors.fetch(:name).must_equal [
+      Hanami::Validations::Rules::Error.new(:name, :type?, Float, now)
+    ]
   end
 end

@@ -24,3 +24,14 @@ class Url
     @url.to_s
   end
 end
+
+class FullName
+  attr_reader :tokens
+  def initialize(*tokens)
+    @tokens = tokens
+  end
+
+  def to_s
+    @tokens.join ' '
+  end
+end

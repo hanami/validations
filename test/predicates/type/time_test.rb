@@ -87,8 +87,10 @@ describe 'Predicates: type?(Time)' do
   it 'returns failing result for integer' do
     result = @validator.new(name: 1).validate
 
-    result.must_be :success?
-    result.errors.must_be_empty
+    result.wont_be :success?
+    result.errors.fetch(:name).must_equal [
+      Hanami::Validations::Rules::Error.new(:name, :type?, Time, 1)
+    ]
   end
 
   it 'returns failing result for float' do

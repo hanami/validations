@@ -9,18 +9,22 @@ describe 'Predicates: type?(Boolean)' do
     end
   end
 
-  it 'returns successful result for missing data' do
+  it 'returns failing result for missing data' do
     result = @validator.new({}).validate
 
-    result.must_be :success?
-    result.errors.must_be_empty
+    result.wont_be :success?
+    result.errors.fetch(:name).must_equal [
+      Hanami::Validations::Rules::Error.new(:name, :type?, Boolean, nil)
+    ]
   end
 
   it 'returns successful result for nil data' do
     result = @validator.new(name: nil).validate
 
-    result.must_be :success?
-    result.errors.must_be_empty
+    result.wont_be :success?
+    result.errors.fetch(:name).must_equal [
+      Hanami::Validations::Rules::Error.new(:name, :type?, Boolean, nil)
+    ]
   end
 
   it 'returns successful result for blank data' do
