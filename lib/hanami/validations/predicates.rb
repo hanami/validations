@@ -199,6 +199,12 @@ module Hanami
         end
       end
 
+      class Confirmed < Predicate
+        def initialize
+          super(:confirmed, ->(attr, confirmation) { attr == confirmation })
+        end
+      end
+
       register(:nil?,       Nil.new)
       register(:presence?,  Presence.new)
       register(:present?,   Presence.new)
@@ -217,6 +223,7 @@ module Hanami
       register(:format?,    Format.new)
       register(:type?,      Type.new)
       register(:accepted?,  Accepted.new)
+      register(:confirmed?, Confirmed.new)
     end
   end
 end
