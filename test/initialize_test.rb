@@ -86,4 +86,4 @@ describe Hanami::Validations do
       end
     end
   end
-end
+end if false

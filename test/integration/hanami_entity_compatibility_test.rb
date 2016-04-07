@@ -194,4 +194,4 @@ describe 'Hanami::Entity compatibility' do
       product.to_h.must_equal({ id: nil, name: 'hanami', price: 200 })
     end
   end
-end unless Hanami::Utils.jruby?
+end if false # unless Hanami::Utils.jruby?
