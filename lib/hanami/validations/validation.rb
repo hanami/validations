@@ -175,8 +175,8 @@ module Hanami
       # @return [Boolean] whether the attribute is blank or not
       #
       # @since 0.x.0
-      def blank_value?
-        validation_context.blank_value?
+      def blank_value?(attribute_value = nil)
+        validation_context.blank_value?(attribute_value)
       end
 
 
