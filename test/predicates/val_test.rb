@@ -5,11 +5,11 @@ describe 'Predicates: confirmed?' do
     @validator = Class.new do
       include Hanami::Validations
 
-      validates(:number) { format?(/\A#{val(:'customer.address.city_code')}\_/ )  }
+      validates(:number) { format?(/\A#{val(:'customer.address.city_code')}\_/) }
 
       group(:customer) do
         group(:address) do
-          validates(:city_code) { presence? }
+          validates(:city_code) { present? }
         end
       end
     end

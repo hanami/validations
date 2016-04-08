@@ -6,13 +6,13 @@ describe Hanami::Validations do
       @validator = Class.new do
         include Hanami::Validations
 
-        validates(:number) { presence? }
+        validates(:number) { present? }
 
         group(:customer) do
-          validates(:name) { presence? }
+          validates(:name) { present? }
 
           group(:address) do
-            validates(:city) { presence? }
+            validates(:city) { present? }
           end
         end
       end
@@ -28,9 +28,9 @@ describe Hanami::Validations do
       result = @validator.new({}).validate
       result.wont_be :success?
       result.errors.keys.must_equal [:number, :'customer.name', :'customer.address.city']
-      result.errors.fetch(:number).must_equal [Hanami::Validations::Error.new(:number, :presence?, nil, nil)]
-      result.errors.fetch(:'customer.name').must_equal [Hanami::Validations::Error.new(:'customer.name', :presence?, nil, nil)]
-      result.errors.fetch(:'customer.address.city').must_equal [Hanami::Validations::Error.new(:'customer.address.city', :presence?, nil, nil)]
+      result.errors.fetch(:number).must_equal [Hanami::Validations::Error.new(:number, :present?, nil, nil)]
+      result.errors.fetch(:'customer.name').must_equal [Hanami::Validations::Error.new(:'customer.name', :present?, nil, nil)]
+      result.errors.fetch(:'customer.address.city').must_equal [Hanami::Validations::Error.new(:'customer.address.city', :present?, nil, nil)]
     end
 
     # Bug

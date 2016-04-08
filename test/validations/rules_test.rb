@@ -3,16 +3,16 @@ require 'hanami/validations/rules'
 
 describe Hanami::Validations::Rules do
   it 'returns true if the predicate is satisfied' do
-    rules = Hanami::Validations::Rules.new(:name, -> { presence? })
+    rules = Hanami::Validations::Rules.new(:name, -> { present? })
 
     result = rules.call({})
-    result.errors.must_equal [Hanami::Validations::Error.new(:name, :presence?, nil, nil)]
+    result.errors.must_equal [Hanami::Validations::Error.new(:name, :present?, nil, nil)]
 
     result = rules.call(name: 1)
     result.errors.must_be_empty
 
     result = rules.call(name: nil)
-    result.errors.must_equal [Hanami::Validations::Error.new(:name, :presence?, nil, nil)]
+    result.errors.must_equal [Hanami::Validations::Error.new(:name, :present?, nil, nil)]
   end
 
   it 'returns true if the predicate is satisfied with the given ' do
@@ -29,10 +29,10 @@ describe Hanami::Validations::Rules do
   end
 
   it 'returns true if all the predicates are satisfied' do
-    rules = Hanami::Validations::Rules.new(:name, -> { presence? && inclusion?(1..3) })
+    rules = Hanami::Validations::Rules.new(:name, -> { present? && inclusion?(1..3) })
 
     result = rules.call(name: nil)
-    result.errors.must_equal [Hanami::Validations::Error.new(:name, :presence?, nil, nil)]
+    result.errors.must_equal [Hanami::Validations::Error.new(:name, :present?, nil, nil)]
 
     result = rules.call(name: 4)
     result.errors.must_equal [Hanami::Validations::Error.new(:name, :inclusion?, 1..3, 4)]
@@ -42,11 +42,11 @@ describe Hanami::Validations::Rules do
   end
 
   it 'returns true if at least one predicate is satisfied' do
-    rules = Hanami::Validations::Rules.new(:name, -> { presence? || inclusion?(1..3) })
+    rules = Hanami::Validations::Rules.new(:name, -> { present? || inclusion?(1..3) })
 
     result = rules.call(name: nil)
     result.errors.must_equal [
-      Hanami::Validations::Error.new(:name, :presence?, nil, nil),
+      Hanami::Validations::Error.new(:name, :present?, nil, nil),
       Hanami::Validations::Error.new(:name, :inclusion?, 1..3, nil),
     ]
 

@@ -1,5 +1,6 @@
 require 'hanami/validations/predicate'
 require 'hanami/validations/coercions'
+require 'hanami/utils/blank'
 
 module Hanami
   module Validations
@@ -37,10 +38,9 @@ module Hanami
         end
       end
 
-      require 'hanami/utils/blank'
-      class Presence < Predicate
+      class Present < Predicate
         def initialize
-          super(:presence, ->(attr) { !Utils::Blank.blank?(attr) })
+          super(:present, ->(attr) { !Utils::Blank.blank?(attr) })
         end
       end
 
@@ -205,25 +205,24 @@ module Hanami
         end
       end
 
-      register(:nil?,       Nil.new)
-      register(:presence?,  Presence.new)
-      register(:present?,   Presence.new)
-      register(:inclusion?, Inclusion.new)
-      register(:exclusion?, Exclusion.new)
-      register(:eql?,       Eql.new)
-      register(:empty?,     Empty.new)
-      register(:filled?,    Filled.new)
-      register(:any?,       Any.new)
+      register(:accepted?,  Accepted.new)
       register(:all?,       All.new)
+      register(:any?,       Any.new)
+      register(:confirmed?, Confirmed.new)
+      register(:empty?,     Empty.new)
+      register(:eql?,       Eql.new)
+      register(:exclusion?, Exclusion.new)
+      register(:filled?,    Filled.new)
+      register(:format?,    Format.new)
       register(:gt?,        Gt.new)
       register(:gteq?,      Gteq.new)
+      register(:inclusion?, Inclusion.new)
       register(:lt?,        Lt.new)
       register(:lteq?,      Lteq.new)
+      register(:nil?,       Nil.new)
+      register(:present?,   Present.new)
       register(:size?,      Size.new)
-      register(:format?,    Format.new)
       register(:type?,      Type.new)
-      register(:accepted?,  Accepted.new)
-      register(:confirmed?, Confirmed.new)
     end
   end
 end
