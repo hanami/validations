@@ -17,6 +17,17 @@ module Hanami
         end
       end
 
+      class Proxy
+        def initialize(schema, name)
+          @schema = schema
+          @name   = name
+        end
+
+        def with(validator)
+          @schema.group(@name, validator.schema)
+        end
+      end
+
       attr_reader :name, :rules
 
       def initialize(name = nil, predicates = {}, &blk)
@@ -27,12 +38,26 @@ module Hanami
         instance_eval(&blk) if block_given?
       end
 
-      def validates(name, &blk)
-        add Rules.new(name.to_sym, blk)
+      def initialize_copy(original)
+        @predicates = original.instance_variable_get(:@predicates).dup
+        @groups     = original.instance_variable_get(:@groups).dup
+        @rules      = original.instance_variable_get(:@rules).dup
       end
 
-      def group(group_name, &blk)
-        @groups << self.class.new(_prefixed(group_name), @predicates.dup, &blk)
+      def validates(name, &blk)
+        if blk
+          add Rules.new(name.to_sym, blk)
+        else
+          Proxy.new(self, name)
+        end
+      end
+
+      def group(name, schema = nil, &blk)
+        @groups << if schema.nil?
+                     self.class.new(_prefixed(name), @predicates.dup, &blk)
+                   else
+                     schema.duplicated(name)
+                   end
       end
 
       def predicate(name, &blk)
@@ -48,6 +73,19 @@ module Hanami
       end
 
       protected
+
+      def name=(value)
+        @name = value
+        @groups.each do |group|
+          group.name = Prefix.join(value, group.name)
+        end
+      end
+
+      def duplicated(name)
+        schema = dup
+        schema.name = name
+        schema
+      end
 
       def _call(data)
         _run_groups(data,

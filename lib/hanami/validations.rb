@@ -62,7 +62,7 @@ module Hanami
       #   signup = Signup.new(name: nil)
       #   signup.valid? # => false
       def validates(name, &blk)
-        schema.add Rules.new(name.to_sym, blk)
+        schema.validates(name, &blk)
       end
 
       def group(name, &blk)
