@@ -8,7 +8,7 @@ module Hanami
       end
 
       def self.split(key)
-        key.to_s.split(SEPARATOR)
+        key.to_s.split(SEPARATOR).map!(&:to_sym)
       end
     end
   end

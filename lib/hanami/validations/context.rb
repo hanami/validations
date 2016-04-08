@@ -12,10 +12,11 @@ module Hanami
       end
     end
 
-    class Context < Utils::BasicObject
-      def initialize(key, data, rules, predicates)
+    class Context #< Utils::BasicObject
+      def initialize(key, data, output, rules, predicates)
         @key        = key
         @data       = data
+        @output     = output
         @actual     = val(key)
         @rules      = rules
         @predicates = predicates
@@ -24,7 +25,18 @@ module Hanami
 
       def call
         instance_exec(&@rules)
+        _set!
         self
+      end
+
+      def _set!
+        h           = @output
+        *keys, last = ::Hanami::Validations::Prefix.split(@key)
+        keys.each do |k|
+          h = h[k]
+        end
+
+        h[last] = @actual
       end
 
       def errors
@@ -112,11 +124,11 @@ module Hanami
 
       def val(key)
         key, *keys = ::Hanami::Validations::Prefix.split(key)
-        result     = @data.fetch(key.to_sym, nil)
+        result     = _fetch(@data, key)
 
         ::Kernel.Array(keys).each do |k|
           break if result.nil?
-          result = result.fetch(k.to_sym, nil)
+          result = _fetch(result, k)
         end
 
         result
@@ -147,6 +159,12 @@ module Hanami
           @predicates.fetch(name) do
             ::Kernel.raise ::Hanami::Validations::UnknownPredicateError.new(name)
           end
+      end
+
+      def _fetch(data, key)
+        data.fetch(key) do
+          data.fetch(key.to_s, nil)
+        end
       end
     end
   end

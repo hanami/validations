@@ -11,8 +11,8 @@ module Hanami
 
       attr_reader :key
 
-      def call(data, prefix = nil, predicates = {})
-        Context.new(Prefix.join(prefix, @key), data, @rules, predicates).call
+      def call(data, output, prefix = nil, predicates = {})
+        Context.new(Prefix.join(prefix, @key), data, output, @rules, predicates).call
       end
     end
   end
