@@ -70,7 +70,7 @@ module Hanami
       end
 
       def predicate(name, &blk)
-        Predicates.register(name, blk)
+        schema.predicate(name, &blk)
       end
     end
 

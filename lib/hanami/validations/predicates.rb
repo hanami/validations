@@ -5,19 +5,17 @@ require 'hanami/utils/blank'
 module Hanami
   module Validations
     module Predicates
-      class UnknownPredicateError < ::StandardError
-        def initialize(name)
-          super("Unknown predicate: `#{ name }'")
+      def self.fabricate(name, predicate)
+        case predicate
+        when Predicate
+          predicate
+        when Proc
+          Predicate.new(name, predicate)
         end
       end
 
       def self.register(name, predicate)
-        case predicate
-        when Predicate
-          registry[name] = predicate
-        when Proc
-          register(name, Predicate.new(name, predicate))
-        end
+        registry[name] = fabricate(name, predicate)
       end
 
       # FIXME: make it private
@@ -27,9 +25,7 @@ module Hanami
       end
 
       def self.predicate(name)
-        registry.fetch(name) do
-          raise UnknownPredicateError.new(name)
-        end
+        registry.fetch(name, nil)
       end
 
       class Nil < Predicate

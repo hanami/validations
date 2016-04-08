@@ -10,13 +10,14 @@ module Hanami
 
       attr_reader :key
 
-      def call(data)
-        Context.new(@key, data, @rules).call
+      def call(data, prefix = nil, predicates = {})
+        Context.new(_prefixed_key(prefix), data, @rules, predicates).call
       end
 
-      def add_prefix(prefix)
-        @key = :"#{ prefix }#{ Context::PREFIX_SEPARATOR }#{ @key }"
-        self
+      protected
+
+      def _prefixed_key(prefix)
+        [prefix, @key].compact.join('.').to_sym
       end
     end
   end

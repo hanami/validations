@@ -1,4 +1,5 @@
 require 'hanami/validations/rules'
+require 'hanami/validations/predicates'
 
 module Hanami
   module Validations
@@ -17,9 +18,11 @@ module Hanami
 
       attr_reader :name, :rules
 
-      def initialize(name = nil, &blk)
-        @name  = name
-        @rules = []
+      def initialize(name = nil, predicates = {}, &blk)
+        @name       = name
+        @predicates = predicates
+        @groups     = []
+        @rules      = []
         instance_eval(&blk) if block_given?
       end
 
@@ -27,16 +30,16 @@ module Hanami
         add Validations::Rules.new(name.to_sym, blk)
       end
 
-      def group(name, &blk)
-        add(self.class.new(name, &blk))
+      def group(group_name, &blk)
+        @groups << self.class.new(_prefixed(group_name), @predicates.dup, &blk)
+      end
+
+      def predicate(name, &blk)
+        @predicates[name] = Predicates.fabricate(name, blk)
       end
 
       def add(rules)
-        if rules.is_a?(self.class)
-          rules.rules.each { |rule| add(rule.add_prefix(rules.name)) }
-        else
-          @rules << rules
-        end
+        @rules << rules
       end
 
       def call(data)
@@ -46,10 +49,29 @@ module Hanami
       protected
 
       def _call(data)
+        _run_groups(data,
+                    _run_rules(data))
+      end
+
+      def _run_rules(data)
         @rules.each_with_object({}) do |rules, result|
-          errors = rules.call(data).errors
-          result[rules.key] = errors unless errors.empty?
+          errors = rules.call(data, @name, @predicates).errors
+          result[_prefixed(rules.key)] = errors unless errors.empty?
         end
+      end
+
+      def _run_groups(data, errors)
+        @groups.each do |group|
+          errors.merge!(
+            group.call(data).errors
+          )
+        end
+
+        errors
+      end
+
+      def _prefixed(key)
+        [@name, key].compact.join('.').to_sym
       end
     end
   end

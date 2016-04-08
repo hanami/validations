@@ -5,15 +5,22 @@ require 'set'
 
 module Hanami
   module Validations
+    class UnknownPredicateError < ::StandardError
+      def initialize(name)
+        super("Unknown predicate: `#{ name }'")
+      end
+    end
+
     class Context < Utils::BasicObject
       PREFIX_SEPARATOR = '.'.freeze
 
-      def initialize(key, data, rules)
-        @key    = key
-        @data   = data
-        @actual = val(key)
-        @rules  = rules
-        @errors = ::Set.new
+      def initialize(key, data, rules, predicates)
+        @key        = key
+        @data       = data
+        @actual     = val(key)
+        @rules      = rules
+        @predicates = predicates
+        @errors     = ::Set.new
       end
 
       def call
@@ -120,7 +127,7 @@ module Hanami
         if blk
           _predicate(m).call(@actual, *args, &blk) or _error(m, *args, @actual)
         else
-          _call(m, @actual, *args) { _error(m, *args, @actual) }
+          _call(m, @actual, *args) { _error(m, args.first, @actual) }
         end
       end
 
@@ -137,9 +144,11 @@ module Hanami
       end
 
       def _predicate(name)
-        ::Hanami::Validations::Predicates.predicate(name)
+        ::Hanami::Validations::Predicates.predicate(name) ||
+          @predicates.fetch(name) do
+            ::Kernel.raise ::Hanami::Validations::UnknownPredicateError.new(name)
+          end
       end
-
     end
   end
 end

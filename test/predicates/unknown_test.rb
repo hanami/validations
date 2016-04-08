@@ -10,7 +10,7 @@ describe 'Predicates: unknown' do
   end
 
   it 'raises error' do
-    exception = -> { @validator.new({}).validate }.must_raise(Hanami::Validations::Predicates::UnknownPredicateError)
+    exception = -> { @validator.new({}).validate }.must_raise(Hanami::Validations::UnknownPredicateError)
     exception.message.must_equal "Unknown predicate: `xyz?'"
   end
 end
