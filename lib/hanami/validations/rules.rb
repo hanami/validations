@@ -3,8 +3,6 @@ require 'hanami/validations/context'
 module Hanami
   module Validations
     class Rules
-      PREFIX_SEPARATOR = '.'.freeze
-
       def initialize(key, rules)
         @key   = key
         @rules = rules

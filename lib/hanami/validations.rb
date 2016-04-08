@@ -1,7 +1,8 @@
 require 'hanami/validations/version'
-require 'hanami/utils/hash'
 require 'hanami/validations/schema'
 require 'hanami/validations/rules'
+require 'hanami/utils/class_attribute'
+require 'hanami/utils/hash'
 
 module Hanami
   # Hanami::Validations is a set of lightweight validations for Ruby objects.
@@ -26,12 +27,11 @@ module Hanami
     module ClassMethods
       def self.extended(base)
         base.class_eval do
-          @schema = Hanami::Validations::Schema.new
-        end
-      end
+          include Utils::ClassAttribute
 
-      def schema
-        @schema
+          class_attribute :schema
+          self.schema = Schema.new
+        end
       end
 
       # Define a validation for an existing attribute
@@ -62,7 +62,7 @@ module Hanami
       #   signup = Signup.new(name: nil)
       #   signup.valid? # => false
       def validates(name, &blk)
-        schema.add Validations::Rules.new(name.to_sym, blk)
+        schema.add Rules.new(name.to_sym, blk)
       end
 
       def group(name, &blk)
@@ -89,6 +89,7 @@ module Hanami
     def validate
       self.class.schema.call(@data)
     end
+
     # Returns a Hash with the defined attributes as symbolized keys, and their
     # relative values.
     #
@@ -96,7 +97,7 @@ module Hanami
     #
     # @since 0.1.0
     def to_h
-      # TODO remove this symbolization when we'll support Ruby 2.2+ only
+      # TODO: remove this symbolization when we'll support Ruby 2.2+ only
       Utils::Hash.new(
         @data
       ).deep_dup.symbolize!.to_h
