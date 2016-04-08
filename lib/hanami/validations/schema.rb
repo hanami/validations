@@ -1,5 +1,6 @@
 require 'hanami/validations/rules'
 require 'hanami/validations/predicates'
+require 'hanami/validations/prefix'
 
 module Hanami
   module Validations
@@ -27,7 +28,7 @@ module Hanami
       end
 
       def validates(name, &blk)
-        add Validations::Rules.new(name.to_sym, blk)
+        add Rules.new(name.to_sym, blk)
       end
 
       def group(group_name, &blk)
@@ -71,7 +72,7 @@ module Hanami
       end
 
       def _prefixed(key)
-        [@name, key].compact.join('.').to_sym
+        Prefix.join(@name, key)
       end
     end
   end

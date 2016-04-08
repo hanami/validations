@@ -1,6 +1,7 @@
 require 'hanami/utils/basic_object'
 require 'hanami/validations/predicates'
 require 'hanami/validations/error'
+require 'hanami/validations/prefix'
 require 'set'
 
 module Hanami
@@ -12,8 +13,6 @@ module Hanami
     end
 
     class Context < Utils::BasicObject
-      PREFIX_SEPARATOR = '.'.freeze
-
       def initialize(key, data, rules, predicates)
         @key        = key
         @data       = data
@@ -112,7 +111,7 @@ module Hanami
       end
 
       def val(key)
-        key, *keys = key.to_s.split(PREFIX_SEPARATOR)
+        key, *keys = ::Hanami::Validations::Prefix.split(key)
         result     = @data.fetch(key.to_sym, nil)
 
         ::Kernel.Array(keys).each do |k|

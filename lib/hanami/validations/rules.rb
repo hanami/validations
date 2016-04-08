@@ -1,4 +1,5 @@
 require 'hanami/validations/context'
+require 'hanami/validations/prefix'
 
 module Hanami
   module Validations
@@ -11,13 +12,7 @@ module Hanami
       attr_reader :key
 
       def call(data, prefix = nil, predicates = {})
-        Context.new(_prefixed_key(prefix), data, @rules, predicates).call
-      end
-
-      protected
-
-      def _prefixed_key(prefix)
-        [prefix, @key].compact.join('.').to_sym
+        Context.new(Prefix.join(prefix, @key), data, @rules, predicates).call
       end
     end
   end
