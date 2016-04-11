@@ -168,6 +168,10 @@ module Hanami
         result
       end
 
+      def value
+        @actual
+      end
+
       def method_missing(m, *args, &blk)
         if blk
           _predicate(m).call(@actual, *args, &blk) or _error(m, *args, @actual)
@@ -193,8 +197,10 @@ module Hanami
 
         if result.success?
           @actual = result.value
+          true
         else
           _error(:type?, expected, @actual)
+          false
         end
       end
 
