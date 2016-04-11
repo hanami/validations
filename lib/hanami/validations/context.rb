@@ -43,6 +43,10 @@ module Hanami
         @errors.to_a
       end
 
+      def array?
+        _type?(Array)
+      end
+
       def accepted?
         _call(:accepted?, @actual) { _error(:accepted?, true, @actual) }
       end
@@ -55,9 +59,25 @@ module Hanami
         _predicate(:any?).call(@actual, &blk) or _error(:any?, nil, @actual)
       end
 
+      def bool?
+        _type?(Boolean)
+      end
+
       def confirmed?
         confirmation = val(:"#{ @key }_confirmation")
         _call(:confirmed?, @actual, confirmation) { _error(:confirmed?, @actual, confirmation) }
+      end
+
+      def date?
+        _type?(Date)
+      end
+
+      def datetime?
+        _type?(DateTime)
+      end
+
+      def decimal?
+        _type?(BigDecimal)
       end
 
       def empty?
@@ -76,6 +96,10 @@ module Hanami
         _call(:filled?, @actual) { _error(:filled?, nil, @actual) }
       end
 
+      def float?
+        _type?(Float)
+      end
+
       def format?(expected)
         _call(:format?, @actual, expected) { _error(:format?, expected, @actual) }
       end
@@ -88,8 +112,16 @@ module Hanami
         _call(:gteq?, @actual, expected) { _error(:gteq?, expected, @actual) }
       end
 
+      def hash?
+        _type?(Hash)
+      end
+
       def inclusion?(expected)
         _call(:inclusion?, @actual, expected) { _error(:inclusion?, expected, @actual) }
+      end
+
+      def int?
+        _type?(Integer)
       end
 
       def lt?(expected)
@@ -112,14 +144,16 @@ module Hanami
         _call(:size?, @actual, expected) { _error(:size?, expected, @actual.size) }
       end
 
-      def type?(expected)
-        result = _predicate(:type?).call(@actual, expected)
+      def str?
+        _type?(String)
+      end
 
-        if result.success?
-          @actual = result.value
-        else
-          _error(:type?, expected, @actual)
-        end
+      def time?
+        _type?(Time)
+      end
+
+      def type?(expected)
+        _type?(expected)
       end
 
       def val(key)
@@ -152,6 +186,16 @@ module Hanami
 
       def _error(predicate, expected, actual)
         @errors << ::Hanami::Validations::Error.new(@key, predicate, expected, actual)
+      end
+
+      def _type?(expected)
+        result = _predicate(:type?).call(@actual, expected)
+
+        if result.success?
+          @actual = result.value
+        else
+          _error(:type?, expected, @actual)
+        end
       end
 
       def _predicate(name)
