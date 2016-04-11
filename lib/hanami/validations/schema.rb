@@ -53,6 +53,10 @@ module Hanami
         end
       end
 
+      def key(name)
+        add Rules.new(name.to_sym, -> { true })
+      end
+
       def group(name, schema = nil, &blk)
         @groups << if schema.nil?
                      self.class.new(_prefixed(name), @predicates.dup, &blk)

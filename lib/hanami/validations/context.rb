@@ -24,19 +24,10 @@ module Hanami
       end
 
       def call
-        instance_exec(&@rules)
+        result = instance_exec(&@rules)
         _set!
+        _add_generic_error!(result)
         self
-      end
-
-      def _set!
-        h           = @output
-        *keys, last = ::Hanami::Validations::Prefix.split(@key)
-        keys.each do |k|
-          h = h[k]
-        end
-
-        h[last] = @actual
       end
 
       def errors
@@ -201,6 +192,22 @@ module Hanami
         else
           _error(:type?, expected, @actual)
           false
+        end
+      end
+
+      def _set!
+        h           = @output
+        *keys, last = ::Hanami::Validations::Prefix.split(@key)
+        keys.each do |k|
+          h = h[k]
+        end
+
+        h[last] = @actual
+      end
+
+      def _add_generic_error!(result)
+        if @errors.empty? && (result == false || result.nil?)
+          _error(:base, nil, result)
         end
       end
 

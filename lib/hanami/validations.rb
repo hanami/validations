@@ -65,6 +65,10 @@ module Hanami
         schema.validates(name, &blk)
       end
 
+      def key(name)
+        schema.key(name)
+      end
+
       def group(name, &blk)
         schema.group(name, &blk)
       end
