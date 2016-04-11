@@ -53,6 +53,13 @@ describe 'Predicates: custom' do
         end
       end
     end
+
+    @native = Class.new do
+      include Hanami::Validations
+
+      predicate(:positive?, &:positive?)
+      validates(:num) { int? && positive? }
+    end
   end
 
   it 'uses custom predicate' do
@@ -82,5 +89,14 @@ describe 'Predicates: custom' do
 
   it 'outer group cannot access inner groups custom validations' do
     -> { @outer.new(id: 12).validate }.must_raise(Hanami::Validations::UnknownPredicateError)
+  end
+
+  it 'allows to define custom predicates with native methods passed as symbols' do
+    result = @native.new(num: -11).validate
+
+    result.wont_be :success?
+    result.errors.fetch(:num).must_equal [
+      Hanami::Validations::Error.new(:num, :positive?, nil, -11)
+    ]
   end
 end
