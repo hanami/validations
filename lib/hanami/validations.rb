@@ -78,8 +78,8 @@ module Hanami
       end
     end
 
-    def initialize(data)
-      @data = data
+    def initialize(input)
+      @input = input
     end
 
     # Validates the object.
@@ -91,7 +91,7 @@ module Hanami
     #
     # @see Hanami::Attribute#nested
     def validate
-      self.class.schema.call(@data)
+      self.class.schema.call(@input)
     end
 
     # Returns a Hash with the defined attributes as symbolized keys, and their
@@ -103,7 +103,7 @@ module Hanami
     def to_h
       # TODO: remove this symbolization when we'll support Ruby 2.2+ only
       Utils::Hash.new(
-        @data
+        @input
       ).deep_dup.symbolize!.to_h
     end
   end

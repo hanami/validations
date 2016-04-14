@@ -1,7 +1,6 @@
 require 'hanami/utils/basic_object'
 require 'hanami/validations/predicates'
 require 'hanami/validations/error'
-require 'hanami/validations/prefix'
 require 'set'
 
 module Hanami
@@ -13,9 +12,9 @@ module Hanami
     end
 
     class Context #< Utils::BasicObject
-      def initialize(key, data, output, rules, predicates)
+      def initialize(key, input, output, rules, predicates)
         @key        = key
-        @data       = data
+        @input      = input
         @output     = output
         @actual     = val(key)
         @rules      = rules
@@ -25,7 +24,7 @@ module Hanami
 
       def call
         result = instance_exec(&@rules)
-        _set!
+        @output.update!(@key, @actual)
         _add_generic_error!(result)
         self
       end
@@ -148,15 +147,7 @@ module Hanami
       end
 
       def val(key)
-        key, *keys = ::Hanami::Validations::Prefix.split(key)
-        result     = _fetch(@data, key)
-
-        ::Kernel.Array(keys).each do |k|
-          break if result.nil?
-          result = _fetch(result, k)
-        end
-
-        result
+        @input.value(key)
       end
 
       def value
@@ -195,16 +186,6 @@ module Hanami
         end
       end
 
-      def _set!
-        h           = @output
-        *keys, last = ::Hanami::Validations::Prefix.split(@key)
-        keys.each do |k|
-          h = h[k]
-        end
-
-        h[last] = @actual
-      end
-
       def _add_generic_error!(result)
         if @errors.empty? && (result == false || result.nil?)
           _error(:base, nil, result)
@@ -216,12 +197,6 @@ module Hanami
           @predicates.fetch(name) do
             ::Kernel.raise ::Hanami::Validations::UnknownPredicateError.new(name)
           end
-      end
-
-      def _fetch(data, key)
-        data.fetch(key) do
-          data.fetch(key.to_s, nil)
-        end
       end
     end
   end

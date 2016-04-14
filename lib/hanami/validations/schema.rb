@@ -1,6 +1,8 @@
 require 'hanami/validations/rules'
 require 'hanami/validations/predicates'
 require 'hanami/validations/prefix'
+require 'hanami/validations/input'
+require 'hanami/validations/output'
 
 module Hanami
   module Validations
@@ -9,7 +11,7 @@ module Hanami
         attr_reader :output, :errors
 
         def initialize(output, errors)
-          @output = output
+          @output = output.to_h
           @errors = errors
         end
 
@@ -73,8 +75,8 @@ module Hanami
         @rules << rules
       end
 
-      def call(data, output = nil)
-        Result.new(*_call(data, output))
+      def call(input, output = nil)
+        Result.new(*_call(input, output))
       end
 
       protected
@@ -92,23 +94,24 @@ module Hanami
         schema
       end
 
-      def _call(data, output)
-        output ||= Hash.new { |h,k| h[k] = {} }
-        _run_groups(data, output,
-                    _run_rules(data, output))
+      def _call(input, output)
+        input    = Input.new(input)
+        output ||= Output.new
+        _run_groups(input, output,
+                    _run_rules(input, output))
       end
 
-      def _run_rules(data, output)
+      def _run_rules(input, output)
         @rules.each_with_object({}) do |rules, result|
-          errors = rules.call(data, output, @name, @predicates).errors
+          errors = rules.call(input, output, @name, @predicates).errors
           result[_prefixed(rules.key)] = errors unless errors.empty?
         end
       end
 
-      def _run_groups(data, output, errors)
+      def _run_groups(input, output, errors)
         @groups.each do |group|
           errors.merge!(
-            group.call(data, output).errors
+            group.call(input, output).errors
           )
         end
 
