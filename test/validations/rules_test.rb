@@ -47,13 +47,19 @@ describe Hanami::Validations::Rules do
     result = rules.call({ name: nil }, {})
     result.errors.must_equal [
       Hanami::Validations::Error.new(:name, :present?, nil, nil),
-      Hanami::Validations::Error.new(:name, :inclusion?, 1..3, nil),
+      Hanami::Validations::Error.new(:name, :inclusion?, 1..3, nil)
     ]
 
+    # Explanation: 4 isn't included in 1..3 range, but because the first
+    # validation passes, it returns true.
+    #
+    # This is the way Ruby works with `||` operator: once a condition is true,
+    # it stops to evaluate the other ones.
+    # For instance, this snippet will never raise an exception:
+    #
+    #   `true || raise("boom")`
     result = rules.call({ name: 4 }, {})
-    result.errors.must_equal [
-      Hanami::Validations::Error.new(:name, :inclusion?, 1..3, 4),
-    ]
+    result.errors.must_be_empty
 
     result = rules.call({ name: 1 }, {})
     result.errors.must_be_empty
