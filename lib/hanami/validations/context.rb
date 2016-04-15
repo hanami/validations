@@ -1,7 +1,6 @@
 require 'hanami/utils/basic_object'
 require 'hanami/validations/predicates'
-require 'hanami/validations/error'
-require 'set'
+require 'hanami/validations/errors'
 
 module Hanami
   module Validations
@@ -19,13 +18,15 @@ module Hanami
         @actual     = val(key)
         @rules      = rules
         @predicates = predicates
-        @errors     = ::Set.new
+        @errors     = ::Hanami::Validations::Errors.new(@key)
       end
 
       def call
-        result = instance_exec(&@rules)
+        @errors.check_result!(
+          instance_exec(&@rules)
+        )
+
         @output.update!(@key, @actual)
-        _add_generic_error!(result)
         self
       end
 
@@ -171,7 +172,7 @@ module Hanami
       end
 
       def _error(predicate, expected, actual)
-        @errors << ::Hanami::Validations::Error.new(@key, predicate, expected, actual)
+        @errors.add(predicate, expected, actual)
       end
 
       def _type?(expected)
@@ -183,12 +184,6 @@ module Hanami
         else
           _error(:type?, expected, @actual)
           false
-        end
-      end
-
-      def _add_generic_error!(result)
-        if @errors.empty? && (result == false || result.nil?)
-          _error(:base, nil, result)
         end
       end
 
