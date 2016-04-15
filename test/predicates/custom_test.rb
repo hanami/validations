@@ -57,8 +57,8 @@ describe 'Predicates: custom' do
     @native = Class.new do
       include Hanami::Validations
 
-      predicate(:positive?, &:positive?)
-      validates(:num) { int? && positive? }
+      predicate(:odd?, &:odd?)
+      validates(:num) { int? && odd? }
     end
   end
 
@@ -92,11 +92,11 @@ describe 'Predicates: custom' do
   end
 
   it 'allows to define custom predicates with native methods passed as symbols' do
-    result = @native.new(num: -11).validate
+    result = @native.new(num: 10).validate
 
     result.wont_be :success?
     result.errors.fetch(:num).must_equal [
-      Hanami::Validations::Error.new(:num, :positive?, nil, -11)
+      Hanami::Validations::Error.new(:num, :odd?, nil, 10)
     ]
   end
 end

@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'hanami/utils'
 
 describe 'Predicates: lteq?' do
   before do
@@ -39,14 +40,26 @@ describe 'Predicates: lteq?' do
     exception.message.must_match "undefined method `<=' for [23]:Array"
   end
 
-  it 'raises error for empty hash' do
-    exception = -> { @validator.new(name: {}).validate }.must_raise(TypeError)
-    exception.message.must_equal "no implicit conversion of Fixnum into Hash"
-  end
+  if RUBY_VERSION < '2.3' || Hanami::Utils.jruby?
+    it 'raises error for empty hash' do
+      exception = -> { @validator.new(name: {}).validate }.must_raise(NoMethodError)
+      exception.message.must_equal "undefined method `<=' for {}:Hash"
+    end
 
-  it 'raises error for filled hash' do
-    exception = -> { @validator.new(name: { a: 23 }).validate }.must_raise(TypeError)
-    exception.message.must_equal "no implicit conversion of Fixnum into Hash"
+    it 'raises error for filled hash' do
+      exception = -> { @validator.new(name: { a: 23 }).validate }.must_raise(NoMethodError)
+      exception.message.must_equal "undefined method `<=' for {:a=>23}:Hash"
+    end
+  else
+    it 'raises error for empty hash' do
+      exception = -> { @validator.new(name: {}).validate }.must_raise(TypeError)
+      exception.message.must_equal "no implicit conversion of Fixnum into Hash"
+    end
+
+    it 'raises error for filled hash' do
+      exception = -> { @validator.new(name: { a: 23 }).validate }.must_raise(TypeError)
+      exception.message.must_equal "no implicit conversion of Fixnum into Hash"
+    end
   end
 
   it 'returns failing result for greater than fixnum' do

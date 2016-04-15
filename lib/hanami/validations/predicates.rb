@@ -78,7 +78,7 @@ module Hanami
               result = false
               attr.each_char do |c|
                 result = blk.call(c)
-                return result if result
+                break if result
               end
 
               result
@@ -107,7 +107,7 @@ module Hanami
               result = false
               attr.each_char do |c|
                 result = blk.call(c)
-                return result unless result
+                break unless result
               end
 
               result

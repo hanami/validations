@@ -11,7 +11,8 @@ module Hanami
         h           = @output
         *keys, last = Prefix.split(key)
         keys.each do |k|
-          h = h[k]
+          # NOTE: this code `||= {}` is required by MRI 2.2 and JRuby.
+          h = h[k] ||= {}
         end
 
         h[last] = value

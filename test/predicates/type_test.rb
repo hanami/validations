@@ -5,7 +5,7 @@ describe 'Predicates: type?' do
     @validator = Class.new do
       include Hanami::Validations
 
-      validates(:name) { type?(Integer) && value.positive? }
+      validates(:name) { type?(Integer) && value.odd? }
     end
   end
 
