@@ -4,13 +4,7 @@ require 'hanami/validations/errors'
 
 module Hanami
   module Validations
-    class UnknownPredicateError < ::StandardError
-      def initialize(name)
-        super("Unknown predicate: `#{ name }'")
-      end
-    end
-
-    class Context #< Utils::BasicObject
+    class Context < Utils::BasicObject
       def initialize(key, input, output, rules, predicates)
         @key        = key
         @input      = input
@@ -35,7 +29,7 @@ module Hanami
       end
 
       def array?
-        _type?(Array)
+        _type?(::Array)
       end
 
       def accepted?
@@ -51,7 +45,7 @@ module Hanami
       end
 
       def bool?
-        _type?(Boolean)
+        _type?(::Boolean)
       end
 
       def confirmed?
@@ -60,15 +54,15 @@ module Hanami
       end
 
       def date?
-        _type?(Date)
+        _type?(::Date)
       end
 
       def datetime?
-        _type?(DateTime)
+        _type?(::DateTime)
       end
 
       def decimal?
-        _type?(BigDecimal)
+        _type?(::BigDecimal)
       end
 
       def empty?
@@ -88,7 +82,7 @@ module Hanami
       end
 
       def float?
-        _type?(Float)
+        _type?(::Float)
       end
 
       def format?(expected)
@@ -104,7 +98,7 @@ module Hanami
       end
 
       def hash?
-        _type?(Hash)
+        _type?(::Hash)
       end
 
       def inclusion?(expected)
@@ -112,7 +106,7 @@ module Hanami
       end
 
       def int?
-        _type?(Integer)
+        _type?(::Integer)
       end
 
       def lt?(expected)
@@ -136,11 +130,11 @@ module Hanami
       end
 
       def str?
-        _type?(String)
+        _type?(::String)
       end
 
       def time?
-        _type?(Time)
+        _type?(::Time)
       end
 
       def type?(expected)
@@ -188,10 +182,7 @@ module Hanami
       end
 
       def _predicate(name)
-        ::Hanami::Validations::Predicates.predicate(name) ||
-          @predicates.fetch(name) do
-            ::Kernel.raise ::Hanami::Validations::UnknownPredicateError.new(name)
-          end
+        ::Hanami::Validations::Predicates.predicate(name, @predicates)
       end
     end
   end

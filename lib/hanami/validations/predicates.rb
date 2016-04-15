@@ -4,6 +4,12 @@ require 'hanami/utils/blank'
 
 module Hanami
   module Validations
+    class UnknownPredicateError < ::StandardError
+      def initialize(name)
+        super("Unknown predicate: `#{ name }'")
+      end
+    end
+
     module Predicates
       def self.fabricate(name, predicate)
         case predicate
@@ -24,8 +30,12 @@ module Hanami
         @@registry ||= Hash[]
       end
 
-      def self.predicate(name)
-        registry.fetch(name, nil)
+      def self.predicate(name, predicates)
+        registry.fetch(name) do
+          predicates.fetch(name) do
+            raise UnknownPredicateError.new(name)
+          end
+        end
       end
 
       class Nil < Predicate
