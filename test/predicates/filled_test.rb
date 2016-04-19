@@ -23,7 +23,7 @@ describe 'Predicates: filled?' do
     result = @validator.new(name: '').validate
 
     result.wont_be :success?
-    result.errors.fetch(:name).must_equal [
+    result.errors.for(:name).must_equal [
       Hanami::Validations::Error.new(:name, :filled?, nil, '')
     ]
   end
@@ -32,7 +32,7 @@ describe 'Predicates: filled?' do
     result = @validator.new(name: []).validate
 
     result.wont_be :success?
-    result.errors.fetch(:name).must_equal [
+    result.errors.for(:name).must_equal [
       Hanami::Validations::Error.new(:name, :filled?, nil, [])
     ]
   end
@@ -41,7 +41,7 @@ describe 'Predicates: filled?' do
     result = @validator.new(name: {}).validate
 
     result.wont_be :success?
-    result.errors.fetch(:name).must_equal [
+    result.errors.for(:name).must_equal [
       Hanami::Validations::Error.new(:name, :filled?, nil, {})
     ]
   end

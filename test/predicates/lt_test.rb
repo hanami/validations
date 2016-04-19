@@ -66,7 +66,7 @@ describe 'Predicates: lt?' do
     result = @validator.new(name: 24).validate
 
     result.wont_be :success?
-    result.errors.fetch(:name).must_equal [
+    result.errors.for(:name).must_equal [
       Hanami::Validations::Error.new(:name, :lt?, 23, 24)
     ]
   end
@@ -75,7 +75,7 @@ describe 'Predicates: lt?' do
     result = @validator.new(name: 23).validate
 
     result.wont_be :success?
-    result.errors.fetch(:name).must_equal [
+    result.errors.for(:name).must_equal [
       Hanami::Validations::Error.new(:name, :lt?, 23, 23)
     ]
   end

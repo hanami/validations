@@ -24,7 +24,7 @@ describe 'Predicates: any?' do
       result = @validator.new(name: '').validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :any?, nil, '')
       ]
     end
@@ -33,7 +33,7 @@ describe 'Predicates: any?' do
       result = @validator.new(name: []).validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :any?, nil, [])
       ]
     end
@@ -42,7 +42,7 @@ describe 'Predicates: any?' do
       result = @validator.new(name: {}).validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :any?, nil, {})
       ]
     end
@@ -51,7 +51,7 @@ describe 'Predicates: any?' do
       result = @validator.new(name: 'xyz').validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :any?, nil, 'xyz')
       ]
     end
@@ -67,7 +67,7 @@ describe 'Predicates: any?' do
       result = @validator.new(name: ['abc']).validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :any?, nil, ['abc'])
       ]
     end
@@ -83,7 +83,7 @@ describe 'Predicates: any?' do
       result = @validator.new(name: { 'a' => 'abc' }).validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :any?, nil, { 'a' => 'abc' })
       ]
     end
@@ -112,7 +112,7 @@ describe 'Predicates: any?' do
       result = @validator.new(name: '').validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :any?, nil, '')
       ]
     end
@@ -121,7 +121,7 @@ describe 'Predicates: any?' do
       result = @validator.new(name: []).validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :any?, nil, [])
       ]
     end
@@ -130,7 +130,7 @@ describe 'Predicates: any?' do
       result = @validator.new(name: {}).validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :any?, nil, {})
       ]
     end
@@ -139,7 +139,7 @@ describe 'Predicates: any?' do
       result = @validator.new(name: 'xyz').validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :any?, nil, 'xyz')
       ]
     end
@@ -148,7 +148,7 @@ describe 'Predicates: any?' do
       result = @validator.new(name: 'abc').validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :any?, nil, 'abc')
       ]
     end
@@ -157,7 +157,7 @@ describe 'Predicates: any?' do
       result = @validator.new(name: ['abc']).validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :any?, nil, ['abc'])
       ]
     end
@@ -166,7 +166,7 @@ describe 'Predicates: any?' do
       result = @validator.new(name: ['a']).validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :any?, nil, ['a'])
       ]
     end
@@ -175,7 +175,7 @@ describe 'Predicates: any?' do
       result = @validator.new(name: { 'a' => 'abc' }).validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :any?, nil, { 'a' => 'abc' })
       ]
     end
@@ -211,7 +211,7 @@ describe 'Predicates: any?' do
       result = @validator.new(name: '').validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :any?, nil, '')
       ]
     end
@@ -220,7 +220,7 @@ describe 'Predicates: any?' do
       result = @validator.new(name: []).validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :any?, nil, [])
       ]
     end
@@ -229,7 +229,7 @@ describe 'Predicates: any?' do
       result = @validator.new(name: {}).validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :any?, nil, {})
       ]
     end
@@ -255,7 +255,7 @@ describe 'Predicates: any?' do
       result = @validator.new(name: [2]).validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :any?, nil, [2])
       ]
     end

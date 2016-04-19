@@ -1,11 +1,11 @@
 require 'test_helper'
 
-describe 'Predicates: exclusion?' do
+describe 'Predicates: exclude?' do
   before do
     @validator = Class.new do
       include Hanami::Validations
 
-      validates(:name) { exclusion?(1..3) }
+      validates(:name) { exclude?(1..3) }
     end
   end
 
@@ -41,8 +41,8 @@ describe 'Predicates: exclusion?' do
     result = @validator.new(name: 3).validate
 
     result.wont_be :success?
-    result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Error.new(:name, :exclusion?, 1..3, 3)
+    result.errors.for(:name).must_equal [
+      Hanami::Validations::Error.new(:name, :exclude?, 1..3, 3)
     ]
   end
 end

@@ -66,7 +66,7 @@ describe 'Predicates: lteq?' do
     resulteq = @validator.new(name: 24).validate
 
     resulteq.wont_be :success?
-    resulteq.errors.fetch(:name).must_equal [
+    resulteq.errors.for(:name).must_equal [
       Hanami::Validations::Error.new(:name, :lteq?, 23, 24)
     ]
   end

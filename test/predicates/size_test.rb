@@ -29,7 +29,7 @@ describe 'Predicates: size?' do
       result = @validator.new(name: '').validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :size?, 4, 0)
       ]
     end
@@ -38,7 +38,7 @@ describe 'Predicates: size?' do
       result = @validator.new(name: []).validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :size?, 4, 0)
       ]
     end
@@ -47,7 +47,7 @@ describe 'Predicates: size?' do
       result = @validator.new(name: {}).validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :size?, 4, 0)
       ]
     end
@@ -56,7 +56,7 @@ describe 'Predicates: size?' do
       result = @validator.new(name: 'abcde').validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :size?, 4, 5)
       ]
     end
@@ -65,7 +65,7 @@ describe 'Predicates: size?' do
       result = @validator.new(name: [1, 2, 3, 4, 5, 6]).validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :size?, 4, 6)
       ]
     end
@@ -74,7 +74,7 @@ describe 'Predicates: size?' do
       result = @validator.new(name: { a: 1, b: 2, c: 3, d: 4, e: 5 }).validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :size?, 4, 5)
       ]
     end
@@ -129,7 +129,7 @@ describe 'Predicates: size?' do
       result = @validator.new(name: '').validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :size?, 4..5, 0)
       ]
     end
@@ -138,7 +138,7 @@ describe 'Predicates: size?' do
       result = @validator.new(name: []).validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :size?, 4..5, 0)
       ]
     end
@@ -147,7 +147,7 @@ describe 'Predicates: size?' do
       result = @validator.new(name: {}).validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :size?, 4..5, 0)
       ]
     end
@@ -156,7 +156,7 @@ describe 'Predicates: size?' do
       result = @validator.new(name: 'abcdefgh').validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :size?, 4..5, 8)
       ]
     end
@@ -165,7 +165,7 @@ describe 'Predicates: size?' do
       result = @validator.new(name: [1, 2, 3, 4, 5, 6]).validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :size?, 4..5, 6)
       ]
     end
@@ -174,7 +174,7 @@ describe 'Predicates: size?' do
       result = @validator.new(name: { a: 1, b: 2, c: 3, d: 4, e: 5, f: 6 }).validate
 
       result.wont_be :success?
-      result.errors.fetch(:name).must_equal [
+      result.errors.for(:name).must_equal [
         Hanami::Validations::Error.new(:name, :size?, 4..5, 6)
       ]
     end

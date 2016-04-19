@@ -1,11 +1,11 @@
 require 'test_helper'
 
-describe 'Predicates: inclusion?' do
+describe 'Predicates: include?' do
   before do
     @validator = Class.new do
       include Hanami::Validations
 
-      validates(:name) { inclusion?(1..3) }
+      validates(:name) { include?(1..3) }
     end
   end
 
@@ -13,8 +13,8 @@ describe 'Predicates: inclusion?' do
     result = @validator.new({}).validate
 
     result.wont_be :success?
-    result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Error.new(:name, :inclusion?, 1..3, nil)
+    result.errors.for(:name).must_equal [
+      Hanami::Validations::Error.new(:name, :include?, 1..3, nil)
     ]
   end
 
@@ -22,8 +22,8 @@ describe 'Predicates: inclusion?' do
     result = @validator.new(name: nil).validate
 
     result.wont_be :success?
-    result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Error.new(:name, :inclusion?, 1..3, nil)
+    result.errors.for(:name).must_equal [
+      Hanami::Validations::Error.new(:name, :include?, 1..3, nil)
     ]
   end
 
@@ -31,8 +31,8 @@ describe 'Predicates: inclusion?' do
     result = @validator.new(name: '').validate
 
     result.wont_be :success?
-    result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Error.new(:name, :inclusion?, 1..3, '')
+    result.errors.for(:name).must_equal [
+      Hanami::Validations::Error.new(:name, :include?, 1..3, '')
     ]
   end
 
@@ -40,8 +40,8 @@ describe 'Predicates: inclusion?' do
     result = @validator.new(name: -1).validate
 
     result.wont_be :success?
-    result.errors.fetch(:name).must_equal [
-      Hanami::Validations::Error.new(:name, :inclusion?, 1..3, -1)
+    result.errors.for(:name).must_equal [
+      Hanami::Validations::Error.new(:name, :include?, 1..3, -1)
     ]
   end
 

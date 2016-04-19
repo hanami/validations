@@ -3,6 +3,7 @@ require 'hanami/validations/predicates'
 require 'hanami/validations/prefix'
 require 'hanami/validations/input'
 require 'hanami/validations/output'
+require 'hanami/validations/errors'
 
 module Hanami
   module Validations
@@ -102,9 +103,9 @@ module Hanami
       end
 
       def _run_rules(input, output)
-        @rules.each_with_object({}) do |rules, result|
+        @rules.each_with_object(Errors.new) do |rules, result|
           errors = rules.call(input, output, @name, @predicates).errors
-          result[_prefixed(rules.key)] = errors unless errors.empty?
+          result.set(_prefixed(rules.key), errors)
         end
       end
 

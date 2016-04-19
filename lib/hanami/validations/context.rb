@@ -1,6 +1,6 @@
 require 'hanami/utils/basic_object'
 require 'hanami/validations/predicates'
-require 'hanami/validations/errors'
+require 'hanami/validations/key_errors'
 
 module Hanami
   module Validations
@@ -12,7 +12,7 @@ module Hanami
         @actual     = val(key)
         @rules      = rules
         @predicates = predicates
-        @errors     = ::Hanami::Validations::Errors.new(@key)
+        @errors     = ::Hanami::Validations::KeyErrors.new(@key)
       end
 
       def call

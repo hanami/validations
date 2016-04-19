@@ -95,7 +95,7 @@ describe 'Predicates: custom' do
     result = @native.new(num: 10).validate
 
     result.wont_be :success?
-    result.errors.fetch(:num).must_equal [
+    result.errors.for(:num).must_equal [
       Hanami::Validations::Error.new(:num, :odd?, nil, 10)
     ]
   end

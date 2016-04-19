@@ -50,15 +50,15 @@ module Hanami
         end
       end
 
-      class Inclusion < Predicate
+      class Include < Predicate
         def initialize
-          super(:inclusion, ->(attr, expected) { expected.include?(attr) })
+          super(:include, ->(attr, expected) { expected.include?(attr) })
         end
       end
 
-      class Exclusion < Predicate
+      class Exclude < Predicate
         def initialize
-          super(:exclusion, ->(attr, expected) { !expected.include?(attr) })
+          super(:exclude, ->(attr, expected) { !expected.include?(attr) })
         end
       end
 
@@ -217,12 +217,12 @@ module Hanami
       register(:confirmed?, Confirmed.new)
       register(:empty?,     Empty.new)
       register(:eql?,       Eql.new)
-      register(:exclusion?, Exclusion.new)
+      register(:exclude?,   Exclude.new)
       register(:filled?,    Filled.new)
       register(:format?,    Format.new)
       register(:gt?,        Gt.new)
       register(:gteq?,      Gteq.new)
-      register(:inclusion?, Inclusion.new)
+      register(:include?,   Include.new)
       register(:lt?,        Lt.new)
       register(:lteq?,      Lteq.new)
       register(:nil?,       Nil.new)

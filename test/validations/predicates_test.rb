@@ -16,15 +16,15 @@ describe Hanami::Validations::Predicates::Present do
   end
 end
 
-describe Hanami::Validations::Predicates::Inclusion do
+describe Hanami::Validations::Predicates::Include do
   describe '#call' do
     it 'returns true if the given value is included in the collection' do
-      predicate = Hanami::Validations::Predicates::Inclusion.new
+      predicate = Hanami::Validations::Predicates::Include.new
       predicate.call('a', %w(a b c)).must_equal true
     end
 
     it 'returns false if the given value is not included in the collection' do
-      predicate = Hanami::Validations::Predicates::Inclusion.new
+      predicate = Hanami::Validations::Predicates::Include.new
       predicate.call(:a, %w(a b c)).must_equal false
     end
   end

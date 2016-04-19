@@ -13,7 +13,7 @@ describe 'Predicates: decimal?' do
     result = @validator.new({}).validate
 
     result.wont_be :success?
-    result.errors.fetch(:name).must_equal [
+    result.errors.for(:name).must_equal [
       Hanami::Validations::Error.new(:name, :type?, BigDecimal, nil)
     ]
   end
@@ -22,7 +22,7 @@ describe 'Predicates: decimal?' do
     result = @validator.new(name: nil).validate
 
     result.wont_be :success?
-    result.errors.fetch(:name).must_equal [
+    result.errors.for(:name).must_equal [
       Hanami::Validations::Error.new(:name, :type?, BigDecimal, nil)
     ]
   end
@@ -31,7 +31,7 @@ describe 'Predicates: decimal?' do
     result = @validator.new(name: '').validate
 
     result.wont_be :success?
-    result.errors.fetch(:name).must_equal [
+    result.errors.for(:name).must_equal [
       Hanami::Validations::Error.new(:name, :type?, BigDecimal, '')
     ]
   end
@@ -40,7 +40,7 @@ describe 'Predicates: decimal?' do
     result = @validator.new(name: []).validate
 
     result.wont_be :success?
-    result.errors.fetch(:name).must_equal [
+    result.errors.for(:name).must_equal [
       Hanami::Validations::Error.new(:name, :type?, BigDecimal, [])
     ]
   end
@@ -49,7 +49,7 @@ describe 'Predicates: decimal?' do
     result = @validator.new(name: {}).validate
 
     result.wont_be :success?
-    result.errors.fetch(:name).must_equal [
+    result.errors.for(:name).must_equal [
       Hanami::Validations::Error.new(:name, :type?, BigDecimal, {})
     ]
   end
@@ -86,7 +86,7 @@ describe 'Predicates: decimal?' do
     result = @validator.new(name: Time.at(0)).validate
 
     result.wont_be :success?
-    result.errors.fetch(:name).must_equal [
+    result.errors.for(:name).must_equal [
       Hanami::Validations::Error.new(:name, :type?, BigDecimal, Time.at(0))
     ]
   end

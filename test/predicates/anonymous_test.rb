@@ -44,7 +44,7 @@ describe 'Anonymous predicate' do
     result = @empty.new(name: 'foo').validate
 
     result.wont_be :success?
-    result.errors.fetch(:name).must_equal [
+    result.errors.for(:name).must_equal [
       Hanami::Validations::Error.new(:name, :base, nil, nil)
     ]
   end
@@ -53,7 +53,7 @@ describe 'Anonymous predicate' do
     result = @false.new(name: 'foo').validate
 
     result.wont_be :success?
-    result.errors.fetch(:name).must_equal [
+    result.errors.for(:name).must_equal [
       Hanami::Validations::Error.new(:name, :base, nil, false)
     ]
   end

@@ -20,7 +20,7 @@ describe 'Predicates: confirmed?' do
     result = @validator.new(password: 'secret').validate
 
     result.wont_be :success?
-    result.errors.fetch(:password).must_equal [
+    result.errors.for(:password).must_equal [
       Hanami::Validations::Error.new(:password, :confirmed?, 'secret', nil)
     ]
   end
@@ -29,7 +29,7 @@ describe 'Predicates: confirmed?' do
     result = @validator.new(password_confirmation: 'secret').validate
 
     result.wont_be :success?
-    result.errors.fetch(:password).must_equal [
+    result.errors.for(:password).must_equal [
       Hanami::Validations::Error.new(:password, :confirmed?, nil, 'secret')
     ]
   end
@@ -45,7 +45,7 @@ describe 'Predicates: confirmed?' do
     result = @validator.new(password: 'secret', password_confirmation: nil).validate
 
     result.wont_be :success?
-    result.errors.fetch(:password).must_equal [
+    result.errors.for(:password).must_equal [
       Hanami::Validations::Error.new(:password, :confirmed?, 'secret', nil)
     ]
   end
@@ -54,7 +54,7 @@ describe 'Predicates: confirmed?' do
     result = @validator.new(password: nil, password_confirmation: 'secret').validate
 
     result.wont_be :success?
-    result.errors.fetch(:password).must_equal [
+    result.errors.for(:password).must_equal [
       Hanami::Validations::Error.new(:password, :confirmed?, nil, 'secret')
     ]
   end
@@ -70,7 +70,7 @@ describe 'Predicates: confirmed?' do
     result = @validator.new(password: 'secret', password_confirmation: '').validate
 
     result.wont_be :success?
-    result.errors.fetch(:password).must_equal [
+    result.errors.for(:password).must_equal [
       Hanami::Validations::Error.new(:password, :confirmed?, 'secret', '')
     ]
   end
@@ -79,7 +79,7 @@ describe 'Predicates: confirmed?' do
     result = @validator.new(password: '', password_confirmation: 'secret').validate
 
     result.wont_be :success?
-    result.errors.fetch(:password).must_equal [
+    result.errors.for(:password).must_equal [
       Hanami::Validations::Error.new(:password, :confirmed?, '', 'secret')
     ]
   end

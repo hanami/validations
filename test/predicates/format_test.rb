@@ -23,7 +23,7 @@ describe 'Predicates: format?' do
     result = @validator.new(name: '').validate
 
     result.wont_be :success?
-    result.errors.fetch(:name).must_equal [
+    result.errors.for(:name).must_equal [
       Hanami::Validations::Error.new(:name, :format?, /\Afoo\z/, '')
     ]
   end

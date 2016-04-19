@@ -19,6 +19,6 @@ describe Hanami::Validations do
     result = @validator.new({}).validate
     result.wont_be :success?
     result.errors.keys.must_equal [:name]
-    result.errors.fetch(:name).must_equal [Hanami::Validations::Error.new(:name, :present?, nil, nil)]
+    result.errors.for(:name).must_equal [Hanami::Validations::Error.new(:name, :present?, nil, nil)]
   end
 end

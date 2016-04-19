@@ -13,7 +13,7 @@ describe 'Predicates: type?' do
     result = @validator.new({}).validate
 
     result.wont_be :success?
-    result.errors.fetch(:name).must_equal [
+    result.errors.for(:name).must_equal [
       Hanami::Validations::Error.new(:name, :type?, Integer, nil)
     ]
   end
@@ -22,7 +22,7 @@ describe 'Predicates: type?' do
     result = @validator.new(name: nil).validate
 
     result.wont_be :success?
-    result.errors.fetch(:name).must_equal [
+    result.errors.for(:name).must_equal [
       Hanami::Validations::Error.new(:name, :type?, Integer, nil)
     ]
   end
@@ -31,7 +31,7 @@ describe 'Predicates: type?' do
     result = @validator.new(name: '').validate
 
     result.wont_be :success?
-    result.errors.fetch(:name).must_equal [
+    result.errors.for(:name).must_equal [
       Hanami::Validations::Error.new(:name, :type?, Integer, '')
     ]
   end

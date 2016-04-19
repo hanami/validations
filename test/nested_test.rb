@@ -28,9 +28,9 @@ describe Hanami::Validations do
       result = @validator.new({}).validate
       result.wont_be :success?
       result.errors.keys.must_equal [:number, :'customer.name', :'customer.address.city']
-      result.errors.fetch(:number).must_equal [Hanami::Validations::Error.new(:number, :present?, nil, nil)]
-      result.errors.fetch(:'customer.name').must_equal [Hanami::Validations::Error.new(:'customer.name', :present?, nil, nil)]
-      result.errors.fetch(:'customer.address.city').must_equal [Hanami::Validations::Error.new(:'customer.address.city', :present?, nil, nil)]
+      result.errors.for(:number).must_equal [Hanami::Validations::Error.new(:number, :present?, nil, nil)]
+      result.errors.for(:'customer.name').must_equal [Hanami::Validations::Error.new(:'customer.name', :present?, nil, nil)]
+      result.errors.for(:'customer.address.city').must_equal [Hanami::Validations::Error.new(:'customer.address.city', :present?, nil, nil)]
     end
 
     # Bug

@@ -35,3 +35,11 @@ class FullName
     @tokens.join ' '
   end
 end
+
+module Hanami::Validations
+  class Errors
+    def keys
+      @errors.keys
+    end
+  end
+end

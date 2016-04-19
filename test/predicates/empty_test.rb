@@ -44,7 +44,7 @@ describe 'Predicates: empty?' do
     result = @validator.new(name: 'foo').validate
 
     result.wont_be :success?
-    result.errors.fetch(:name).must_equal [
+    result.errors.for(:name).must_equal [
       Hanami::Validations::Error.new(:name, :empty?, nil, 'foo')
     ]
   end
@@ -53,7 +53,7 @@ describe 'Predicates: empty?' do
     result = @validator.new(name: ['bar']).validate
 
     result.wont_be :success?
-    result.errors.fetch(:name).must_equal [
+    result.errors.for(:name).must_equal [
       Hanami::Validations::Error.new(:name, :empty?, nil, ['bar'])
     ]
   end
@@ -62,7 +62,7 @@ describe 'Predicates: empty?' do
     result = @validator.new(name: { 'bar' => 3 }).validate
 
     result.wont_be :success?
-    result.errors.fetch(:name).must_equal [
+    result.errors.for(:name).must_equal [
       Hanami::Validations::Error.new(:name, :empty?, nil, { 'bar' => 3 })
     ]
   end
