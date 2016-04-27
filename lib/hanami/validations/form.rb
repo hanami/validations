@@ -11,9 +11,21 @@ module Hanami
       # @see http://www.ruby-doc.org/core/Module.html#method-i-included
       def self.included(base)
         base.class_eval do
-          @schema = Class.new(Dry::Validation::Schema::Form)
+          include Validations
+          extend  ClassMethods
+        end
+      end
 
-          schema.configure { |c| c.rules = rules.rules }
+      module ClassMethods
+        private
+
+        def _schema_type
+          :Form
+        end
+
+        def _schema_config
+          lambda do |config|
+          end
         end
       end
     end

@@ -6,7 +6,9 @@ describe 'Predicates: Key' do
       @validator = Class.new do
         include Hanami::Validations
 
-        key(:foo) { key? }
+        validations do
+          key(:foo) { key? }
+        end
       end
     end
 
@@ -72,7 +74,9 @@ describe 'Predicates: Key' do
       @validator = Class.new do
         include Hanami::Validations
 
-        optional(:foo) { key? }
+        validations do
+          optional(:foo) { key? }
+        end
       end
     end
 
@@ -133,72 +137,6 @@ describe 'Predicates: Key' do
     end
   end
 
-  describe 'with attr' do
-    before do
-      @validator = Class.new do
-        include Hanami::Validations
-
-        attr(:foo) { key? }
-      end
-    end
-
-    describe 'with valid input' do
-      let(:input) { Input.new('bar') }
-
-      it 'is successful' do
-        result = @validator.new(input).validate
-        result.must_be :success?
-      end
-
-      it 'has not error messages' do
-        result = @validator.new(input).validate
-        result.messages[:foo].must_be_nil
-      end
-    end
-
-    describe 'with unknown method' do
-      let(:input) { Object.new }
-
-      it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['is missing']
-      end
-    end
-
-    describe 'with nil input' do
-      let(:input) { Input.new(nil) }
-
-      it 'is successful' do
-        result = @validator.new(input).validate
-        result.must_be :success?
-      end
-
-      it 'has not error messages' do
-        result = @validator.new(input).validate
-        result.messages[:foo].must_be_nil
-      end
-    end
-
-    describe 'with blank input' do
-      let(:input) { Input.new('') }
-
-      it 'is successful' do
-        result = @validator.new(input).validate
-        result.must_be :success?
-      end
-
-      it 'has not error messages' do
-        result = @validator.new(input).validate
-        result.messages[:foo].must_be_nil
-      end
-    end
-  end
-
   describe 'as macro' do
     describe 'with key' do
       describe 'with required' do
@@ -206,7 +144,9 @@ describe 'Predicates: Key' do
           @validator = Class.new do
             include Hanami::Validations
 
-            key(:foo).required(:key?)
+            validations do
+              key(:foo).required(:key?)
+            end
           end
         end
 
@@ -272,7 +212,9 @@ describe 'Predicates: Key' do
           @validator = Class.new do
             include Hanami::Validations
 
-            key(:foo).maybe(:key?)
+            validations do
+              key(:foo).maybe(:key?)
+            end
           end
         end
 
@@ -340,7 +282,9 @@ describe 'Predicates: Key' do
           @validator = Class.new do
             include Hanami::Validations
 
-            optional(:foo).required(:key?)
+            validations do
+              optional(:foo).required(:key?)
+            end
           end
         end
 
@@ -406,7 +350,9 @@ describe 'Predicates: Key' do
           @validator = Class.new do
             include Hanami::Validations
 
-            optional(:foo).maybe(:key?)
+            validations do
+              optional(:foo).maybe(:key?)
+            end
           end
         end
 

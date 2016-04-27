@@ -6,7 +6,9 @@ describe 'Predicates: Max Size' do
       @validator = Class.new do
         include Hanami::Validations
 
-        key(:foo) { max_size?(3) }
+        validations do
+          key(:foo) { max_size?(3) }
+        end
       end
     end
 
@@ -62,7 +64,7 @@ describe 'Predicates: Max Size' do
     end
 
     describe 'with invalid input' do
-      let(:input) { { foo: {a: 1, b: 2, c: 3, d: 4 } } }
+      let(:input) { { foo: { a: 1, b: 2, c: 3, d: 4 } } }
 
       it 'is not successful' do
         result = @validator.new(input).validate
@@ -81,7 +83,9 @@ describe 'Predicates: Max Size' do
       @validator = Class.new do
         include Hanami::Validations
 
-        optional(:foo) { max_size?(3) }
+        validations do
+          optional(:foo) { max_size?(3) }
+        end
       end
     end
 
@@ -136,82 +140,7 @@ describe 'Predicates: Max Size' do
     end
 
     describe 'with invalid input' do
-      let(:input) { { foo: {a: 1, b: 2, c: 3, d: 4 } } }
-
-      it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['size cannot be greater than 3']
-      end
-    end
-  end
-
-  describe 'with attr' do
-    before do
-      @validator = Class.new do
-        include Hanami::Validations
-
-        attr(:foo) { max_size?(3) }
-      end
-    end
-
-    describe 'with valid input' do
-      let(:input) { Input.new([1, 2, 3]) }
-
-      it 'is successful' do
-        result = @validator.new(input).validate
-        result.must_be :success?
-      end
-
-      it 'has not error messages' do
-        result = @validator.new(input).validate
-        result.messages[:foo].must_be_nil
-      end
-    end
-
-    describe 'with unknown method' do
-      let(:input) { Object.new }
-
-      it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      # FIXME: open dry-v ticket - misleading error message
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['is missing', 'size cannot be greater than 3']
-      end
-    end
-
-    describe 'with nil input' do
-      let(:input) { Input.new(nil) }
-
-      it 'is raises error' do
-        -> { @validator.new(input).validate }.must_raise(NoMethodError)
-      end
-    end
-
-    describe 'with blank input' do
-      let(:input) { Input.new('') }
-
-      it 'is successful' do
-        result = @validator.new(input).validate
-        result.must_be :success?
-      end
-
-      it 'has not error messages' do
-        result = @validator.new(input).validate
-        result.messages[:foo].must_be_nil
-      end
-    end
-
-    describe 'with invalid input' do
-      let(:input) { Input.new(a: 1, b: 2, c: 3, d: 4) }
+      let(:input) { { foo: { a: 1, b: 2, c: 3, d: 4 } } }
 
       it 'is not successful' do
         result = @validator.new(input).validate
@@ -232,7 +161,9 @@ describe 'Predicates: Max Size' do
           @validator = Class.new do
             include Hanami::Validations
 
-            key(:foo).required(max_size?: 3)
+            validations do
+              key(:foo).required(max_size?: 3)
+            end
           end
         end
 
@@ -294,7 +225,7 @@ describe 'Predicates: Max Size' do
         end
 
         describe 'with invalid input' do
-          let(:input) { { foo: {a: 1, b: 2, c: 3, d: 4 } } }
+          let(:input) { { foo: { a: 1, b: 2, c: 3, d: 4 } } }
 
           it 'is not successful' do
             result = @validator.new(input).validate
@@ -313,7 +244,9 @@ describe 'Predicates: Max Size' do
           @validator = Class.new do
             include Hanami::Validations
 
-            key(:foo).maybe(max_size?: 3)
+            validations do
+              key(:foo).maybe(max_size?: 3)
+            end
           end
         end
 
@@ -375,7 +308,7 @@ describe 'Predicates: Max Size' do
         end
 
         describe 'with invalid input' do
-          let(:input) { { foo: {a: 1, b: 2, c: 3, d: 4 } } }
+          let(:input) { { foo: { a: 1, b: 2, c: 3, d: 4 } } }
 
           it 'is not successful' do
             result = @validator.new(input).validate
@@ -396,7 +329,9 @@ describe 'Predicates: Max Size' do
           @validator = Class.new do
             include Hanami::Validations
 
-            optional(:foo).required(max_size?: 3)
+            validations do
+              optional(:foo).required(max_size?: 3)
+            end
           end
         end
 
@@ -457,7 +392,7 @@ describe 'Predicates: Max Size' do
         end
 
         describe 'with invalid input' do
-          let(:input) { { foo: {a: 1, b: 2, c: 3, d: 4 } } }
+          let(:input) { { foo: { a: 1, b: 2, c: 3, d: 4 } } }
 
           it 'is not successful' do
             result = @validator.new(input).validate
@@ -476,7 +411,9 @@ describe 'Predicates: Max Size' do
           @validator = Class.new do
             include Hanami::Validations
 
-            optional(:foo).maybe(max_size?: 3)
+            validations do
+              optional(:foo).maybe(max_size?: 3)
+            end
           end
         end
 

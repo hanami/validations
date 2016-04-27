@@ -6,7 +6,9 @@ describe 'Predicates: Eql' do
       @validator = Class.new do
         include Hanami::Validations
 
-        key(:foo) { eql?(23) }
+        validations do
+          key(:foo) { eql?(23) }
+        end
       end
     end
 
@@ -72,7 +74,9 @@ describe 'Predicates: Eql' do
       @validator = Class.new do
         include Hanami::Validations
 
-        optional(:foo) { eql?(23) }
+        validations do
+          optional(:foo) { eql?(23) }
+        end
       end
     end
 
@@ -133,72 +137,6 @@ describe 'Predicates: Eql' do
     end
   end
 
-  describe 'with attr' do
-    before do
-      @validator = Class.new do
-        include Hanami::Validations
-
-        attr(:foo) { eql?(23) }
-      end
-    end
-
-    describe 'with valid input' do
-      let(:input) { Input.new(23) }
-
-      it 'is successful' do
-        result = @validator.new(input).validate
-        result.must_be :success?
-      end
-
-      it 'has not error messages' do
-        result = @validator.new(input).validate
-        result.messages[:foo].must_be_nil
-      end
-    end
-
-    describe 'with unknown method' do
-      let(:input) { Object.new }
-
-      it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['is missing', 'must be equal to 23']
-      end
-    end
-
-    describe 'with nil input' do
-      let(:input) { Input.new(nil) }
-
-      it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['must be equal to 23']
-      end
-    end
-
-    describe 'with blank input' do
-      let(:input) { Input.new('') }
-
-      it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['must be equal to 23']
-      end
-    end
-  end
-
   describe 'as macro' do
     describe 'with key' do
       describe 'with required' do
@@ -206,7 +144,9 @@ describe 'Predicates: Eql' do
           @validator = Class.new do
             include Hanami::Validations
 
-            key(:foo).required(eql?: 23)
+            validations do
+              key(:foo).required(eql?: 23)
+            end
           end
         end
 
@@ -272,7 +212,9 @@ describe 'Predicates: Eql' do
           @validator = Class.new do
             include Hanami::Validations
 
-            key(:foo).maybe(eql?: 23)
+            validations do
+              key(:foo).maybe(eql?: 23)
+            end
           end
         end
 
@@ -340,7 +282,9 @@ describe 'Predicates: Eql' do
           @validator = Class.new do
             include Hanami::Validations
 
-            optional(:foo).required(eql?: 23)
+            validations do
+              optional(:foo).required(eql?: 23)
+            end
           end
         end
 
@@ -406,7 +350,9 @@ describe 'Predicates: Eql' do
           @validator = Class.new do
             include Hanami::Validations
 
-            optional(:foo).maybe(eql?: 23)
+            validations do
+              optional(:foo).maybe(eql?: 23)
+            end
           end
         end
 
