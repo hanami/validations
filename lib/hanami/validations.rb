@@ -2,16 +2,25 @@ require 'hanami/utils/hash'
 require 'hanami/validations/version'
 require 'hanami/validations/blank_value_checker'
 require 'hanami/validations/attribute_definer'
+require 'hanami/validations/validation_definitions'
 require 'hanami/validations/validation_set'
-require 'hanami/validations/validator'
-require 'hanami/validations/attribute'
+require 'hanami/validations/coercions'
 require 'hanami/validations/errors'
+require 'hanami/validations/validation_context'
+require 'hanami/validations/validation'
+require 'hanami/validations/built_in_validations'
 
 module Hanami
   # Hanami::Validations is a set of lightweight validations for Ruby objects.
   #
   # @since 0.1.0
   module Validations
+    # An singleton object to flag parameters as undefined
+    #
+    # @since 0.x.0
+    # @api private
+    UNDEFINED_VALUE = Object.new.freeze
+
     # Override Ruby's hook for modules.
     #
     # @param base [Class] the target action
@@ -116,6 +125,16 @@ module Hanami
         validations.add(name, options)
       end
 
+      # Adds all the validations in the validations_set to self
+      #
+      # @since 0.x.0
+      # @api private
+      def add_validation_set(validations_set)
+        validations_set.each do |attribute_validation|
+          validations.add_attribute_validation(attribute_validation)
+        end
+      end
+
       # Set of user defined validations
       #
       # @return [Hash]
@@ -145,9 +164,7 @@ module Hanami
       # @since 0.2.2
       # @api private
       def transfer_validations_to_base(base)
-        validations.each do |attribute, options|
-          base.validates attribute, options
-        end
+        base.add_validation_set(validations)
       end
     end
 
@@ -244,15 +261,16 @@ module Hanami
 
     # Validates the object.
     #
+    # @param namespace  [String] Optional - the namespace to use in the validation errors
+    #
     # @return [Errors]
     #
     # @since 0.2.4
     # @api private
     #
     # @see Hanami::Attribute#nested
-    def validate
-      validator = Validator.new(defined_validations, read_attributes, errors)
-      validator.validate
+    def validate(namespace: nil)
+      defined_validations.validate(self, errors, namespace)
     end
 
     # Iterates thru the defined attributes and their values
@@ -296,8 +314,8 @@ module Hanami
     # @api private
     def read_attributes
       {}.tap do |attributes|
-        defined_validations.each_key do |attribute|
-          attributes[attribute] = public_send(attribute)
+        defined_validations.names.each do |attribute|
+          attributes[attribute] = public_send(attribute) 
         end
       end
     end

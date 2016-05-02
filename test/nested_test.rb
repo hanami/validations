@@ -34,7 +34,7 @@ describe Hanami::Validations do
       line_one_errors = validator.errors.for('address.line_one')
       line_one_errors.must_include(expected_error)
       validator.errors.to_h.must_equal({
-        'address.line_one' => [Hanami::Validations::Error.new('address.line_one', :presence, true, nil)]
+        :'address.line_one' => [Hanami::Validations::Error.new('address.line_one', :presence, true, nil)]
       })
     end
 

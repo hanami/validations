@@ -267,3 +267,305 @@ class PureValidator
 
   validates :name, presence: true
 end
+
+# Custom validator class
+class CustomValidator
+  include Hanami::Validations::Validation
+
+  def validate()
+    if value == 'duplicates the validation instance'
+      add_error actual_value: object_id
+    end
+
+    if value == 'is valid'
+    end
+
+    if value =='adds a default error'
+      add_error
+    end
+
+    if value == 'adds an error overriding its values'
+      add_error(attribute_name: 'name',
+        validation_name: :expected_name,
+        expected_value: 'expected name',
+        actual_value: 'actual name',
+        namespace: 'name_namespace'
+      )
+    end
+
+    if value == 'adds an error for another attribute'
+      add_error_for 'age',
+        validation_name: :age_validation,
+        expected_value: 'expected age',
+        actual_value: 'actual age',
+        namespace: 'age_namespace'
+    end
+
+    if value == 'raises an error when adding an error for another attribute with missing parameters'
+      add_error_for 'age'
+    end
+
+    if value == 'overrides the validation name'
+      validation_name :other_validation
+      add_error
+    end
+
+    if value == 'asks for the value of another attribute'
+      if value_of('age') == 4
+        add_error actual_value: 'asks for the value of another attribute'
+      end
+    end
+
+    if value == 'asks for the value of a nested attribute'
+      if value_of('address.street') == 'evergreen'
+        add_error actual_value: 'asks for the value of a nested attribute'
+      end
+    end
+
+    if value == 'asks if a previous validation failed for the default attribute'
+      if validation_failed_for? :format
+        raise RuntimeError.new('should not get here')
+      end
+
+      validate_attribute 'name', on: :format, with: /abc/
+
+      if validation_failed_for? :format
+        add_error actual_value: 'asks if a previous validation failed for the default attribute'
+      end
+    end
+
+    if value == 'asks if a previous validation failed for another attribute'
+      if validation_failed_for? :inclusion, on: 'age'
+        raise RuntimeError.new('should not get here')
+      end
+
+      validate_attribute 'age', on: :inclusion, with: 0..1
+
+      if validation_failed_for? :inclusion, on: 'age'
+        add_error actual_value: 'asks if a previous validation failed for another attribute'
+      end
+    end
+
+    if value == 'invokes another validation'
+      if (validate_on :format, with: /abc/) != false
+        raise RuntimeError.new('should not get here')
+      end
+    end
+
+    if value == 'invokes another validation on an attribute'
+      if (validate_attribute 'name', on: :format, with: /abc/) != false
+        raise RuntimeError.new('should not get here')
+      end
+    end
+
+    if value == 'invokes a validation on a nested attribute'
+      if (validate_attribute 'address.street', on: :format, with: /abc/) != false
+        raise RuntimeError.new('should not get here')
+      end
+    end
+
+    if value == 'asks if any previous validation failed for the default attribute'
+      if any_validation_failed?
+        raise RuntimeError.new('should not get here')
+      end
+
+      validate_attribute 'name', on: :format, with: /abc/
+
+      if any_validation_failed?
+        add_error actual_value: 'asks if any previous validation failed for the default attribute'
+      end
+    end
+
+    if value == 'asks if any previous validation failed for another attribute'
+      if any_validation_failed?
+        raise RuntimeError.new('should not get here')
+      end
+
+      validate_attribute 'age', on: :inclusion, with: 0..1
+
+      if any_validation_failed? on: 'age'
+        add_error actual_value: 'asks if any previous validation failed for another attribute'
+      end
+    end
+  end
+end
+
+class ValidateWithClassBehaviourTest
+  include Hanami::Validations
+
+  attribute :name,  presence: true, validate_custom_with: CustomValidator
+  attribute :age,   type: Integer, presence: true
+  attribute :address do
+    attribute :street, presence: true
+    attribute :number, presence: true
+  end
+end
+
+class ValidateWithInstanceBehaviourTest
+  include Hanami::Validations
+
+  attribute :name,  presence: true, validate_custom_with: CustomValidator
+  attribute :age,   type: Integer, presence: true
+  attribute :address do
+    attribute :street, presence: true
+    attribute :number, presence: true
+  end
+end
+
+# Custom validator block
+class ValidateWithBlockBehaviourTest
+  include Hanami::Validations
+
+  attribute :name,  presence: true,
+                    validate_custom_with: proc{
+                      if value == 'is valid'
+                      end
+
+                      if value =='adds a default error'
+                        add_error
+                      end
+
+                      if value == 'adds an error overriding its values'
+                        add_error(attribute_name: 'name',
+                          validation_name: :expected_name,
+                          expected_value: 'expected name',
+                          actual_value: 'actual name',
+                          namespace: 'name_namespace'
+                        )
+                      end
+
+                      if value == 'adds an error for another attribute'
+                        add_error_for 'age',
+                          validation_name: :age_validation,
+                          expected_value: 'expected age',
+                          actual_value: 'actual age',
+                          namespace: 'age_namespace'
+                      end
+
+                      if value == 'raises an error when adding an error for another attribute with missing parameters'
+                        add_error_for 'age'
+                      end
+
+                      if value == 'overrides the validation name'
+                        validation_name :other_validation
+                        add_error
+                      end
+
+                      if value == 'asks for the value of another attribute'
+                        if value_of('age') == 4
+                          add_error actual_value: 'asks for the value of another attribute'
+                        end
+                      end
+
+                      if value == 'asks for the value of a nested attribute'
+                        if value_of('address.street') == 'evergreen'
+                          add_error actual_value: 'asks for the value of a nested attribute'
+                        end
+                      end
+
+                      if value == 'asks if a previous validation failed for the default attribute'
+                        if validation_failed_for? :format
+                          raise RuntimeError.new('should not get here')
+                        end
+
+                        validate_attribute 'name', on: :format, with: /abc/
+
+                        if validation_failed_for? :format
+                          add_error actual_value: 'asks if a previous validation failed for the default attribute'
+                        end
+                      end
+
+                      if value == 'asks if a previous validation failed for another attribute'
+                        if validation_failed_for? :inclusion, on: 'age'
+                          raise RuntimeError.new('should not get here')
+                        end
+
+                        validate_attribute 'age', on: :inclusion, with: 0..1
+
+                        if validation_failed_for? :inclusion, on: 'age'
+                          add_error actual_value: 'asks if a previous validation failed for another attribute'
+                        end
+                      end
+
+                      if value == 'invokes another validation'
+                        if (validate_on :format, with: /abc/) != false
+                          raise RuntimeError.new('should not get here')
+                        end
+                      end
+
+                      if value == 'invokes another validation on an attribute'
+                        if (validate_attribute 'name', on: :format, with: /abc/) != false
+                          raise RuntimeError.new('should not get here')
+                        end
+                      end
+
+                      if value == 'invokes a validation on a nested attribute'
+                        if (validate_attribute 'address.street', on: :format, with: /abc/) != false
+                          raise RuntimeError.new('should not get here')
+                        end
+                      end
+
+                      if value == 'asks if any previous validation failed for the default attribute'
+                        if any_validation_failed?
+                          raise RuntimeError.new('should not get here')
+                        end
+
+                        validate_attribute 'name', on: :format, with: /abc/
+
+                        if any_validation_failed?
+                          add_error actual_value: 'asks if any previous validation failed for the default attribute'
+                        end
+                      end
+
+                      if value == 'asks if any previous validation failed for another attribute'
+                        if any_validation_failed?
+                          raise RuntimeError.new('should not get here')
+                        end
+
+                        validate_attribute 'age', on: :inclusion, with: 0..1
+
+                        if any_validation_failed? on: 'age'
+                          add_error actual_value: 'asks if any previous validation failed for another attribute'
+                        end
+                      end
+                    }
+  attribute :age, type: Integer, presence: true
+  attribute :address do
+    attribute :street, presence: true
+    attribute :number, presence: true
+  end
+end
+
+# Multiple custom validators
+class BeginsWithUpcaseValidator
+  include Hanami::Validations::Validation
+
+  def validate()
+    add_error if value[0] != value[0].upcase
+  end
+end
+
+class SingleWordValidator
+  include Hanami::Validations::Validation
+
+  def validate()
+    add_error if value.split.size > 1
+  end
+end
+
+class MultilpeCustomValidationsTest
+  include Hanami::Validations
+
+  attribute :name, validate_case_with: BeginsWithUpcaseValidator,
+                   validate_single_word_with: SingleWordValidator
+end
+
+class ValidationsOrderTest
+  include Hanami::Validations
+  extend  Hanami::Validations::ValidationIntrospection
+
+  attribute :name, presence: true, size: 1..3
+  attribute :last_name, validate_case_with: BeginsWithUpcaseValidator, size: 1..3, presence: true
+
+  validates :name, inclusion: ['abc']
+end
