@@ -25,9 +25,8 @@ describe 'Predicates: Lt' do
     describe 'with missing input' do
       let(:input) { {} }
 
-      # FIXME: dry-v ticket: odd message
       it 'is not successful' do
-        refute_successful result, ['is missing', 'must be less than 23 ( was given)']
+        refute_successful result, ['is missing', 'must be less than 23']
       end
     end
 
@@ -60,7 +59,7 @@ describe 'Predicates: Lt' do
       let(:input) { { foo: 23 } }
 
       it 'is not successful' do
-        refute_successful result, ['must be less than 23 (23 was given)', 'must be less than 23 ( was given)']
+        refute_successful result, ['must be less than 23']
       end
     end
 
@@ -68,7 +67,7 @@ describe 'Predicates: Lt' do
       let(:input) { { foo: 99 } }
 
       it 'is not successful' do
-        refute_successful result, ['must be less than 23 (99 was given)', 'must be less than 23 ( was given)']
+        refute_successful result, ['must be less than 23']
       end
     end
   end
@@ -129,7 +128,7 @@ describe 'Predicates: Lt' do
       let(:input) { { foo: 23 } }
 
       it 'is not successful' do
-        refute_successful result, ['must be less than 23 (23 was given)', 'must be less than 23 ( was given)']
+        refute_successful result, ['must be less than 23']
       end
     end
 
@@ -137,7 +136,7 @@ describe 'Predicates: Lt' do
       let(:input) { { foo: 99 } }
 
       it 'is not successful' do
-        refute_successful result, ['must be less than 23 (99 was given)', 'must be less than 23 ( was given)']
+        refute_successful result, ['must be less than 23']
       end
     end
   end
@@ -167,7 +166,7 @@ describe 'Predicates: Lt' do
           let(:input) { {} }
 
           it 'is not successful' do
-            refute_successful result, ['is missing', 'must be less than 23 ( was given)']
+            refute_successful result, ['is missing', 'must be less than 23']
           end
         end
 
@@ -200,7 +199,7 @@ describe 'Predicates: Lt' do
           let(:input) { { foo: 23 } }
 
           it 'is not successful' do
-            refute_successful result, ['must be less than 23 (23 was given)', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be less than 23']
           end
         end
 
@@ -208,7 +207,7 @@ describe 'Predicates: Lt' do
           let(:input) { { foo: 99 } }
 
           it 'is not successful' do
-            refute_successful result, ['must be less than 23 (99 was given)', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be less than 23']
           end
         end
       end
@@ -236,7 +235,7 @@ describe 'Predicates: Lt' do
           let(:input) { {} }
 
           it 'is not successful' do
-            refute_successful result, ['is missing', 'must be less than 23 ( was given)']
+            refute_successful result, ['is missing', 'must be less than 23']
           end
         end
 
@@ -244,7 +243,7 @@ describe 'Predicates: Lt' do
           let(:input) { { foo: nil } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be filled', 'must be less than 23']
           end
         end
 
@@ -252,7 +251,7 @@ describe 'Predicates: Lt' do
           let(:input) { { foo: '' } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be filled', 'must be less than 23']
           end
         end
 
@@ -260,7 +259,7 @@ describe 'Predicates: Lt' do
           let(:input) { { foo: [] } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be filled', 'must be less than 23']
           end
         end
 
@@ -268,7 +267,7 @@ describe 'Predicates: Lt' do
           let(:input) { { foo: 23 } }
 
           it 'is not successful' do
-            refute_successful result, ['must be less than 23 (23 was given)', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be less than 23']
           end
         end
 
@@ -276,7 +275,7 @@ describe 'Predicates: Lt' do
           let(:input) { { foo: 99 } }
 
           it 'is not successful' do
-            refute_successful result, ['must be less than 23 (99 was given)', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be less than 23']
           end
         end
       end
@@ -304,7 +303,7 @@ describe 'Predicates: Lt' do
           let(:input) { {} }
 
           it 'is not successful' do
-            refute_successful result, ['is missing', 'must be less than 23 ( was given)']
+            refute_successful result, ['is missing', 'must be less than 23']
           end
         end
 
@@ -337,7 +336,7 @@ describe 'Predicates: Lt' do
           let(:input) { { foo: 23 } }
 
           it 'is not successful' do
-            refute_successful result, ['must be less than 23 (23 was given)', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be less than 23']
           end
         end
 
@@ -345,7 +344,7 @@ describe 'Predicates: Lt' do
           let(:input) { { foo: 99 } }
 
           it 'is not successful' do
-            refute_successful result, ['must be less than 23 (99 was given)', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be less than 23']
           end
         end
       end
@@ -408,7 +407,7 @@ describe 'Predicates: Lt' do
           let(:input) { { foo: 23 } }
 
           it 'is not successful' do
-            refute_successful result, ['must be less than 23 (23 was given)', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be less than 23']
           end
         end
 
@@ -416,7 +415,7 @@ describe 'Predicates: Lt' do
           let(:input) { { foo: 99 } }
 
           it 'is not successful' do
-            refute_successful result, ['must be less than 23 (99 was given)', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be less than 23']
           end
         end
       end
@@ -452,7 +451,7 @@ describe 'Predicates: Lt' do
           let(:input) { { foo: nil } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be filled', 'must be less than 23']
           end
         end
 
@@ -460,7 +459,7 @@ describe 'Predicates: Lt' do
           let(:input) { { foo: '' } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be filled', 'must be less than 23']
           end
         end
 
@@ -468,7 +467,7 @@ describe 'Predicates: Lt' do
           let(:input) { { foo: [] } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be filled', 'must be less than 23']
           end
         end
 
@@ -476,7 +475,7 @@ describe 'Predicates: Lt' do
           let(:input) { { foo: 23 } }
 
           it 'is not successful' do
-            refute_successful result, ['must be less than 23 (23 was given)', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be less than 23']
           end
         end
 
@@ -484,7 +483,7 @@ describe 'Predicates: Lt' do
           let(:input) { { foo: 99 } }
 
           it 'is not successful' do
-            refute_successful result, ['must be less than 23 (99 was given)', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be less than 23']
           end
         end
       end
@@ -545,7 +544,7 @@ describe 'Predicates: Lt' do
           let(:input) { { foo: 23 } }
 
           it 'is not successful' do
-            refute_successful result, ['must be less than 23 (23 was given)', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be less than 23']
           end
         end
 
@@ -553,7 +552,7 @@ describe 'Predicates: Lt' do
           let(:input) { { foo: 99 } }
 
           it 'is not successful' do
-            refute_successful result, ['must be less than 23 (99 was given)', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be less than 23']
           end
         end
       end
