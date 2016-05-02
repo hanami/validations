@@ -1,13 +1,15 @@
 require 'test_helper'
 
 describe 'Predicates: Filled' do
+  include TestUtils
+
   describe 'with key' do
     before do
       @validator = Class.new do
         include Hanami::Validations
 
         validations do
-          key(:foo) { filled? }
+          required(:foo) { filled? }
         end
       end
     end
@@ -16,13 +18,7 @@ describe 'Predicates: Filled' do
       let(:input) { { foo: [23] } }
 
       it 'is successful' do
-        result = @validator.new(input).validate
-        result.must_be :success?
-      end
-
-      it 'has not error messages' do
-        result = @validator.new(input).validate
-        result.messages[:foo].must_be_nil
+        assert_successful result
       end
     end
 
@@ -30,13 +26,7 @@ describe 'Predicates: Filled' do
       let(:input) { { foo: { bar: 23 } } }
 
       it 'is successful' do
-        result = @validator.new(input).validate
-        result.must_be :success?
-      end
-
-      it 'has not error messages' do
-        result = @validator.new(input).validate
-        result.messages[:foo].must_be_nil
+        assert_successful result
       end
     end
 
@@ -44,13 +34,7 @@ describe 'Predicates: Filled' do
       let(:input) { {} }
 
       it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['is missing']
+        refute_successful result, ['is missing']
       end
     end
 
@@ -58,13 +42,7 @@ describe 'Predicates: Filled' do
       let(:input) { { foo: nil } }
 
       it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      it 'has error messages' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['must be filled']
+        refute_successful result, ['must be filled']
       end
     end
 
@@ -72,13 +50,7 @@ describe 'Predicates: Filled' do
       let(:input) { { foo: '' } }
 
       it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      it 'has error messages' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['must be filled']
+        refute_successful result, ['must be filled']
       end
     end
 
@@ -86,13 +58,7 @@ describe 'Predicates: Filled' do
       let(:input) { { foo: [] } }
 
       it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['must be filled']
+        refute_successful result, ['must be filled']
       end
     end
   end
@@ -112,13 +78,7 @@ describe 'Predicates: Filled' do
       let(:input) { { foo: [23] } }
 
       it 'is successful' do
-        result = @validator.new(input).validate
-        result.must_be :success?
-      end
-
-      it 'has not error messages' do
-        result = @validator.new(input).validate
-        result.messages[:foo].must_be_nil
+        assert_successful result
       end
     end
 
@@ -126,13 +86,7 @@ describe 'Predicates: Filled' do
       let(:input) { { foo: { bar: 23 } } }
 
       it 'is successful' do
-        result = @validator.new(input).validate
-        result.must_be :success?
-      end
-
-      it 'has not error messages' do
-        result = @validator.new(input).validate
-        result.messages[:foo].must_be_nil
+        assert_successful result
       end
     end
 
@@ -140,13 +94,7 @@ describe 'Predicates: Filled' do
       let(:input) { {} }
 
       it 'is successful' do
-        result = @validator.new(input).validate
-        result.must_be :success?
-      end
-
-      it 'has not error messages' do
-        result = @validator.new(input).validate
-        result.messages[:foo].must_be_nil
+        assert_successful result
       end
     end
 
@@ -154,13 +102,7 @@ describe 'Predicates: Filled' do
       let(:input) { { foo: nil } }
 
       it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      it 'has error messages' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['must be filled']
+        refute_successful result, ['must be filled']
       end
     end
 
@@ -168,13 +110,7 @@ describe 'Predicates: Filled' do
       let(:input) { { foo: '' } }
 
       it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      it 'has error messages' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['must be filled']
+        refute_successful result, ['must be filled']
       end
     end
 
@@ -182,26 +118,20 @@ describe 'Predicates: Filled' do
       let(:input) { { foo: [] } }
 
       it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['must be filled']
+        refute_successful result, ['must be filled']
       end
     end
   end
 
   describe 'as macro' do
-    describe 'with key' do
-      describe 'with required' do
+    describe 'with required' do
+      describe 'with value' do
         before do
           @validator = Class.new do
             include Hanami::Validations
 
             validations do
-              key(:foo).required(:filled?)
+              required(:foo).value(:filled?)
             end
           end
         end
@@ -210,13 +140,7 @@ describe 'Predicates: Filled' do
           let(:input) { { foo: [23] } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
@@ -224,13 +148,7 @@ describe 'Predicates: Filled' do
           let(:input) { { foo: { bar: 23 } } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
@@ -238,13 +156,7 @@ describe 'Predicates: Filled' do
           let(:input) { {} }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['is missing']
+            refute_successful result, ['is missing']
           end
         end
 
@@ -252,13 +164,7 @@ describe 'Predicates: Filled' do
           let(:input) { { foo: nil } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'has error messages' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be filled']
+            refute_successful result, ['must be filled']
           end
         end
 
@@ -266,13 +172,7 @@ describe 'Predicates: Filled' do
           let(:input) { { foo: '' } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'has error messages' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be filled']
+            refute_successful result, ['must be filled']
           end
         end
 
@@ -280,13 +180,67 @@ describe 'Predicates: Filled' do
           let(:input) { { foo: [] } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
+            refute_successful result, ['must be filled']
           end
+        end
+      end
 
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be filled']
+      describe 'with filled' do
+        before do
+          @validator = Class.new do
+            include Hanami::Validations
+
+            validations do
+              required(:foo).filled
+            end
+          end
+        end
+
+        describe 'with valid input (array)' do
+          let(:input) { { foo: [23] } }
+
+          it 'is successful' do
+            assert_successful result
+          end
+        end
+
+        describe 'with valid input (hash)' do
+          let(:input) { { foo: { bar: 23 } } }
+
+          it 'is successful' do
+            assert_successful result
+          end
+        end
+
+        describe 'with missing input' do
+          let(:input) { {} }
+
+          it 'is not successful' do
+            refute_successful result, ['is missing']
+          end
+        end
+
+        describe 'with nil input' do
+          let(:input) { { foo: nil } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be filled']
+          end
+        end
+
+        describe 'with blank input' do
+          let(:input) { { foo: '' } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be filled']
+          end
+        end
+
+        describe 'with invalid input' do
+          let(:input) { { foo: [] } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be filled']
           end
         end
       end
@@ -297,7 +251,7 @@ describe 'Predicates: Filled' do
             include Hanami::Validations
 
             validations do
-              key(:foo).maybe(:filled?)
+              required(:foo).maybe(:filled?)
             end
           end
         end
@@ -306,13 +260,7 @@ describe 'Predicates: Filled' do
           let(:input) { { foo: [23] } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
@@ -320,13 +268,7 @@ describe 'Predicates: Filled' do
           let(:input) { { foo: { bar: 23 } } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
@@ -334,13 +276,7 @@ describe 'Predicates: Filled' do
           let(:input) { {} }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['is missing']
+            refute_successful result, ['is missing']
           end
         end
 
@@ -348,13 +284,7 @@ describe 'Predicates: Filled' do
           let(:input) { { foo: nil } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
@@ -362,13 +292,7 @@ describe 'Predicates: Filled' do
           let(:input) { { foo: '' } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'has error messages' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be filled']
+            refute_successful result, ['must be filled']
           end
         end
 
@@ -376,26 +300,20 @@ describe 'Predicates: Filled' do
           let(:input) { { foo: [] } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be filled']
+            refute_successful result, ['must be filled']
           end
         end
       end
     end
 
     describe 'with optional' do
-      describe 'with required' do
+      describe 'with value' do
         before do
           @validator = Class.new do
             include Hanami::Validations
 
             validations do
-              optional(:foo).required(:filled?)
+              optional(:foo).value(:filled?)
             end
           end
         end
@@ -404,13 +322,7 @@ describe 'Predicates: Filled' do
           let(:input) { { foo: [23] } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
@@ -418,13 +330,7 @@ describe 'Predicates: Filled' do
           let(:input) { { foo: { bar: 23 } } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
@@ -432,13 +338,7 @@ describe 'Predicates: Filled' do
           let(:input) { {} }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error message' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
@@ -446,13 +346,7 @@ describe 'Predicates: Filled' do
           let(:input) { { foo: nil } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'has error messages' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be filled']
+            refute_successful result, ['must be filled']
           end
         end
 
@@ -460,13 +354,7 @@ describe 'Predicates: Filled' do
           let(:input) { { foo: '' } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'has error messages' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be filled']
+            refute_successful result, ['must be filled']
           end
         end
 
@@ -474,13 +362,67 @@ describe 'Predicates: Filled' do
           let(:input) { { foo: [] } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
+            refute_successful result, ['must be filled']
           end
+        end
+      end
 
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be filled']
+      describe 'with filled' do
+        before do
+          @validator = Class.new do
+            include Hanami::Validations
+
+            validations do
+              optional(:foo).filled
+            end
+          end
+        end
+
+        describe 'with valid input (array)' do
+          let(:input) { { foo: [23] } }
+
+          it 'is successful' do
+            assert_successful result
+          end
+        end
+
+        describe 'with valid input (hash)' do
+          let(:input) { { foo: { bar: 23 } } }
+
+          it 'is successful' do
+            assert_successful result
+          end
+        end
+
+        describe 'with missing input' do
+          let(:input) { {} }
+
+          it 'is successful' do
+            assert_successful result
+          end
+        end
+
+        describe 'with nil input' do
+          let(:input) { { foo: nil } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be filled']
+          end
+        end
+
+        describe 'with blank input' do
+          let(:input) { { foo: '' } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be filled']
+          end
+        end
+
+        describe 'with invalid input' do
+          let(:input) { { foo: [] } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be filled']
           end
         end
       end
@@ -500,13 +442,7 @@ describe 'Predicates: Filled' do
           let(:input) { { foo: [23] } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
@@ -514,13 +450,7 @@ describe 'Predicates: Filled' do
           let(:input) { { foo: { bar: 23 } } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
@@ -528,13 +458,7 @@ describe 'Predicates: Filled' do
           let(:input) { {} }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error message' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
@@ -542,13 +466,7 @@ describe 'Predicates: Filled' do
           let(:input) { { foo: nil } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
@@ -556,13 +474,7 @@ describe 'Predicates: Filled' do
           let(:input) { { foo: '' } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'has error messages' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be filled']
+            refute_successful result, ['must be filled']
           end
         end
 
@@ -570,13 +482,7 @@ describe 'Predicates: Filled' do
           let(:input) { { foo: [] } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be filled']
+            refute_successful result, ['must be filled']
           end
         end
       end

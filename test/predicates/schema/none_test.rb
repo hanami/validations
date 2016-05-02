@@ -1,13 +1,15 @@
 require 'test_helper'
 
 describe 'Predicates: None' do
-  describe 'with key' do
+  include TestUtils
+
+  describe 'with required' do
     before do
       @validator = Class.new do
         include Hanami::Validations
 
         validations do
-          key(:foo) { none? }
+          required(:foo) { none? }
         end
       end
     end
@@ -16,13 +18,7 @@ describe 'Predicates: None' do
       let(:input) { {} }
 
       it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['is missing']
+        refute_successful result, ['is missing']
       end
     end
 
@@ -30,13 +26,7 @@ describe 'Predicates: None' do
       let(:input) { { foo: nil } }
 
       it 'is successful' do
-        result = @validator.new(input).validate
-        result.must_be :success?
-      end
-
-      it 'returns output value' do
-        result = @validator.new(input).validate
-        result.output.fetch(:foo).must_be_nil
+        assert_successful result
       end
     end
 
@@ -44,13 +34,7 @@ describe 'Predicates: None' do
       let(:input) { { foo: '' } }
 
       it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['cannot be defined']
+        refute_successful result, ['cannot be defined']
       end
     end
 
@@ -58,13 +42,7 @@ describe 'Predicates: None' do
       let(:input) { { foo: 23 } }
 
       it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['cannot be defined']
+        refute_successful result, ['cannot be defined']
       end
     end
   end
@@ -84,13 +62,7 @@ describe 'Predicates: None' do
       let(:input) { {} }
 
       it 'is successful' do
-        result = @validator.new(input).validate
-        result.must_be :success?
-      end
-
-      it 'has not error message' do
-        result = @validator.new(input).validate
-        result.messages[:foo].must_be_nil
+        assert_successful result
       end
     end
 
@@ -98,13 +70,7 @@ describe 'Predicates: None' do
       let(:input) { { foo: nil } }
 
       it 'is successful' do
-        result = @validator.new(input).validate
-        result.must_be :success?
-      end
-
-      it 'returns output value' do
-        result = @validator.new(input).validate
-        result.output.fetch(:foo).must_be_nil
+        assert_successful result
       end
     end
 
@@ -112,13 +78,7 @@ describe 'Predicates: None' do
       let(:input) { { foo: '' } }
 
       it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['cannot be defined']
+        refute_successful result, ['cannot be defined']
       end
     end
 
@@ -126,26 +86,20 @@ describe 'Predicates: None' do
       let(:input) { { foo: 23 } }
 
       it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['cannot be defined']
+        refute_successful result, ['cannot be defined']
       end
     end
   end
 
   describe 'as macro' do
-    describe 'with key' do
-      describe 'with required' do
+    describe 'with required' do
+      describe 'with value' do
         before do
           @validator = Class.new do
             include Hanami::Validations
 
             validations do
-              key(:foo).required(:none?)
+              required(:foo).value(:none?)
             end
           end
         end
@@ -154,27 +108,15 @@ describe 'Predicates: None' do
           let(:input) { {} }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['is missing']
+            refute_successful result, ['is missing']
           end
         end
 
         describe 'with nil input' do
           let(:input) { { foo: nil } }
 
-          it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns output value' do
-            result = @validator.new(input).validate
-            result.output.fetch(:foo).must_be_nil
+          it 'is successful' do
+            assert_successful result
           end
         end
 
@@ -182,13 +124,7 @@ describe 'Predicates: None' do
           let(:input) { { foo: '' } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be filled']
+            refute_successful result, ['cannot be defined']
           end
         end
 
@@ -196,13 +132,51 @@ describe 'Predicates: None' do
           let(:input) { { foo: 23 } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
+            refute_successful result, ['cannot be defined']
           end
+        end
+      end
 
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['cannot be defined']
+      describe 'with filled' do
+        before do
+          @validator = Class.new do
+            include Hanami::Validations
+
+            validations do
+              required(:foo).filled(:none?)
+            end
+          end
+        end
+
+        describe 'with missing input' do
+          let(:input) { {} }
+
+          it 'is not successful' do
+            refute_successful result, ['is missing']
+          end
+        end
+
+        describe 'with nil input' do
+          let(:input) { { foo: nil } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be filled']
+          end
+        end
+
+        describe 'with blank input' do
+          let(:input) { { foo: '' } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be filled']
+          end
+        end
+
+        describe 'with other input' do
+          let(:input) { { foo: 23 } }
+
+          it 'is not successful' do
+            refute_successful result, ['cannot be defined']
           end
         end
       end
@@ -213,7 +187,7 @@ describe 'Predicates: None' do
             include Hanami::Validations
 
             validations do
-              key(:foo).maybe(:none?)
+              required(:foo).maybe(:none?)
             end
           end
         end
@@ -222,13 +196,7 @@ describe 'Predicates: None' do
           let(:input) { {} }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['is missing']
+            refute_successful result, ['is missing']
           end
         end
 
@@ -236,13 +204,7 @@ describe 'Predicates: None' do
           let(:input) { { foo: nil } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'returns output value' do
-            result = @validator.new(input).validate
-            result.output.fetch(:foo).must_be_nil
+            assert_successful result
           end
         end
 
@@ -250,13 +212,7 @@ describe 'Predicates: None' do
           let(:input) { { foo: '' } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['cannot be defined']
+            refute_successful result, ['cannot be defined']
           end
         end
 
@@ -264,26 +220,20 @@ describe 'Predicates: None' do
           let(:input) { { foo: 23 } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['cannot be defined']
+            refute_successful result, ['cannot be defined']
           end
         end
       end
     end
 
     describe 'with optional' do
-      describe 'with required' do
+      describe 'with value' do
         before do
           @validator = Class.new do
             include Hanami::Validations
 
             validations do
-              optional(:foo).required(:none?)
+              optional(:foo).value(:none?)
             end
           end
         end
@@ -292,27 +242,15 @@ describe 'Predicates: None' do
           let(:input) { {} }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error message' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
         describe 'with nil input' do
           let(:input) { { foo: nil } }
 
-          it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns output value' do
-            result = @validator.new(input).validate
-            result.output.fetch(:foo).must_be_nil
+          it 'is successful' do
+            assert_successful result
           end
         end
 
@@ -320,13 +258,7 @@ describe 'Predicates: None' do
           let(:input) { { foo: '' } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be filled']
+            refute_successful result, ['cannot be defined']
           end
         end
 
@@ -334,13 +266,51 @@ describe 'Predicates: None' do
           let(:input) { { foo: 23 } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
+            refute_successful result, ['cannot be defined']
           end
+        end
+      end
 
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['cannot be defined']
+      describe 'with filled' do
+        before do
+          @validator = Class.new do
+            include Hanami::Validations
+
+            validations do
+              optional(:foo).filled(:none?)
+            end
+          end
+        end
+
+        describe 'with missing input' do
+          let(:input) { {} }
+
+          it 'is successful' do
+            assert_successful result
+          end
+        end
+
+        describe 'with nil input' do
+          let(:input) { { foo: nil } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be filled']
+          end
+        end
+
+        describe 'with blank input' do
+          let(:input) { { foo: '' } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be filled']
+          end
+        end
+
+        describe 'with other input' do
+          let(:input) { { foo: 23 } }
+
+          it 'is not successful' do
+            refute_successful result, ['cannot be defined']
           end
         end
       end
@@ -360,13 +330,7 @@ describe 'Predicates: None' do
           let(:input) { {} }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error message' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
@@ -374,13 +338,7 @@ describe 'Predicates: None' do
           let(:input) { { foo: nil } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'returns output value' do
-            result = @validator.new(input).validate
-            result.output.fetch(:foo).must_be_nil
+            assert_successful result
           end
         end
 
@@ -388,13 +346,7 @@ describe 'Predicates: None' do
           let(:input) { { foo: '' } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['cannot be defined']
+            refute_successful result, ['cannot be defined']
           end
         end
 
@@ -402,13 +354,7 @@ describe 'Predicates: None' do
           let(:input) { { foo: 23 } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['cannot be defined']
+            refute_successful result, ['cannot be defined']
           end
         end
       end
