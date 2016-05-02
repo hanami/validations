@@ -7,13 +7,39 @@ if ENV['COVERALL']
 end
 
 require 'minitest/autorun'
-$:.unshift 'lib'
+$LOAD_PATH.unshift 'lib'
 require 'hanami/validations'
+require 'bigdecimal'
 
-module Hanami::Validations::ValidationIntrospection
-  def defined_validation?(name)
-    validations.instance_variable_get(:@validations).keys.include?(name)
+require 'uri'
+require 'hanami/utils/blank'
+
+class Url
+  def initialize(url)
+    raise ArgumentError if Hanami::Utils::Blank.blank?(url)
+    @url = URI.parse(url.to_s)
+  end
+
+  def to_str
+    @url.to_s
   end
 end
 
-require 'fixtures'
+class FullName
+  attr_reader :tokens
+  def initialize(*tokens)
+    @tokens = tokens
+  end
+
+  def to_s
+    @tokens.join ' '
+  end
+end
+
+module Hanami::Validations
+  class Errors
+    def keys
+      @errors.keys
+    end
+  end
+end
