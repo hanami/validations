@@ -11,5 +11,4 @@ gem 'hanami-model', '~> 0.7', require: false, github: 'hanami/model', branch: '0
 gem 'dry-types',              require: false, github: 'dry-rb/dry-types'
 gem 'dry-logic',              require: false, github: 'dry-rb/dry-logic'
 gem 'dry-validation',         require: false, github: 'dry-rb/dry-validation'
-gem 'simplecov',              require: false
 gem 'coveralls',              require: false
