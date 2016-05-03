@@ -7,7 +7,7 @@ describe Hanami::Validations do
         include Hanami::Validations
 
         validations do
-          key(:city) { filled? }
+          required(:city) { filled? }
         end
       end
 
@@ -15,9 +15,9 @@ describe Hanami::Validations do
         include Hanami::Validations
 
         validations do
-          key(:name) { filled? }
+          required(:name) { filled? }
           # FIXME: ask dry team to support any object that responds to #schema.
-          key(:address).schema(address.schema)
+          required(:address).schema(address.schema)
         end
       end
 
@@ -25,8 +25,8 @@ describe Hanami::Validations do
         include Hanami::Validations
 
         validations do
-          key(:number) { filled? }
-          key(:customer).schema(customer.schema)
+          required(:number) { filled? }
+          required(:customer).schema(customer.schema)
         end
       end
     end

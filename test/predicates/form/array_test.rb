@@ -1,90 +1,193 @@
 require 'test_helper'
 
 describe 'Predicates: Array' do
+  include TestUtils
+
+  describe 'with required' do
+    before do
+      @validator = Class.new do
+        include Hanami::Validations::Form
+
+        validations do
+          required(:foo) { array? { each { int? } } }
+        end
+      end
+    end
+
+    describe 'with valid input' do
+      let(:input) { { 'foo' => ['3'] } }
+
+      it 'is successful' do
+        assert_successful result
+      end
+    end
+
+    describe 'with missing input' do
+      let(:input) { {} }
+
+      it 'is not successful' do
+        refute_successful result, ['is missing']
+      end
+    end
+
+    describe 'with nil input' do
+      let(:input) { { 'foo' => nil } }
+
+      it 'is not successful' do
+        refute_successful result, ['must be an array']
+      end
+    end
+
+    describe 'with blank input' do
+      let(:input) { { 'foo' => '' } }
+
+      it 'is not successful' do
+        refute_successful result, ['must be an array']
+      end
+    end
+
+    describe 'with invalid type' do
+      let(:input) { { 'foo' => { 'a' => '1' } } }
+
+      it 'is not successful' do
+        refute_successful result, ['must be an array']
+      end
+    end
+
+    describe 'with invalid input (integer)' do
+      let(:input) { { 'foo' => '4' } }
+
+      it 'is not successful' do
+        refute_successful result, ['must be an array']
+      end
+    end
+
+    describe 'with invalid input (array with non-integers)' do
+      let(:input) { { 'foo' => %w(foo bar) } }
+
+      it 'is not successful' do
+        refute_successful result, 0 => ['must be an integer'], 1 => ['must be an integer']
+      end
+    end
+
+    describe 'with invalid input (mixed array)' do
+      let(:input) { { 'foo' => %w(1 bar) } }
+
+      it 'is not successful' do
+        refute_successful result, 1 => ['must be an integer']
+      end
+    end
+  end
+
+  describe 'with optional' do
+    before do
+      @validator = Class.new do
+        include Hanami::Validations::Form
+
+        validations do
+          optional(:foo) { inclusion?(%w(1 3 5)) }
+        end
+      end
+    end
+
+    describe 'with valid input' do
+      let(:input) { { 'foo' => '3' } }
+
+      it 'is successful' do
+        assert_successful result
+      end
+    end
+
+    describe 'with missing input' do
+      let(:input) { {} }
+
+      it 'is successful' do
+        assert_successful result
+      end
+    end
+
+    describe 'with nil input' do
+      let(:input) { { 'foo' => nil } }
+
+      it 'is not successful' do
+        refute_successful result, ['must be one of: 1, 3, 5']
+      end
+    end
+
+    describe 'with blank input' do
+      let(:input) { { 'foo' => '' } }
+
+      it 'is not successful' do
+        refute_successful result, ['must be one of: 1, 3, 5']
+      end
+    end
+
+    describe 'with invalid type' do
+      let(:input) { { 'foo' => { 'a' => '1' } } }
+
+      it 'is not successful' do
+        refute_successful result, ['must be one of: 1, 3, 5']
+      end
+    end
+
+    describe 'with invalid input' do
+      let(:input) { { 'foo' => '4' } }
+
+      it 'is not successful' do
+        refute_successful result, ['must be one of: 1, 3, 5']
+      end
+    end
+  end
+
   describe 'as macro' do
-    describe 'with key' do
+    describe 'with required' do
       before do
         @validator = Class.new do
-          include Hanami::Validations
           include Hanami::Validations::Form
 
-          key(:foo).each(:int?)
+          validations do
+            required(:foo).each(:int?)
+          end
+        end
+      end
+
+      describe 'with missing input' do
+        let(:input) { {} }
+
+        it 'is not successful' do
+          refute_successful result, ['is missing']
+        end
+      end
+
+      describe 'with nil input' do
+        let(:input) { { 'foo' => nil } }
+
+        it 'is not successful' do
+          refute_successful result, ['must be an array']
+        end
+      end
+
+      describe 'with blank input' do
+        let(:input) { { 'foo' => '' } }
+
+        it 'is not successful' do
+          refute_successful result, ['must be an array']
         end
       end
 
       describe 'with valid input' do
-        let(:input) { { foo: ['3'] } }
+        let(:input) { { 'foo' => ['3'] } }
 
         it 'is successful' do
-          result = @validator.new(input).validate
-          result.must_be :success?
-        end
-
-        it 'has not error messages' do
-          result = @validator.new(input).validate
-          result.messages[:foo].must_be_nil
-        end
-
-        it 'coerces input' do
-          result = @validator.new(input).validate
-          result.output.fetch(:foo).must_equal [3]
+          assert_successful result
         end
       end
 
-      describe 'with invalid input (integer as string)' do
-        let(:input) { { foo: '4' } }
+      describe 'with invalid input' do
+        let(:input) { { 'foo' => ['bar'] } }
 
         it 'is not successful' do
-          result = @validator.new(input).validate
-          result.wont_be :success?
-        end
-
-        it 'returns error messages' do
-          result = @validator.new(input).validate
-          result.messages.fetch(:foo).must_equal(['must be an array'])
-        end
-
-        it 'does not coerce input' do
-          result = @validator.new(input).validate
-          result.output.fetch(:foo).must_equal '4'
-        end
-      end
-
-      describe 'with invalid input (array of strings)' do
-        let(:input) { { foo: ['bar'] } }
-
-        it 'is not successful' do
-          result = @validator.new(input).validate
-          result.wont_be :success?
-        end
-
-        it 'returns error messages' do
-          result = @validator.new(input).validate
-          result.messages.fetch(:foo).must_equal(0 => ['must be an integer'])
-        end
-
-        it 'does not coerce input' do
-          result = @validator.new(input).validate
-          result.output.fetch(:foo).must_equal ['bar']
-        end
-      end
-
-      describe 'with invalid input (hash)' do
-        let(:input) { { foo: { 'bar' => 'baz' } } }
-
-        it 'is not successful' do
-          result = @validator.new(input).validate
-          result.wont_be :success?
-        end
-
-        it 'returns error messages' do
-          result = @validator.new(input).validate
-          result.messages.fetch(:foo).must_equal(['must be an array'])
-        end
-
-        it 'does not coerce input' do
-          result = @validator.new(input).validate
-          result.output.fetch(:foo).must_equal('bar' => 'baz')
+          refute_successful result, 0 => ['must be an integer']
         end
       end
     end
@@ -92,86 +195,51 @@ describe 'Predicates: Array' do
     describe 'with optional' do
       before do
         @validator = Class.new do
-          include Hanami::Validations
           include Hanami::Validations::Form
 
-          optional(:foo).each(:int?)
+          validations do
+            optional(:foo).each(:int?)
+          end
+        end
+      end
+
+      describe 'with missing input' do
+        let(:input) { {} }
+
+        it 'is not successful' do
+          assert_successful result
+        end
+      end
+
+      describe 'with nil input' do
+        let(:input) { { 'foo' => nil } }
+
+        it 'is not successful' do
+          refute_successful result, ['must be an array']
+        end
+      end
+
+      describe 'with blank input' do
+        let(:input) { { 'foo' => '' } }
+
+        it 'is not successful' do
+          refute_successful result, ['must be an array']
         end
       end
 
       describe 'with valid input' do
-        let(:input) { { foo: ['3'] } }
+        let(:input) { { 'foo' => ['3'] } }
 
         it 'is successful' do
-          result = @validator.new(input).validate
-          result.must_be :success?
-        end
-
-        it 'has not error messages' do
-          result = @validator.new(input).validate
-          result.messages[:foo].must_be_nil
-        end
-
-        it 'coerces input' do
-          result = @validator.new(input).validate
-          result.output.fetch(:foo).must_equal [3]
+          assert_successful result
         end
       end
 
-      describe 'with invalid input (integer as string)' do
-        let(:input) { { foo: '4' } }
+      describe 'with invalid input' do
+        let(:input) { { 'foo' => ['bar'] } }
 
         it 'is not successful' do
-          result = @validator.new(input).validate
-          result.wont_be :success?
-        end
-
-        it 'returns error messages' do
-          result = @validator.new(input).validate
-          result.messages.fetch(:foo).must_equal(['must be an array'])
-        end
-
-        it 'does not coerce input' do
-          result = @validator.new(input).validate
-          result.output.fetch(:foo).must_equal '4'
-        end
-      end
-
-      describe 'with invalid input (array of strings)' do
-        let(:input) { { foo: ['bar'] } }
-
-        it 'is not successful' do
-          result = @validator.new(input).validate
-          result.wont_be :success?
-        end
-
-        it 'returns error messages' do
-          result = @validator.new(input).validate
-          result.messages.fetch(:foo).must_equal(0 => ['must be an integer'])
-        end
-
-        it 'does not coerce input' do
-          result = @validator.new(input).validate
-          result.output.fetch(:foo).must_equal ['bar']
-        end
-      end
-
-      describe 'with invalid input (hash)' do
-        let(:input) { { foo: { 'bar' => 'baz' } } }
-
-        it 'is not successful' do
-          result = @validator.new(input).validate
-          result.wont_be :success?
-        end
-
-        it 'returns error messages' do
-          result = @validator.new(input).validate
-          result.messages.fetch(:foo).must_equal(['must be an array'])
-        end
-
-        it 'does not coerce input' do
-          result = @validator.new(input).validate
-          result.output.fetch(:foo).must_equal('bar' => 'baz')
+          refute_successful result, 0 => ['must be an integer']
         end
       end
     end

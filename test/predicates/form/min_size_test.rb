@@ -1,26 +1,24 @@
 require 'test_helper'
 
 describe 'Predicates: Min Size' do
-  describe 'with key' do
+  include TestUtils
+
+  describe 'with required' do
     before do
       @validator = Class.new do
-        include Hanami::Validations
+        include Hanami::Validations::Form
 
-        key(:foo) { min_size?(3) }
+        validations do
+          required(:foo) { min_size?(3) }
+        end
       end
     end
 
     describe 'with valid input' do
-      let(:input) { { foo: [1, 2, 3] } }
+      let(:input) { { 'foo' => %w(1 2 3) } }
 
       it 'is successful' do
-        result = @validator.new(input).validate
-        result.must_be :success?
-      end
-
-      it 'has not error messages' do
-        result = @validator.new(input).validate
-        result.messages[:foo].must_be_nil
+        assert_successful result
       end
     end
 
@@ -28,51 +26,31 @@ describe 'Predicates: Min Size' do
       let(:input) { {} }
 
       it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      # FIXME: open dry-v ticket - misleading error message
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['is missing', 'size cannot be less than 3']
+        refute_successful result, ['is missing', 'size cannot be less than 3']
       end
     end
 
     describe 'with nil input' do
-      let(:input) { { foo: nil } }
+      let(:input) { { 'foo' => nil } }
 
       it 'is raises error' do
-        -> { @validator.new(input).validate }.must_raise(NoMethodError)
+        -> { result }.must_raise(NoMethodError)
       end
     end
 
     describe 'with blank input' do
-      let(:input) { { foo: '' } }
+      let(:input) { { 'foo' => '' } }
 
       it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      # FIXME: open dry-v ticket - misleading error message
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['size cannot be less than 3']
+        refute_successful result, ['size cannot be less than 3']
       end
     end
 
     describe 'with invalid input' do
-      let(:input) { { foo: { a: 1, b: 2 } } }
+      let(:input) { { 'foo' => { 'a' => '1', 'b' => '2' } } }
 
       it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['size cannot be less than 3']
+        refute_successful result, ['size cannot be less than 3']
       end
     end
   end
@@ -80,23 +58,19 @@ describe 'Predicates: Min Size' do
   describe 'with optional' do
     before do
       @validator = Class.new do
-        include Hanami::Validations
+        include Hanami::Validations::Form
 
-        optional(:foo) { min_size?(3) }
+        validations do
+          optional(:foo) { min_size?(3) }
+        end
       end
     end
 
     describe 'with valid input' do
-      let(:input) { { foo: [1, 2, 3] } }
+      let(:input) { { 'foo' => %w(1 2 3) } }
 
       it 'is successful' do
-        result = @validator.new(input).validate
-        result.must_be :success?
-      end
-
-      it 'has not error messages' do
-        result = @validator.new(input).validate
-        result.messages[:foo].must_be_nil
+        assert_successful result
       end
     end
 
@@ -104,152 +78,53 @@ describe 'Predicates: Min Size' do
       let(:input) { {} }
 
       it 'is successful' do
-        result = @validator.new(input).validate
-        result.must_be :success?
-      end
-
-      it 'has not error messages' do
-        result = @validator.new(input).validate
-        result.messages[:foo].must_be_nil
+        assert_successful result
       end
     end
 
     describe 'with nil input' do
-      let(:input) { { foo: nil } }
+      let(:input) { { 'foo' => nil } }
 
       it 'is raises error' do
-        -> { @validator.new(input).validate }.must_raise(NoMethodError)
+        -> { result }.must_raise(NoMethodError)
       end
     end
 
     describe 'with blank input' do
-      let(:input) { { foo: '' } }
+      let(:input) { { 'foo' => '' } }
 
       it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      # FIXME: open dry-v ticket - misleading error message
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['size cannot be less than 3']
+        refute_successful result, ['size cannot be less than 3']
       end
     end
 
     describe 'with invalid input' do
-      let(:input) { { foo: { a: 1, b: 2 } } }
+      let(:input) { { 'foo' => { 'a' => '1', 'b' => '2' } } }
 
       it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['size cannot be less than 3']
-      end
-    end
-  end
-
-  describe 'with attr' do
-    before do
-      @validator = Class.new do
-        include Hanami::Validations
-
-        attr(:foo) { min_size?(3) }
-      end
-    end
-
-    describe 'with valid input' do
-      let(:input) { Input.new([1, 2, 3]) }
-
-      it 'is successful' do
-        result = @validator.new(input).validate
-        result.must_be :success?
-      end
-
-      it 'has not error messages' do
-        result = @validator.new(input).validate
-        result.messages[:foo].must_be_nil
-      end
-    end
-
-    describe 'with unknown method' do
-      let(:input) { Object.new }
-
-      it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      # FIXME: open dry-v ticket - misleading error message
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['is missing', 'size cannot be less than 3']
-      end
-    end
-
-    describe 'with nil input' do
-      let(:input) { Input.new(nil) }
-
-      it 'is raises error' do
-        -> { @validator.new(input).validate }.must_raise(NoMethodError)
-      end
-    end
-
-    describe 'with blank input' do
-      let(:input) { Input.new('') }
-
-      it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      # FIXME: open dry-v ticket - misleading error message
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['size cannot be less than 3']
-      end
-    end
-
-    describe 'with invalid input' do
-      let(:input) { Input.new(a: 1, b: 2) }
-
-      it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['size cannot be less than 3']
+        refute_successful result, ['size cannot be less than 3']
       end
     end
   end
 
   describe 'as macro' do
-    describe 'with key' do
-      describe 'with required' do
+    describe 'with required' do
+      describe 'with value' do
         before do
           @validator = Class.new do
-            include Hanami::Validations
+            include Hanami::Validations::Form
 
-            key(:foo).required(min_size?: 3)
+            validations do
+              required(:foo).value(min_size?: 3)
+            end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { foo: [1, 2, 3] } }
+          let(:input) { { 'foo' => %w(1 2 3) } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
@@ -257,58 +132,83 @@ describe 'Predicates: Min Size' do
           let(:input) { {} }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          # FIXME: open dry-v ticket - misleading error message
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['is missing', 'size cannot be less than 3']
+            refute_successful result, ['is missing', 'size cannot be less than 3']
           end
         end
 
         describe 'with nil input' do
-          let(:input) { { foo: nil } }
+          let(:input) { { 'foo' => nil } }
 
-          it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          # FIXME: open dry-v ticket - misleading error message
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be filled', 'size cannot be less than 3']
+          it 'is raises error' do
+            -> { result }.must_raise(NoMethodError)
           end
         end
 
         describe 'with blank input' do
-          let(:input) { { foo: '' } }
+          let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          # FIXME: open dry-v ticket - misleading error message
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be filled', 'size cannot be less than 3']
+            refute_successful result, ['size cannot be less than 3']
           end
         end
 
         describe 'with invalid input' do
-          let(:input) { { foo: { a: 1, b: 2 } } }
+          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2' } } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
+            refute_successful result, ['size cannot be less than 3']
           end
+        end
+      end
 
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['size cannot be less than 3']
+      describe 'with filled' do
+        before do
+          @validator = Class.new do
+            include Hanami::Validations::Form
+
+            validations do
+              required(:foo).filled(min_size?: 3)
+            end
+          end
+        end
+
+        describe 'with valid input' do
+          let(:input) { { 'foo' => %w(1 2 3) } }
+
+          it 'is successful' do
+            assert_successful result
+          end
+        end
+
+        describe 'with missing input' do
+          let(:input) { {} }
+
+          it 'is not successful' do
+            refute_successful result, ['is missing', 'size cannot be less than 3']
+          end
+        end
+
+        describe 'with nil input' do
+          let(:input) { { 'foo' => nil } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be filled', 'size cannot be less than 3']
+          end
+        end
+
+        describe 'with blank input' do
+          let(:input) { { 'foo' => '' } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be filled', 'size cannot be less than 3']
+          end
+        end
+
+        describe 'with invalid input' do
+          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2' } } }
+
+          it 'is not successful' do
+            refute_successful result, ['size cannot be less than 3']
           end
         end
       end
@@ -316,107 +216,75 @@ describe 'Predicates: Min Size' do
       describe 'with maybe' do
         before do
           @validator = Class.new do
-            include Hanami::Validations
+            include Hanami::Validations::Form
 
-            key(:foo).maybe(min_size?: 3)
+            validations do
+              required(:foo).maybe(min_size?: 3)
+            end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { foo: [1, 2, 3] } }
+          let(:input) { { 'foo' => %w(1 2 3) } }
 
-          it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
-          end
+          it 'is successful'
+          # it 'is successful' do
+          #   assert_successful result
+          # end
         end
 
         describe 'with missing input' do
           let(:input) { {} }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          # FIXME: open dry-v ticket - misleading error message
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['is missing', 'size cannot be less than 3']
+            refute_successful result, ['is missing', 'size cannot be less than 3']
           end
         end
 
         describe 'with nil input' do
-          let(:input) { { foo: nil } }
+          let(:input) { { 'foo' => nil } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not message' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
         describe 'with blank input' do
-          let(:input) { { foo: '' } }
+          let(:input) { { 'foo' => '' } }
 
-          it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          # FIXME: open dry-v ticket - misleading error message
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['size cannot be less than 3']
+          it 'is successful' do
+            assert_successful result
           end
         end
 
         describe 'with invalid input' do
-          let(:input) { { foo: { a: 1, b: 2 } } }
+          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2' } } }
 
-          it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['size cannot be less than 3']
-          end
+          it 'is not successful'
+          # it 'is not successful' do
+          #   refute_successful result, ['size cannot be less than 3']
+          # end
         end
       end
     end
 
     describe 'with optional' do
-      describe 'with required' do
+      describe 'with value' do
         before do
           @validator = Class.new do
-            include Hanami::Validations
+            include Hanami::Validations::Form
 
-            optional(:foo).required(min_size?: 3)
+            validations do
+              optional(:foo).value(min_size?: 3)
+            end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { foo: [1, 2, 3] } }
+          let(:input) { { 'foo' => %w(1 2 3) } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
@@ -424,57 +292,83 @@ describe 'Predicates: Min Size' do
           let(:input) { {} }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error message' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
         describe 'with nil input' do
-          let(:input) { { foo: nil } }
+          let(:input) { { 'foo' => nil } }
 
-          it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          # FIXME: open dry-v ticket - misleading error message
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be filled', 'size cannot be less than 3']
+          it 'is raises error' do
+            -> { result }.must_raise(NoMethodError)
           end
         end
 
         describe 'with blank input' do
-          let(:input) { { foo: '' } }
+          let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          # FIXME: open dry-v ticket - misleading error message
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be filled', 'size cannot be less than 3']
+            refute_successful result, ['size cannot be less than 3']
           end
         end
 
         describe 'with invalid input' do
-          let(:input) { { foo: { a: 1, b: 2 } } }
+          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2' } } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
+            refute_successful result, ['size cannot be less than 3']
           end
+        end
+      end
 
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['size cannot be less than 3']
+      describe 'with filled' do
+        before do
+          @validator = Class.new do
+            include Hanami::Validations::Form
+
+            validations do
+              optional(:foo).filled(min_size?: 3)
+            end
+          end
+        end
+
+        describe 'with valid input' do
+          let(:input) { { 'foo' => %w(1 2 3) } }
+
+          it 'is successful' do
+            assert_successful result
+          end
+        end
+
+        describe 'with missing input' do
+          let(:input) { {} }
+
+          it 'is successful' do
+            assert_successful result
+          end
+        end
+
+        describe 'with nil input' do
+          let(:input) { { 'foo' => nil } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be filled', 'size cannot be less than 3']
+          end
+        end
+
+        describe 'with blank input' do
+          let(:input) { { 'foo' => '' } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be filled', 'size cannot be less than 3']
+          end
+        end
+
+        describe 'with invalid input' do
+          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2' } } }
+
+          it 'is not successful' do
+            refute_successful result, ['size cannot be less than 3']
           end
         end
       end
@@ -482,23 +376,19 @@ describe 'Predicates: Min Size' do
       describe 'with maybe' do
         before do
           @validator = Class.new do
-            include Hanami::Validations
+            include Hanami::Validations::Form
 
-            optional(:foo).maybe(min_size?: 3)
+            validations do
+              optional(:foo).maybe(min_size?: 3)
+            end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { foo: [1, 2, 3] } }
+          let(:input) { { 'foo' => %w(1 2 3) } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
@@ -506,57 +396,33 @@ describe 'Predicates: Min Size' do
           let(:input) { {} }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error message' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
         describe 'with nil input' do
-          let(:input) { { foo: nil } }
+          let(:input) { { 'foo' => nil } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not message' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
         describe 'with blank input' do
-          let(:input) { { foo: '' } }
+          let(:input) { { 'foo' => '' } }
 
-          it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          # FIXME: open dry-v ticket - misleading error message
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['size cannot be less than 3']
+          it 'is successful' do
+            assert_successful result
           end
         end
 
         describe 'with invalid input' do
-          let(:input) { { foo: { a: 1, b: 2 } } }
+          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2' } } }
 
-          it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['size cannot be less than 3']
-          end
+          it 'is not successful'
+          # it 'is not successful' do
+          #   refute_successful result, ['size cannot be less than 3']
+          # end
         end
       end
     end

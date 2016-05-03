@@ -1,29 +1,146 @@
 require 'test_helper'
 
 describe 'Predicates: Exclusion' do
+  include TestUtils
+
+  describe 'with required' do
+    before do
+      @validator = Class.new do
+        include Hanami::Validations::Form
+
+        validations do
+          required(:foo) { exclusion?(%w(1 3 5)) }
+        end
+      end
+    end
+
+    describe 'with valid input' do
+      let(:input) { { 'foo' => '2' } }
+
+      it 'is successful' do
+        assert_successful result
+      end
+    end
+
+    describe 'with missing input' do
+      let(:input) { {} }
+
+      it 'is not successful' do
+        refute_successful result, ['is missing', 'must not be one of: 1, 3, 5']
+      end
+    end
+
+    describe 'with nil input' do
+      let(:input) { { 'foo' => nil } }
+
+      it 'is successful' do
+        assert_successful result
+      end
+    end
+
+    describe 'with blank input' do
+      let(:input) { { 'foo' => '' } }
+
+      it 'is successful' do
+        assert_successful result
+      end
+    end
+
+    describe 'with invalid type' do
+      let(:input) { { 'foo' => { 'a' => '1' } } }
+
+      it 'is successful' do
+        assert_successful result
+      end
+    end
+
+    describe 'with invalid input' do
+      let(:input) { { 'foo' => '5' } }
+
+      it 'is not successful' do
+        refute_successful result, ['must not be one of: 1, 3, 5']
+      end
+    end
+  end
+
+  describe 'with optional' do
+    before do
+      @validator = Class.new do
+        include Hanami::Validations::Form
+
+        validations do
+          optional(:foo) { exclusion?(%w(1 3 5)) }
+        end
+      end
+    end
+
+    describe 'with valid input' do
+      let(:input) { { 'foo' => '2' } }
+
+      it 'is successful' do
+        assert_successful result
+      end
+    end
+
+    describe 'with missing input' do
+      let(:input) { {} }
+
+      it 'is successful' do
+        assert_successful result
+      end
+    end
+
+    describe 'with nil input' do
+      let(:input) { { 'foo' => nil } }
+
+      it 'is successful' do
+        assert_successful result
+      end
+    end
+
+    describe 'with blank input' do
+      let(:input) { { 'foo' => '' } }
+
+      it 'is successful' do
+        assert_successful result
+      end
+    end
+
+    describe 'with invalid type' do
+      let(:input) { { 'foo' => { 'a' => '1' } } }
+
+      it 'is successful' do
+        assert_successful result
+      end
+    end
+
+    describe 'with invalid input' do
+      let(:input) { { 'foo' => '5' } }
+
+      it 'is not successful' do
+        refute_successful result, ['must not be one of: 1, 3, 5']
+      end
+    end
+  end
+
   describe 'as macro' do
-    describe 'with key' do
-      describe 'with required' do
+    describe 'with required' do
+      describe 'with value' do
         before do
           @validator = Class.new do
-            include Hanami::Validations
             include Hanami::Validations::Form
 
-            key(:foo).required(exclusion?: %w(a b c))
+            validations do
+              required(:foo).value(exclusion?: %w(1 3 5))
+            end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { foo: 'y' } }
+          let(:input) { { 'foo' => '2' } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
@@ -31,69 +148,99 @@ describe 'Predicates: Exclusion' do
           let(:input) { {} }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['is missing', 'must not be one of: a, b, c']
+            refute_successful result, ['is missing', 'must not be one of: 1, 3, 5']
           end
         end
 
         describe 'with nil input' do
-          let(:input) { { foo: nil } }
+          let(:input) { { 'foo' => nil } }
 
-          it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be filled', 'must not be one of: a, b, c']
+          it 'is successful' do
+            assert_successful result
           end
         end
 
         describe 'with blank input' do
-          let(:input) { { foo: '' } }
+          let(:input) { { 'foo' => '' } }
 
-          it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be filled', 'must not be one of: a, b, c']
+          it 'is successful' do
+            assert_successful result
           end
         end
 
         describe 'with invalid type' do
-          let(:input) { { foo: { a: '1' } } }
+          let(:input) { { 'foo' => { 'a' => '1' } } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error message' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
         describe 'with invalid input' do
-          let(:input) { { foo: 'c' } }
+          let(:input) { { 'foo' => '5' } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
+            refute_successful result, ['must not be one of: 1, 3, 5']
           end
+        end
+      end
 
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must not be one of: a, b, c']
+      describe 'with filled' do
+        before do
+          @validator = Class.new do
+            include Hanami::Validations::Form
+
+            validations do
+              required(:foo).filled(exclusion?: %w(1 3 5))
+            end
+          end
+        end
+
+        describe 'with valid input' do
+          let(:input) { { 'foo' => '2' } }
+
+          it 'is successful' do
+            assert_successful result
+          end
+        end
+
+        describe 'with missing input' do
+          let(:input) { {} }
+
+          it 'is not successful' do
+            refute_successful result, ['is missing', 'must not be one of: 1, 3, 5']
+          end
+        end
+
+        describe 'with nil input' do
+          let(:input) { { 'foo' => nil } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be filled', 'must not be one of: 1, 3, 5']
+          end
+        end
+
+        describe 'with blank input' do
+          let(:input) { { 'foo' => '' } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be filled', 'must not be one of: 1, 3, 5']
+          end
+        end
+
+        describe 'with invalid type' do
+          let(:input) { { 'foo' => { 'a' => '1' } } }
+
+          it 'is successful' do
+            assert_successful result
+          end
+        end
+
+        describe 'with invalid input' do
+          let(:input) { { 'foo' => '5' } }
+
+          it 'is not successful' do
+            refute_successful result, ['must not be one of: 1, 3, 5']
           end
         end
       end
@@ -101,24 +248,19 @@ describe 'Predicates: Exclusion' do
       describe 'with maybe' do
         before do
           @validator = Class.new do
-            include Hanami::Validations
             include Hanami::Validations::Form
 
-            key(:foo).maybe(exclusion?: %w(a b c))
+            validations do
+              required(:foo).maybe(exclusion?: %w(1 3 5))
+            end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { foo: 'q' } }
+          let(:input) { { 'foo' => '2' } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
@@ -126,96 +268,62 @@ describe 'Predicates: Exclusion' do
           let(:input) { {} }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['is missing', 'must not be one of: a, b, c']
+            refute_successful result, ['is missing', 'must not be one of: 1, 3, 5']
           end
         end
 
         describe 'with nil input' do
-          let(:input) { { foo: nil } }
+          let(:input) { { 'foo' => nil } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error message' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
         describe 'with blank input' do
-          let(:input) { { foo: '' } }
+          let(:input) { { 'foo' => '' } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error message' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
         describe 'with invalid type' do
-          let(:input) { { foo: { a: 1 } } }
+          let(:input) { { 'foo' => { 'a' => '1' } } }
 
-          it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error message' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
-          end
+          it 'is successful'
+          # it 'is successful' do
+          #   assert_successful result
+          # end
         end
 
         describe 'with invalid input' do
-          let(:input) { { foo: 'a' } }
+          let(:input) { { 'foo' => '5' } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must not be one of: a, b, c']
+            refute_successful result, ['must not be one of: 1, 3, 5']
           end
         end
       end
     end
 
     describe 'with optional' do
-      describe 'with required' do
+      describe 'with value' do
         before do
           @validator = Class.new do
-            include Hanami::Validations
             include Hanami::Validations::Form
 
-            optional(:foo).required(exclusion?: %w(a b c))
+            validations do
+              optional(:foo).value(exclusion?: %w(1 3 5))
+            end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { foo: 2 } }
+          let(:input) { { 'foo' => '2' } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
@@ -223,69 +331,99 @@ describe 'Predicates: Exclusion' do
           let(:input) { {} }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error message' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
         describe 'with nil input' do
-          let(:input) { { foo: nil } }
+          let(:input) { { 'foo' => nil } }
 
-          it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be filled', 'must not be one of: a, b, c']
+          it 'is successful' do
+            assert_successful result
           end
         end
 
         describe 'with blank input' do
-          let(:input) { { foo: '' } }
+          let(:input) { { 'foo' => '' } }
 
-          it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be filled', 'must not be one of: a, b, c']
+          it 'is successful' do
+            assert_successful result
           end
         end
 
         describe 'with invalid type' do
-          let(:input) { { foo: { 'a' => '1' } } }
+          let(:input) { { 'foo' => { 'a' => '1' } } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error message' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
         describe 'with invalid input' do
-          let(:input) { { foo: 'c' } }
+          let(:input) { { 'foo' => '5' } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
+            refute_successful result, ['must not be one of: 1, 3, 5']
           end
+        end
+      end
 
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must not be one of: a, b, c']
+      describe 'with filled' do
+        before do
+          @validator = Class.new do
+            include Hanami::Validations::Form
+
+            validations do
+              optional(:foo).filled(exclusion?: %w(1 3 5))
+            end
+          end
+        end
+
+        describe 'with valid input' do
+          let(:input) { { 'foo' => '2' } }
+
+          it 'is successful' do
+            assert_successful result
+          end
+        end
+
+        describe 'with missing input' do
+          let(:input) { {} }
+
+          it 'is successful' do
+            assert_successful result
+          end
+        end
+
+        describe 'with nil input' do
+          let(:input) { { 'foo' => nil } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be filled', 'must not be one of: 1, 3, 5']
+          end
+        end
+
+        describe 'with blank input' do
+          let(:input) { { 'foo' => '' } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be filled', 'must not be one of: 1, 3, 5']
+          end
+        end
+
+        describe 'with invalid type' do
+          let(:input) { { 'foo' => { 'a' => '1' } } }
+
+          it 'is successful' do
+            assert_successful result
+          end
+        end
+
+        describe 'with invalid input' do
+          let(:input) { { 'foo' => '5' } }
+
+          it 'is not successful' do
+            refute_successful result, ['must not be one of: 1, 3, 5']
           end
         end
       end
@@ -293,24 +431,19 @@ describe 'Predicates: Exclusion' do
       describe 'with maybe' do
         before do
           @validator = Class.new do
-            include Hanami::Validations
             include Hanami::Validations::Form
 
-            optional(:foo).maybe(exclusion?: [1, 3, 5])
+            validations do
+              optional(:foo).maybe(exclusion?: %w(1 3 5))
+            end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { foo: 2 } }
+          let(:input) { { 'foo' => '2' } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
@@ -318,69 +451,39 @@ describe 'Predicates: Exclusion' do
           let(:input) { {} }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not message' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
         describe 'with nil input' do
-          let(:input) { { foo: nil } }
+          let(:input) { { 'foo' => nil } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error message' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
         describe 'with blank input' do
-          let(:input) { { foo: '' } }
+          let(:input) { { 'foo' => '' } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error message' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
         describe 'with invalid type' do
-          let(:input) { { foo: { a: 1 } } }
+          let(:input) { { 'foo' => { 'a' => '1' } } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error message' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
         describe 'with invalid input' do
-          let(:input) { { foo: 5 } }
+          let(:input) { { 'foo' => '5' } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must not be one of: 1, 3, 5']
+            refute_successful result, ['must not be one of: 1, 3, 5']
           end
         end
       end

@@ -1,72 +1,154 @@
 require 'test_helper'
 
 describe 'Predicates: Empty' do
+  include TestUtils
+
+  describe 'with required' do
+    before do
+      @validator = Class.new do
+        include Hanami::Validations::Form
+
+        validations do
+          required(:foo) { empty? }
+        end
+      end
+    end
+
+    describe 'with valid input (array)' do
+      let(:input) { { 'foo' => [] } }
+
+      it 'is successful' do
+        assert_successful result
+      end
+    end
+
+    describe 'with valid input (hash)' do
+      let(:input) { { 'foo' => {} } }
+
+      it 'is successful' do
+        assert_successful result
+      end
+    end
+
+    describe 'with missing input' do
+      let(:input) { {} }
+
+      it 'is not successful' do
+        refute_successful result, ['is missing', 'must be empty']
+      end
+    end
+
+    describe 'with nil input' do
+      let(:input) { { 'foo' => nil } }
+
+      it 'is successful' do
+        assert_successful result
+      end
+    end
+
+    describe 'with blank input' do
+      let(:input) { { 'foo' => '' } }
+
+      it 'is successful' do
+        assert_successful result
+      end
+    end
+
+    describe 'with invalid input' do
+      let(:input) { { 'foo' => ['23'] } }
+
+      it 'is not successful' do
+        refute_successful result, ['must be empty']
+      end
+    end
+  end
+
+  describe 'with optional' do
+    before do
+      @validator = Class.new do
+        include Hanami::Validations::Form
+
+        validations do
+          optional(:foo) { empty? }
+        end
+      end
+    end
+
+    describe 'with valid input (array)' do
+      let(:input) { { 'foo' => [] } }
+
+      it 'is successful' do
+        assert_successful result
+      end
+    end
+
+    describe 'with valid input (hash)' do
+      let(:input) { { 'foo' => {} } }
+
+      it 'is successful' do
+        assert_successful result
+      end
+    end
+
+    describe 'with missing input' do
+      let(:input) { {} }
+
+      it 'is successful' do
+        assert_successful result
+      end
+    end
+
+    describe 'with nil input' do
+      let(:input) { { 'foo' => nil } }
+
+      it 'is successful' do
+        assert_successful result
+      end
+    end
+
+    describe 'with blank input' do
+      let(:input) { { 'foo' => '' } }
+
+      it 'is successful' do
+        assert_successful result
+      end
+    end
+
+    describe 'with invalid input' do
+      let(:input) { { 'foo' => ['23'] } }
+
+      it 'is not successful' do
+        refute_successful result, ['must be empty']
+      end
+    end
+  end
+
   describe 'as macro' do
-    describe 'with key' do
-      describe 'with maybe' do
+    describe 'with required' do
+      describe 'with value' do
         before do
           @validator = Class.new do
-            include Hanami::Validations
             include Hanami::Validations::Form
 
-            key(:foo).maybe(:empty?)
-          end
-        end
-
-        describe 'with valid input (string)' do
-          let(:input) { { foo: '' } }
-
-          it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
-          end
-
-          it 'coerces input' do
-            result = @validator.new(input).validate
-            result.output.fetch(:foo).must_equal nil
+            validations do
+              required(:foo).value(:empty?)
+            end
           end
         end
 
         describe 'with valid input (array)' do
-          let(:input) { { foo: [] } }
+          let(:input) { { 'foo' => [] } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
-          end
-
-          it 'coerces input' do
-            result = @validator.new(input).validate
-            result.output.fetch(:foo).must_equal []
+            assert_successful result
           end
         end
 
         describe 'with valid input (hash)' do
-          let(:input) { { foo: {} } }
+          let(:input) { { 'foo' => {} } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
-          end
-
-          it 'coerces input' do
-            result = @validator.new(input).validate
-            result.output.fetch(:foo).must_equal({})
+            assert_successful result
           end
         end
 
@@ -74,121 +156,139 @@ describe 'Predicates: Empty' do
           let(:input) { {} }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['is missing', 'must be empty']
+            refute_successful result, ['is missing', 'must be empty']
           end
         end
 
         describe 'with nil input' do
-          let(:input) { { foo: nil } }
+          let(:input) { { 'foo' => nil } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
+            assert_successful result
           end
+        end
 
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
-          end
+        describe 'with blank input' do
+          let(:input) { { 'foo' => '' } }
 
-          it 'coerces input' do
-            result = @validator.new(input).validate
-            result.output.fetch(:foo).must_equal nil
+          it 'is successful' do
+            assert_successful result
           end
         end
 
         describe 'with invalid input' do
-          let(:input) { { foo: ['23'] } }
+          let(:input) { { 'foo' => ['23'] } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
+            refute_successful result, ['must be empty']
           end
+        end
+      end
 
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be empty']
-          end
+      describe 'with filled' do
+        # it doesn't make sense to ask for a filled key and at the same time assert it's empty
+        #
+        # Example:
+        #
+        #   validations do
+        #     required(:foo).filled(:empty?)
+        #   end
+      end
 
-          it 'coerces input' do
-            result = @validator.new(input).validate
-            result.output.fetch(:foo).must_equal ['23']
+      describe 'with maybe' do
+        before do
+          @validator = Class.new do
+            include Hanami::Validations::Form
+
+            validations do
+              required(:foo).maybe(:empty?)
+            end
           end
+        end
+
+        describe 'with valid input (array)' do
+          let(:input) { { 'foo' => [] } }
+
+          # See https://github.com/dry-rb/dry-validation/issues/125
+          it 'is successful'
+
+          # it 'is successful' do
+          #   assert_successful result
+          # end
+        end
+
+        describe 'with valid input (hash)' do
+          let(:input) { { 'foo' => {} } }
+
+          # See https://github.com/dry-rb/dry-validation/issues/125
+          it 'is successful'
+
+          # it 'is successful' do
+          #   assert_successful result
+          # end
+        end
+
+        describe 'with missing input' do
+          let(:input) { {} }
+
+          it 'is not successful' do
+            refute_successful result, ['is missing', 'must be empty']
+          end
+        end
+
+        describe 'with nil input' do
+          let(:input) { { 'foo' => nil } }
+
+          it 'is successful' do
+            assert_successful result
+          end
+        end
+
+        describe 'with blank input' do
+          let(:input) { { 'foo' => '' } }
+
+          it 'is successful' do
+            assert_successful result
+          end
+        end
+
+        describe 'with invalid input' do
+          let(:input) { { 'foo' => ['23'] } }
+
+          # See https://github.com/dry-rb/dry-validation/issues/125#issuecomment-216240035
+          it 'is not successful'
+          # it 'is not successful' do
+          #   refute_successful result, ['must be empty']
+          # end
         end
       end
     end
 
     describe 'with optional' do
-      describe 'with maybe' do
+      describe 'with value' do
         before do
           @validator = Class.new do
-            include Hanami::Validations
             include Hanami::Validations::Form
 
-            optional(:foo).maybe(:empty?)
-          end
-        end
-
-        describe 'with valid input (empty string)' do
-          let(:input) { { foo: '' } }
-
-          it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
-          end
-
-          it 'coerces input' do
-            result = @validator.new(input).validate
-            result.output.fetch(:foo).must_equal nil
+            validations do
+              optional(:foo).value(:empty?)
+            end
           end
         end
 
         describe 'with valid input (array)' do
-          let(:input) { { foo: [] } }
+          let(:input) { { 'foo' => [] } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
-          end
-
-          it 'coerces input' do
-            result = @validator.new(input).validate
-            result.output.fetch(:foo).must_equal []
+            assert_successful result
           end
         end
 
         describe 'with valid input (hash)' do
-          let(:input) { { foo: {} } }
+          let(:input) { { 'foo' => {} } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
-          end
-
-          it 'coerces input' do
-            result = @validator.new(input).validate
-            result.output.fetch(:foo).must_equal({})
+            assert_successful result
           end
         end
 
@@ -196,57 +296,105 @@ describe 'Predicates: Empty' do
           let(:input) { {} }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
-          end
-
-          it 'does not coerces input' do
-            result = @validator.new(input).validate
-            result.output.key?(:foo).must_equal false
+            assert_successful result
           end
         end
 
         describe 'with nil input' do
-          let(:input) { { foo: nil } }
+          let(:input) { { 'foo' => nil } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
+            assert_successful result
           end
+        end
 
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
-          end
+        describe 'with blank input' do
+          let(:input) { { 'foo' => '' } }
 
-          it 'coerces input' do
-            result = @validator.new(input).validate
-            result.output.fetch(:foo).must_equal nil
+          it 'is successful' do
+            assert_successful result
           end
         end
 
         describe 'with invalid input' do
-          let(:input) { { foo: ['23'] } }
+          let(:input) { { 'foo' => ['23'] } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
+            refute_successful result, ['must be empty']
           end
+        end
+      end
 
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be empty']
-          end
+      describe 'with filled' do
+        # it doesn't make sense to ask for a filled key and at the same time assert it's empty
+        #
+        # Example:
+        #
+        #   validations do
+        #     optional(:foo).filled(:empty?)
+        #   end
+      end
 
-          it 'coerces input' do
-            result = @validator.new(input).validate
-            result.output.fetch(:foo).must_equal ['23']
+      describe 'with maybe' do
+        before do
+          @validator = Class.new do
+            include Hanami::Validations::Form
+
+            validations do
+              optional(:foo).maybe(:empty?)
+            end
           end
+        end
+
+        describe 'with valid input (array)' do
+          let(:input) { { 'foo' => [] } }
+
+          it 'is successful' do
+            assert_successful result
+          end
+        end
+
+        describe 'with valid input (hash)' do
+          let(:input) { { 'foo' => {} } }
+
+          it 'is successful' do
+            assert_successful result
+          end
+        end
+
+        describe 'with missing input' do
+          let(:input) { {} }
+
+          it 'is successful' do
+            assert_successful result
+          end
+        end
+
+        describe 'with nil input' do
+          let(:input) { { 'foo' => nil } }
+
+          it 'is successful' do
+            assert_successful result
+          end
+        end
+
+        describe 'with blank input' do
+          let(:input) { { 'foo' => '' } }
+
+          it 'is successful' do
+            assert_successful result
+          end
+        end
+
+        describe 'with invalid input' do
+          let(:input) { { 'foo' => ['23'] } }
+
+          # See https://github.com/dry-rb/dry-validation/issues/126
+          it 'is not successful'
+
+          # it 'is not successful' do
+          #   refute_successful result, ['must be empty']
+          # end
         end
       end
     end

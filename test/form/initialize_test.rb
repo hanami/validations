@@ -7,7 +7,7 @@ describe Hanami::Validations::Form do
         include Hanami::Validations::Form
 
         validations do
-          key(:attr) { type?(Integer) }
+          required(:attr) { type?(Integer) }
         end
       end
 
@@ -15,11 +15,11 @@ describe Hanami::Validations::Form do
         include Hanami::Validations::Form
 
         validations do
-          key(:foo) { filled? }
-          key(:num) { type?(Integer) & eql?(23) }
+          required(:foo) { filled? }
+          required(:num) { type?(Integer) & eql?(23) }
 
-          key(:bar).schema do
-            key(:baz) { filled? }
+          required(:bar).schema do
+            required(:baz) { filled? }
           end
         end
       end

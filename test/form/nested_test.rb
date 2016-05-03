@@ -7,13 +7,13 @@ describe Hanami::Validations::Form do
         include Hanami::Validations::Form
 
         validations do
-          key(:number) { filled? }
+          required(:number) { filled? }
 
-          key(:customer).schema do
-            key(:name) { filled? }
+          required(:customer).schema do
+            required(:name) { filled? }
 
-            key(:address).schema do
-              key(:city) { filled? }
+            required(:address).schema do
+              required(:city) { filled? }
             end
           end
         end

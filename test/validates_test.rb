@@ -6,7 +6,7 @@ describe Hanami::Validations do
       include Hanami::Validations
 
       validations do
-        key(:name) { filled? }
+        required(:name) { filled? }
       end
     end
   end

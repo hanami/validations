@@ -1,26 +1,24 @@
 require 'test_helper'
 
 describe 'Predicates: Lt' do
-  describe 'with key' do
+  include TestUtils
+
+  describe 'with required' do
     before do
       @validator = Class.new do
-        include Hanami::Validations
+        include Hanami::Validations::Form
 
-        key(:foo) { lt?(23) }
+        validations do
+          required(:foo) { int? & lt?(23) }
+        end
       end
     end
 
     describe 'with valid input' do
-      let(:input) { { foo: 1 } }
+      let(:input) { { 'foo' => '1' } }
 
       it 'is successful' do
-        result = @validator.new(input).validate
-        result.must_be :success?
-      end
-
-      it 'has not error messages' do
-        result = @validator.new(input).validate
-        result.messages[:foo].must_be_nil
+        assert_successful result
       end
     end
 
@@ -28,67 +26,48 @@ describe 'Predicates: Lt' do
       let(:input) { {} }
 
       it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['is missing', 'must be less than 23 ( was given)']
+        refute_successful result, ['is missing', 'must be less than 23']
       end
     end
 
     describe 'with nil input' do
-      let(:input) { { foo: nil } }
+      let(:input) { { 'foo' => nil } }
 
-      it 'is raises error' do
-        -> { @validator.new(input).validate }.must_raise(NoMethodError)
+      it 'is not successful' do
+        refute_successful result, ['must be an integer', 'must be less than 23']
       end
     end
 
     describe 'with blank input' do
-      let(:input) { { foo: '' } }
+      let(:input) { { 'foo' => '' } }
 
-      it 'is raises error' do
-        exception = -> { @validator.new(input).validate }.must_raise(ArgumentError)
-        exception.message.must_equal 'comparison of String with 23 failed'
+      it 'is not successful' do
+        refute_successful result, ['must be an integer', 'must be less than 23']
       end
     end
 
     describe 'with invalid input type' do
-      let(:input) { { foo: [] } }
+      let(:input) { { 'foo' => [] } }
 
-      it 'is raises error' do
-        -> { @validator.new(input).validate }.must_raise(NoMethodError)
-      end
+      it 'is not successful'
+      # it 'is not successful' do
+      #   refute_successful result, ['must be an integer', 'must be less than 23']
+      # end
     end
 
     describe 'with equal input' do
-      let(:input) { { foo: 23 } }
+      let(:input) { { 'foo' => '23' } }
 
       it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      # FIXME: open a dry-v ticket
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['must be less than 23 (23 was given)', 'must be less than 23 ( was given)']
+        refute_successful result, ['must be less than 23']
       end
     end
 
     describe 'with greater than input' do
-      let(:input) { { foo: 99 } }
+      let(:input) { { 'foo' => '99' } }
 
       it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['must be less than 23 (99 was given)', 'must be less than 23 ( was given)']
+        refute_successful result, ['must be less than 23']
       end
     end
   end
@@ -96,23 +75,19 @@ describe 'Predicates: Lt' do
   describe 'with optional' do
     before do
       @validator = Class.new do
-        include Hanami::Validations
+        include Hanami::Validations::Form
 
-        optional(:foo) { lt?(23) }
+        validations do
+          optional(:foo) { int? & lt?(23) }
+        end
       end
     end
 
     describe 'with valid input' do
-      let(:input) { { foo: 1 } }
+      let(:input) { { 'foo' => '1' } }
 
       it 'is successful' do
-        result = @validator.new(input).validate
-        result.must_be :success?
-      end
-
-      it 'has not error messages' do
-        result = @validator.new(input).validate
-        result.messages[:foo].must_be_nil
+        assert_successful result
       end
     end
 
@@ -120,185 +95,70 @@ describe 'Predicates: Lt' do
       let(:input) { {} }
 
       it 'is successful' do
-        result = @validator.new(input).validate
-        result.must_be :success?
-      end
-
-      it 'has not error messages' do
-        result = @validator.new(input).validate
-        result.messages[:foo].must_be_nil
+        assert_successful result
       end
     end
 
     describe 'with nil input' do
-      let(:input) { { foo: nil } }
+      let(:input) { { 'foo' => nil } }
 
-      it 'is raises error' do
-        -> { @validator.new(input).validate }.must_raise(NoMethodError)
+      it 'is not successful' do
+        refute_successful result, ['must be an integer', 'must be less than 23']
       end
     end
 
     describe 'with blank input' do
-      let(:input) { { foo: '' } }
+      let(:input) { { 'foo' => '' } }
 
-      it 'is raises error' do
-        exception = -> { @validator.new(input).validate }.must_raise(ArgumentError)
-        exception.message.must_equal 'comparison of String with 23 failed'
+      it 'is not successful' do
+        refute_successful result, ['must be an integer', 'must be less than 23']
       end
     end
 
     describe 'with invalid input type' do
-      let(:input) { { foo: [] } }
+      let(:input) { { 'foo' => [] } }
 
-      it 'is raises error' do
-        -> { @validator.new(input).validate }.must_raise(NoMethodError)
-      end
+      it 'is not successful'
+      # it 'is not successful' do
+      #   refute_successful result, ['must be less than 23']
+      # end
     end
 
     describe 'with equal input' do
-      let(:input) { { foo: 23 } }
+      let(:input) { { 'foo' => '23' } }
 
       it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      # FIXME: open a dry-v ticket
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['must be less than 23 (23 was given)', 'must be less than 23 ( was given)']
+        refute_successful result, ['must be less than 23']
       end
     end
 
     describe 'with greater than input' do
-      let(:input) { { foo: 99 } }
+      let(:input) { { 'foo' => '99' } }
 
       it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['must be less than 23 (99 was given)', 'must be less than 23 ( was given)']
-      end
-    end
-  end
-
-  describe 'with attr' do
-    before do
-      @validator = Class.new do
-        include Hanami::Validations
-
-        attr(:foo) { lt?(23) }
-      end
-    end
-
-    describe 'with valid input' do
-      let(:input) { Input.new(1) }
-
-      it 'is successful' do
-        result = @validator.new(input).validate
-        result.must_be :success?
-      end
-
-      it 'has not error messages' do
-        result = @validator.new(input).validate
-        result.messages[:foo].must_be_nil
-      end
-    end
-
-    describe 'with unknown method' do
-      let(:input) { Object.new }
-
-      it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['is missing', 'must be less than 23 ( was given)']
-      end
-    end
-
-    describe 'with nil input' do
-      let(:input) { Input.new(nil) }
-
-      it 'is raises error' do
-        -> { @validator.new(input).validate }.must_raise(NoMethodError)
-      end
-    end
-
-    describe 'with blank input' do
-      let(:input) { Input.new('') }
-
-      it 'is raises error' do
-        exception = -> { @validator.new(input).validate }.must_raise(ArgumentError)
-        exception.message.must_equal 'comparison of String with 23 failed'
-      end
-    end
-
-    describe 'with invalid input type' do
-      let(:input) { Input.new([]) }
-
-      it 'is raises error' do
-        -> { @validator.new(input).validate }.must_raise(NoMethodError)
-      end
-    end
-
-    describe 'with equal input' do
-      let(:input) { Input.new(23) }
-
-      it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      # FIXME: open a dry-v ticket
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['must be less than 23 (23 was given)', 'must be less than 23 ( was given)']
-      end
-    end
-
-    describe 'with greater than input' do
-      let(:input) { Input.new(99) }
-
-      it 'is not successful' do
-        result = @validator.new(input).validate
-        result.wont_be :success?
-      end
-
-      it 'returns error message' do
-        result = @validator.new(input).validate
-        result.messages.fetch(:foo).must_equal ['must be less than 23 (99 was given)', 'must be less than 23 ( was given)']
+        refute_successful result, ['must be less than 23']
       end
     end
   end
 
   describe 'as macro' do
-    describe 'with key' do
-      describe 'with required' do
+    describe 'with required' do
+      describe 'with value' do
         before do
           @validator = Class.new do
-            include Hanami::Validations
+            include Hanami::Validations::Form
 
-            key(:foo).required(lt?: 23)
+            validations do
+              required(:foo).value(:int?, lt?: 23)
+            end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { foo: 1 } }
+          let(:input) { { 'foo' => '1' } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
@@ -306,84 +166,117 @@ describe 'Predicates: Lt' do
           let(:input) { {} }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['is missing', 'must be less than 23 ( was given)']
+            refute_successful result, ['is missing', 'must be less than 23']
           end
         end
 
         describe 'with nil input' do
-          let(:input) { { foo: nil } }
+          let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be filled', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be an integer', 'must be less than 23']
           end
         end
 
         describe 'with blank input' do
-          let(:input) { { foo: '' } }
+          let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be filled', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be an integer', 'must be less than 23']
           end
         end
 
         describe 'with invalid input type' do
-          let(:input) { { foo: [] } }
+          let(:input) { { 'foo' => [] } }
 
-          it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be filled', 'must be less than 23 ( was given)']
-          end
+          it 'is not successful'
+          # it 'is not successful' do
+          #   refute_successful result, []
+          # end
         end
 
         describe 'with equal input' do
-          let(:input) { { foo: 23 } }
+          let(:input) { { 'foo' => '23' } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          # FIXME: open a dry-v ticket
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be less than 23 (23 was given)', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be less than 23']
           end
         end
 
         describe 'with greater than input' do
-          let(:input) { { foo: 99 } }
+          let(:input) { { 'foo' => '99' } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
+            refute_successful result, ['must be less than 23']
           end
+        end
+      end
 
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be less than 23 (99 was given)', 'must be less than 23 ( was given)']
+      describe 'with filled' do
+        before do
+          @validator = Class.new do
+            include Hanami::Validations::Form
+
+            validations do
+              required(:foo).filled(:int?, lt?: 23)
+            end
+          end
+        end
+
+        describe 'with valid input' do
+          let(:input) { { 'foo' => '1' } }
+
+          it 'is successful' do
+            assert_successful result
+          end
+        end
+
+        describe 'with missing input' do
+          let(:input) { {} }
+
+          it 'is not successful' do
+            refute_successful result, ['is missing', 'must be less than 23']
+          end
+        end
+
+        describe 'with nil input' do
+          let(:input) { { 'foo' => nil } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be filled', 'must be less than 23']
+          end
+        end
+
+        describe 'with blank input' do
+          let(:input) { { 'foo' => '' } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be filled', 'must be less than 23']
+          end
+        end
+
+        describe 'with invalid input type' do
+          let(:input) { { 'foo' => [] } }
+
+          it 'is not successful'
+          # it 'is not successful' do
+          #   refute_successful result, ['must be filled', 'must be less than 23']
+          # end
+        end
+
+        describe 'with equal input' do
+          let(:input) { { 'foo' => '23' } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be less than 23']
+          end
+        end
+
+        describe 'with greater than input' do
+          let(:input) { { 'foo' => '99' } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be less than 23']
           end
         end
       end
@@ -391,23 +284,19 @@ describe 'Predicates: Lt' do
       describe 'with maybe' do
         before do
           @validator = Class.new do
-            include Hanami::Validations
+            include Hanami::Validations::Form
 
-            key(:foo).maybe(lt?: 23)
+            validations do
+              required(:foo).maybe(:int?, lt?: 23)
+            end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { foo: 1 } }
+          let(:input) { { 'foo' => '1' } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
@@ -415,99 +304,70 @@ describe 'Predicates: Lt' do
           let(:input) { {} }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['is missing', 'must be less than 23 ( was given)']
+            refute_successful result, ['is missing', 'must be less than 23']
           end
         end
 
         describe 'with nil input' do
-          let(:input) { { foo: nil } }
+          let(:input) { { 'foo' => nil } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error message' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
         describe 'with blank input' do
-          let(:input) { { foo: '' } }
+          let(:input) { { 'foo' => '' } }
 
-          it 'is raises error' do
-            exception = -> { @validator.new(input).validate }.must_raise(ArgumentError)
-            exception.message.must_equal 'comparison of String with 23 failed'
+          it 'is successful' do
+            assert_successful result
           end
         end
 
         describe 'with invalid input type' do
-          let(:input) { { foo: [] } }
+          let(:input) { { 'foo' => [] } }
 
-          it 'is raises error' do
-            -> { @validator.new(input).validate }.must_raise(NoMethodError)
-          end
+          it 'is not successful'
+          # it 'is not successful' do
+          #   refute_successful result, ['is missing', 'must be less than 23']
+          # end
         end
 
         describe 'with equal input' do
-          let(:input) { { foo: 23 } }
+          let(:input) { { 'foo' => '23' } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          # FIXME: open a dry-v ticket
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be less than 23 (23 was given)', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be less than 23']
           end
         end
 
         describe 'with greater than input' do
-          let(:input) { { foo: 99 } }
+          let(:input) { { 'foo' => '99' } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be less than 23 (99 was given)', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be less than 23']
           end
         end
       end
     end
 
     describe 'with optional' do
-      describe 'with required' do
+      describe 'with value' do
         before do
           @validator = Class.new do
-            include Hanami::Validations
+            include Hanami::Validations::Form
 
-            optional(:foo).required(lt?: 23)
+            validations do
+              optional(:foo).value(:int?, lt?: 23)
+            end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { foo: 1 } }
+          let(:input) { { 'foo' => '1' } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
@@ -515,84 +375,117 @@ describe 'Predicates: Lt' do
           let(:input) { {} }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error message' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
         describe 'with nil input' do
-          let(:input) { { foo: nil } }
+          let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be filled', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be an integer', 'must be less than 23']
           end
         end
 
         describe 'with blank input' do
-          let(:input) { { foo: '' } }
+          let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be filled', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be an integer', 'must be less than 23']
           end
         end
 
         describe 'with invalid input type' do
-          let(:input) { { foo: [] } }
+          let(:input) { { 'foo' => [] } }
 
-          it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be filled', 'must be less than 23 ( was given)']
-          end
+          it 'is not successful'
+          # it 'is not successful' do
+          #   refute_successful result, ['must be an integer', 'must be less than 23']
+          # end
         end
 
         describe 'with equal input' do
-          let(:input) { { foo: 23 } }
+          let(:input) { { 'foo' => '23' } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          # FIXME: open a dry-v ticket
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be less than 23 (23 was given)', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be less than 23']
           end
         end
 
         describe 'with greater than input' do
-          let(:input) { { foo: 99 } }
+          let(:input) { { 'foo' => '99' } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
+            refute_successful result, ['must be less than 23']
           end
+        end
+      end
 
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be less than 23 (99 was given)', 'must be less than 23 ( was given)']
+      describe 'with filled' do
+        before do
+          @validator = Class.new do
+            include Hanami::Validations::Form
+
+            validations do
+              optional(:foo).filled(:int?, lt?: 23)
+            end
+          end
+        end
+
+        describe 'with valid input' do
+          let(:input) { { 'foo' => '1' } }
+
+          it 'is successful' do
+            assert_successful result
+          end
+        end
+
+        describe 'with missing input' do
+          let(:input) { {} }
+
+          it 'is successful' do
+            assert_successful result
+          end
+        end
+
+        describe 'with nil input' do
+          let(:input) { { 'foo' => nil } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be filled', 'must be less than 23']
+          end
+        end
+
+        describe 'with blank input' do
+          let(:input) { { 'foo' => '' } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be filled', 'must be less than 23']
+          end
+        end
+
+        describe 'with invalid input type' do
+          let(:input) { { 'foo' => [] } }
+
+          it 'is not successful'
+          # it 'is not successful' do
+          #   refute_successful result, ['must be filled', 'must be less than 23']
+          # end
+        end
+
+        describe 'with equal input' do
+          let(:input) { { 'foo' => '23' } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be less than 23']
+          end
+        end
+
+        describe 'with greater than input' do
+          let(:input) { { 'foo' => '99' } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be less than 23']
           end
         end
       end
@@ -600,23 +493,19 @@ describe 'Predicates: Lt' do
       describe 'with maybe' do
         before do
           @validator = Class.new do
-            include Hanami::Validations
+            include Hanami::Validations::Form
 
-            optional(:foo).maybe(lt?: 23)
+            validations do
+              optional(:foo).maybe(:int?, lt?: 23)
+            end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { foo: 1 } }
+          let(:input) { { 'foo' => '1' } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error messages' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
@@ -624,73 +513,48 @@ describe 'Predicates: Lt' do
           let(:input) { {} }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error message' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
         describe 'with nil input' do
-          let(:input) { { foo: nil } }
+          let(:input) { { 'foo' => nil } }
 
           it 'is successful' do
-            result = @validator.new(input).validate
-            result.must_be :success?
-          end
-
-          it 'has not error message' do
-            result = @validator.new(input).validate
-            result.messages[:foo].must_be_nil
+            assert_successful result
           end
         end
 
         describe 'with blank input' do
-          let(:input) { { foo: '' } }
+          let(:input) { { 'foo' => '' } }
 
-          it 'is raises error' do
-            exception = -> { @validator.new(input).validate }.must_raise(ArgumentError)
-            exception.message.must_equal 'comparison of String with 23 failed'
+          it 'is successful' do
+            assert_successful result, []
           end
         end
 
         describe 'with invalid input type' do
-          let(:input) { { foo: [] } }
+          let(:input) { { 'foo' => [] } }
 
-          it 'is raises error' do
-            -> { @validator.new(input).validate }.must_raise(NoMethodError)
-          end
+          it 'is not successful'
+          # it 'is not successful' do
+          #   refute_successful result, []
+          # end
         end
 
         describe 'with equal input' do
-          let(:input) { { foo: 23 } }
+          let(:input) { { 'foo' => '23' } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          # FIXME: open a dry-v ticket
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be less than 23 (23 was given)', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be less than 23']
           end
         end
 
         describe 'with greater than input' do
-          let(:input) { { foo: 99 } }
+          let(:input) { { 'foo' => '99' } }
 
           it 'is not successful' do
-            result = @validator.new(input).validate
-            result.wont_be :success?
-          end
-
-          it 'returns error message' do
-            result = @validator.new(input).validate
-            result.messages.fetch(:foo).must_equal ['must be less than 23 (99 was given)', 'must be less than 23 ( was given)']
+            refute_successful result, ['must be less than 23']
           end
         end
       end

@@ -45,6 +45,14 @@ describe 'Predicates: Type' do
         refute_successful result, ['must be Integer']
       end
     end
+
+    describe 'with invalid type' do
+      let(:input) { { foo: [:x] } }
+
+      it 'is not successful' do
+        refute_successful result, ['must be Integer']
+      end
+    end
   end
 
   describe 'with optional' do
@@ -84,6 +92,14 @@ describe 'Predicates: Type' do
 
     describe 'with blank input' do
       let(:input) { { foo: '' } }
+
+      it 'is not successful' do
+        refute_successful result, ['must be Integer']
+      end
+    end
+
+    describe 'with invalid type' do
+      let(:input) { { foo: [:x] } }
 
       it 'is not successful' do
         refute_successful result, ['must be Integer']
@@ -135,6 +151,14 @@ describe 'Predicates: Type' do
             refute_successful result, ['must be Integer']
           end
         end
+
+        describe 'with invalid type' do
+          let(:input) { { foo: [:x] } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be Integer']
+          end
+        end
       end
 
       describe 'with filled' do
@@ -179,6 +203,14 @@ describe 'Predicates: Type' do
             refute_successful result, ['must be filled', 'must be Integer']
           end
         end
+
+        describe 'with invalid type' do
+          let(:input) { { foo: [:x] } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be Integer']
+          end
+        end
       end
 
       describe 'with maybe' do
@@ -218,6 +250,14 @@ describe 'Predicates: Type' do
 
         describe 'with blank input' do
           let(:input) { { foo: '' } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be Integer']
+          end
+        end
+
+        describe 'with invalid type' do
+          let(:input) { { foo: [:x] } }
 
           it 'is not successful' do
             refute_successful result, ['must be Integer']
@@ -269,6 +309,14 @@ describe 'Predicates: Type' do
             refute_successful result, ['must be Integer']
           end
         end
+
+        describe 'with invalid type' do
+          let(:input) { { foo: [:x] } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be Integer']
+          end
+        end
       end
 
       describe 'with filled' do
@@ -313,6 +361,14 @@ describe 'Predicates: Type' do
             refute_successful result, ['must be filled', 'must be Integer']
           end
         end
+
+        describe 'with invalid type' do
+          let(:input) { { foo: [:x] } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be Integer']
+          end
+        end
       end
 
       describe 'with maybe' do
@@ -352,6 +408,14 @@ describe 'Predicates: Type' do
 
         describe 'with blank input' do
           let(:input) { { foo: '' } }
+
+          it 'is not successful' do
+            refute_successful result, ['must be Integer']
+          end
+        end
+
+        describe 'with invalid type' do
+          let(:input) { { foo: [:x] } }
 
           it 'is not successful' do
             refute_successful result, ['must be Integer']
