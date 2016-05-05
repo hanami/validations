@@ -442,6 +442,30 @@ error.name           # => "address.street"
 error.attribute_name # => "street"
 ```
 
+Also you can use validations nested in Hanami Validations object.
+```ruby
+class Address
+  include Hanami::Validations
+
+  attribute :street,      presence: true
+  attribute :city,        presence: true
+  attribute :country,     presence: true
+  attribute :postal_code, presence: true, format: /.../
+end
+
+class ShippingDetails
+  include Hanami::Validations
+
+  attribute :full_name, presence: true
+  attribute :address,   type: Address
+end
+
+validator = ShippingDetails.new
+validator.valid? # => false
+```
+
+Errors are handled the same way as for nested block syntax.
+
 ### Composable validations
 
 Validations can be reused via composition:

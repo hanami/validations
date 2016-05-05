@@ -22,6 +22,8 @@ module Hanami
       def self.coerce(coercer, value, &blk)
         if ::Hanami::Utils::Kernel.respond_to?(coercer.to_s)
           ::Hanami::Utils::Kernel.__send__(coercer.to_s, value, &blk) rescue nil
+        elsif coercer.is_a?(Array)
+          value.map { |v| coerce(coercer[0], v) }
         else
           coercer.new(value, &blk)
         end

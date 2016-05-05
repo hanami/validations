@@ -1,6 +1,7 @@
 require 'set'
 require 'hanami/utils/attributes'
 require 'hanami/validations/nested_attributes'
+require 'hanami/validations/array_attribute'
 
 module Hanami
   module Validations
@@ -294,6 +295,12 @@ module Hanami
           define_accessor(name, type)
           defined_attributes.add(name.to_s)
 
+          if attribute_validatable?(type)
+            options[:nested] = true
+            define_lazy_reader(name, type)
+            define_coerced_writer(name, type)
+          end
+
           if options[:confirmation]
             confirmation_accessor = "#{ name }_confirmation"
             define_accessor(confirmation_accessor, type)
@@ -370,6 +377,15 @@ module Hanami
         # @api private
         def build_validation_class(&blk)
           NestedAttributes.fabricate(&blk)
+        end
+
+        private
+        def attribute_validatable?(type)
+          return false if type.nil?
+          if type.is_a?(Array)
+            return type.all?{ |member_type| member_type.instance_methods.include?(:valid?) }
+          end
+          type.instance_methods.include?(:valid?)
         end
       end
 
