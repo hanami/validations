@@ -1,3 +1,5 @@
+require 'hanami/validations'
+
 module Hanami
   module Validations
     module Form
