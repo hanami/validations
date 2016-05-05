@@ -1,5 +1,6 @@
 require 'dry-validation'
 require 'hanami/utils/class_attribute'
+require 'hanami/validations/predicates'
 
 module Hanami
   # Hanami::Validations is a set of lightweight validations for Ruby objects.

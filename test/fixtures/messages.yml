@@ -1,0 +1,5 @@
+en:
+  errors:
+    email?: "must be an email"
+    cool?: "must be cool"
+    odd?: "must be odd"
