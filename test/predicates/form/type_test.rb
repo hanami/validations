@@ -34,7 +34,7 @@ describe 'Predicates: Type' do
       let(:input) { { 'foo' => nil } }
 
       it 'is not successful' do
-        refute_successful result, ['must be Integer']
+        refute_successful result, ['is missing', 'must be Integer']
       end
     end
 
@@ -49,11 +49,9 @@ describe 'Predicates: Type' do
     describe 'with invalid type' do
       let(:input) { { 'foo' => ['x'] } }
 
-      # See: https://github.com/dry-rb/dry-validation/issues/135
-      it 'is not successful'
-      # it 'is not successful' do
-      #   refute_successful result, ['must be Integer']
-      # end
+      it 'is not successful' do
+        refute_successful result, ['is missing', 'must be Integer']
+      end
     end
   end
 
@@ -87,8 +85,8 @@ describe 'Predicates: Type' do
     describe 'with nil input' do
       let(:input) { { 'foo' => nil } }
 
-      it 'is not successful' do
-        refute_successful result, ['must be Integer']
+      it 'is successful' do
+        assert_successful result
       end
     end
 
@@ -143,7 +141,7 @@ describe 'Predicates: Type' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            refute_successful result, ['must be Integer']
+            refute_successful result, ['is missing', 'must be Integer']
           end
         end
 
@@ -196,7 +194,7 @@ describe 'Predicates: Type' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled', 'must be Integer']
+            refute_successful result, ['is missing', 'must be Integer']
           end
         end
 
@@ -303,8 +301,8 @@ describe 'Predicates: Type' do
         describe 'with nil input' do
           let(:input) { { 'foo' => nil } }
 
-          it 'is not successful' do
-            refute_successful result, ['must be Integer']
+          it 'is successful' do
+            assert_successful result
           end
         end
 
@@ -356,8 +354,8 @@ describe 'Predicates: Type' do
         describe 'with nil input' do
           let(:input) { { 'foo' => nil } }
 
-          it 'is not successful' do
-            refute_successful result, ['must be filled', 'must be Integer']
+          it 'is successful' do
+            assert_successful result
           end
         end
 
