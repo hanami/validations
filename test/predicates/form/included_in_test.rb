@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe 'Predicates: Exclusion' do
+describe 'Predicates: Included In' do
   include TestUtils
 
   describe 'with required' do
@@ -9,13 +9,13 @@ describe 'Predicates: Exclusion' do
         include Hanami::Validations::Form
 
         validations do
-          required(:foo) { exclusion?(%w(1 3 5)) }
+          required(:foo) { included_in?(%w(1 3 5)) }
         end
       end
     end
 
     describe 'with valid input' do
-      let(:input) { { 'foo' => '2' } }
+      let(:input) { { 'foo' => '3' } }
 
       it 'is successful' do
         assert_successful result
@@ -26,39 +26,39 @@ describe 'Predicates: Exclusion' do
       let(:input) { {} }
 
       it 'is not successful' do
-        refute_successful result, ['is missing', 'must not be one of: 1, 3, 5']
+        refute_successful result, ['is missing', 'must be one of: 1, 3, 5']
       end
     end
 
     describe 'with nil input' do
       let(:input) { { 'foo' => nil } }
 
-      it 'is successful' do
-        assert_successful result
+      it 'is not successful' do
+        refute_successful result, ['must be one of: 1, 3, 5']
       end
     end
 
     describe 'with blank input' do
       let(:input) { { 'foo' => '' } }
 
-      it 'is successful' do
-        assert_successful result
+      it 'is not successful' do
+        refute_successful result, ['must be one of: 1, 3, 5']
       end
     end
 
     describe 'with invalid type' do
       let(:input) { { 'foo' => { 'a' => '1' } } }
 
-      it 'is successful' do
-        assert_successful result
+      it 'is not successful' do
+        refute_successful result, ['must be one of: 1, 3, 5']
       end
     end
 
     describe 'with invalid input' do
-      let(:input) { { 'foo' => '5' } }
+      let(:input) { { 'foo' => '4' } }
 
       it 'is not successful' do
-        refute_successful result, ['must not be one of: 1, 3, 5']
+        refute_successful result, ['must be one of: 1, 3, 5']
       end
     end
   end
@@ -69,13 +69,13 @@ describe 'Predicates: Exclusion' do
         include Hanami::Validations::Form
 
         validations do
-          optional(:foo) { exclusion?(%w(1 3 5)) }
+          optional(:foo) { included_in?(%w(1 3 5)) }
         end
       end
     end
 
     describe 'with valid input' do
-      let(:input) { { 'foo' => '2' } }
+      let(:input) { { 'foo' => '3' } }
 
       it 'is successful' do
         assert_successful result
@@ -93,32 +93,32 @@ describe 'Predicates: Exclusion' do
     describe 'with nil input' do
       let(:input) { { 'foo' => nil } }
 
-      it 'is successful' do
-        assert_successful result
+      it 'is not successful' do
+        refute_successful result, ['must be one of: 1, 3, 5']
       end
     end
 
     describe 'with blank input' do
       let(:input) { { 'foo' => '' } }
 
-      it 'is successful' do
-        assert_successful result
+      it 'is not successful' do
+        refute_successful result, ['must be one of: 1, 3, 5']
       end
     end
 
     describe 'with invalid type' do
       let(:input) { { 'foo' => { 'a' => '1' } } }
 
-      it 'is successful' do
-        assert_successful result
+      it 'is not successful' do
+        refute_successful result, ['must be one of: 1, 3, 5']
       end
     end
 
     describe 'with invalid input' do
-      let(:input) { { 'foo' => '5' } }
+      let(:input) { { 'foo' => '4' } }
 
       it 'is not successful' do
-        refute_successful result, ['must not be one of: 1, 3, 5']
+        refute_successful result, ['must be one of: 1, 3, 5']
       end
     end
   end
@@ -131,13 +131,13 @@ describe 'Predicates: Exclusion' do
             include Hanami::Validations::Form
 
             validations do
-              required(:foo).value(exclusion?: %w(1 3 5))
+              required(:foo).value(included_in?: %w(1 3 5))
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => '2' } }
+          let(:input) { { 'foo' => '3' } }
 
           it 'is successful' do
             assert_successful result
@@ -148,39 +148,39 @@ describe 'Predicates: Exclusion' do
           let(:input) { {} }
 
           it 'is not successful' do
-            refute_successful result, ['is missing', 'must not be one of: 1, 3, 5']
+            refute_successful result, ['is missing', 'must be one of: 1, 3, 5']
           end
         end
 
         describe 'with nil input' do
           let(:input) { { 'foo' => nil } }
 
-          it 'is successful' do
-            assert_successful result
+          it 'is not successful' do
+            refute_successful result, ['must be one of: 1, 3, 5']
           end
         end
 
         describe 'with blank input' do
           let(:input) { { 'foo' => '' } }
 
-          it 'is successful' do
-            assert_successful result
+          it 'is not successful' do
+            refute_successful result, ['must be one of: 1, 3, 5']
           end
         end
 
         describe 'with invalid type' do
           let(:input) { { 'foo' => { 'a' => '1' } } }
 
-          it 'is successful' do
-            assert_successful result
+          it 'is not successful' do
+            refute_successful result, ['must be one of: 1, 3, 5']
           end
         end
 
         describe 'with invalid input' do
-          let(:input) { { 'foo' => '5' } }
+          let(:input) { { 'foo' => '4' } }
 
           it 'is not successful' do
-            refute_successful result, ['must not be one of: 1, 3, 5']
+            refute_successful result, ['must be one of: 1, 3, 5']
           end
         end
       end
@@ -191,13 +191,13 @@ describe 'Predicates: Exclusion' do
             include Hanami::Validations::Form
 
             validations do
-              required(:foo).filled(exclusion?: %w(1 3 5))
+              required(:foo).filled(included_in?: %w(1 3 5))
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => '2' } }
+          let(:input) { { 'foo' => '3' } }
 
           it 'is successful' do
             assert_successful result
@@ -208,7 +208,7 @@ describe 'Predicates: Exclusion' do
           let(:input) { {} }
 
           it 'is not successful' do
-            refute_successful result, ['is missing', 'must not be one of: 1, 3, 5']
+            refute_successful result, ['is missing', 'must be one of: 1, 3, 5']
           end
         end
 
@@ -216,7 +216,7 @@ describe 'Predicates: Exclusion' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled', 'must not be one of: 1, 3, 5']
+            refute_successful result, ['must be filled', 'must be one of: 1, 3, 5']
           end
         end
 
@@ -224,23 +224,23 @@ describe 'Predicates: Exclusion' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled', 'must not be one of: 1, 3, 5']
+            refute_successful result, ['must be filled', 'must be one of: 1, 3, 5']
           end
         end
 
         describe 'with invalid type' do
           let(:input) { { 'foo' => { 'a' => '1' } } }
 
-          it 'is successful' do
-            assert_successful result
+          it 'is not successful' do
+            refute_successful result, ['must be one of: 1, 3, 5']
           end
         end
 
         describe 'with invalid input' do
-          let(:input) { { 'foo' => '5' } }
+          let(:input) { { 'foo' => '4' } }
 
           it 'is not successful' do
-            refute_successful result, ['must not be one of: 1, 3, 5']
+            refute_successful result, ['must be one of: 1, 3, 5']
           end
         end
       end
@@ -251,13 +251,13 @@ describe 'Predicates: Exclusion' do
             include Hanami::Validations::Form
 
             validations do
-              required(:foo).maybe(exclusion?: %w(1 3 5))
+              required(:foo).maybe(included_in?: %w(1 3 5))
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => '2' } }
+          let(:input) { { 'foo' => '3' } }
 
           it 'is successful' do
             assert_successful result
@@ -268,7 +268,7 @@ describe 'Predicates: Exclusion' do
           let(:input) { {} }
 
           it 'is not successful' do
-            refute_successful result, ['is missing', 'must not be one of: 1, 3, 5']
+            refute_successful result, ['is missing', 'must be one of: 1, 3, 5']
           end
         end
 
@@ -291,17 +291,18 @@ describe 'Predicates: Exclusion' do
         describe 'with invalid type' do
           let(:input) { { 'foo' => { 'a' => '1' } } }
 
-          it 'is successful'
-          # it 'is successful' do
-          #   assert_successful result
+          # See: https://github.com/dry-rb/dry-validation/issues/129#issuecomment-216534179
+          it 'is not successful'
+          # it 'is not successful' do
+          #   refute_successful result, ['must be one of: 1, 3, 5']
           # end
         end
 
         describe 'with invalid input' do
-          let(:input) { { 'foo' => '5' } }
+          let(:input) { { 'foo' => '4' } }
 
           it 'is not successful' do
-            refute_successful result, ['must not be one of: 1, 3, 5']
+            refute_successful result, ['must be one of: 1, 3, 5']
           end
         end
       end
@@ -314,13 +315,13 @@ describe 'Predicates: Exclusion' do
             include Hanami::Validations::Form
 
             validations do
-              optional(:foo).value(exclusion?: %w(1 3 5))
+              optional(:foo).value(included_in?: %w(1 3 5))
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => '2' } }
+          let(:input) { { 'foo' => '3' } }
 
           it 'is successful' do
             assert_successful result
@@ -338,32 +339,32 @@ describe 'Predicates: Exclusion' do
         describe 'with nil input' do
           let(:input) { { 'foo' => nil } }
 
-          it 'is successful' do
-            assert_successful result
+          it 'is not successful' do
+            refute_successful result, ['must be one of: 1, 3, 5']
           end
         end
 
         describe 'with blank input' do
           let(:input) { { 'foo' => '' } }
 
-          it 'is successful' do
-            assert_successful result
+          it 'is not successful' do
+            refute_successful result, ['must be one of: 1, 3, 5']
           end
         end
 
         describe 'with invalid type' do
           let(:input) { { 'foo' => { 'a' => '1' } } }
 
-          it 'is successful' do
-            assert_successful result
+          it 'is not successful' do
+            refute_successful result, ['must be one of: 1, 3, 5']
           end
         end
 
         describe 'with invalid input' do
-          let(:input) { { 'foo' => '5' } }
+          let(:input) { { 'foo' => '4' } }
 
           it 'is not successful' do
-            refute_successful result, ['must not be one of: 1, 3, 5']
+            refute_successful result, ['must be one of: 1, 3, 5']
           end
         end
       end
@@ -374,13 +375,13 @@ describe 'Predicates: Exclusion' do
             include Hanami::Validations::Form
 
             validations do
-              optional(:foo).filled(exclusion?: %w(1 3 5))
+              optional(:foo).filled(included_in?: %w(1 3 5))
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => '2' } }
+          let(:input) { { 'foo' => '3' } }
 
           it 'is successful' do
             assert_successful result
@@ -399,7 +400,7 @@ describe 'Predicates: Exclusion' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled', 'must not be one of: 1, 3, 5']
+            refute_successful result, ['must be filled', 'must be one of: 1, 3, 5']
           end
         end
 
@@ -407,23 +408,23 @@ describe 'Predicates: Exclusion' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled', 'must not be one of: 1, 3, 5']
+            refute_successful result, ['must be filled', 'must be one of: 1, 3, 5']
           end
         end
 
         describe 'with invalid type' do
           let(:input) { { 'foo' => { 'a' => '1' } } }
 
-          it 'is successful' do
-            assert_successful result
+          it 'is not successful' do
+            refute_successful result, ['must be one of: 1, 3, 5']
           end
         end
 
         describe 'with invalid input' do
-          let(:input) { { 'foo' => '5' } }
+          let(:input) { { 'foo' => '4' } }
 
           it 'is not successful' do
-            refute_successful result, ['must not be one of: 1, 3, 5']
+            refute_successful result, ['must be one of: 1, 3, 5']
           end
         end
       end
@@ -434,13 +435,13 @@ describe 'Predicates: Exclusion' do
             include Hanami::Validations::Form
 
             validations do
-              optional(:foo).maybe(exclusion?: %w(1 3 5))
+              optional(:foo).maybe(included_in?: %w(1 3 5))
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => '2' } }
+          let(:input) { { 'foo' => '3' } }
 
           it 'is successful' do
             assert_successful result
@@ -474,16 +475,18 @@ describe 'Predicates: Exclusion' do
         describe 'with invalid type' do
           let(:input) { { 'foo' => { 'a' => '1' } } }
 
-          it 'is successful' do
-            assert_successful result
-          end
+          # See: https://github.com/dry-rb/dry-validation/issues/129#issuecomment-216534179
+          it 'is not successful'
+          # it 'is not successful' do
+          #   refute_successful result, ['must be one of: 1, 3, 5']
+          # end
         end
 
         describe 'with invalid input' do
-          let(:input) { { 'foo' => '5' } }
+          let(:input) { { 'foo' => '4' } }
 
           it 'is not successful' do
-            refute_successful result, ['must not be one of: 1, 3, 5']
+            refute_successful result, ['must be one of: 1, 3, 5']
           end
         end
       end

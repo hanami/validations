@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe 'Predicates: Inclusion' do
+describe 'Predicates: Included In' do
   include TestUtils
 
   describe 'with required' do
@@ -9,7 +9,7 @@ describe 'Predicates: Inclusion' do
         include Hanami::Validations
 
         validations do
-          required(:foo) { inclusion?([1, 3, 5]) }
+          required(:foo) { included_in?([1, 3, 5]) }
         end
       end
     end
@@ -69,7 +69,7 @@ describe 'Predicates: Inclusion' do
         include Hanami::Validations
 
         validations do
-          optional(:foo) { inclusion?([1, 3, 5]) }
+          optional(:foo) { included_in?([1, 3, 5]) }
         end
       end
     end
@@ -131,7 +131,7 @@ describe 'Predicates: Inclusion' do
             include Hanami::Validations
 
             validations do
-              required(:foo).value(inclusion?: [1, 3, 5])
+              required(:foo).value(included_in?: [1, 3, 5])
             end
           end
         end
@@ -191,7 +191,7 @@ describe 'Predicates: Inclusion' do
             include Hanami::Validations
 
             validations do
-              required(:foo).filled(inclusion?: [1, 3, 5])
+              required(:foo).filled(included_in?: [1, 3, 5])
             end
           end
         end
@@ -251,7 +251,7 @@ describe 'Predicates: Inclusion' do
             include Hanami::Validations
 
             validations do
-              required(:foo).maybe(inclusion?: [1, 3, 5])
+              required(:foo).maybe(included_in?: [1, 3, 5])
             end
           end
         end
@@ -313,7 +313,7 @@ describe 'Predicates: Inclusion' do
             include Hanami::Validations
 
             validations do
-              optional(:foo).value(inclusion?: [1, 3, 5])
+              optional(:foo).value(included_in?: [1, 3, 5])
             end
           end
         end
@@ -373,7 +373,7 @@ describe 'Predicates: Inclusion' do
             include Hanami::Validations
 
             validations do
-              optional(:foo).filled(inclusion?: [1, 3, 5])
+              optional(:foo).filled(included_in?: [1, 3, 5])
             end
           end
         end
@@ -433,7 +433,7 @@ describe 'Predicates: Inclusion' do
             include Hanami::Validations
 
             validations do
-              optional(:foo).maybe(inclusion?: [1, 3, 5])
+              optional(:foo).maybe(included_in?: [1, 3, 5])
             end
           end
         end

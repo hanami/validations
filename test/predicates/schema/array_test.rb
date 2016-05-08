@@ -88,7 +88,7 @@ describe 'Predicates: Array' do
         include Hanami::Validations
 
         validations do
-          optional(:foo) { inclusion?([1, 3, 5]) }
+          optional(:foo) { included_in?([1, 3, 5]) }
         end
       end
     end
