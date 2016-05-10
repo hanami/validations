@@ -34,7 +34,7 @@ describe 'Predicates: Gteq' do
       let(:input) { { 'foo' => nil } }
 
       it 'is not successful' do
-        refute_successful result, ['is missing', 'must be greater than or equal to 23']
+        refute_successful result, ['must be an integer', 'must be greater than or equal to 23']
       end
     end
 
@@ -49,10 +49,9 @@ describe 'Predicates: Gteq' do
     describe 'with invalid input type' do
       let(:input) { { 'foo' => [] } }
 
-      it 'is not successful'
-      # it 'is not successful' do
-      #   refute_successful result, []
-      # end
+      it 'is not successful' do
+        refute_successful result, ['must be an integer', 'must be greater than or equal to 23']
+      end
     end
 
     describe 'with equal input' do
@@ -102,10 +101,9 @@ describe 'Predicates: Gteq' do
     describe 'with nil input' do
       let(:input) { { 'foo' => nil } }
 
-      it 'is not successful'
-      # it 'is not successful' do
-      #   refute_successful result, ['must be an integer', 'must be greater than or equal to 23']
-      # end
+      it 'is not successful' do
+        refute_successful result, ['must be an integer', 'must be greater than or equal to 23']
+      end
     end
 
     describe 'with blank input' do
@@ -119,10 +117,9 @@ describe 'Predicates: Gteq' do
     describe 'with invalid input type' do
       let(:input) { { 'foo' => [] } }
 
-      it 'is not successful'
-      # it 'is not successful' do
-      #   refute_successful result, []
-      # end
+      it 'is not successful' do
+        refute_successful result, ['must be an integer', 'must be greater than or equal to 23']
+      end
     end
 
     describe 'with equal input' do
@@ -175,7 +172,7 @@ describe 'Predicates: Gteq' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            refute_successful result, ['is missing', 'must be greater than or equal to 23']
+            refute_successful result, ['must be an integer', 'must be greater than or equal to 23']
           end
         end
 
@@ -190,10 +187,9 @@ describe 'Predicates: Gteq' do
         describe 'with invalid input type' do
           let(:input) { { 'foo' => [] } }
 
-          it 'is not successful'
-          # it 'is not successful' do
-          #   refute_successful result, []
-          # end
+          it 'is not successful' do
+            refute_successful result, ['must be an integer', 'must be greater than or equal to 23']
+          end
         end
 
         describe 'with equal input' do
@@ -244,7 +240,7 @@ describe 'Predicates: Gteq' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            refute_successful result, ['is missing', 'must be greater than or equal to 23']
+            refute_successful result, ['must be filled', 'must be greater than or equal to 23']
           end
         end
 
@@ -259,11 +255,9 @@ describe 'Predicates: Gteq' do
         describe 'with invalid input type' do
           let(:input) { { 'foo' => [] } }
 
-          # See https://github.com/dry-rb/dry-validation/issues/132
-          it 'is not successful'
-          # it 'is not successful' do
-          #   refute_successful result, ['must be filled', 'must be greater than or equal to 23']
-          # end
+          it 'is not successful' do
+            refute_successful result, ['must be filled', 'must be greater than or equal to 23']
+          end
         end
 
         describe 'with equal input' do
@@ -329,10 +323,9 @@ describe 'Predicates: Gteq' do
         describe 'with invalid input type' do
           let(:input) { { 'foo' => [] } }
 
-          it 'is not successful'
-          # it 'is not successful' do
-          #   refute_successful result, []
-          # end
+          it 'is not successful' do
+            refute_successful result, ['is missing', 'must be greater than or equal to 23']
+          end
         end
 
         describe 'with equal input' do
@@ -384,10 +377,9 @@ describe 'Predicates: Gteq' do
         describe 'with nil input' do
           let(:input) { { 'foo' => nil } }
 
-          it 'is not successful'
-          # it 'is not successful' do
-          #   refute_successful result, ['must be an integer', 'must be greater than or equal to 23']
-          # end
+          it 'is not successful' do
+            refute_successful result, ['must be an integer', 'must be greater than or equal to 23']
+          end
         end
 
         describe 'with blank input' do
@@ -401,10 +393,9 @@ describe 'Predicates: Gteq' do
         describe 'with invalid input type' do
           let(:input) { { 'foo' => [] } }
 
-          it 'is not successful'
-          # it 'is not successful' do
-          #   refute_successful result, []
-          # end
+          it 'is not successful' do
+            refute_successful result, ['must be an integer', 'must be greater than or equal to 23']
+          end
         end
 
         describe 'with equal input' do
@@ -454,10 +445,9 @@ describe 'Predicates: Gteq' do
         describe 'with nil input' do
           let(:input) { { 'foo' => nil } }
 
-          it 'is not successful'
-          # it 'is not successful' do
-          #   refute_successful result, ['must be filled', 'must be greater than or equal to 23']
-          # end
+          it 'is not successful' do
+            refute_successful result, ['must be filled', 'must be greater than or equal to 23']
+          end
         end
 
         describe 'with blank input' do
@@ -471,11 +461,9 @@ describe 'Predicates: Gteq' do
         describe 'with invalid input type' do
           let(:input) { { 'foo' => [] } }
 
-          # See: https://github.com/dry-rb/dry-validation/issues/132
-          it 'is not successful'
-          # it 'is not successful' do
-          #   refute_successful result, ['must be filled', 'must be greater than or equal to 23']
-          # end
+          it 'is not successful' do
+            refute_successful result, ['must be filled', 'must be greater than or equal to 23']
+          end
         end
 
         describe 'with equal input' do
