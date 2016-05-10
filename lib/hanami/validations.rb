@@ -29,7 +29,8 @@ module Hanami
     # @since 0.1.0
     module ClassMethods
       def validations(&blk)
-        schema = Dry::Validation.__send__(_schema_type, build: false, &blk)
+        base   = _build(&_base_rules)
+        schema = _build(rules: base.rules, &blk)
         schema.configure(&_schema_config)
 
         self.schema = schema.new
@@ -37,8 +38,18 @@ module Hanami
 
       private
 
+      def _build(options = {}, &blk)
+        options = { build: false }.merge(options)
+        Dry::Validation.__send__(_schema_type, options, &blk)
+      end
+
       def _schema_type
         :Schema
+      end
+
+      def _base_rules
+        lambda do
+        end
       end
 
       def _schema_config
