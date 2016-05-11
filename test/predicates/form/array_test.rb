@@ -41,8 +41,8 @@ describe 'Predicates: Array' do
     describe 'with blank input' do
       let(:input) { { 'foo' => '' } }
 
-      it 'is not successful' do
-        refute_successful result, ['must be an array']
+      it 'is successful' do
+        assert_successful result
       end
     end
 
@@ -170,8 +170,8 @@ describe 'Predicates: Array' do
       describe 'with blank input' do
         let(:input) { { 'foo' => '' } }
 
-        it 'is not successful' do
-          refute_successful result, ['must be an array']
+        it 'is successful' do
+          assert_successful result
         end
       end
 
@@ -222,8 +222,8 @@ describe 'Predicates: Array' do
       describe 'with blank input' do
         let(:input) { { 'foo' => '' } }
 
-        it 'is not successful' do
-          refute_successful result, ['must be an array']
+        it 'is successful' do
+          assert_successful result
         end
       end
 
