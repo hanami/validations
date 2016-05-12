@@ -3,3 +3,8 @@ en:
     email?: "must be an email"
     cool?: "must be cool"
     odd?: "must be odd"
+
+    rules:
+      user:
+        age:
+          gt?: "must be an adult"

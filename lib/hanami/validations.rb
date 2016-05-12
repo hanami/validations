@@ -4,6 +4,12 @@ require 'hanami/validations/predicates'
 require 'hanami/validations/inline_predicate'
 require 'set'
 
+Dry::Validation::Messages::Namespaced.configure do |config|
+  config.lookup_paths = config.lookup_paths + %w(
+    %{root}.%{rule}.%{predicate}
+  ).freeze
+end
+
 module Hanami
   # Hanami::Validations is a set of lightweight validations for Ruby objects.
   #
