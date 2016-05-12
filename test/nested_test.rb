@@ -8,9 +8,11 @@ describe Hanami::Validations do
 
         validations do
           required(:number) { filled? }
+          required(:code) { filled? & eql?('foo') }
 
           required(:customer).schema do
             required(:name) { filled? }
+            required(:code) { filled? & eql?('bar') }
 
             required(:address).schema do
               required(:city) { filled? }
@@ -21,7 +23,7 @@ describe Hanami::Validations do
     end
 
     it 'returns successful validation result for valid data' do
-      result = @validator.new(number: 23, customer: { name: 'Luca', address: { city: 'Rome' } }).validate
+      result = @validator.new(number: 23, code: 'foo', customer: { name: 'Luca', code: 'bar', address: { city: 'Rome' } }).validate
 
       result.must_be :success?
       result.errors.must_be_empty
@@ -34,6 +36,16 @@ describe Hanami::Validations do
       result.messages.fetch(:number).must_equal ['is missing']
       result.messages.fetch(:customer).must_equal ['is missing']
     end
+
+    # See: https://github.com/dry-rb/dry-validation/issues/162
+    it 'returns different failing validations for keys with the same name'
+    # it 'returns different failing validations for keys with the same name' do
+    #   result = @validator.new(code: 'x', customer: { code: 'y' }).validate
+
+    #   result.wont_be :success?
+    #   result.messages.fetch(:code).must_equal ['must be equal to foo']
+    #   result.messages.fetch(:customer).fetch(:code).must_equal ['must be equal to bar']
+    # end
 
     # Bug
     # See https://github.com/hanami/validations/issues/58
