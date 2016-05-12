@@ -1,81 +1,25 @@
 require 'test_helper'
 
 describe 'Predicates: custom' do
-  before do
-    @validator = Class.new do
-      include Hanami::Validations
+  describe 'with custom predicate' do
+    before do
+      @validator = Class.new do
+        include Hanami::Validations
 
-      validations do
-        configure do
-          config.messages_file = 'test/fixtures/messages.yml'
-
-          def email?(current)
-            current.match(/\@/)
-          end
-        end
-
-        required(:foo) { email? }
-      end
-    end
-
-    # See: https://github.com/dry-rb/dry-validation/issues/140
-    # @group = Class.new do
-    #   include Hanami::Validations
-
-    #   validations do
-    #     configure do
-    #       config.messages_file = 'test/fixtures/messages.yml'
-
-    #       def cool?(current)
-    #         current == 'cool'
-    #       end
-    #     end
-
-    #     required(:details).schema do
-    #       required(:foo) { cool? }
-    #     end
-    #   end
-    # end
-
-    @nested = Class.new do
-      include Hanami::Validations
-
-      validations do
-        required(:details).schema do
+        validations do
           configure do
             config.messages_file = 'test/fixtures/messages.yml'
 
-            def odd?(current)
-              current.odd?
+            def email?(current)
+              current.match(/\@/)
             end
           end
 
-          required(:foo) { odd? }
+          required(:foo) { email? }
         end
       end
     end
 
-    @with_predicates = Class.new do
-      include Hanami::Validations
-
-      validations do
-        configure do
-          config.messages_file = 'test/fixtures/messages.yml'
-          config.predicates    = Module.new do
-            include Hanami::Validations::Predicates
-
-            predicate(:email?) do |current|
-              current.match(/@/)
-            end
-          end
-        end
-
-        required(:foo) { email? }
-      end
-    end
-  end
-
-  describe 'with custom predicate' do
     describe 'with valid input' do
       let(:input) { { foo: 'test@hanamirb.org' } }
 
@@ -98,11 +42,31 @@ describe 'Predicates: custom' do
   end
 
   describe 'with custom predicates as module' do
+    before do
+      @validator = Class.new do
+        include Hanami::Validations
+
+        predicates Module.new {
+          include Hanami::Validations::Predicates
+
+          self.messages = 'test/fixtures/messages.yml'
+
+          predicate(:email?) do |current|
+            current.match(/@/)
+          end
+        }
+
+        validations do
+          required(:foo) { email? }
+        end
+      end
+    end
+
     describe 'with valid input' do
       let(:input) { { foo: 'test@hanamirb.org' } }
 
       it 'is successful' do
-        result = @with_predicates.new(input).validate
+        result = @validator.new(input).validate
         result.must_be :success?
       end
     end
@@ -111,10 +75,46 @@ describe 'Predicates: custom' do
       let(:input) { { foo: 'test' } }
 
       it 'is successful' do
-        result = @with_predicates.new(input).validate
+        result = @validator.new(input).validate
 
         result.wont_be :success?
         result.messages.fetch(:foo).must_equal ['must be an email']
+      end
+    end
+  end
+
+  describe 'with custom predicate within predicates block' do
+    before do
+      @validator = Class.new do
+        include Hanami::Validations
+
+        predicate :url?, message: 'must be an URL' do |current|
+          current.start_with?('http')
+        end
+
+        validations do
+          required(:foo) { url? }
+        end
+      end
+    end
+
+    describe 'with valid input' do
+      let(:input) { { foo: 'http://hanamirb.org' } }
+
+      it 'is successful' do
+        result = @validator.new(input).validate
+        result.must_be :success?
+      end
+    end
+
+    describe 'with invalid input' do
+      let(:input) { { foo: 'test' } }
+
+      it 'is successful' do
+        result = @validator.new(input).validate
+
+        result.wont_be :success?
+        result.messages.fetch(:foo).must_equal ['must be an URL']
       end
     end
   end
@@ -136,16 +136,28 @@ describe 'Predicates: custom' do
   end
 
   describe 'with nested validations' do
-    # See: https://github.com/dry-rb/dry-validation/issues/140
-    # it 'can access to custom predicates from nested groups' do
-    #   result = @group.new(details: { foo: 'bar' }).validate
+    before do
+      @validator = Class.new do
+        include Hanami::Validations
 
-    #   result.wont_be :success?
-    #   result.messages[:details][:foo].must_equal ['must be cool']
-    # end
+        validations do
+          required(:details).schema do
+            configure do
+              config.messages_file = 'test/fixtures/messages.yml'
+
+              def odd?(current)
+                current.odd?
+              end
+            end
+
+            required(:foo) { odd? }
+          end
+        end
+      end
+    end
 
     it 'allows groups to define their own custom predicates' do
-      result = @nested.new(details: { foo: 2 }).validate
+      result = @validator.new(details: { foo: 2 }).validate
 
       result.wont_be :success?
       result.messages[:details][:foo].must_equal ['must be odd']

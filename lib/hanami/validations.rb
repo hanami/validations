@@ -1,6 +1,8 @@
 require 'dry-validation'
 require 'hanami/utils/class_attribute'
 require 'hanami/validations/predicates'
+require 'hanami/validations/inline_predicate'
+require 'set'
 
 module Hanami
   # Hanami::Validations is a set of lightweight validations for Ruby objects.
@@ -21,6 +23,10 @@ module Hanami
 
         include Utils::ClassAttribute
         class_attribute :schema
+        class_attribute :_predicates_module
+
+        class_attribute :_predicates
+        self._predicates = Set.new
       end
     end
 
@@ -31,9 +37,19 @@ module Hanami
       def validations(&blk)
         base   = _build(&_base_rules)
         schema = _build(rules: base.rules, &blk)
+        schema.configure(&_schema_predicates)
         schema.configure(&_schema_config)
+        schema.extend(_messages) unless _predicates.empty?
 
         self.schema = schema.new
+      end
+
+      def predicate(name, message: 'is invalid', &blk)
+        _predicates << InlinePredicate.new(name, message, &blk)
+      end
+
+      def predicates(mod)
+        self._predicates_module = mod
       end
 
       private
@@ -53,7 +69,50 @@ module Hanami
       end
 
       def _schema_config
+        lambda do |_config|
+        end
+      end
+
+      def _schema_predicates
+        return if _predicates_module.nil? && _predicates.empty?
+
         lambda do |config|
+          config.predicates    = _predicates_module || __predicates
+          config.messages_file = _predicates_module && _predicates_module.messages
+        end
+      end
+
+      def __predicates
+        mod = Module.new { include Hanami::Validations::Predicates }
+
+        _predicates.each do |p|
+          mod.module_eval do
+            predicate(p.name, &p.to_proc)
+          end
+        end
+
+        mod
+      end
+
+      def _messages
+        result = _predicates.each_with_object({}) do |p, ret|
+          ret[p.name] = p.message
+        end
+
+        Module.new do
+          @@_messages = result
+
+          def self.extended(base)
+            base.instance_eval do
+              def _messages
+                Hash[en: { errors: @@_messages }]
+              end
+            end
+          end
+
+          def messages
+            super.merge(_messages)
+          end
         end
       end
     end
