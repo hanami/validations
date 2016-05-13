@@ -4,11 +4,11 @@ describe 'Messages' do
   before do
     @validator = Class.new do
       include Hanami::Validations
+      messages 'test/fixtures/messages.yml'
 
       validations do
         configure do
-          config.namespace     = :user
-          config.messages_file = 'test/fixtures/messages.yml'
+          config.namespace = :user
         end
 
         required(:age).filled(:int?, gt?: 18)

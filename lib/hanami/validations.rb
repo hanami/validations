@@ -29,6 +29,7 @@ module Hanami
 
         include Utils::ClassAttribute
         class_attribute :schema
+        class_attribute :_messages
         class_attribute :_predicates_module
 
         class_attribute :_predicates
@@ -45,7 +46,7 @@ module Hanami
         schema = _build(rules: base.rules, &blk)
         schema.configure(&_schema_predicates)
         schema.configure(&_schema_config)
-        schema.extend(_messages) unless _predicates.empty?
+        schema.extend(__messages) unless _predicates.empty?
 
         self.schema = schema.new
       end
@@ -56,6 +57,10 @@ module Hanami
 
       def predicates(mod)
         self._predicates_module = mod
+      end
+
+      def messages(path)
+        self._messages = path
       end
 
       private
@@ -75,7 +80,8 @@ module Hanami
       end
 
       def _schema_config
-        lambda do |_config|
+        lambda do |config|
+          config.messages_file = _messages unless _messages.nil?
         end
       end
 
@@ -100,24 +106,24 @@ module Hanami
         mod
       end
 
-      def _messages
+      def __messages
         result = _predicates.each_with_object({}) do |p, ret|
           ret[p.name] = p.message
         end
 
         Module.new do
-          @@_messages = result
+          @@__messages = result
 
           def self.extended(base)
             base.instance_eval do
-              def _messages
-                Hash[en: { errors: @@_messages }]
+              def __messages
+                Hash[en: { errors: @@__messages }]
               end
             end
           end
 
           def messages
-            super.merge(_messages)
+            super.merge(__messages)
           end
         end
       end
