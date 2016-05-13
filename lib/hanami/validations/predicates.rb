@@ -7,9 +7,10 @@ module Hanami
       def self.included(base)
         base.class_eval do
           include Dry::Logic::Predicates
-
           include Utils::ClassAttribute
+
           class_attribute :messages
+          class_attribute :messages_path
         end
       end
     end

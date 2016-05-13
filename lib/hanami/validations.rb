@@ -17,6 +17,8 @@ module Hanami
   #
   # @since 0.1.0
   module Validations
+    DEFAULT_MESSAGES_ENGINE = :yaml
+
     # Override Ruby's hook for modules.
     #
     # @param base [Class] the target action
@@ -32,6 +34,7 @@ module Hanami
         include Utils::ClassAttribute
         class_attribute :schema
         class_attribute :_messages
+        class_attribute :_messages_path
         class_attribute :_namespace
         class_attribute :_predicates_module
 
@@ -62,8 +65,12 @@ module Hanami
         self._predicates_module = mod
       end
 
-      def messages(path)
-        self._messages = path
+      def messages(type)
+        self._messages = type
+      end
+
+      def messages_path(path)
+        self._messages_path = path
       end
 
       def namespace(name = nil)
@@ -92,7 +99,8 @@ module Hanami
 
       def _schema_config
         lambda do |config|
-          config.messages_file = _messages unless _messages.nil?
+          config.messages      = _messages      unless _messages.nil?
+          config.messages_file = _messages_path unless _messages_path.nil?
           config.namespace     = namespace
         end
       end
@@ -102,7 +110,8 @@ module Hanami
 
         lambda do |config|
           config.predicates    = _predicates_module || __predicates
-          config.messages_file = _predicates_module && _predicates_module.messages
+          config.messages      = _predicates_module && _predicates_module.messages || DEFAULT_MESSAGES_ENGINE
+          config.messages_file = _predicates_module && _predicates_module.messages_path
         end
       end
 

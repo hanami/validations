@@ -49,7 +49,7 @@ describe 'Predicates: custom' do
         predicates Module.new {
           include Hanami::Validations::Predicates
 
-          self.messages = 'test/fixtures/messages.yml'
+          self.messages_path = 'test/fixtures/messages.yml'
 
           predicate(:email?) do |current|
             current.match(/@/)

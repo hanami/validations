@@ -5,7 +5,7 @@ describe 'Messages' do
     before do
       @validator = Class.new do
         include Hanami::Validations
-        messages 'test/fixtures/messages.yml'
+        messages_path 'test/fixtures/messages.yml'
         namespace :foo
 
         validations do
@@ -45,6 +45,32 @@ describe 'Messages' do
 
       result.wont_be :success?
       result.messages.fetch(:age).must_equal ['must be an adult']
+    end
+  end
+
+  describe 'with i18n support' do
+    before do
+      @validator = DomainValidator
+    end
+
+    it 'returns configured message' do
+      result = @validator.new(name: 'a' * 256).validate
+
+      result.wont_be :success?
+      result.messages.fetch(:name).must_equal ['is too long']
+    end
+  end
+
+  describe 'with i18n support and shared predicates' do
+    before do
+      @validator = ChangedTermsOfServicesValidator
+    end
+
+    it 'returns configured message' do
+      result = @validator.new(terms: 'false').validate
+
+      result.wont_be :success?
+      result.messages.fetch(:terms).must_equal ['must be accepted']
     end
   end
 end
