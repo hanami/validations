@@ -5,6 +5,16 @@ en:
     odd?: "must be odd"
 
     rules:
-      user:
+      signup:
         age:
           gt?: "must be an adult"
+      foo:
+        age:
+          gt?: "must be an adult"
+      web:
+        controllers:
+          signup:
+            create:
+              params:
+                age:
+                  gt?: "must be an adult"

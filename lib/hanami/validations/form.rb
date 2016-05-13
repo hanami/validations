@@ -24,11 +24,6 @@ module Hanami
         def _schema_type
           :Form
         end
-
-        def _schema_config
-          lambda do |config|
-          end
-        end
       end
     end
   end

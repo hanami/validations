@@ -1,5 +1,7 @@
 require 'dry-validation'
 require 'hanami/utils/class_attribute'
+require 'hanami/utils/string'
+require 'hanami/validations/namespace'
 require 'hanami/validations/predicates'
 require 'hanami/validations/inline_predicate'
 require 'set'
@@ -30,6 +32,7 @@ module Hanami
         include Utils::ClassAttribute
         class_attribute :schema
         class_attribute :_messages
+        class_attribute :_namespace
         class_attribute :_predicates_module
 
         class_attribute :_predicates
@@ -63,6 +66,14 @@ module Hanami
         self._messages = path
       end
 
+      def namespace(name = nil)
+        if name.nil?
+          Namespace.new(_namespace, self)
+        else
+          self._namespace = name.to_s
+        end
+      end
+
       private
 
       def _build(options = {}, &blk)
@@ -82,6 +93,7 @@ module Hanami
       def _schema_config
         lambda do |config|
           config.messages_file = _messages unless _messages.nil?
+          config.namespace     = namespace
         end
       end
 

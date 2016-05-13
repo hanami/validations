@@ -1,25 +1,50 @@
 require 'test_helper'
 
 describe 'Messages' do
-  before do
-    @validator = Class.new do
-      include Hanami::Validations
-      messages 'test/fixtures/messages.yml'
+  describe 'with anonymous class' do
+    before do
+      @validator = Class.new do
+        include Hanami::Validations
+        messages 'test/fixtures/messages.yml'
+        namespace :foo
 
-      validations do
-        configure do
-          config.namespace = :user
+        validations do
+          required(:age).filled(:int?, gt?: 18)
         end
-
-        required(:age).filled(:int?, gt?: 18)
       end
+    end
+
+    it 'returns configured message' do
+      result = @validator.new(age: 11).validate
+
+      result.wont_be :success?
+      result.messages.fetch(:age).must_equal ['must be an adult']
     end
   end
 
-  it 'returns configured message' do
-    result = @validator.new(age: 11).validate
+  describe 'with concrete class' do
+    before do
+      @validator = SignupValidator
+    end
 
-    result.wont_be :success?
-    result.messages.fetch(:age).must_equal ['must be an adult']
+    it 'returns configured message' do
+      result = @validator.new(age: 11).validate
+
+      result.wont_be :success?
+      result.messages.fetch(:age).must_equal ['must be an adult']
+    end
+  end
+
+  describe 'with concrete namespaced class' do
+    before do
+      @validator = Web::Controllers::Signup::Create::Params
+    end
+
+    it 'returns configured message' do
+      result = @validator.new(age: 11).validate
+
+      result.wont_be :success?
+      result.messages.fetch(:age).must_equal ['must be an adult']
+    end
   end
 end
