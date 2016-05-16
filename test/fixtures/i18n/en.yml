@@ -1,0 +1,7 @@
+en:
+  errors:
+    accepted?: "must be accepted"
+    rules:
+      domain:
+        name:
+          max_size?: "is too long"

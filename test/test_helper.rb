@@ -7,13 +7,11 @@ if ENV['COVERALL']
 end
 
 require 'minitest/autorun'
-$:.unshift 'lib'
+
+$LOAD_PATH.unshift 'lib'
 require 'hanami/validations'
+require 'hanami/validations/form'
 
-module Hanami::Validations::ValidationIntrospection
-  def defined_validation?(name)
-    validations.instance_variable_get(:@validations).keys.include?(name)
-  end
-end
-
-require 'fixtures'
+require_relative './support/test_utils'
+require_relative './support/assertions'
+require_relative './support/fixtures'

@@ -1,6 +1,6 @@
 # Hanami::Validations
 
-Validations mixins for objects
+Validations mixin for Ruby objects
 
 ## Status
 
@@ -22,7 +22,7 @@ Validations mixins for objects
 
 ## Rubies
 
-__Hanami::Validations__ supports Ruby (MRI) 2+, JRuby 9k+
+__Hanami::Validations__ supports Ruby (MRI) 2+ and JRuby 9.0.5.0+.
 
 ## Installation
 
@@ -34,544 +34,711 @@ gem 'hanami-validations'
 
 And then execute:
 
-    $ bundle
+```shell
+$ bundle
+```
 
 Or install it yourself as:
 
-    $ gem install hanami-validations
+```shell
+$ gem install hanami-validations
+```
 
 ## Usage
 
-`Hanami::Validations` is a set of lightweight validations for Ruby objects.
+`Hanami::Validations` is a mixin that, once included by an object, adds lightweight set of validations to it.
 
-### Attributes
+It works with input hashes and lets us to define a set of validation rules **for each** key/value pair. These rules are wrapped by lambdas (or special DSL) that check the input for a specific key to determine if it's valid or not. To do that, we translate business requirements into predicates that are chained together with Ruby _faux boolean logic_ operators (eg. `&` or `|`).
 
-The framework allows you to define attributes for each object.
-
-It defines an initializer, whose attributes can be passed as a hash.
-All unknown values are ignored, which is useful for whitelisting attributes.
+Think of a signup form. We need to ensure data integrity for the  `name` field with the following rules. It is required, it has to be: filled **and** a string **and** its size must be greater than 3 chars, but lesser than 64. Here’s the code, **read it aloud** and notice how it perfectly expresses our needs for `name`.
 
 ```ruby
-require 'hanami/validations'
-
-class Person
-  include Hanami::Validations
-
-  attribute :name,  presence: true
-  attribute :email, presence: true
-end
-
-person = Person.new(name: 'Luca', email: 'me@example.org', age: 32)
-person.name  # => "Luca"
-person.email # => "me@example.org"
-person.age   # => raises NoMethodError because `:age` wasn't defined as attribute.
-```
-
-#### Blank Values
-
-The framework will treat as valid any blank attributes, __without__ `presence`, for both `format` and `size` predicates.
-
-```ruby
-require 'hanami/validations'
-
-class Person
-  include Hanami::Validations
-
-  attribute :name,    type: String, size: 5..45
-  attribute :email,   type: String, size: 20..80, format: /@/
-  attribute :skills,  type: Array,  size: 1..3
-  attribute :keys,    type: Hash,   size: 1..3
-end
-
-Person.new.valid?                             # < true
-Person.new(name: '').valid?                   # < true
-Person.new(skills: '').valid?                 # < true
-Person.new(skills: ['ruby', 'hanami']).valid?  # < true
-
-Person.new(skills: []).valid?                 # < false
-Person.new(keys: {}).valid?                   # < false
-Person.new(keys: {a: :b}, skills: []).valid?  # < false
-```
-
-If you want to _disable_ this behaviour, please, refer to [presence](https://github.com/hanami/validations#presence).
-
-### Validations
-
-If you prefer Hanami::Validations to **only define validations**, but **not attributes**,
-you can use the following alternative syntax.
-
-```ruby
-require 'hanami/validations'
-
-class Person
-  include Hanami::Validations
-  attr_accessor :name, :email
-
-  # Custom initializer
-  def initialize(attributes = {})
-    @name, @email = attributes.values_at(:name, :email)
-  end
-
-  validates :name,  presence: true
-  validates :email, presence: true
-end
-
-person = Person.new(name: 'Luca', email: 'me@example.org')
-person.name  # => "Luca"
-person.email # => "me@example.org"
-```
-
-This is a bit more verbose, but offers a great level of flexibility for your
-Ruby objects. It also allows to use Hanami::Validations in combination with
-**other frameworks**.
-
-### Coercions
-
-If a Ruby class is passed to the `:type` option, the given value is coerced, accordingly.
-
-#### Standard coercions
-
-```ruby
-require 'hanami/validations'
-
-class Person
-  include Hanami::Validations
-
-  attribute :fav_number, type: Integer
-end
-
-person = Person.new(fav_number: '23')
-person.valid?
-
-person.fav_number # => 23
-```
-
-Allowed types are:
-
-  * `Array`
-  * `BigDecimal`
-  * `Boolean`
-  * `Date`
-  * `DateTime`
-  * `Float`
-  * `Hash`
-  * `Integer`
-  * `Pathname`
-  * `Set`
-  * `String`
-  * `Symbol`
-  * `Time`
-
-#### Custom coercions
-
-If a user defined class is specified, it can be freely used for coercion purposes.
-The only limitation is that the constructor should have **arity of 1**.
-
-```ruby
-require 'hanami/validations'
-
-class FavNumber
-  def initialize(number)
-    @number = number
-  end
-end
-
-class BirthDate
-end
-
-class Person
-  include Hanami::Validations
-
-  attribute :fav_number, type: FavNumber
-  attribute :date,       type: BirthDate
-end
-
-person = Person.new(fav_number: '23', date: 'Oct 23, 2014')
-person.valid?
-
-person.fav_number # => #<FavNumber:0x007ffc644bba00 @number="23">
-person.date       # => this raises an error, because BirthDate#initialize doesn't accept any arg
-```
-
-### Validations
-
-Each attribute definition can receive a set of options to define one or more
-validations.
-
-**Validations are triggered when you invoke `#valid?`.**
-
-#### Acceptance
-
-An attribute is valid if its value is _truthy_.
-
-```ruby
-require 'hanami/validations'
-
 class Signup
   include Hanami::Validations
 
-  attribute :terms_of_service, acceptance: true
+  validations do
+    required(:name) { filled? & str? & size?(3..64) }
+  end
 end
 
-signup = Signup.new(terms_of_service: '1')
-signup.valid? # => true
-
-signup = Signup.new(terms_of_service: 'true')
-signup.valid? # => true
-
-signup = Signup.new(terms_of_service: '')
-signup.valid? # => false
-
-signup = Signup.new(terms_of_service: '0')
-signup.valid? # => false
+result = Signup.new(name: "Luca").validate
+result.success? # => true
 ```
 
-#### Confirmation
+There is more that `Hanami::Validations` can do: **type safety**, **composition**, **complex data structures**, **built-in and custom predicates**.
 
-An attribute is valid if its value and the value of a corresponding attribute
-is valid.
+But before to dive into advanced topics, we need to understand the basics of _boolean logic_.
 
-By convention, if you have a `password` attribute, the validation looks for `password_confirmation`.
+### Boolean Logic
+
+When we check data, we expect only two outcomes: an input can be valid or not. No grey areas, nor fuzzy results. It’s white or black, 1 or 0, `true` or `false` and _boolean logic_ is the perfect tool to express these two states. Indeed, a Ruby _boolean expression_ can only return `true` or `false`.
+
+To better recognise the pattern, let’s get back to the example above. This time we will map the natural language rules with programming language rules.
+
+```
+        A name must be filled  and be a string and its size must be included between 3 and 64.
+           👇            👇    👇       👇    👇      👇                           👇    👇
+required(:name)      { filled?  &       str?   &      size?                         (3 ..  64) }
+
+```
+
+Now, I hope you’ll never format code like that, but in this case, that formatting serves well our purpose to show how Ruby’s  simplicity helps to define complex rules with no effort.
+
+From a high level perspective, we can tell that input data for `name` is _valid_ only if **all** the requirements are satisfied. That’s because we used `&`.
+
+#### Logic Operators
+
+We support four logic operators:
+
+  * `&` (aliased as `and`) for _conjunction_
+  * `|` (aliased as `or`) for _disjunction_
+  * `>` (aliased as `then`) for _implication_
+  * `^` (aliased as `xor`) for _exclusive disjunction_
+
+#### Context Of Execution
+
+**Please notice that we used `&` over Ruby's `&&` keyword.**
+That's because the context of execution of these validations isn't a plain lambda, but something richer.
+
+For real world projects, we want to support common scenarios without the need of reinventing the wheel ourselves. Scenarios like _password confirmation_, _size check_ are already prepackaged with `Hanami::Validations`.
+
+
+⚠ **For this reason, we don't allow any arbitrary Ruby code to be executed, but only well defined predicates.** ⚠
+
+### Predicates
+
+To meet our needs, `Hanami::Validations` has an extensive collection of **built-in** predicates. **A predicate is the expression of a business requirement** (e.g. _size greater than_). The chain of several predicates determines if input data is valid or not.
+
+We already met `filled?` and `size?`, now let’s introduce the rest of them. They capture **common use cases with web forms**.
+
+### Array
+
+It checks if the the given value is an array, and iterates through its elements to perform checks on each of them.
 
 ```ruby
-require 'hanami/validations'
-
-class Signup
-  include Hanami::Validations
-
-  attribute :password, confirmation: true
-end
-
-signup = Signup.new(password: 'secret', password_confirmation: 'secret')
-signup.valid? # => true
-
-signup = Signup.new(password: 'secret', password_confirmation: 'x')
-signup.valid? # => false
+required(:codes) { array? { each { int? } } }
 ```
+
+This example checks if `codes` is an array and if all the elements are integers.
+
+#### Emptiness
+
+It checks if the given value is empty or not. It is designed to works with strings and collections (array and hash).
+
+```ruby
+required(:tags) { empty? }
+```
+
+#### Equality
+
+This predicate tests if the input is equal to a given value.
+
+```ruby
+required(:magic_number) { eql?(23) }
+```
+
+Ruby types are respected: `23` (an integer) is only equal to `23`, and not to `"23"` (a string). See _Type Safety_ section.
 
 #### Exclusion
 
-An attribute is valid, if the value isn't excluded from the value described by
-the validator.
-
-The validator value can be anything that responds to `#include?`.
-In Ruby, this includes most of the core objects: `String`, `Enumerable` (`Array`, `Hash`,
-`Range`, `Set`).
-
-See also [Inclusion](#inclusion).
+It checks if the input is **not** included by a given collection. This collection can be an array, a set, a range or any object that responds to `#include?`.
 
 ```ruby
-require 'hanami/validations'
-
-class Signup
-  include Hanami::Validations
-
-  attribute :music, exclusion: ['pop']
-end
-
-signup = Signup.new(music: 'rock')
-signup.valid? # => true
-
-signup = Signup.new(music: 'pop')
-signup.valid? # => false
+required(:genre) { excluded_from?(%w(pop dance)) }
 ```
 
 #### Format
 
-An attribute is valid if it matches the given Regular Expression.
+This is a predicate that works with a regular expression to match it against data input.
 
 ```ruby
-require 'hanami/validations'
+require 'uri'
+HTTP_FORMAT = URI.regexp(%w(http https))
 
-class Signup
-  include Hanami::Validations
+required(:url) { format?(HTTP_FORMAT) }
+```
 
-  attribute :name, format: /\A[a-zA-Z]+\z/
-end
+#### Greater Than
 
-signup = Signup.new(name: 'Luca')
-signup.valid? # => true
+This predicate works with numbers to check if input is **greater than** a given threshold.
 
-signup = Signup.new(name: '23')
-signup.valid? # => false
+```ruby
+required(:age) { gt?(18) }
+```
+
+#### Greater Than Equal
+
+This is an _open boundary_ variation of `gt?`. It checks if an input is **greater than or equal** of a given number.
+
+```ruby
+required(:age) { gteq?(19) }
 ```
 
 #### Inclusion
 
-An attribute is valid, if the value provided is included in the validator's
-value.
-
-The validator value can be anything that responds to `#include?`.
-In Ruby, this includes most of the core objects: like `String`, `Enumerable` (`Array`, `Hash`,
-`Range`, `Set`).
-
-See also [Exclusion](#exclusion).
+This predicate is the opposite of `#exclude?`: it verifies if the input is **included** in the given collection.
 
 ```ruby
-require 'prime'
-require 'hanami/validations'
-
-class PrimeNumbers
-  def initialize(limit)
-    @numbers = Prime.each(limit).to_a
-  end
-
-  def include?(number)
-    @numbers.include?(number)
-  end
-end
-
-class Signup
-  include Hanami::Validations
-
-  attribute :age,        inclusion: 18..99
-  attribute :fav_number, inclusion: PrimeNumbers.new(100)
-end
-
-signup = Signup.new(age: 32)
-signup.valid? # => true
-
-signup = Signup.new(age: 17)
-signup.valid? # => false
-
-signup = Signup.new(fav_number: 23)
-signup.valid? # => true
-
-signup = Signup.new(fav_number: 8)
-signup.valid? # => false
+required(:genre) { included_in?(%w(rock folk)) }
 ```
 
-#### Presence
+#### Less Than
 
-An attribute is valid if present.
+This is the complement of `#gt?`: it checks for **less than** numbers.
 
 ```ruby
-require 'hanami/validations'
+required(:age) { lt?(7) }
+```
 
-class Signup
-  include Hanami::Validations
+#### Less Than Equal
 
-  attribute :name, presence: true
-end
+Similarly to `#gteq?`, this is the _open bounded_ version of `#lt?`: an input is valid if it’s **less than or equal** to a number.
 
-signup = Signup.new(name: 'Luca')
-signup.valid? # => true
+```ruby
+required(:age) { lteq?(6) }
+```
 
-signup = Signup.new(name: '')
-signup.valid? # => false
+#### Filled
 
-signup = Signup.new(name: nil)
-signup.valid? # => false
+It’s a predicate that ensures data input is filled, that means **not** `nil` or blank (`""`) or empty (in case we expect a collection).
+
+```ruby
+required(:name) { filled? }      # string
+required(:languages) { filled? } # collection
+```
+
+#### Minimum Size
+
+This verifies that the size of the given input is at least of the specified value.
+
+```ruby
+required(:password) { min_size?(12) }
+```
+
+#### Maximum Size
+
+This verifies that the size of the given input is at max of the specified value.
+
+```ruby
+required(:name) { max_size?(128) }
+```
+
+#### None
+
+This verifies if the given input is `nil`. Blank strings (`""`) won’t pass this test and return `false`.
+
+```ruby
+required(:location) { none? }
 ```
 
 #### Size
 
-An attribute is valid if its `#size` falls within the described value.
+It checks if the size of input data is: a) exactly the same of a given quantity or b) it falls into a range.
+
+```ruby
+required(:two_factor_auth_code) { size?(6) }     # exact
+required(:password)             { size?(8..32) } # range
+```
+
+The check works with strings and collections.
+
+```ruby
+required(:answers) { size?(2) } # only 2 answers are allowed
+```
+
+This predicate works with objects that respond to `#size`. Until now we have seen strings and arrays being analysed by this validation, but there is another interesting usage: files.
+
+When a user uploads a file, the web server sets an instance of `Tempfile`, which responds to `#size`. That means we can validate the weight in bytes of file uploads.
+
+```ruby
+MEGABYTE = 1024 ** 2
+
+required(:avatar) { size?(1..(5 * MEGABYTE)) }
+```
+
+### Custom Predicates
+
+We have seen that built-in predicates as an expressive tool to get our job done with common use cases.
+
+But what if our case is not common? We can define our own custom predicates.
+
+#### Inline Custom Predicates
+
+If we are facing a really unique validation that don't need to be reused across our code, we can opt for an inline custom predicate:
 
 ```ruby
 require 'hanami/validations'
 
 class Signup
-  MEGABYTE = 1024 ** 2
   include Hanami::Validations
 
-  attribute :ssn,      size: 11    # exact match
-  attribute :password, size: 8..64 # range
-  attribute :avatar,   size: 1..(5 * MEGABYTE)
+  predicate :url?, message: 'must be an URL' do |current|
+    # ...
+  end
+
+  validations do
+    required(:website) { url? }
+  end
 end
-
-signup = Signup.new(password: 'a-very-long-password')
-signup.valid? # => true
-
-signup = Signup.new(password: 'short')
-signup.valid? # => false
 ```
 
-**Note that in the example above you are able to validate the weight of the file,
-because Ruby's `File` and `Tempfile` both respond to `#size`.**
+#### Global Custom Predicates
 
-#### Uniqueness
-
-Uniqueness validations aren't implemented because this library doesn't deal with persistence.
-The other reason is that this isn't an effective way to ensure uniqueness of a value in a database.
-
-Please read more at: [The Perils of Uniqueness Validations](http://robots.thoughtbot.com/the-perils-of-uniqueness-validations).
-
-### Nested validations
-
-Nested validations are handled with a nested block syntax.
+If our goal is to share common used custom predicates, we can include them in a module to use in all our validators:
 
 ```ruby
-class ShippingDetails
+require 'hanami/validations'
+
+module MyPredicates
+  include Hanami::Validations::Predicates
+
+  self.messages_path = 'config/errors.yml'
+
+  predicate(:email?) do |current|
+    current.match(/.../)
+  end
+end
+```
+
+We have defined a module `MyPredicates` with the purpose to share its custom predicates with all the validators that need them.
+
+```ruby
+require 'hanami/validations'
+require_relative 'my_predicates'
+
+class Signup
+  include Hanami::Validations
+  predicates MyPredicates
+
+  validations do
+    required(:email) { email? }
+  end
+end
+```
+
+### Required and Optional keys
+
+HTML forms can have required or optional fields. We can express this concept with two methods in our validations: `required` (which we already met in previous examples), and `optional`.
+
+```ruby
+require 'hanami/validations'
+
+class Signup
   include Hanami::Validations
 
-  attribute :full_name, presence: true
+  validations do
+    required(:email)    { ... }
+    optional(:referral) { ... }
+  end
+end
+```
 
-  attribute :address do
-    attribute :street,      presence: true
-    attribute :city,        presence: true
-    attribute :country,     presence: true
-    attribute :postal_code, presence: true, format: /.../
+### Type Safety
+
+At this point, we need to explicitly tell something really important about built-in predicates. Each of them have expectations about the methods that an input is able to respond to.
+
+Why this is so important? Because if we try to invoke a method on the input we’ll get a `NoMethodError` if the input doesn’t respond to it. Which isn’t nice, right?
+
+Before to use a predicate, we want to ensure that the input is an instance of the expected type. Let’s introduce another new predicate for our need: `#type?`.
+
+```ruby
+required(:age) { type?(Integer) & gteq?(18) }
+```
+
+It takes the input and tries to coerce it. If it fails, the execution stops. If it succeed, the subsequent predicates can trust `#type?` and be sure that the input is an integer.
+
+**We suggest to use `#type?` at the beginning of the validations block. This _type safety_ policy is crucial to prevent runtime errors.**
+
+`Hanami::Validations` supports the most common Ruby types:
+
+  * `Array` (aliased as `array?`)
+  * `BigDecimal` (aliased as `decimal?`)
+  * `Boolean` (aliased as `bool?`)
+  * `Date` (aliased as `date?`)
+  * `DateTime` (aliased as `datetime?`)
+  * `Float` (aliased as `float?`)
+  * `Hash` (aliased as `hash?`)
+  * `Integer` (aliased as `int?`)
+  * `String` (aliased as `str?`)
+  * `Time` (aliased as `time?`)
+
+For each supported type, there a convenient predicate that acts as an alias. For instance, the two lines of code below are **equivalent**.
+
+```ruby
+required(:age) { type?(Integer) }
+required(:age) { int? }
+```
+
+### Macros
+
+Rule composition with blocks is powerful, but it can become verbose.
+To reduce verbosity, `Hanami::Validations` offers convenient _macros_ that are internally _expanded_ (aka interpreted) to an equivalent _block expression_
+
+#### Filled
+
+To use when we expect a value to be filled:
+
+```ruby
+# expands to
+# required(:age) { filled? }
+
+required(:age).filled
+```
+
+```ruby
+# expands to
+# required(:age) { filled? & type?(Integer) }
+
+required(:age).filled(:int?)
+```
+
+```ruby
+# expands to
+# required(:age) { filled? & type?(Integer) & gt?(18) }
+
+required(:age).filled(:str?, gt?: 18)
+```
+
+In the examples above `age` is **always required** as value.
+
+#### Maybe
+
+To use when a value can be nil:
+
+```ruby
+# expands to
+# required(:age) { none? | int? }
+
+required(:age).maybe(:int?)
+```
+
+In the example above `age` can be `nil`, but if we send the value, it **must** be an integer.
+
+#### Each
+
+To use when we want to apply the same validation rules to all the elements of an array:
+
+```ruby
+# expands to
+# required(:tags) { array? { each { str? } } }
+
+required(:tags).each(:str?)
+```
+
+In the example above `tags` **must** be an array of strings.
+
+
+#### Confirmation
+
+This is designed to check if pairs of web form fields have the same value. One wildly popular example is _password confirmation_.
+
+```ruby
+required(:password).filled.confirmation
+```
+
+It is valid if the input has `password` and `password_confirmation` keys with the same exact value.
+
+⚠ **CONVENTION:** For a given key `password`, the _confirmation_ predicate expects another key `password_confirmation`. Easy to tell, it’s the concatenation of the original key with the `_confirmation` suffix. Their values must be equal. ⚠
+
+
+### Forms
+
+An important precondition to check before to implement a validator is about the expected input.
+When we use validators for already preprocessed data it's safe to use basic validations from `Hanami::Validations` mixin.
+
+If the data is coming directly from user input via a HTTP form, it's advisable to use `Hanami::Validations::Form` instead.
+**The two mixins have the same API, but the latter is able to do low level input preprocessing specific for forms**. For instance, blank inputs are casted to `nil` in order to avoid blank strings in the database.
+
+
+### Nested Input Data
+
+While we’re building complex web forms, we may find comfortable to organise data in a hierarchy of cohesive input fields. For instance, all the fields related to a customer, may have the `customer` prefix. To reflect this arrangement on the server side, we can group keys.
+
+```ruby
+validations do
+  required(:customer).schema do
+    required(:email) { … }
+    required(:name)  { … }
+    # other validations …
+  end
+end
+```
+
+Groups can be **deeply nested**, without any limitation.
+
+```ruby
+validations
+  required(:customer).schema do
+    # other validations …
+
+    required(:address).schema do
+      required(:street) { … }
+      # other address validations …
+    end
+  end
+end
+```
+
+### Composition
+
+Until now, we have seen only small snippets to show specific features. That really close view prevents us to see the big picture of complex real world projects.
+
+As the code base grows, it’s a good practice to DRY validation rules.
+
+```ruby
+class AddressValidator
+  include Hanami::Validations
+
+  validations do
+    required(:street) { … }
+  end
+end
+```
+
+This validator can be reused by other validators.
+
+```ruby
+class CustomerValidator
+  include Hanami::Validations
+
+  validations do
+    required(:email) { … }
+    required(:address).schema(AddressValidator)
+  end
+end
+```
+
+Again, there is no limit to the nesting levels.
+
+```ruby
+class OrderValidator
+  include Hanami::Validations
+
+  validations do
+    required(:number) { … }
+    required(:customer).schema(CustomerValidator)
+  end
+end
+```
+
+In the end, `OrderValidator` is able to validate a complex data structure like this:
+
+```ruby
+{
+  number: "123",
+  customer: {
+    email: "user@example.com",
+    address: {
+      city: "Rome"
+    }
+  }
+}
+```
+
+### Whitelisting
+
+Another fundamental role that validators plays in the architecture of our projects is input whitelisting.
+For security reasons, we want to allow known keys to come in and reject everything else.
+
+This process happens when we invoke `#validate`.
+Allowed keys are the ones defined with `.required`.
+
+**Please note that whitelisting is only available for `Hanami::Validations::Form` mixin.**
+
+### Result
+
+When we trigger the validation process with `#validate`, we get a result object in return. It’s able to tell if it’s successful, which rules the input data has violated and an output data bag.
+
+```ruby
+result = OrderValidator.new({}).validate
+result.success? # => false
+```
+
+#### Messages
+
+`result.messages` returns a nested set of validation error messages.
+
+Each error carries on informations about a single rule violation.
+
+```ruby
+result.messages.fetch(:number)   # => ["is missing"]
+result.messages.fetch(:customer) # => ["is missing"]
+```
+
+#### Output
+
+`result.output` is a `Hash` which is the result of whitelisting and coercions. It’s useful to pass it do other components that may want to persist that data.
+
+```ruby
+{
+  "number"  => "123",
+  "unknown" => "foo"
+}
+```
+
+If we receive the input above, `output` will look like this.
+
+```ruby
+result.output
+  # => { :number => 123 }
+```
+
+We can observe that:
+
+  * Keys are _symbolized_
+  * Only whitelisted keys are included
+  * Data is coerced
+
+### Error Messages
+
+To pick the right error message is crucial for user experience.
+As usual `Hanami::Validations` comes to the rescue for most common cases and it leaves space to customization of behaviors.
+
+We have seen that builtin predicates have default messages, while [inline predicates](#inline-custom-predicates) allow to specify a custom message via the `:message` option.
+
+```ruby
+class SignupValidator
+  include Hanami::Validations
+
+  predicate :email?, message: 'must be an email' do |current|
+    # ...
+  end
+
+  validations do
+    required(:email).filled(:str?, :email?)
+    required(:age).filled(:int?, gt?: 18)
   end
 end
 
-validator = ShippingDetails.new
-validator.valid? # => false
+result = SignupValidator.new(email: 'foo', age: 1).validate
+
+result.success?               # => false
+result.messages.fetch(:email) # => ['must be an email']
+result.messages.fetch(:age)   # => ['must be greater than 18']
 ```
 
-Bulk operations on errors are guaranteed by `#each`.
-This method yields a **flattened collection of errors**.
+#### Configurable Error Messages
+
+Inline error messages are ideal for quick and dirty development, but we suggest to use an external YAML file to configure these messages:
+
+```yaml
+# config/messages.yml
+en:
+  errors:
+    email?: "must be an email"
+```
+
+To be used like this:
 
 ```ruby
-validator.errors.each do |error|
-  error.name
-    # => on the first iteration it returns "full_name"
-    # => the second time it returns "address.street" and so on..
+class SignupValidator
+  include Hanami::Validations
+  messages_path 'config/messages.yml'
+  
+  predicate :email? do |current|
+    # ...
+  end
+  
+  validations do
+    required(:email).filled(:str?, :email?)
+    required(:age).filled(:int?, gt?: 18)
+  end
 end
+
 ```
 
-Errors for a specific attribute can be accessed via `#for`.
+
+#### Custom Error Messages
+
+In the example above, the failure message for age is fine: `"must be greater than 18"`, but how to tweak it? What if we need to change into something diffent? Again, we can use the YAML configuration file for our purpose.
+
+```yaml
+# config/messages.yml
+en:
+  errors:
+    email?: "must be an email"
+
+    rules:
+      signup:
+        age:
+          gt?: "must be an adult"
+
+```
+
+Now our validator is able to look at the right error message.
 
 ```ruby
-error = validator.errors.for('full_name').first
-error.name           # => "full_name"
-error.attribute_name # => "full_name"
+result = SignupValidator.new(email: 'foo', age: 1).validate
 
-error = validator.errors.for('address.street').first
-error.name           # => "address.street"
-error.attribute_name # => "street"
+result.success?             # => false
+result.messages.fetch(:age) # => ['must be an adult']
 ```
 
-### Composable validations
+##### Custom namespace
 
-Validations can be reused via composition:
+⚠ **CONVENTION:** For a given validator named `SignupValidator`, the framework will look for `signup` translation key. ⚠
+
+If for some reason that doesn't work for us, we can customize the namespace:
 
 ```ruby
-require 'hanami/validations'
-
-module NameValidations
+class SignupValidator
   include Hanami::Validations
 
-  attribute :name, presence: true
-end
+  messages_path 'config/messages.yml'
+  namespace     :my_signup
 
-module EmailValidations
-  include Hanami::Validations
-
-  attribute :email, presence: true, format: /.../
-end
-
-module PasswordValidations
-  include Hanami::Validations
-
-  # We validate only the presence here
-  attribute :password, presence: true
-end
-
-module CommonValidations
-  include EmailValidations
-  include PasswordValidations
-end
-
-# A valid signup requires:
-#   * name (presence)
-#   * email (presence and format)
-#   * password (presence and confirmation)
-class Signup
-  include NameValidations
-  include CommonValidations
-
-  # We decorate PasswordValidations behavior, by requiring the confirmation too.
-  # This additional validation is active only in this case.
-  attribute :password, confirmation: true
-end
-
-# A valid signin requires:
-#   * email (presence)
-#   * password (presence)
-class Signin
-  include CommonValidations
-end
-
-# A valid "forgot password" requires:
-#   * email (presence)
-class ForgotPassword
-  include EmailValidations
+  # ...
 end
 ```
 
-### Complete example
+The new namespace should be used in the YAML file too.
+
+```yaml
+# config/messages.yml
+en:
+  # ...
+    rules:
+      my_signup:
+        age:
+          gt?: "must be an adult"
+
+```
+
+#### Internationalization (I18n)
+
+If your project already depends on `i18n` gem, `Hanami::Validations` is able to look at the translations defined for that gem and to use them.
+
 
 ```ruby
-require 'hanami/validations'
-
-class Signup
+class SignupValidator
   include Hanami::Validations
 
-  attribute :first_name, presence: true
-  attribute :last_name,  presence: true
-  attribute :email,      presence: true, format: /\A(.*)@(.*)\.(.*)\z/
-  attribute :password,   presence: true, confirmation: true, size: 8..64
+  messages :i18n
+
+  # ...
 end
 ```
 
-### Errors
-
-When you invoke `#valid?`, validation errors are available at `#errors`.
-It's a set of errors grouped by attribute. Each error contains the name of the
-invalid attribute, the failed validation, the expected value, and the current one.
-
-```ruby
-require 'hanami/validations'
-
-class Signup
-  include Hanami::Validations
-
-  attribute :email, presence: true, format: /\A(.*)@(.*)\.(.*)\z/
-  attribute :age, size: 18..99
-end
-
-signup = Signup.new(email: 'user@example.org')
-signup.valid? # => true
-
-signup = Signup.new(email: '', age: 17)
-signup.valid? # => false
-
-signup.errors
-  # => #<Hanami::Validations::Errors:0x007fe00ced9b78
-  # @errors={
-  #   :email=>[
-  #     #<Hanami::Validations::Error:0x007fe00cee3290 @attribute=:email, @validation=:presence, @expected=true, @actual="">,
-  #     #<Hanami::Validations::Error:0x007fe00cee31f0 @attribute=:email, @validation=:format, @expected=/\A(.*)@(.*)\.(.*)\z/, @actual="">
-  #   ],
-  #   :age=>[
-  #     #<Hanami::Validations::Error:0x007fe00cee30d8 @attribute=:age, @validation=:size, @expected=18..99, @actual=17>
-  #   ]
-  # }>
+```yaml
+# config/locales/en.yml
+en:
+  errors:
+    signup:
+      # ...
 ```
 
-### Hanami::Entity
+## FAQs
+### Uniqueness Validation
 
-Integration with [`Hanami::Entity`](https://github.com/hanami/model) is straight forward.
+Uniqueness validation isn't implemented by `Hanami::Validations` because the context of execution is completely decoupled from persistence.
+Please remember that **uniqueness validation is a huge race condition between application and the database, and it doesn't guarantee records uniqueness for real.** To effectively enforce this policy you can use SQL database constraints.
 
-```ruby
-require 'hanami/model'
-require 'hanami/validations'
+Please read more at: [The Perils of Uniqueness Validations](http://robots.thoughtbot.com/the-perils-of-uniqueness-validations).
 
-class Product
-  include Hanami::Entity
-  include Hanami::Validations
+## Acknowledgements
 
-  attribute :name,  type: String,  presence: true
-  attribute :price, type: Integer, presence: true
-end
-
-product = Product.new(name: 'Book', price: '100')
-product.valid? # => true
-
-product.name  # => "Book"
-product.price # => 100
-```
+Thanks to [dry-rb](http://dry-rb.org) Community for their priceless support. ❤️
+`hanami-validations` uses [dry-validation](http://dry-rb.org/gems/dry-validation) as powerful low-level engine.
 
 ## Contributing
 

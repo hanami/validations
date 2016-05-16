@@ -1,0 +1,20 @@
+en:
+  errors:
+    email?: "must be an email"
+    cool?: "must be cool"
+    odd?: "must be odd"
+
+    rules:
+      signup:
+        age:
+          gt?: "must be an adult"
+      foo:
+        age:
+          gt?: "must be an adult"
+      web:
+        controllers:
+          signup:
+            create:
+              params:
+                age:
+                  gt?: "must be an adult"

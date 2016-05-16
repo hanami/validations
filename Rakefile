@@ -15,4 +15,3 @@ namespace :test do
 end
 
 task default: :test
-
