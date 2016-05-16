@@ -396,7 +396,7 @@ required(:age).filled(:int?)
 # expands to
 # required(:age) { filled? & type?(Integer) & gt?(18) }
 
-required(:age).filled(:str?, gt?: 18)
+required(:age).filled(:int?, gt?: 18)
 ```
 
 In the examples above `age` is **always required** as value.
