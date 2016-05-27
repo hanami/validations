@@ -467,7 +467,7 @@ end
 Groups can be **deeply nested**, without any limitation.
 
 ```ruby
-validations
+validations do
   required(:customer).schema do
     # other validations …
 
