@@ -1,57 +1,57 @@
 require 'test_helper'
 
 describe Hanami::Validations do
-  describe 'nested attributes' do
+  describe 'nested validations' do
     before do
-      @klass = Class.new do
+      @validator = Class.new do
         include Hanami::Validations
 
-        attribute :name, type: String
-        attribute :tags, type: Array
-        attribute :address do
-          attribute :line_one, type: String, presence: true
-          attribute :city, type: String
-          attribute :country, type: String
-          attribute :post_code, type: String
+        validations do
+          required(:number) { filled? }
+          required(:code) { filled? & eql?('foo') }
+
+          required(:customer).schema do
+            required(:name) { filled? }
+            required(:code) { filled? & eql?('bar') }
+
+            required(:address).schema do
+              required(:city) { filled? }
+            end
+          end
         end
       end
     end
 
-    it 'builds nested attributes' do
-      validator = @klass.new(name: 'John Smith', address: { line_one: '10 High Street' })
-      validator.address.line_one.must_equal('10 High Street')
-      validator.name.must_equal('John Smith')
+    it 'returns successful validation result for valid data' do
+      result = @validator.new(number: 23, code: 'foo', customer: { name: 'Luca', code: 'bar', address: { city: 'Rome' } }).validate
+
+      result.must_be :success?
+      result.errors.must_be_empty
     end
 
-    it 'responds with an empty class on nil' do
-      @klass.new({}).address.line_one.must_be_nil
+    it 'returns failing validation result for invalid data' do
+      result = @validator.new({}).validate
+
+      result.wont_be :success?
+      result.messages.fetch(:number).must_equal ['is missing']
+      result.messages.fetch(:customer).must_equal ['is missing']
     end
 
-    it 'is invalid when nested attributes fail validation' do
-      validator = @klass.new(name: 'John Smith', address: { city: 'Melbourne' })
-      validator.valid?.must_equal(false)
-      expected_error = Hanami::Validations::Error.new('address.line_one', :presence, true, nil)
-      line_one_errors = validator.errors.for('address.line_one')
-      line_one_errors.must_include(expected_error)
-      validator.errors.to_h.must_equal({
-        'address.line_one' => [Hanami::Validations::Error.new('address.line_one', :presence, true, nil)]
-      })
-    end
+    # See: https://github.com/dry-rb/dry-validation/issues/162
+    it 'returns different failing validations for keys with the same name'
+    # it 'returns different failing validations for keys with the same name' do
+    #   result = @validator.new(code: 'x', customer: { code: 'y' }).validate
 
-    it 'is valid when nested attributes pass validation' do
-      validator = @klass.new(name: 'John Smith', address: { line_one: '10 High Street' })
-      validator.valid?.must_equal(true)
-      validator.errors.to_h.must_equal({})
-      validator.errors.for('address.line_one').must_equal([])
-      validator.address.errors.for(:line_one).must_equal([])
-      validator.errors.to_h.must_equal({})
-    end
+    #   result.wont_be :success?
+    #   result.messages.fetch(:code).must_equal ['must be equal to foo']
+    #   result.messages.fetch(:customer).fetch(:code).must_equal ['must be equal to bar']
+    # end
 
     # Bug
     # See https://github.com/hanami/validations/issues/58
-    it 'safely serialize to Hash' do
+    it 'safely serialize to nested Hash' do
       data      = {name: 'John Smith', address: { line_one: '10 High Street' }}
-      validator = @klass.new(data)
+      validator = @validator.new(data)
 
       validator.to_h.must_equal(data)
     end
@@ -60,7 +60,7 @@ describe Hanami::Validations do
     # See https://github.com/hanami/validations/issues/58#issuecomment-99144243
     it 'safely serialize to Hash' do
       data      = {name: 'John Smith', tags: [1, 2]}
-      validator = @klass.new(data)
+      validator = @validator.new(data)
 
       validator.to_h.must_equal(data)
     end

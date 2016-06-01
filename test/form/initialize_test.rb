@@ -1,10 +1,10 @@
 require 'test_helper'
 
-describe Hanami::Validations do
+describe Hanami::Validations::Form do
   describe '#initialize' do
     before do
       @validator = Class.new do
-        include Hanami::Validations
+        include Hanami::Validations::Form
 
         validations do
           required(:attr) { type?(Integer) }
@@ -12,7 +12,7 @@ describe Hanami::Validations do
       end
 
       @nested = Class.new do
-        include Hanami::Validations
+        include Hanami::Validations::Form
 
         validations do
           required(:foo) { filled? }
@@ -60,14 +60,14 @@ describe Hanami::Validations do
       data[:attr].must_equal('23')
     end
 
-    it 'accepts symbols as keys, without coercing and whitelisting' do
+    it 'accepts strings as keys, only for the defined attributes' do
       validator = @nested.new(
-        foo:     'ok',
-        num:     23,
-        unknown: 'no',
-        bar: {
-          baz: 'yo',
-          wat: 'oh'
+        'foo'     => 'ok',
+        'num'     => '23',
+        'unknown' => 'no',
+        'bar' => {
+          'baz' => 'yo',
+          'wat' => 'oh'
         }
       )
 
@@ -75,12 +75,10 @@ describe Hanami::Validations do
 
       result.must_be :success?
       result.output.must_equal(
-        foo:     'ok',
-        num:     23,
-        unknown: 'no',
+        foo: 'ok',
+        num: 23,
         bar: {
-          baz: 'yo',
-          wat: 'oh'
+          baz: 'yo'
         }
       )
 
