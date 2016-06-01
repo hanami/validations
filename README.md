@@ -440,7 +440,6 @@ It is valid if the input has `password` and `password_confirmation` keys with th
 
 ⚠ **CONVENTION:** For a given key `password`, the _confirmation_ predicate expects another key `password_confirmation`. Easy to tell, it’s the concatenation of the original key with the `_confirmation` suffix. Their values must be equal. ⚠
 
-
 ### Forms
 
 An important precondition to check before to implement a validator is about the expected input.
@@ -449,6 +448,51 @@ When we use validators for already preprocessed data it's safe to use basic vali
 If the data is coming directly from user input via a HTTP form, it's advisable to use `Hanami::Validations::Form` instead.
 **The two mixins have the same API, but the latter is able to do low level input preprocessing specific for forms**. For instance, blank inputs are casted to `nil` in order to avoid blank strings in the database.
 
+### Rules
+
+Predicates and macros are tools to code validations that concern a single key like `first_name` or `email`.
+If the outcome of a validation depends on two or more attributes we can use _rules_.
+
+Here's a practical example: a job board.
+We want to validate the form of the job creation with some mandatory fields: `type` (full time, part-time, contract), `title` (eg. Developer), `description`, `company` (just the name) and a `website` (which is optional).
+An user must specify the location: on-site or remote. If it's on site, they must specify the `location`, otherwise they have to tick the checkbox for `remote`.
+
+Here's the code:
+
+```ruby
+class CreateJob
+  include Hanami::Validations::Form
+
+  validations do
+    required(:type).filled(:int?, included_in?: [1, 2, 3])
+
+    optional(:location).maybe(:str?)
+    optional(:remote).maybe(:bool?)
+
+    required(:title).filled(:str?)
+    required(:description).filled(:str?)
+    required(:company).filled(:str?)
+
+    optional(:website).filled(:str?, format?: URI.regexp(%w(http https)))
+
+    rule(location_presence: [:location, :remote]) do |location, remote|
+      (remote.none? | remote.false?).then(location.filled?) &
+        remote.true?.then(location.none?)
+    end
+  end
+end
+```
+
+We specify a rule with `rule` method, which takes an arbitrary name and an array of preconditions.
+Only if `:location` and `:remote` are valid according to their validations described above, the `rule` block is evaluated.
+
+The block yields the same exact keys that we put in the precondintions.
+So for `[:location, :remote]` it will yield the corresponding values, bound to the `location` and `remote` variables.
+
+We can use these variables to define the rule. We covered a few cases:
+
+  * If `remote` is missing or false, then `location` must be filled
+  * If `remote` is true, then `location` must be omitted
 
 ### Nested Input Data
 
