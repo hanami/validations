@@ -150,7 +150,7 @@ module Hanami
       end
     end
 
-    def initialize(input)
+    def initialize(input = {})
       @input = input.to_h
     end
 
