@@ -324,7 +324,7 @@ describe 'Predicates: Gteq' do
           let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            refute_successful result, ['is missing', 'must be greater than or equal to 23']
+            refute_successful result, ['must be an integer', 'must be greater than or equal to 23']
           end
         end
 
