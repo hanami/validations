@@ -49,11 +49,12 @@ class DomainValidator
   end
 end
 
-class ChangedTermsOfServicesValidator
-  include Hanami::Validations::Form
-  predicates SharedPredicates
+# FIXME: https://github.com/dry-rb/dry-validation/issues/183
+# class ChangedTermsOfServicesValidator
+#   include Hanami::Validations::Form
+#   predicates SharedPredicates
 
-  validations do
-    required(:terms).filled(:bool?, :accepted?)
-  end
-end
+#   validations do
+#     required(:terms).filled(:bool?, :accepted?)
+#   end
+# end
