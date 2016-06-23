@@ -182,49 +182,13 @@ describe 'Predicates: None' do
       end
 
       describe 'with maybe' do
-        before do
-          @validator = Class.new do
-            include Hanami::Validations::Form
-
-            validations do
-              required(:foo).maybe(:none?)
-            end
-          end
-        end
-
-        describe 'with missing input' do
-          let(:input) { {} }
-
-          it 'is not successful' do
-            refute_successful result, ['is missing']
-          end
-        end
-
-        describe 'with nil input' do
-          let(:input) { { 'foo' => nil } }
-
-          it 'is successful' do
-            assert_successful result
-          end
-        end
-
-        describe 'with blank input' do
-          let(:input) { { 'foo' => '' } }
-
-          it 'is successful' do
-            assert_successful result
-          end
-        end
-
-        describe 'with other input' do
-          let(:input) { { 'foo' => '23' } }
-
-          # See: https://github.com/dry-rb/dry-validation/issues/134#issuecomment-216562678
-          it 'is not successful'
-          # it 'is not successful' do
-          #   refute_successful result, ['cannot be defined']
-          # end
-        end
+        # it doesn't make sense to ask for a required key and at the same time assert it's none
+        #
+        # Example:
+        #
+        #   validations do
+        #     required(:foo).maybe(:none?)
+        #   end
       end
     end
 
@@ -274,93 +238,23 @@ describe 'Predicates: None' do
       end
 
       describe 'with filled' do
-        before do
-          @validator = Class.new do
-            include Hanami::Validations::Form
-
-            validations do
-              optional(:foo).filled(:none?)
-            end
-          end
-        end
-
-        describe 'with missing input' do
-          let(:input) { {} }
-
-          it 'is successful' do
-            assert_successful result
-          end
-        end
-
-        describe 'with nil input' do
-          let(:input) { { 'foo' => nil } }
-
-          it 'is not successful' do
-            refute_successful result, ['must be filled']
-          end
-        end
-
-        describe 'with blank input' do
-          let(:input) { { 'foo' => '' } }
-
-          it 'is not successful' do
-            refute_successful result, ['must be filled']
-          end
-        end
-
-        describe 'with other input' do
-          let(:input) { { 'foo' => '23' } }
-
-          it 'is not successful' do
-            refute_successful result, ['cannot be defined']
-          end
-        end
+        # it doesn't make sense to ask for a filled key and at the same time assert it's none
+        #
+        # Example:
+        #
+        #   validations do
+        #     optional(:foo).filled(:none?)
+        #   end
       end
 
       describe 'with maybe' do
-        before do
-          @validator = Class.new do
-            include Hanami::Validations::Form
-
-            validations do
-              optional(:foo).maybe(:none?)
-            end
-          end
-        end
-
-        describe 'with missing input' do
-          let(:input) { {} }
-
-          it 'is successful' do
-            assert_successful result
-          end
-        end
-
-        describe 'with nil input' do
-          let(:input) { { 'foo' => nil } }
-
-          it 'is successful' do
-            assert_successful result
-          end
-        end
-
-        describe 'with blank input' do
-          let(:input) { { 'foo' => '' } }
-
-          it 'is successful' do
-            assert_successful result
-          end
-        end
-
-        describe 'with other input' do
-          let(:input) { { 'foo' => '23' } }
-
-          # See: https://github.com/dry-rb/dry-validation/issues/134
-          it 'is not successful'
-          # it 'is not successful' do
-          #   refute_successful result, ['cannot be defined']
-          # end
-        end
+        # it doesn't make sense to ask for a maybe key and at the same time assert it's none
+        #
+        # Example:
+        #
+        #   validations do
+        #     optional(:foo).maybe(:none?)
+        #   end
       end
     end
   end

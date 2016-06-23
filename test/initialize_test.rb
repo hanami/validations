@@ -52,6 +52,11 @@ describe Hanami::Validations do
       validator.to_h.fetch(:attr).must_equal 23
     end
 
+    it 'accepts zero arguments' do
+      validator = @validator.new
+      validator.to_h.must_equal({})
+    end
+
     it "doesn't modify the original attributes" do
       data       = { attr: '23' }
       validator  = @validator.new(data)
