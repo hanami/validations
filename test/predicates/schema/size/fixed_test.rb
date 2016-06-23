@@ -42,9 +42,8 @@ describe 'Predicates: Size' do
       describe 'with blank input' do
         let(:input) { { foo: '' } }
 
-        # FIXME: open dry-v ticket: double validation message
         it 'is not successful' do
-          refute_successful result, ['length must be 3', 'size must be 3']
+          refute_successful result, ['length must be 3']
         end
       end
 
@@ -96,7 +95,7 @@ describe 'Predicates: Size' do
         let(:input) { { foo: '' } }
 
         it 'is not successful' do
-          refute_successful result, ['length must be 3', 'size must be 3']
+          refute_successful result, ['length must be 3']
         end
       end
 
@@ -150,7 +149,7 @@ describe 'Predicates: Size' do
             let(:input) { { foo: '' } }
 
             it 'is not successful' do
-              refute_successful result, ['length must be 3', 'size must be 3']
+              refute_successful result, ['length must be 3']
             end
           end
 
@@ -254,7 +253,7 @@ describe 'Predicates: Size' do
             let(:input) { { foo: '' } }
 
             it 'is not successful' do
-              refute_successful result, ['length must be 3', 'size must be 3']
+              refute_successful result, ['length must be 3']
             end
           end
 
@@ -308,7 +307,7 @@ describe 'Predicates: Size' do
             let(:input) { { foo: '' } }
 
             it 'is not successful' do
-              refute_successful result, ['length must be 3', 'size must be 3']
+              refute_successful result, ['length must be 3']
             end
           end
 
@@ -412,7 +411,7 @@ describe 'Predicates: Size' do
             let(:input) { { foo: '' } }
 
             it 'is not successful' do
-              refute_successful result, ['length must be 3', 'size must be 3']
+              refute_successful result, ['length must be 3']
             end
           end
 
