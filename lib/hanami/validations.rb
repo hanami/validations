@@ -53,6 +53,7 @@ module Hanami
         base   = _build(predicates: schema_predicates, &_base_rules)
         schema = _build(predicates: schema_predicates, rules: base.rules, &blk)
         schema.configure(&_schema_config)
+        schema.configure(&_schema_predicates)
         schema.extend(__messages) unless _predicates.empty?
 
         self.schema = schema.new
