@@ -48,9 +48,10 @@ module Hanami
     # @since 0.1.0
     module ClassMethods
       def validations(&blk)
-        base   = _build(&_base_rules)
-        schema = _build(rules: base.rules, &blk)
-        schema.configure(&_schema_predicates)
+        schema_predicates = _predicates_module || __predicates
+
+        base   = _build(predicates: schema_predicates, &_base_rules)
+        schema = _build(predicates: schema_predicates, rules: base.rules, &blk)
         schema.configure(&_schema_config)
         schema.extend(__messages) unless _predicates.empty?
 
@@ -109,7 +110,6 @@ module Hanami
         return if _predicates_module.nil? && _predicates.empty?
 
         lambda do |config|
-          config.predicates    = _predicates_module || __predicates
           config.messages      = _predicates_module && _predicates_module.messages || DEFAULT_MESSAGES_ENGINE
           config.messages_file = _predicates_module && _predicates_module.messages_path
         end
