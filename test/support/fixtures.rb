@@ -49,7 +49,6 @@ class DomainValidator
   end
 end
 
-# FIXME: https://github.com/dry-rb/dry-validation/issues/183
 class ChangedTermsOfServicesValidator
   include Hanami::Validations::Form
 
