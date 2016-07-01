@@ -61,17 +61,16 @@ describe 'Messages' do
     end
   end
 
-  # https://github.com/dry-rb/dry-validation/issues/183
-  # describe 'with i18n support and shared predicates' do
-  #   before do
-  #     @validator = ChangedTermsOfServicesValidator
-  #   end
+  describe 'with i18n support and shared predicates' do
+    before do
+      @validator = ChangedTermsOfServicesValidator
+    end
 
-  #   it 'returns configured message' do
-  #     result = @validator.new(terms: 'false').validate
+    it 'returns configured message' do
+      result = @validator.new(terms: 'false').validate
 
-  #     result.wont_be :success?
-  #     result.messages.fetch(:terms).must_equal ['must be accepted']
-  #   end
-  # end
+      result.wont_be :success?
+      result.messages.fetch(:terms).must_equal ['must be accepted']
+    end
+  end
 end
