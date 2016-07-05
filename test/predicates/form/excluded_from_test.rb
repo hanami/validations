@@ -291,10 +291,9 @@ describe 'Predicates: Excluded From' do
         describe 'with invalid type' do
           let(:input) { { 'foo' => { 'a' => '1' } } }
 
-          it 'is successful'
-          # it 'is successful' do
-          #   assert_successful result
-          # end
+          it 'is successful' do
+            assert_successful result
+          end
         end
 
         describe 'with invalid input' do

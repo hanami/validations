@@ -259,21 +259,17 @@ describe 'Predicates: Filled' do
         describe 'with valid input (array)' do
           let(:input) { { 'foo' => ['23'] } }
 
-          # See: https://github.com/dry-rb/dry-validation/issues/130
-          it 'is successful'
-          # it 'is successful' do
-          #   assert_successful result
-          # end
+          it 'is successful' do
+            assert_successful result
+          end
         end
 
         describe 'with valid input (hash)' do
           let(:input) { { 'foo' => { 'bar' => '23' } } }
 
-          # See: https://github.com/dry-rb/dry-validation/issues/130#issuecomment-216463196
-          it 'is successful'
-          # it 'is successful' do
-          #   assert_successful result
-          # end
+          it 'is successful' do
+            assert_successful result
+          end
         end
 
         describe 'with missing input' do
@@ -295,21 +291,17 @@ describe 'Predicates: Filled' do
         describe 'with blank input' do
           let(:input) { { 'foo' => '' } }
 
-          # See: https://github.com/dry-rb/dry-validation/issues/130#issuecomment-216463576
-          it 'is not successful'
-          # it 'is not successful' do
-          #   refute_successful result, ['must be filled']
-          # end
+          it 'is successful' do
+            assert_successful result
+          end
         end
 
         describe 'with invalid input' do
           let(:input) { { 'foo' => [] } }
 
-          # See: https://github.com/dry-rb/dry-validation/issues/130#issuecomment-216463925
-          it 'is not successful'
-          # it 'is not successful' do
-          #   refute_successful result, ['must be filled']
-          # end
+          it 'is not successful' do
+            refute_successful result, ['must be filled']
+          end
         end
       end
     end
@@ -481,21 +473,17 @@ describe 'Predicates: Filled' do
         describe 'with blank input' do
           let(:input) { { 'foo' => '' } }
 
-          # See: https://github.com/dry-rb/dry-validation/issues/130#issuecomment-216464277
-          it 'is not successful'
-          # it 'is not successful' do
-          #   refute_successful result, ['must be filled']
-          # end
+          it 'is successful' do
+            assert_successful result
+          end
         end
 
         describe 'with invalid input' do
           let(:input) { { 'foo' => [] } }
 
-          # See: https://github.com/dry-rb/dry-validation/issues/130#issuecomment-216464499
-          it 'is not successful'
-          # it 'is not successful' do
-          #   refute_successful result, ['must be filled']
-          # end
+          it 'is not successful' do
+            refute_successful result, ['must be filled']
+          end
         end
       end
     end

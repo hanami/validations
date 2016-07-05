@@ -37,20 +37,18 @@ describe Hanami::Validations do
       result.messages.fetch(:customer).must_equal ['is missing']
     end
 
-    # See: https://github.com/dry-rb/dry-validation/issues/162
-    it 'returns different failing validations for keys with the same name'
-    # it 'returns different failing validations for keys with the same name' do
-    #   result = @validator.new(code: 'x', customer: { code: 'y' }).validate
+    it 'returns different failing validations for keys with the same name' do
+      result = @validator.new(code: 'x', customer: { code: 'y' }).validate
 
-    #   result.wont_be :success?
-    #   result.messages.fetch(:code).must_equal ['must be equal to foo']
-    #   result.messages.fetch(:customer).fetch(:code).must_equal ['must be equal to bar']
-    # end
+      result.wont_be :success?
+      result.messages.fetch(:code).must_equal ['must be equal to foo']
+      result.messages.fetch(:customer).fetch(:code).must_equal ['must be equal to bar']
+    end
 
     # Bug
     # See https://github.com/hanami/validations/issues/58
     it 'safely serialize to nested Hash' do
-      data      = {name: 'John Smith', address: { line_one: '10 High Street' }}
+      data      = { name: 'John Smith', address: { line_one: '10 High Street' } }
       validator = @validator.new(data)
 
       validator.to_h.must_equal(data)
@@ -59,7 +57,7 @@ describe Hanami::Validations do
     # Bug
     # See https://github.com/hanami/validations/issues/58#issuecomment-99144243
     it 'safely serialize to Hash' do
-      data      = {name: 'John Smith', tags: [1, 2]}
+      data      = { name: 'John Smith', tags: [1, 2] }
       validator = @validator.new(data)
 
       validator.to_h.must_equal(data)

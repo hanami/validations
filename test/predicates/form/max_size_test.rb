@@ -227,11 +227,9 @@ describe 'Predicates: Max Size' do
         describe 'with valid input' do
           let(:input) { { 'foo' => %w(1 2 3) } }
 
-          # See: https://github.com/dry-rb/dry-validation/issues/133
-          it 'is successful'
-          # it 'is successful' do
-          #   assert_successful result
-          # end
+          it 'is successful' do
+            assert_successful result
+          end
         end
 
         describe 'with missing input' do
@@ -261,11 +259,9 @@ describe 'Predicates: Max Size' do
         describe 'with invalid input' do
           let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
-          # See https://github.com/dry-rb/dry-validation/issues/133#issuecomment-216556509
-          it 'is not successful'
-          # it 'is not successful' do
-          #   refute_successful result, ['size cannot be greater than 3']
-          # end
+          it 'is not successful' do
+            refute_successful result, ['size cannot be greater than 3']
+          end
         end
       end
     end
@@ -421,11 +417,9 @@ describe 'Predicates: Max Size' do
         describe 'with invalid input' do
           let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
-          # See: https://github.com/dry-rb/dry-validation/issues/133#issuecomment-216555937
-          it 'is not successful'
-          # it 'is not successful' do
-          #   refute_successful result, ['size cannot be greater than 3']
-          # end
+          it 'is not successful' do
+            refute_successful result, ['size cannot be greater than 3']
+          end
         end
       end
     end

@@ -259,10 +259,9 @@ describe 'Predicates: Type' do
         describe 'with invalid type' do
           let(:input) { { 'foo' => ['x'] } }
 
-          it 'is not successful'
-          # it 'is not successful' do
-          #   refute_successful result, ['must be Integer']
-          # end
+          it 'is not successful' do
+            refute_successful result, ['must be Integer']
+          end
         end
       end
     end
@@ -418,10 +417,9 @@ describe 'Predicates: Type' do
         describe 'with invalid type' do
           let(:input) { { 'foo' => ['x'] } }
 
-          it 'is not successful'
-          # it 'is not successful' do
-          #   refute_successful result, ['must be Integer']
-          # end
+          it 'is not successful' do
+            refute_successful result, ['must be Integer']
+          end
         end
       end
     end
