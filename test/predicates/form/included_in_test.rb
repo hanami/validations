@@ -291,11 +291,9 @@ describe 'Predicates: Included In' do
         describe 'with invalid type' do
           let(:input) { { 'foo' => { 'a' => '1' } } }
 
-          # See: https://github.com/dry-rb/dry-validation/issues/129#issuecomment-216534179
-          it 'is not successful'
-          # it 'is not successful' do
-          #   refute_successful result, ['must be one of: 1, 3, 5']
-          # end
+          it 'is not successful' do
+            refute_successful result, ['must be one of: 1, 3, 5']
+          end
         end
 
         describe 'with invalid input' do
@@ -475,11 +473,9 @@ describe 'Predicates: Included In' do
         describe 'with invalid type' do
           let(:input) { { 'foo' => { 'a' => '1' } } }
 
-          # See: https://github.com/dry-rb/dry-validation/issues/129#issuecomment-216534179
-          it 'is not successful'
-          # it 'is not successful' do
-          #   refute_successful result, ['must be one of: 1, 3, 5']
-          # end
+          it 'is not successful' do
+            refute_successful result, ['must be one of: 1, 3, 5']
+          end
         end
 
         describe 'with invalid input' do

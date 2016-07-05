@@ -227,10 +227,9 @@ describe 'Predicates: Min Size' do
         describe 'with valid input' do
           let(:input) { { 'foo' => %w(1 2 3) } }
 
-          it 'is successful'
-          # it 'is successful' do
-          #   assert_successful result
-          # end
+          it 'is successful' do
+            assert_successful result
+          end
         end
 
         describe 'with missing input' do
@@ -260,10 +259,9 @@ describe 'Predicates: Min Size' do
         describe 'with invalid input' do
           let(:input) { { 'foo' => { 'a' => '1', 'b' => '2' } } }
 
-          it 'is not successful'
-          # it 'is not successful' do
-          #   refute_successful result, ['size cannot be less than 3']
-          # end
+          it 'is not successful' do
+            refute_successful result, ['size cannot be less than 3']
+          end
         end
       end
     end
@@ -419,10 +417,9 @@ describe 'Predicates: Min Size' do
         describe 'with invalid input' do
           let(:input) { { 'foo' => { 'a' => '1', 'b' => '2' } } }
 
-          it 'is not successful'
-          # it 'is not successful' do
-          #   refute_successful result, ['size cannot be less than 3']
-          # end
+          it 'is not successful' do
+            refute_successful result, ['size cannot be less than 3']
+          end
         end
       end
     end

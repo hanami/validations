@@ -219,11 +219,9 @@ describe 'Predicates: Eql' do
         describe 'with blank input' do
           let(:input) { { 'foo' => '' } }
 
-          # See: https://github.com/dry-rb/dry-validation/issues/128
-          it 'is not successful'
-          # it 'is not successful' do
-          #   refute_successful result, ['must be equal to 23']
-          # end
+          it 'is successful' do
+            assert_successful result
+          end
         end
       end
     end
@@ -355,11 +353,9 @@ describe 'Predicates: Eql' do
         describe 'with blank input' do
           let(:input) { { 'foo' => '' } }
 
-          # See https://github.com/dry-rb/dry-validation/issues/128#issuecomment-216461705
-          it 'is not successful'
-          # it 'is not successful' do
-          #   refute_successful result, ['must be equal to 23']
-          # end
+          it 'is successful' do
+            assert_successful result
+          end
         end
       end
     end

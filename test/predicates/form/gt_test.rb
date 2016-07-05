@@ -529,10 +529,9 @@ describe 'Predicates: Gt' do
         describe 'with invalid input type' do
           let(:input) { { 'foo' => [] } }
 
-          it 'is not successful'
-          # it 'is not successful' do
-          #   refute_successful result, []
-          # end
+          it 'is not successful' do
+            refute_successful result, ['must be an integer', 'must be greater than 23']
+          end
         end
 
         describe 'with equal input' do

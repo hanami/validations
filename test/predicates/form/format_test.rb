@@ -284,10 +284,9 @@ describe 'Predicates: Format' do
         describe 'with blank input' do
           let(:input) { { 'foo' => '' } }
 
-          it 'is not successful'
-          # it 'is not successful' do
-          #   refute_successful result, ['is in invalid format']
-          # end
+          it 'is successful' do
+            assert_successful result
+          end
         end
 
         describe 'with invalid type' do
@@ -468,10 +467,9 @@ describe 'Predicates: Format' do
         describe 'with blank input' do
           let(:input) { { 'foo' => '' } }
 
-          it 'is not successful'
-          # it 'is not successful' do
-          #   refute_successful result, ['is in invalid format']
-          # end
+          it 'is successful' do
+            assert_successful result
+          end
         end
 
         describe 'with invalid type' do
