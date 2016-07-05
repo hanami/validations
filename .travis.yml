@@ -1,7 +1,7 @@
 language: ruby
 sudo: false
 cache: bundler
-script: 'bundle exec rake test:coverage --trace'
+script: 'bundle exec rake test:coverage --trace && bundle exec rubocop --display-cop-names'
 rvm:
   - 2.2.5
   - 2.3.1
