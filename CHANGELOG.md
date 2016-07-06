@@ -2,8 +2,26 @@
 Validations mixin for Ruby objects
 
 ## v0.6.0 - (unreleased)
+### Added
+- [Luca Guidi] Predicates syntax
+- [Luca Guidi] Custom predicates
+- [Luca Guidi] Inline predicates
+- [Luca Guidi] Shared predicates
+- [Luca Guidi] High level rules
+- [Luca Guidi] Error messages with I18n support (`i18n` gem)
+- [Luca Guidi] Introduced `Hanami::Validations#validate`, which returns a result object.
+- [Luca Guidi] Introduced `Hanami::Validations::Form` mixin, which must be used when input comes from HTTP params or web forms.
+
+### Fixed
+– [Luca Guidi] Ensure to threat blank values as `nil`
+
 ### Changed
-– [Luca Guidi] Drop support for Ruby 2.0, 2.1 and Rubinius
+– [Luca Guidi] Drop support for Ruby 2.0, 2.1 and Rubinius. Official support for JRuby 9.0.5.0+.
+- [Luca Guidi] Validations must be wrapped in `.validations` block.
+- [Luca Guidi] Removed `.attribute` DSL. A validator doesn't create accessors (getters/setters) for validated keys.
+- [Luca Guidi] Removed `Hanami::Validations#valid?` in favor of `#validate`.
+- [Luca Guidi] Error messages are accessible via result object. Eg. `result.errors` or `result.errors(full: true)`
+- [Luca Guidi] Coerced and sanitized data is accessible via result object. Eg. `result.output`
 
 ## v0.5.0 - 2016-01-22
 ### Changed
