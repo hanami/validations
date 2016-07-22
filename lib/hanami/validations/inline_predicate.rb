@@ -2,14 +2,14 @@ module Hanami
   module Validations
     # Inline predicate
     #
-    # @since x.x.x
+    # @since 0.6.0
     # @api private
     class InlinePredicate
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       attr_reader :name
 
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       attr_reader :message
 
@@ -21,7 +21,7 @@ module Hanami
       #
       # @return [Hanami::Validations::InlinePredicate] a new instance
       #
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       def initialize(name, message, &blk)
         @name    = name
@@ -29,13 +29,13 @@ module Hanami
         @blk     = blk
       end
 
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       def to_proc
         @blk
       end
 
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       def ==(other)
         self.class == other.class &&

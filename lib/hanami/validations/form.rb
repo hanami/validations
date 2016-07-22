@@ -7,7 +7,7 @@ module Hanami
     # This must be used when the input comes from a browser or an HTTP endpoint.
     # It knows how to deal with common data types, and common edge cases like blank strings.
     #
-    # @since x.x.x
+    # @since 0.6.0
     #
     # @example
     #   require 'hanami/validations/form'
@@ -20,7 +20,7 @@ module Hanami
       #
       # @param base [Class] the target action
       #
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       #
       # @see http://www.ruby-doc.org/core/Module.html#method-i-included
@@ -31,12 +31,12 @@ module Hanami
         end
       end
 
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       module ClassMethods
         private
 
-        # @since x.x.x
+        # @since 0.6.0
         # @api private
         def _schema_type
           :Form

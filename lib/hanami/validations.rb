@@ -27,7 +27,7 @@ module Hanami
   #     end
   #   end
   module Validations
-    # @since x.x.x
+    # @since 0.6.0
     # @api private
     DEFAULT_MESSAGES_ENGINE = :yaml
 
@@ -65,7 +65,7 @@ module Hanami
       #
       # @param blk [Proc] validation rules
       #
-      # @since x.x.x
+      # @since 0.6.0
       #
       # @example
       #   require 'hanami/validations'
@@ -100,7 +100,7 @@ module Hanami
       #
       # @return nil
       #
-      # @since x.x.x
+      # @since 0.6.0
       #
       # @example Without Custom Message
       #   require 'hanami/validations'
@@ -145,7 +145,7 @@ module Hanami
       #
       # @param mod [Module] a module with shared predicates
       #
-      # @since x.x.x
+      # @since 0.6.0
       #
       # @see Hanami::Validations::Predicates
       #
@@ -178,7 +178,7 @@ module Hanami
       #
       # @param type [Symbol] the preferred engine
       #
-      # @since x.x.x
+      # @since 0.6.0
       #
       # @example
       #   require 'hanami/validations'
@@ -196,7 +196,7 @@ module Hanami
       #
       # @param path [String] path to translation file
       #
-      # @since x.x.x
+      # @since 0.6.0
       #
       # @example
       #   require 'hanami/validations'
@@ -214,7 +214,7 @@ module Hanami
       #
       # @param name [String] namespace
       #
-      # @since x.x.x
+      # @since 0.6.0
       #
       # @example
       #   require 'hanami/validations'
@@ -243,27 +243,27 @@ module Hanami
 
       private
 
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       def _build(options = {}, &blk)
         options = { build: false }.merge(options)
         Dry::Validation.__send__(_schema_type, options, &blk)
       end
 
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       def _schema_type
         :Schema
       end
 
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       def _base_rules
         lambda do
         end
       end
 
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       def _schema_config
         lambda do |config|
@@ -273,7 +273,7 @@ module Hanami
         end
       end
 
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       def _schema_predicates
         return if _predicates_module.nil? && _predicates.empty?
@@ -284,7 +284,7 @@ module Hanami
         end
       end
 
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       def __predicates
         mod = Module.new { include Hanami::Validations::Predicates }
@@ -298,7 +298,7 @@ module Hanami
         mod
       end
 
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       # rubocop:disable Metrics/MethodLength
       def __messages
@@ -329,7 +329,7 @@ module Hanami
     #
     # @param input [#to_h] a set of input data
     #
-    # @since x.x.x
+    # @since 0.6.0
     def initialize(input = {})
       @input = input.to_h
     end
