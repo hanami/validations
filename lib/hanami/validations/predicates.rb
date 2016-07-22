@@ -5,7 +5,7 @@ module Hanami
   module Validations
     # Mixin to include when defining shared predicates
     #
-    # @since x.x.x
+    # @since 0.6.0
     #
     # @see Hanami::Validations::ClassMethods#predicates
     #
@@ -29,7 +29,7 @@ module Hanami
     #     end
     #   end
     module Predicates
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       def self.included(base)
         base.class_eval do

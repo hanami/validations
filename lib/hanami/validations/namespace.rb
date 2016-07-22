@@ -7,26 +7,26 @@ module Hanami
     # For a given `FooValidator` class, it will look for I18n messages within
     # the `foo` group.
     #
-    # @since x.x.x
+    # @since 0.6.0
     # @api private
     class Namespace
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       SUFFIX = 'Validator'.freeze
 
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       SUFFIX_REPLACEMENT = ''.freeze
 
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       RUBY_NAMESPACE_SEPARATOR = '/'.freeze
 
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       RUBY_NAMESPACE_REPLACEMENT = '.'.freeze
 
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       def self.new(name, klass)
         result = name || klass.name
@@ -35,13 +35,13 @@ module Hanami
         super(result)
       end
 
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       def initialize(name)
         @name = name
       end
 
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       def to_s
         underscored_name.gsub(RUBY_NAMESPACE_SEPARATOR, RUBY_NAMESPACE_REPLACEMENT)
@@ -49,13 +49,13 @@ module Hanami
 
       private
 
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       def underscored_name
         Utils::String.new(name_without_suffix).underscore
       end
 
-      # @since x.x.x
+      # @since 0.6.0
       # @api private
       def name_without_suffix
         @name.sub(SUFFIX, SUFFIX_REPLACEMENT)

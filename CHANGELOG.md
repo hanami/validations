@@ -1,7 +1,7 @@
 # Hanami::Validations
 Validations mixin for Ruby objects
 
-## v0.6.0 - (unreleased)
+## v0.6.0 - 2016-07-22
 ### Added
 - [Luca Guidi] Predicates syntax
 - [Luca Guidi] Custom predicates
