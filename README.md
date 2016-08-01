@@ -355,7 +355,7 @@ It takes the input and tries to coerce it. If it fails, the execution stops. If 
   * `BigDecimal` (aliased as `decimal?`)
   * `Boolean` (aliased as `bool?`)
   * `Date` (aliased as `date?`)
-  * `DateTime` (aliased as `datetime?`)
+  * `DateTime` (aliased as `date_time?`)
   * `Float` (aliased as `float?`)
   * `Hash` (aliased as `hash?`)
   * `Integer` (aliased as `int?`)
