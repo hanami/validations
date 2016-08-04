@@ -204,7 +204,7 @@ module Hanami
       #   class Signup
       #     include Hanami::Validations
       #
-      #     messages :i18n
+      #     messages_path 'config/messages.yml'
       #   end
       def messages_path(path)
         self._messages_path = path
