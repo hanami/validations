@@ -201,7 +201,7 @@ describe 'Predicates: Size' do
             let(:input) { { 'foo' => '' } }
 
             it 'is not successful' do
-              refute_successful result, ['must be filled', 'size must be within 2 - 3']
+              refute_successful result, ['must be filled', 'length must be within 2 - 3']
             end
           end
 
@@ -359,7 +359,7 @@ describe 'Predicates: Size' do
             let(:input) { { 'foo' => '' } }
 
             it 'is not successful' do
-              refute_successful result, ['must be filled', 'size must be within 2 - 3']
+              refute_successful result, ['must be filled', 'length must be within 2 - 3']
             end
           end
 

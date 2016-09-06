@@ -73,7 +73,7 @@ describe Hanami::Validations::Form do
       result = @validator.new(data).validate
 
       result.wont_be :success?
-      result.messages.fetch(:location).must_equal ['must be filled']
+      result.messages.fetch(:location_presence).must_equal ['must be filled']
     end
 
     it 'is invalid when location is filled and remote is true' do
@@ -81,7 +81,7 @@ describe Hanami::Validations::Form do
       result = @validator.new(data).validate
 
       result.wont_be :success?
-      result.messages.fetch(:location).must_equal ['cannot be defined']
+      result.messages.fetch(:location_presence).must_equal ['cannot be defined']
     end
   end
 end
