@@ -19,7 +19,7 @@ describe Hanami::Validations::Form do
 
           optional(:website).filled(:str?, format?: URI.regexp(%w(http https)))
 
-          rule(location_presence: [:location, :remote]) do |location, remote|
+          rule(location: [:location, :remote]) do |location, remote|
             (remote.none? | remote.false?).then(location.filled?) &
               remote.true?.then(location.none?)
           end
