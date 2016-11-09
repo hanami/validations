@@ -1,2 +1,9 @@
+AllCops:
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+  ExtraDetails: false
 Metrics/LineLength:
   Enabled: false
+Metrics/BlockLength:
+  Exclude:
+    - 'test/**/*'
