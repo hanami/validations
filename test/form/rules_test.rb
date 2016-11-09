@@ -17,7 +17,7 @@ describe Hanami::Validations::Form do
           required(:description).filled(:str?)
           required(:company).filled(:str?)
 
-          optional(:website).filled(:str?, format?: URI.regexp(%w(http https)))
+          optional(:website).filled(:str?, format?: URI::REGEXP)
 
           rule(location: [:location, :remote]) do |location, remote|
             (remote.none? | remote.false?).then(location.filled?) &
