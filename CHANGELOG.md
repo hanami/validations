@@ -1,6 +1,10 @@
 # Hanami::Validations
 Validations mixin for Ruby objects
 
+## v0.7.0 - (unreleased)
+### Changed
+- [Luca Guidi] Official support for Ruby: MRI 2.3+ and JRuby 9.1.5.0+
+
 ## v0.6.0 - 2016-07-22
 ### Added
 - [Luca Guidi] Predicates syntax
