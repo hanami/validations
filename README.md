@@ -22,7 +22,7 @@ Validations mixin for Ruby objects
 
 ## Rubies
 
-__Hanami::Validations__ supports Ruby (MRI) 2+ and JRuby 9.0.5.0+.
+__Hanami::Validations__ supports Ruby (MRI) 2.3+ and JRuby 9.1.5.0+.
 
 ## Installation
 
