@@ -318,7 +318,7 @@ module Hanami
           end
 
           def messages
-            super.merge(__messages)
+            super.messages.merge(__messages)
           end
         end
       end
