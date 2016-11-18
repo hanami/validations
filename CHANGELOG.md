@@ -1,6 +1,10 @@
 # Hanami::Validations
 Validations mixin for Ruby objects
 
+## v0.7.1 - 2016-11-18
+### Fixed
+- [Luca Guidi] Ensure custom validators to work with concrete classes with name
+
 ## v0.7.0 - 2016-11-15
 ### Changed
 - [Luca Guidi] Official support for Ruby: MRI 2.3+ and JRuby 9.1.5.0+

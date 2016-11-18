@@ -6,6 +6,10 @@ describe 'Predicates: custom' do
       @validator = Class.new do
         include Hanami::Validations
 
+        def self.name
+          'Validator'
+        end
+
         validations do
           configure do
             config.messages_file = 'test/fixtures/messages.yml'
@@ -45,6 +49,10 @@ describe 'Predicates: custom' do
     before do
       @validator = Class.new do
         include Hanami::Validations
+
+        def self.name
+          'Validator'
+        end
 
         predicates Module.new {
           include Hanami::Validations::Predicates
@@ -88,6 +96,10 @@ describe 'Predicates: custom' do
       @validator = Class.new do
         include Hanami::Validations
 
+        def self.name
+          'Validator'
+        end
+
         predicate :url?, message: 'must be an URL' do |current|
           current.start_with?('http')
         end
@@ -125,6 +137,10 @@ describe 'Predicates: custom' do
         Class.new do
           include Hanami::Validations
 
+          def self.name
+            'Validator'
+          end
+
           validations do
             required(:foo) { email? }
           end
@@ -139,6 +155,10 @@ describe 'Predicates: custom' do
     before do
       @validator = Class.new do
         include Hanami::Validations
+
+        def self.name
+          'Validator'
+        end
 
         validations do
           required(:details).schema do
