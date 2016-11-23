@@ -119,7 +119,11 @@ It checks if the the given value is an array, and iterates through its elements 
 required(:codes) { array? { each { int? } } }
 ```
 
-This example checks if `codes` is an array and if all the elements are integers.
+This example checks if `codes` is an array and if all the elements are integers, whereas the following example checks there are a minimum of 2 elements and all elements are strings.
+
+```ruby
+required(:codes) { array? { min_size?(2) & each { str? } } }
+```
 
 #### Emptiness
 
