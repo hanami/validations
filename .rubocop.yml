@@ -1,9 +1,7 @@
-AllCops:
-  DisplayCopNames: true
-  DisplayStyleGuide: true
-  ExtraDetails: false
-Metrics/LineLength:
-  Enabled: false
+# Please keep AllCops, Bundler, Style, Metrics groups and then order cops
+# alphabetically
+inherit_from:
+  - https://raw.githubusercontent.com/hanami/hanami/master/.rubocop.yml
 Metrics/BlockLength:
   Exclude:
     - 'test/**/*'
