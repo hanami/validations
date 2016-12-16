@@ -27,7 +27,7 @@ describe 'Predicates: Format' do
 
       # FIXME: dry-v ticket: has an invalid format
       it 'is not successful' do
-        refute_successful result, ['is missing', 'is in invalid format']
+        refute_successful result, ['is missing']
       end
     end
 
@@ -149,7 +149,7 @@ describe 'Predicates: Format' do
           let(:input) { {} }
 
           it 'is not successful' do
-            refute_successful result, ['is missing', 'is in invalid format']
+            refute_successful result, ['is missing']
           end
         end
 
@@ -209,7 +209,7 @@ describe 'Predicates: Format' do
           let(:input) { {} }
 
           it 'is not successful' do
-            refute_successful result, ['is missing', 'is in invalid format']
+            refute_successful result, ['is missing']
           end
         end
 
@@ -217,7 +217,7 @@ describe 'Predicates: Format' do
           let(:input) { { foo: nil } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled', 'is in invalid format']
+            refute_successful result, ['must be filled']
           end
         end
 
@@ -225,7 +225,7 @@ describe 'Predicates: Format' do
           let(:input) { { foo: '' } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled', 'is in invalid format']
+            refute_successful result, ['must be filled']
           end
         end
 
@@ -269,7 +269,7 @@ describe 'Predicates: Format' do
           let(:input) { {} }
 
           it 'is not successful' do
-            refute_successful result, ['is missing', 'is in invalid format']
+            refute_successful result, ['is missing']
           end
         end
 
@@ -399,7 +399,7 @@ describe 'Predicates: Format' do
           let(:input) { { foo: nil } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled', 'is in invalid format']
+            refute_successful result, ['must be filled']
           end
         end
 
@@ -407,7 +407,7 @@ describe 'Predicates: Format' do
           let(:input) { { foo: '' } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled', 'is in invalid format']
+            refute_successful result, ['must be filled']
           end
         end
 
