@@ -280,7 +280,7 @@ module Hanami
 
         lambda do |config|
           config.messages      = _predicates_module && _predicates_module.messages || DEFAULT_MESSAGES_ENGINE
-          config.messages_file = _predicates_module && _predicates_module.messages_path
+          config.messages_file = _predicates_module.messages_path unless _predicates_module.nil?
         end
       end
 
@@ -318,7 +318,13 @@ module Hanami
           end
 
           def messages
-            super.messages.merge(__messages)
+            engine = super
+
+            if engine.respond_to?(:merge)
+              engine
+            else
+              engine.messages
+            end.merge(__messages)
           end
         end
       end
