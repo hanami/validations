@@ -151,6 +151,33 @@ describe 'Predicates: custom' do
     end
   end
 
+  # See: https://github.com/hanami/validations/issues/119
+  describe 'with custom predicate and error messages' do
+    before do
+      @validator = Class.new do
+        include Hanami::Validations
+        messages_path 'test/fixtures/messages.yml'
+
+        predicate(:adult?, message: 'not old enough') do |current|
+          current > 18
+        end
+
+        validations do
+          required(:name) { format?(/Frank/) }
+          required(:age)  { adult? }
+        end
+      end
+    end
+
+    it 'respects messages from configuration file' do
+      result = @validator.new(name: 'John', age: 15).validate
+
+      result.wont_be :success?
+      result.messages[:name].must_equal ['must be frank']
+      result.messages[:age].must_equal ['not old enough']
+    end
+  end
+
   describe 'with nested validations' do
     before do
       @validator = Class.new do
