@@ -1,6 +1,10 @@
 # Hanami::Validations
 Validations mixin for Ruby objects
 
+## v1.0.0.beta1 (unreleased)
+### Fixed
+- [Luca Guidi] Don't let inline predicates to discard other YAML error messages
+
 ## v0.7.1 - 2016-11-18
 ### Fixed
 - [Luca Guidi] Ensure custom validators to work with concrete classes with name
