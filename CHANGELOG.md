@@ -1,7 +1,10 @@
 # Hanami::Validations
 Validations mixin for Ruby objects
 
-## v1.0.0.beta1 (unreleased)
+## v1.0.0.beta1 - 2017-02-14
+### Added
+- [Luca Guidi] Official support for Ruby: MRI 2.4
+
 ### Fixed
 - [Luca Guidi] Don't let inline predicates to discard other YAML error messages
 
