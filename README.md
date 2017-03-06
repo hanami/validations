@@ -682,11 +682,11 @@ To be used like this:
 class SignupValidator
   include Hanami::Validations
   messages_path 'config/messages.yml'
-  
+
   predicate :email? do |current|
     # ...
   end
-  
+
   validations do
     required(:email).filled(:str?, :email?)
     required(:age).filled(:int?, gt?: 18)
@@ -798,6 +798,6 @@ Thanks to [dry-rb](http://dry-rb.org) Community for their priceless support. ❤
 
 ## Copyright
 
-Copyright © 2014-2016 Luca Guidi – Released under MIT License
+Copyright © 2014-2017 Luca Guidi – Released under MIT License
 
 This project was formerly known as Lotus (`lotus-validations`).
