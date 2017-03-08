@@ -9,7 +9,7 @@ module Hanami
     #
     # @see Hanami::Validations::ClassMethods#predicates
     #
-    # @example
+    # @example Inline Predicate
     #   require 'hanami/validations'
     #
     #   module MySharedPredicates
