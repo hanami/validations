@@ -11,6 +11,7 @@ Dry::Validation::Messages::Namespaced.configure do |config|
   ).freeze
 end
 
+# @since 0.1.0
 module Hanami
   # Hanami::Validations is a set of lightweight validations for Ruby objects.
   #
@@ -39,8 +40,7 @@ module Hanami
     # @api private
     #
     # @see http://www.ruby-doc.org/core/Module.html#method-i-included
-    # rubocop:disable Metrics/MethodLength
-    def self.included(base)
+    def self.included(base) # rubocop:disable Metrics/MethodLength
       base.class_eval do
         extend ClassMethods
 
@@ -55,7 +55,6 @@ module Hanami
         self._predicates = Set.new
       end
     end
-    # rubocop:enable Metrics/MethodLength
 
     # Validations DSL
     #
@@ -67,7 +66,9 @@ module Hanami
       #
       # @since 0.6.0
       #
-      # @example
+      # @see http://hanamirb.org/guides/validations/overview/
+      #
+      # @example Basic Example
       #   require 'hanami/validations'
       #
       #   class Signup
@@ -78,8 +79,18 @@ module Hanami
       #     end
       #   end
       #
-      # rubocop:disable Metrics/AbcSize
-      def validations(&blk)
+      #   result = Signup.new(name: "Luca").validate
+      #
+      #   result.success? # => true
+      #   result.messages # => []
+      #   result.output   # => {:name=>""}
+      #
+      #   result = Signup.new(name: "").validate
+      #
+      #   result.success? # => false
+      #   result.messages # => {:name=>["must be filled"]}
+      #   result.output   # => {:name=>""}
+      def validations(&blk) # rubocop:disable Metrics/AbcSize
         schema_predicates = _predicates_module || __predicates
 
         base   = _build(predicates: schema_predicates, &_base_rules)
@@ -90,7 +101,6 @@ module Hanami
 
         self.schema = schema.new
       end
-      # rubocop:enable Metrics/AbcSize
 
       # Define an inline predicate
       #
@@ -300,15 +310,16 @@ module Hanami
 
       # @since 0.6.0
       # @api private
-      # rubocop:disable Metrics/MethodLength
-      def __messages
+      def __messages # rubocop:disable Metrics/MethodLength
         result = _predicates.each_with_object({}) do |p, ret|
           ret[p.name] = p.message
         end
 
+        # @api private
         Module.new do
           @@__messages = result # rubocop:disable Style/ClassVars
 
+          # @api private
           def self.extended(base)
             base.instance_eval do
               def __messages
@@ -317,6 +328,7 @@ module Hanami
             end
           end
 
+          # @api private
           def messages
             engine = super
 
@@ -328,7 +340,6 @@ module Hanami
           end
         end
       end
-      # rubocop:enable Metrics/MethodLength
     end
 
     # Initialize a new instance of a validator
