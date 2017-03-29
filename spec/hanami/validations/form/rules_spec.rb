@@ -1,7 +1,6 @@
-require 'test_helper'
 require 'uri'
 
-describe Hanami::Validations::Form do
+RSpec.describe Hanami::Validations::Form do
   describe 'rules' do
     before do
       @validator = Class.new do
@@ -40,48 +39,48 @@ describe Hanami::Validations::Form do
       data   = input.merge('location' => 'Rome')
       result = @validator.new(data).validate
 
-      result.must_be :success?
-      result.messages.must_be_empty
+      expect(result).to be_success
+      expect(result.errors).to be_empty
     end
 
     it 'is valid when location is filled and remote is false' do
       data   = input.merge('location' => 'Rome', 'remote' => '0')
       result = @validator.new(data).validate
 
-      result.must_be :success?
-      result.messages.must_be_empty
+      expect(result).to be_success
+      expect(result.errors).to be_empty
     end
 
     it 'is valid when location is missing and remote is true' do
       data   = input.merge('remote' => '1')
       result = @validator.new(data).validate
 
-      result.must_be :success?
-      result.messages.must_be_empty
+      expect(result).to be_success
+      expect(result.errors).to be_empty
     end
 
     it 'is invalid when both location and remote are missing' do
       data   = input
       result = @validator.new(data).validate
 
-      result.wont_be :success?
-      result.messages.wont_be_empty
+      expect(result).not_to be_success
+      expect(result.errors).not_to be_empty
     end
 
     it 'is invalid when location is missing and remote is false' do
       data   = input.merge('remote' => '0')
       result = @validator.new(data).validate
 
-      result.wont_be :success?
-      result.messages.fetch(:location).must_equal ['must be filled']
+      expect(result).not_to be_success
+      expect(result.messages.fetch(:location)).to eq ['must be filled']
     end
 
     it 'is invalid when location is filled and remote is true' do
       data   = input.merge('location' => 'Rome', 'remote' => '1')
       result = @validator.new(data).validate
 
-      result.wont_be :success?
-      result.messages.fetch(:location).must_equal ['cannot be defined']
+      expect(result).not_to be_success
+      expect(result.messages.fetch(:location)).to eq ['cannot be defined']
     end
   end
 end

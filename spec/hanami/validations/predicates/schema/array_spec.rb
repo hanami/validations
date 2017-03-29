@@ -1,7 +1,5 @@
-require 'test_helper'
-
-describe 'Predicates: Array' do
-  include TestUtils
+RSpec.describe 'Predicates: Array' do
+  include_context 'validator result'
 
   describe 'with required' do
     before do

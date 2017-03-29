@@ -5,3 +5,4 @@ inherit_from:
 Metrics/BlockLength:
   Exclude:
     - 'test/**/*'
+    - 'spec/**/*'

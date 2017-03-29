@@ -1,7 +1,6 @@
-require 'test_helper'
 require 'securerandom'
 
-describe Hanami::Validations do
+RSpec.describe Hanami::Validations do
   describe 'rules' do
     before do
       @validator = Class.new do
@@ -40,15 +39,15 @@ describe Hanami::Validations do
       it 'returns successful validation result for valid data' do
         result = @validator.new(connection_type: 'a', quick_code: '123').validate
 
-        result.must_be :success?
-        result.errors.must_be_empty
+        expect(result).to be_success
+        expect(result.errors).to be_empty
       end
 
       it 'returns failing validation result when quick code is missing' do
         result = @validator.new(connection_type: 'a').validate
 
-        result.wont_be :success?
-        result.messages.fetch(:quick_code_presence).must_equal ['you must set quick code for connection type "a"']
+        expect(result).not_to be_success
+        expect(result.messages.fetch(:quick_code_presence)).to eq ['you must set quick code for connection type "a"']
       end
     end
 
@@ -56,15 +55,15 @@ describe Hanami::Validations do
       it 'returns successful validation result for valid data' do
         result = @validator.new(connection_type: 'b', uuid: SecureRandom.uuid).validate
 
-        result.must_be :success?
-        result.errors.must_be_empty
+        expect(result).to be_success
+        expect(result.errors).to be_empty
       end
 
       it 'returns failing validation result when uuid is missing' do
         result = @validator.new(connection_type: 'b').validate
 
-        result.wont_be :success?
-        result.messages.fetch(:uuid_presence).must_equal ['you must set uuid for connection type "b"']
+        expect(result).not_to be_success
+        expect(result.messages.fetch(:uuid_presence)).to eq ['you must set uuid for connection type "b"']
       end
     end
   end

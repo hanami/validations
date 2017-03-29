@@ -1,6 +1,6 @@
-require 'test_helper'
+RSpec.describe 'Predicates: custom' do
+  include_context 'validator result'
 
-describe 'Predicates: custom' do
   describe 'with custom predicate' do
     before do
       @validator = Class.new do
@@ -28,8 +28,7 @@ describe 'Predicates: custom' do
       let(:input) { { foo: 'test@hanamirb.org' } }
 
       it 'is successful' do
-        result = @validator.new(input).validate
-        result.must_be :success?
+        assert_successful result
       end
     end
 
@@ -37,10 +36,7 @@ describe 'Predicates: custom' do
       let(:input) { { foo: 'test' } }
 
       it 'is successful' do
-        result = @validator.new(input).validate
-
-        result.wont_be :success?
-        result.messages.fetch(:foo).must_equal ['must be an email']
+        refute_successful result, ['must be an email']
       end
     end
   end
@@ -76,19 +72,15 @@ describe 'Predicates: custom' do
       let(:input) { { foo: 'test@hanamirb.org' } }
 
       it 'is successful' do
-        result = @validator.new(input).validate
-        result.must_be :success?
+        assert_successful result
       end
     end
 
     describe 'with invalid input' do
       let(:input) { { foo: 'test' } }
 
-      it 'is successful' do
-        result = @validator.new(input).validate
-
-        result.wont_be :success?
-        result.messages.fetch(:foo).must_equal ['must be an email']
+      it 'is not successful' do
+        refute_successful result, ['must be an email']
       end
     end
   end
@@ -116,26 +108,22 @@ describe 'Predicates: custom' do
       let(:input) { { foo: 'http://hanamirb.org' } }
 
       it 'is successful' do
-        result = @validator.new(input).validate
-        result.must_be :success?
+        assert_successful result
       end
     end
 
     describe 'with invalid input' do
       let(:input) { { foo: 'test' } }
 
-      it 'is successful' do
-        result = @validator.new(input).validate
-
-        result.wont_be :success?
-        result.messages.fetch(:foo).must_equal ['must be an URL']
+      it 'is not successful' do
+        refute_successful result, ['must be an URL']
       end
     end
   end
 
   describe 'without custom predicate' do
     it 'raises error if try to use an unknown predicate' do
-      exception = lambda do
+      expect do
         Class.new do
           include Hanami::Validations
 
@@ -147,9 +135,7 @@ describe 'Predicates: custom' do
             required(:foo) { email? }
           end
         end
-      end.must_raise(ArgumentError)
-
-      exception.message.must_equal '+email?+ is not a valid predicate name'
+      end.to raise_error(ArgumentError, '+email?+ is not a valid predicate name')
     end
   end
 
@@ -174,9 +160,9 @@ describe 'Predicates: custom' do
     it 'respects messages from configuration file' do
       result = @validator.new(name: 'John', age: 15).validate
 
-      result.wont_be :success?
-      result.messages[:name].must_equal ['must be frank']
-      result.messages[:age].must_equal ['not old enough']
+      expect(result).not_to be_success
+      expect(result.messages[:name]).to eq ['must be frank']
+      expect(result.messages[:age]).to eq ['not old enough']
     end
   end
 
@@ -208,8 +194,8 @@ describe 'Predicates: custom' do
     it 'allows groups to define their own custom predicates' do
       result = @validator.new(details: { foo: 2 }).validate
 
-      result.wont_be :success?
-      result.messages[:details][:foo].must_equal ['must be odd']
+      expect(result).not_to be_success
+      expect(result.messages[:details][:foo]).to eq ['must be odd']
     end
   end
 end

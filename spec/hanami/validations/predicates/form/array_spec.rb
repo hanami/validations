@@ -1,12 +1,10 @@
-require 'test_helper'
-
-describe 'Predicates: Array' do
-  include TestUtils
+RSpec.describe 'Predicates: Array' do
+  include_context 'validator result'
 
   describe 'with required' do
     before do
       @validator = Class.new do
-        include Hanami::Validations
+        include Hanami::Validations::Form
 
         validations do
           required(:foo) { array? { each { int? } } }
@@ -15,7 +13,7 @@ describe 'Predicates: Array' do
     end
 
     describe 'with valid input' do
-      let(:input) { { foo: [3] } }
+      let(:input) { { 'foo' => ['3'] } }
 
       it 'is successful' do
         assert_successful result
@@ -26,15 +24,12 @@ describe 'Predicates: Array' do
       let(:input) { {} }
 
       it 'is not successful' do
-        refute_successful(
-          result,
-          ['is missing']
-        )
+        refute_successful result, ['is missing']
       end
     end
 
     describe 'with nil input' do
-      let(:input) { { foo: nil } }
+      let(:input) { { 'foo' => nil } }
 
       it 'is not successful' do
         refute_successful result, ['must be an array']
@@ -42,15 +37,15 @@ describe 'Predicates: Array' do
     end
 
     describe 'with blank input' do
-      let(:input) { { foo: '' } }
+      let(:input) { { 'foo' => '' } }
 
-      it 'is not successful' do
-        refute_successful result, ['must be an array']
+      it 'is successful' do
+        assert_successful result
       end
     end
 
     describe 'with invalid type' do
-      let(:input) { { foo: { a: 1 } } }
+      let(:input) { { 'foo' => { 'a' => '1' } } }
 
       it 'is not successful' do
         refute_successful result, ['must be an array']
@@ -58,7 +53,7 @@ describe 'Predicates: Array' do
     end
 
     describe 'with invalid input (integer)' do
-      let(:input) { { foo: 4 } }
+      let(:input) { { 'foo' => '4' } }
 
       it 'is not successful' do
         refute_successful result, ['must be an array']
@@ -66,18 +61,18 @@ describe 'Predicates: Array' do
     end
 
     describe 'with invalid input (array with non-integers)' do
-      let(:input) { { foo: %i(foo bar) } }
+      let(:input) { { 'foo' => %w(foo bar) } }
 
       it 'is not successful' do
         refute_successful result, 0 => ['must be an integer'], 1 => ['must be an integer']
       end
     end
 
-    describe 'with invalid input (miexed array)' do
-      let(:input) { { foo: [1, '2', :bar] } }
+    describe 'with invalid input (mixed array)' do
+      let(:input) { { 'foo' => %w(1 bar) } }
 
       it 'is not successful' do
-        refute_successful result, 1 => ['must be an integer'], 2 => ['must be an integer']
+        refute_successful result, 1 => ['must be an integer']
       end
     end
   end
@@ -85,16 +80,16 @@ describe 'Predicates: Array' do
   describe 'with optional' do
     before do
       @validator = Class.new do
-        include Hanami::Validations
+        include Hanami::Validations::Form
 
         validations do
-          optional(:foo) { included_in?([1, 3, 5]) }
+          optional(:foo) { included_in?(%w(1 3 5)) }
         end
       end
     end
 
     describe 'with valid input' do
-      let(:input) { { foo: 3 } }
+      let(:input) { { 'foo' => '3' } }
 
       it 'is successful' do
         assert_successful result
@@ -110,7 +105,7 @@ describe 'Predicates: Array' do
     end
 
     describe 'with nil input' do
-      let(:input) { { foo: nil } }
+      let(:input) { { 'foo' => nil } }
 
       it 'is not successful' do
         refute_successful result, ['must be one of: 1, 3, 5']
@@ -118,7 +113,7 @@ describe 'Predicates: Array' do
     end
 
     describe 'with blank input' do
-      let(:input) { { foo: '' } }
+      let(:input) { { 'foo' => '' } }
 
       it 'is not successful' do
         refute_successful result, ['must be one of: 1, 3, 5']
@@ -126,7 +121,7 @@ describe 'Predicates: Array' do
     end
 
     describe 'with invalid type' do
-      let(:input) { { foo: { a: 1 } } }
+      let(:input) { { 'foo' => { 'a' => '1' } } }
 
       it 'is not successful' do
         refute_successful result, ['must be one of: 1, 3, 5']
@@ -134,7 +129,7 @@ describe 'Predicates: Array' do
     end
 
     describe 'with invalid input' do
-      let(:input) { { foo: 4 } }
+      let(:input) { { 'foo' => '4' } }
 
       it 'is not successful' do
         refute_successful result, ['must be one of: 1, 3, 5']
@@ -146,7 +141,7 @@ describe 'Predicates: Array' do
     describe 'with required' do
       before do
         @validator = Class.new do
-          include Hanami::Validations
+          include Hanami::Validations::Form
 
           validations do
             required(:foo).each(:int?)
@@ -163,7 +158,7 @@ describe 'Predicates: Array' do
       end
 
       describe 'with nil input' do
-        let(:input) { { foo: nil } }
+        let(:input) { { 'foo' => nil } }
 
         it 'is not successful' do
           refute_successful result, ['must be an array']
@@ -171,15 +166,15 @@ describe 'Predicates: Array' do
       end
 
       describe 'with blank input' do
-        let(:input) { { foo: '' } }
+        let(:input) { { 'foo' => '' } }
 
-        it 'is not successful' do
-          refute_successful result, ['must be an array']
+        it 'is successful' do
+          assert_successful result
         end
       end
 
       describe 'with valid input' do
-        let(:input) { { foo: [3] } }
+        let(:input) { { 'foo' => ['3'] } }
 
         it 'is successful' do
           assert_successful result
@@ -187,7 +182,7 @@ describe 'Predicates: Array' do
       end
 
       describe 'with invalid input' do
-        let(:input) { { foo: [:bar] } }
+        let(:input) { { 'foo' => ['bar'] } }
 
         it 'is not successful' do
           refute_successful result, 0 => ['must be an integer']
@@ -198,7 +193,7 @@ describe 'Predicates: Array' do
     describe 'with optional' do
       before do
         @validator = Class.new do
-          include Hanami::Validations
+          include Hanami::Validations::Form
 
           validations do
             optional(:foo).each(:int?)
@@ -215,7 +210,7 @@ describe 'Predicates: Array' do
       end
 
       describe 'with nil input' do
-        let(:input) { { foo: nil } }
+        let(:input) { { 'foo' => nil } }
 
         it 'is not successful' do
           refute_successful result, ['must be an array']
@@ -223,15 +218,15 @@ describe 'Predicates: Array' do
       end
 
       describe 'with blank input' do
-        let(:input) { { foo: '' } }
+        let(:input) { { 'foo' => '' } }
 
-        it 'is not successful' do
-          refute_successful result, ['must be an array']
+        it 'is successful' do
+          assert_successful result
         end
       end
 
       describe 'with valid input' do
-        let(:input) { { foo: [3] } }
+        let(:input) { { 'foo' => ['3'] } }
 
         it 'is successful' do
           assert_successful result
@@ -239,7 +234,7 @@ describe 'Predicates: Array' do
       end
 
       describe 'with invalid input' do
-        let(:input) { { foo: [:bar] } }
+        let(:input) { { 'foo' => ['bar'] } }
 
         it 'is not successful' do
           refute_successful result, 0 => ['must be an integer']
