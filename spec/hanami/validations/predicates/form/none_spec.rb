@@ -16,7 +16,7 @@ RSpec.describe 'Predicates: None' do
       let(:input) { {} }
 
       it 'is not successful' do
-        refute_successful result, ['is missing']
+        expect_not_successful result, ['is missing']
       end
     end
 
@@ -24,7 +24,7 @@ RSpec.describe 'Predicates: None' do
       let(:input) { { 'foo' => nil } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -32,7 +32,7 @@ RSpec.describe 'Predicates: None' do
       let(:input) { { 'foo' => '' } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -40,7 +40,7 @@ RSpec.describe 'Predicates: None' do
       let(:input) { { 'foo' => '23' } }
 
       it 'is not successful' do
-        refute_successful result, ['cannot be defined']
+        expect_not_successful result, ['cannot be defined']
       end
     end
   end
@@ -60,7 +60,7 @@ RSpec.describe 'Predicates: None' do
       let(:input) { {} }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -68,7 +68,7 @@ RSpec.describe 'Predicates: None' do
       let(:input) { { 'foo' => nil } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -76,7 +76,7 @@ RSpec.describe 'Predicates: None' do
       let(:input) { { 'foo' => '' } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -84,7 +84,7 @@ RSpec.describe 'Predicates: None' do
       let(:input) { { 'foo' => '23' } }
 
       it 'is not successful' do
-        refute_successful result, ['cannot be defined']
+        expect_not_successful result, ['cannot be defined']
       end
     end
   end
@@ -106,7 +106,7 @@ RSpec.describe 'Predicates: None' do
           let(:input) { {} }
 
           it 'is not successful' do
-            refute_successful result, ['is missing']
+            expect_not_successful result, ['is missing']
           end
         end
 
@@ -114,7 +114,7 @@ RSpec.describe 'Predicates: None' do
           let(:input) { { 'foo' => nil } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -122,7 +122,7 @@ RSpec.describe 'Predicates: None' do
           let(:input) { { 'foo' => '' } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -130,7 +130,7 @@ RSpec.describe 'Predicates: None' do
           let(:input) { { 'foo' => '23' } }
 
           it 'is not successful' do
-            refute_successful result, ['cannot be defined']
+            expect_not_successful result, ['cannot be defined']
           end
         end
       end
@@ -150,7 +150,7 @@ RSpec.describe 'Predicates: None' do
           let(:input) { {} }
 
           it 'is not successful' do
-            refute_successful result, ['is missing']
+            expect_not_successful result, ['is missing']
           end
         end
 
@@ -158,7 +158,7 @@ RSpec.describe 'Predicates: None' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled']
+            expect_not_successful result, ['must be filled']
           end
         end
 
@@ -166,7 +166,7 @@ RSpec.describe 'Predicates: None' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled']
+            expect_not_successful result, ['must be filled']
           end
         end
 
@@ -174,7 +174,7 @@ RSpec.describe 'Predicates: None' do
           let(:input) { { 'foo' => '23' } }
 
           it 'is not successful' do
-            refute_successful result, ['cannot be defined']
+            expect_not_successful result, ['cannot be defined']
           end
         end
       end
@@ -206,7 +206,7 @@ RSpec.describe 'Predicates: None' do
           let(:input) { {} }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -214,7 +214,7 @@ RSpec.describe 'Predicates: None' do
           let(:input) { { 'foo' => nil } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -222,7 +222,7 @@ RSpec.describe 'Predicates: None' do
           let(:input) { { 'foo' => '' } }
 
           it 'is  successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -230,7 +230,7 @@ RSpec.describe 'Predicates: None' do
           let(:input) { { 'foo' => '23' } }
 
           it 'is not successful' do
-            refute_successful result, ['cannot be defined']
+            expect_not_successful result, ['cannot be defined']
           end
         end
       end

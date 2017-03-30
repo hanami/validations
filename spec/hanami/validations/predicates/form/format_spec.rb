@@ -16,7 +16,7 @@ RSpec.describe 'Predicates: Format' do
       let(:input) { { 'foo' => 'bar baz' } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -25,7 +25,7 @@ RSpec.describe 'Predicates: Format' do
 
       # FIXME: dry-v ticket: has an invalid format
       it 'is not successful' do
-        refute_successful result, ['is missing']
+        expect_not_successful result, ['is missing']
       end
     end
 
@@ -33,7 +33,7 @@ RSpec.describe 'Predicates: Format' do
       let(:input) { { 'foo' => nil } }
 
       it 'is not successful' do
-        refute_successful result, ['is in invalid format']
+        expect_not_successful result, ['is in invalid format']
       end
     end
 
@@ -41,7 +41,7 @@ RSpec.describe 'Predicates: Format' do
       let(:input) { { 'foo' => '' } }
 
       it 'is not successful' do
-        refute_successful result, ['is in invalid format']
+        expect_not_successful result, ['is in invalid format']
       end
     end
 
@@ -57,7 +57,7 @@ RSpec.describe 'Predicates: Format' do
       let(:input) { { 'foo' => 'wat' } }
 
       it 'is not successful' do
-        refute_successful result, ['is in invalid format']
+        expect_not_successful result, ['is in invalid format']
       end
     end
   end
@@ -77,7 +77,7 @@ RSpec.describe 'Predicates: Format' do
       let(:input) { { 'foo' => 'bar baz' } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -85,7 +85,7 @@ RSpec.describe 'Predicates: Format' do
       let(:input) { {} }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -93,7 +93,7 @@ RSpec.describe 'Predicates: Format' do
       let(:input) { { 'foo' => nil } }
 
       it 'is not successful' do
-        refute_successful result, ['is in invalid format']
+        expect_not_successful result, ['is in invalid format']
       end
     end
 
@@ -101,7 +101,7 @@ RSpec.describe 'Predicates: Format' do
       let(:input) { { 'foo' => '' } }
 
       it 'is not successful' do
-        refute_successful result, ['is in invalid format']
+        expect_not_successful result, ['is in invalid format']
       end
     end
 
@@ -117,7 +117,7 @@ RSpec.describe 'Predicates: Format' do
       let(:input) { { 'foo' => 'wat' } }
 
       it 'is not successful' do
-        refute_successful result, ['is in invalid format']
+        expect_not_successful result, ['is in invalid format']
       end
     end
   end
@@ -139,7 +139,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { 'foo' => 'bar baz' } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -147,7 +147,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { {} }
 
           it 'is not successful' do
-            refute_successful result, ['is missing']
+            expect_not_successful result, ['is missing']
           end
         end
 
@@ -155,7 +155,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            refute_successful result, ['is in invalid format']
+            expect_not_successful result, ['is in invalid format']
           end
         end
 
@@ -163,7 +163,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            refute_successful result, ['is in invalid format']
+            expect_not_successful result, ['is in invalid format']
           end
         end
 
@@ -179,7 +179,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { 'foo' => 'wat' } }
 
           it 'is not successful' do
-            refute_successful result, ['is in invalid format']
+            expect_not_successful result, ['is in invalid format']
           end
         end
       end
@@ -199,7 +199,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { 'foo' => 'bar baz' } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -207,7 +207,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { {} }
 
           it 'is not successful' do
-            refute_successful result, ['is missing']
+            expect_not_successful result, ['is missing']
           end
         end
 
@@ -215,7 +215,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled']
+            expect_not_successful result, ['must be filled']
           end
         end
 
@@ -223,7 +223,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled']
+            expect_not_successful result, ['must be filled']
           end
         end
 
@@ -239,7 +239,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { 'foo' => 'wat' } }
 
           it 'is not successful' do
-            refute_successful result, ['is in invalid format']
+            expect_not_successful result, ['is in invalid format']
           end
         end
       end
@@ -259,7 +259,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { 'foo' => 'bar baz' } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -267,7 +267,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { {} }
 
           it 'is not successful' do
-            refute_successful result, ['is missing']
+            expect_not_successful result, ['is missing']
           end
         end
 
@@ -275,7 +275,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { 'foo' => nil } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -283,7 +283,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { 'foo' => '' } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -292,7 +292,7 @@ RSpec.describe 'Predicates: Format' do
 
           it 'is not successful'
           # it 'is not successful' do
-          #   refute_successful result, ['is in invalid format']
+          #   expect_not_successful result, ['is in invalid format']
           # end
         end
 
@@ -300,7 +300,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { 'foo' => 'wat' } }
 
           it 'is not successful' do
-            refute_successful result, ['is in invalid format']
+            expect_not_successful result, ['is in invalid format']
           end
         end
       end
@@ -322,7 +322,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { 'foo' => 'bar baz' } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -330,7 +330,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { {} }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -338,7 +338,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            refute_successful result, ['is in invalid format']
+            expect_not_successful result, ['is in invalid format']
           end
         end
 
@@ -346,7 +346,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            refute_successful result, ['is in invalid format']
+            expect_not_successful result, ['is in invalid format']
           end
         end
 
@@ -362,7 +362,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { 'foo' => 'wat' } }
 
           it 'is not successful' do
-            refute_successful result, ['is in invalid format']
+            expect_not_successful result, ['is in invalid format']
           end
         end
       end
@@ -382,7 +382,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { 'foo' => 'bar baz' } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -390,7 +390,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { {} }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -398,7 +398,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled']
+            expect_not_successful result, ['must be filled']
           end
         end
 
@@ -406,7 +406,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled']
+            expect_not_successful result, ['must be filled']
           end
         end
 
@@ -422,7 +422,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { 'foo' => 'wat' } }
 
           it 'is not successful' do
-            refute_successful result, ['is in invalid format']
+            expect_not_successful result, ['is in invalid format']
           end
         end
       end
@@ -442,7 +442,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { 'foo' => 'bar baz' } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -450,7 +450,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { {} }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -458,7 +458,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { 'foo' => nil } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -466,7 +466,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { 'foo' => '' } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -483,7 +483,7 @@ RSpec.describe 'Predicates: Format' do
           let(:input) { { 'foo' => 'wat' } }
 
           it 'is not successful' do
-            refute_successful result, ['is in invalid format']
+            expect_not_successful result, ['is in invalid format']
           end
         end
       end

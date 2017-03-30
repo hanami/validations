@@ -28,7 +28,7 @@ RSpec.describe 'Predicates: custom' do
       let(:input) { { foo: 'test@hanamirb.org' } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -36,7 +36,7 @@ RSpec.describe 'Predicates: custom' do
       let(:input) { { foo: 'test' } }
 
       it 'is successful' do
-        refute_successful result, ['must be an email']
+        expect_not_successful result, ['must be an email']
       end
     end
   end
@@ -72,7 +72,7 @@ RSpec.describe 'Predicates: custom' do
       let(:input) { { foo: 'test@hanamirb.org' } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -80,7 +80,7 @@ RSpec.describe 'Predicates: custom' do
       let(:input) { { foo: 'test' } }
 
       it 'is not successful' do
-        refute_successful result, ['must be an email']
+        expect_not_successful result, ['must be an email']
       end
     end
   end
@@ -108,7 +108,7 @@ RSpec.describe 'Predicates: custom' do
       let(:input) { { foo: 'http://hanamirb.org' } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -116,7 +116,7 @@ RSpec.describe 'Predicates: custom' do
       let(:input) { { foo: 'test' } }
 
       it 'is not successful' do
-        refute_successful result, ['must be an URL']
+        expect_not_successful result, ['must be an URL']
       end
     end
   end

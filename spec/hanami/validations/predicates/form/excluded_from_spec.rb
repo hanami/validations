@@ -16,7 +16,7 @@ RSpec.describe 'Predicates: Excluded From' do
       let(:input) { { 'foo' => '2' } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -24,7 +24,7 @@ RSpec.describe 'Predicates: Excluded From' do
       let(:input) { {} }
 
       it 'is not successful' do
-        refute_successful result, ['is missing', 'must not be one of: 1, 3, 5']
+        expect_not_successful result, ['is missing', 'must not be one of: 1, 3, 5']
       end
     end
 
@@ -32,7 +32,7 @@ RSpec.describe 'Predicates: Excluded From' do
       let(:input) { { 'foo' => nil } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -40,7 +40,7 @@ RSpec.describe 'Predicates: Excluded From' do
       let(:input) { { 'foo' => '' } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -48,7 +48,7 @@ RSpec.describe 'Predicates: Excluded From' do
       let(:input) { { 'foo' => { 'a' => '1' } } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -56,7 +56,7 @@ RSpec.describe 'Predicates: Excluded From' do
       let(:input) { { 'foo' => '5' } }
 
       it 'is not successful' do
-        refute_successful result, ['must not be one of: 1, 3, 5']
+        expect_not_successful result, ['must not be one of: 1, 3, 5']
       end
     end
   end
@@ -76,7 +76,7 @@ RSpec.describe 'Predicates: Excluded From' do
       let(:input) { { 'foo' => '2' } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -84,7 +84,7 @@ RSpec.describe 'Predicates: Excluded From' do
       let(:input) { {} }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -92,7 +92,7 @@ RSpec.describe 'Predicates: Excluded From' do
       let(:input) { { 'foo' => nil } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -100,7 +100,7 @@ RSpec.describe 'Predicates: Excluded From' do
       let(:input) { { 'foo' => '' } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -108,7 +108,7 @@ RSpec.describe 'Predicates: Excluded From' do
       let(:input) { { 'foo' => { 'a' => '1' } } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -116,7 +116,7 @@ RSpec.describe 'Predicates: Excluded From' do
       let(:input) { { 'foo' => '5' } }
 
       it 'is not successful' do
-        refute_successful result, ['must not be one of: 1, 3, 5']
+        expect_not_successful result, ['must not be one of: 1, 3, 5']
       end
     end
   end
@@ -138,7 +138,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => '2' } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -146,7 +146,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { {} }
 
           it 'is not successful' do
-            refute_successful result, ['is missing', 'must not be one of: 1, 3, 5']
+            expect_not_successful result, ['is missing', 'must not be one of: 1, 3, 5']
           end
         end
 
@@ -154,7 +154,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => nil } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -162,7 +162,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => '' } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -170,7 +170,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => { 'a' => '1' } } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -178,7 +178,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => '5' } }
 
           it 'is not successful' do
-            refute_successful result, ['must not be one of: 1, 3, 5']
+            expect_not_successful result, ['must not be one of: 1, 3, 5']
           end
         end
       end
@@ -198,7 +198,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => '2' } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -206,7 +206,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { {} }
 
           it 'is not successful' do
-            refute_successful result, ['is missing', 'must not be one of: 1, 3, 5']
+            expect_not_successful result, ['is missing', 'must not be one of: 1, 3, 5']
           end
         end
 
@@ -214,7 +214,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled', 'must not be one of: 1, 3, 5']
+            expect_not_successful result, ['must be filled', 'must not be one of: 1, 3, 5']
           end
         end
 
@@ -222,7 +222,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled', 'must not be one of: 1, 3, 5']
+            expect_not_successful result, ['must be filled', 'must not be one of: 1, 3, 5']
           end
         end
 
@@ -230,7 +230,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => { 'a' => '1' } } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -238,7 +238,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => '5' } }
 
           it 'is not successful' do
-            refute_successful result, ['must not be one of: 1, 3, 5']
+            expect_not_successful result, ['must not be one of: 1, 3, 5']
           end
         end
       end
@@ -258,7 +258,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => '2' } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -266,7 +266,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { {} }
 
           it 'is not successful' do
-            refute_successful result, ['is missing', 'must not be one of: 1, 3, 5']
+            expect_not_successful result, ['is missing', 'must not be one of: 1, 3, 5']
           end
         end
 
@@ -274,7 +274,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => nil } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -282,7 +282,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => '' } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -290,7 +290,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => { 'a' => '1' } } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -298,7 +298,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => '5' } }
 
           it 'is not successful' do
-            refute_successful result, ['must not be one of: 1, 3, 5']
+            expect_not_successful result, ['must not be one of: 1, 3, 5']
           end
         end
       end
@@ -320,7 +320,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => '2' } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -328,7 +328,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { {} }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -336,7 +336,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => nil } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -344,7 +344,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => '' } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -352,7 +352,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => { 'a' => '1' } } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -360,7 +360,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => '5' } }
 
           it 'is not successful' do
-            refute_successful result, ['must not be one of: 1, 3, 5']
+            expect_not_successful result, ['must not be one of: 1, 3, 5']
           end
         end
       end
@@ -380,7 +380,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => '2' } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -388,7 +388,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { {} }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -396,7 +396,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled', 'must not be one of: 1, 3, 5']
+            expect_not_successful result, ['must be filled', 'must not be one of: 1, 3, 5']
           end
         end
 
@@ -404,7 +404,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled', 'must not be one of: 1, 3, 5']
+            expect_not_successful result, ['must be filled', 'must not be one of: 1, 3, 5']
           end
         end
 
@@ -412,7 +412,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => { 'a' => '1' } } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -420,7 +420,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => '5' } }
 
           it 'is not successful' do
-            refute_successful result, ['must not be one of: 1, 3, 5']
+            expect_not_successful result, ['must not be one of: 1, 3, 5']
           end
         end
       end
@@ -440,7 +440,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => '2' } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -448,7 +448,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { {} }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -456,7 +456,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => nil } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -464,7 +464,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => '' } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -472,7 +472,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => { 'a' => '1' } } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -480,7 +480,7 @@ RSpec.describe 'Predicates: Excluded From' do
           let(:input) { { 'foo' => '5' } }
 
           it 'is not successful' do
-            refute_successful result, ['must not be one of: 1, 3, 5']
+            expect_not_successful result, ['must not be one of: 1, 3, 5']
           end
         end
       end

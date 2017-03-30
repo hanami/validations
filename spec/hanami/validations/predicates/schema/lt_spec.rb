@@ -16,7 +16,7 @@ RSpec.describe 'Predicates: Lt' do
       let(:input) { { foo: 1 } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -24,7 +24,7 @@ RSpec.describe 'Predicates: Lt' do
       let(:input) { {} }
 
       it 'is not successful' do
-        refute_successful result, ['is missing', 'must be less than 23']
+        expect_not_successful result, ['is missing', 'must be less than 23']
       end
     end
 
@@ -56,7 +56,7 @@ RSpec.describe 'Predicates: Lt' do
       let(:input) { { foo: 23 } }
 
       it 'is not successful' do
-        refute_successful result, ['must be less than 23']
+        expect_not_successful result, ['must be less than 23']
       end
     end
 
@@ -64,7 +64,7 @@ RSpec.describe 'Predicates: Lt' do
       let(:input) { { foo: 99 } }
 
       it 'is not successful' do
-        refute_successful result, ['must be less than 23']
+        expect_not_successful result, ['must be less than 23']
       end
     end
   end
@@ -84,7 +84,7 @@ RSpec.describe 'Predicates: Lt' do
       let(:input) { { foo: 1 } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -92,7 +92,7 @@ RSpec.describe 'Predicates: Lt' do
       let(:input) { {} }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -124,7 +124,7 @@ RSpec.describe 'Predicates: Lt' do
       let(:input) { { foo: 23 } }
 
       it 'is not successful' do
-        refute_successful result, ['must be less than 23']
+        expect_not_successful result, ['must be less than 23']
       end
     end
 
@@ -132,7 +132,7 @@ RSpec.describe 'Predicates: Lt' do
       let(:input) { { foo: 99 } }
 
       it 'is not successful' do
-        refute_successful result, ['must be less than 23']
+        expect_not_successful result, ['must be less than 23']
       end
     end
   end
@@ -154,7 +154,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { foo: 1 } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -162,7 +162,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { {} }
 
           it 'is not successful' do
-            refute_successful result, ['is missing', 'must be less than 23']
+            expect_not_successful result, ['is missing', 'must be less than 23']
           end
         end
 
@@ -194,7 +194,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { foo: 23 } }
 
           it 'is not successful' do
-            refute_successful result, ['must be less than 23']
+            expect_not_successful result, ['must be less than 23']
           end
         end
 
@@ -202,7 +202,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { foo: 99 } }
 
           it 'is not successful' do
-            refute_successful result, ['must be less than 23']
+            expect_not_successful result, ['must be less than 23']
           end
         end
       end
@@ -222,7 +222,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { foo: 1 } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -230,7 +230,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { {} }
 
           it 'is not successful' do
-            refute_successful result, ['is missing', 'must be less than 23']
+            expect_not_successful result, ['is missing', 'must be less than 23']
           end
         end
 
@@ -238,7 +238,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { foo: nil } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled', 'must be less than 23']
+            expect_not_successful result, ['must be filled', 'must be less than 23']
           end
         end
 
@@ -246,7 +246,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { foo: '' } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled', 'must be less than 23']
+            expect_not_successful result, ['must be filled', 'must be less than 23']
           end
         end
 
@@ -254,7 +254,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { foo: [] } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled', 'must be less than 23']
+            expect_not_successful result, ['must be filled', 'must be less than 23']
           end
         end
 
@@ -262,7 +262,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { foo: 23 } }
 
           it 'is not successful' do
-            refute_successful result, ['must be less than 23']
+            expect_not_successful result, ['must be less than 23']
           end
         end
 
@@ -270,7 +270,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { foo: 99 } }
 
           it 'is not successful' do
-            refute_successful result, ['must be less than 23']
+            expect_not_successful result, ['must be less than 23']
           end
         end
       end
@@ -290,7 +290,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { foo: 1 } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -298,7 +298,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { {} }
 
           it 'is not successful' do
-            refute_successful result, ['is missing', 'must be less than 23']
+            expect_not_successful result, ['is missing', 'must be less than 23']
           end
         end
 
@@ -306,7 +306,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { foo: nil } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -330,7 +330,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { foo: 23 } }
 
           it 'is not successful' do
-            refute_successful result, ['must be less than 23']
+            expect_not_successful result, ['must be less than 23']
           end
         end
 
@@ -338,7 +338,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { foo: 99 } }
 
           it 'is not successful' do
-            refute_successful result, ['must be less than 23']
+            expect_not_successful result, ['must be less than 23']
           end
         end
       end
@@ -360,7 +360,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { foo: 1 } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -368,7 +368,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { {} }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -400,7 +400,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { foo: 23 } }
 
           it 'is not successful' do
-            refute_successful result, ['must be less than 23']
+            expect_not_successful result, ['must be less than 23']
           end
         end
 
@@ -408,7 +408,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { foo: 99 } }
 
           it 'is not successful' do
-            refute_successful result, ['must be less than 23']
+            expect_not_successful result, ['must be less than 23']
           end
         end
       end
@@ -428,7 +428,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { foo: 1 } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -436,7 +436,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { {} }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -444,7 +444,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { foo: nil } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled', 'must be less than 23']
+            expect_not_successful result, ['must be filled', 'must be less than 23']
           end
         end
 
@@ -452,7 +452,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { foo: '' } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled', 'must be less than 23']
+            expect_not_successful result, ['must be filled', 'must be less than 23']
           end
         end
 
@@ -460,7 +460,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { foo: [] } }
 
           it 'is not successful' do
-            refute_successful result, ['must be filled', 'must be less than 23']
+            expect_not_successful result, ['must be filled', 'must be less than 23']
           end
         end
 
@@ -468,7 +468,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { foo: 23 } }
 
           it 'is not successful' do
-            refute_successful result, ['must be less than 23']
+            expect_not_successful result, ['must be less than 23']
           end
         end
 
@@ -476,7 +476,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { foo: 99 } }
 
           it 'is not successful' do
-            refute_successful result, ['must be less than 23']
+            expect_not_successful result, ['must be less than 23']
           end
         end
       end
@@ -496,7 +496,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { foo: 1 } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -504,7 +504,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { {} }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -512,7 +512,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { foo: nil } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -536,7 +536,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { foo: 23 } }
 
           it 'is not successful' do
-            refute_successful result, ['must be less than 23']
+            expect_not_successful result, ['must be less than 23']
           end
         end
 
@@ -544,7 +544,7 @@ RSpec.describe 'Predicates: Lt' do
           let(:input) { { foo: 99 } }
 
           it 'is not successful' do
-            refute_successful result, ['must be less than 23']
+            expect_not_successful result, ['must be less than 23']
           end
         end
       end

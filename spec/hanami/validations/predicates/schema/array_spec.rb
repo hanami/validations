@@ -16,7 +16,7 @@ RSpec.describe 'Predicates: Array' do
       let(:input) { { foo: [3] } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -24,7 +24,7 @@ RSpec.describe 'Predicates: Array' do
       let(:input) { {} }
 
       it 'is not successful' do
-        refute_successful(
+        expect_not_successful(
           result,
           ['is missing']
         )
@@ -35,7 +35,7 @@ RSpec.describe 'Predicates: Array' do
       let(:input) { { foo: nil } }
 
       it 'is not successful' do
-        refute_successful result, ['must be an array']
+        expect_not_successful result, ['must be an array']
       end
     end
 
@@ -43,7 +43,7 @@ RSpec.describe 'Predicates: Array' do
       let(:input) { { foo: '' } }
 
       it 'is not successful' do
-        refute_successful result, ['must be an array']
+        expect_not_successful result, ['must be an array']
       end
     end
 
@@ -51,7 +51,7 @@ RSpec.describe 'Predicates: Array' do
       let(:input) { { foo: { a: 1 } } }
 
       it 'is not successful' do
-        refute_successful result, ['must be an array']
+        expect_not_successful result, ['must be an array']
       end
     end
 
@@ -59,7 +59,7 @@ RSpec.describe 'Predicates: Array' do
       let(:input) { { foo: 4 } }
 
       it 'is not successful' do
-        refute_successful result, ['must be an array']
+        expect_not_successful result, ['must be an array']
       end
     end
 
@@ -67,7 +67,7 @@ RSpec.describe 'Predicates: Array' do
       let(:input) { { foo: %i(foo bar) } }
 
       it 'is not successful' do
-        refute_successful result, 0 => ['must be an integer'], 1 => ['must be an integer']
+        expect_not_successful result, 0 => ['must be an integer'], 1 => ['must be an integer']
       end
     end
 
@@ -75,7 +75,7 @@ RSpec.describe 'Predicates: Array' do
       let(:input) { { foo: [1, '2', :bar] } }
 
       it 'is not successful' do
-        refute_successful result, 1 => ['must be an integer'], 2 => ['must be an integer']
+        expect_not_successful result, 1 => ['must be an integer'], 2 => ['must be an integer']
       end
     end
   end
@@ -95,7 +95,7 @@ RSpec.describe 'Predicates: Array' do
       let(:input) { { foo: 3 } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -103,7 +103,7 @@ RSpec.describe 'Predicates: Array' do
       let(:input) { {} }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -111,7 +111,7 @@ RSpec.describe 'Predicates: Array' do
       let(:input) { { foo: nil } }
 
       it 'is not successful' do
-        refute_successful result, ['must be one of: 1, 3, 5']
+        expect_not_successful result, ['must be one of: 1, 3, 5']
       end
     end
 
@@ -119,7 +119,7 @@ RSpec.describe 'Predicates: Array' do
       let(:input) { { foo: '' } }
 
       it 'is not successful' do
-        refute_successful result, ['must be one of: 1, 3, 5']
+        expect_not_successful result, ['must be one of: 1, 3, 5']
       end
     end
 
@@ -127,7 +127,7 @@ RSpec.describe 'Predicates: Array' do
       let(:input) { { foo: { a: 1 } } }
 
       it 'is not successful' do
-        refute_successful result, ['must be one of: 1, 3, 5']
+        expect_not_successful result, ['must be one of: 1, 3, 5']
       end
     end
 
@@ -135,7 +135,7 @@ RSpec.describe 'Predicates: Array' do
       let(:input) { { foo: 4 } }
 
       it 'is not successful' do
-        refute_successful result, ['must be one of: 1, 3, 5']
+        expect_not_successful result, ['must be one of: 1, 3, 5']
       end
     end
   end
@@ -156,7 +156,7 @@ RSpec.describe 'Predicates: Array' do
         let(:input) { {} }
 
         it 'is not successful' do
-          refute_successful result, ['is missing']
+          expect_not_successful result, ['is missing']
         end
       end
 
@@ -164,7 +164,7 @@ RSpec.describe 'Predicates: Array' do
         let(:input) { { foo: nil } }
 
         it 'is not successful' do
-          refute_successful result, ['must be an array']
+          expect_not_successful result, ['must be an array']
         end
       end
 
@@ -172,7 +172,7 @@ RSpec.describe 'Predicates: Array' do
         let(:input) { { foo: '' } }
 
         it 'is not successful' do
-          refute_successful result, ['must be an array']
+          expect_not_successful result, ['must be an array']
         end
       end
 
@@ -180,7 +180,7 @@ RSpec.describe 'Predicates: Array' do
         let(:input) { { foo: [3] } }
 
         it 'is successful' do
-          assert_successful result
+          expect_successful result
         end
       end
 
@@ -188,7 +188,7 @@ RSpec.describe 'Predicates: Array' do
         let(:input) { { foo: [:bar] } }
 
         it 'is not successful' do
-          refute_successful result, 0 => ['must be an integer']
+          expect_not_successful result, 0 => ['must be an integer']
         end
       end
     end
@@ -208,7 +208,7 @@ RSpec.describe 'Predicates: Array' do
         let(:input) { {} }
 
         it 'is not successful' do
-          assert_successful result
+          expect_successful result
         end
       end
 
@@ -216,7 +216,7 @@ RSpec.describe 'Predicates: Array' do
         let(:input) { { foo: nil } }
 
         it 'is not successful' do
-          refute_successful result, ['must be an array']
+          expect_not_successful result, ['must be an array']
         end
       end
 
@@ -224,7 +224,7 @@ RSpec.describe 'Predicates: Array' do
         let(:input) { { foo: '' } }
 
         it 'is not successful' do
-          refute_successful result, ['must be an array']
+          expect_not_successful result, ['must be an array']
         end
       end
 
@@ -232,7 +232,7 @@ RSpec.describe 'Predicates: Array' do
         let(:input) { { foo: [3] } }
 
         it 'is successful' do
-          assert_successful result
+          expect_successful result
         end
       end
 
@@ -240,7 +240,7 @@ RSpec.describe 'Predicates: Array' do
         let(:input) { { foo: [:bar] } }
 
         it 'is not successful' do
-          refute_successful result, 0 => ['must be an integer']
+          expect_not_successful result, 0 => ['must be an integer']
         end
       end
     end

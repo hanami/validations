@@ -16,7 +16,7 @@ RSpec.describe 'Predicates: Empty' do
       let(:input) { { 'foo' => [] } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -24,7 +24,7 @@ RSpec.describe 'Predicates: Empty' do
       let(:input) { { 'foo' => {} } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -32,7 +32,7 @@ RSpec.describe 'Predicates: Empty' do
       let(:input) { {} }
 
       it 'is not successful' do
-        refute_successful result, ['is missing', 'must be empty']
+        expect_not_successful result, ['is missing', 'must be empty']
       end
     end
 
@@ -40,7 +40,7 @@ RSpec.describe 'Predicates: Empty' do
       let(:input) { { 'foo' => nil } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -48,7 +48,7 @@ RSpec.describe 'Predicates: Empty' do
       let(:input) { { 'foo' => '' } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -56,7 +56,7 @@ RSpec.describe 'Predicates: Empty' do
       let(:input) { { 'foo' => ['23'] } }
 
       it 'is not successful' do
-        refute_successful result, ['must be empty']
+        expect_not_successful result, ['must be empty']
       end
     end
   end
@@ -76,7 +76,7 @@ RSpec.describe 'Predicates: Empty' do
       let(:input) { { 'foo' => [] } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -84,7 +84,7 @@ RSpec.describe 'Predicates: Empty' do
       let(:input) { { 'foo' => {} } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -92,7 +92,7 @@ RSpec.describe 'Predicates: Empty' do
       let(:input) { {} }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -100,7 +100,7 @@ RSpec.describe 'Predicates: Empty' do
       let(:input) { { 'foo' => nil } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -108,7 +108,7 @@ RSpec.describe 'Predicates: Empty' do
       let(:input) { { 'foo' => '' } }
 
       it 'is successful' do
-        assert_successful result
+        expect_successful result
       end
     end
 
@@ -116,7 +116,7 @@ RSpec.describe 'Predicates: Empty' do
       let(:input) { { 'foo' => ['23'] } }
 
       it 'is not successful' do
-        refute_successful result, ['must be empty']
+        expect_not_successful result, ['must be empty']
       end
     end
   end
@@ -138,7 +138,7 @@ RSpec.describe 'Predicates: Empty' do
           let(:input) { { 'foo' => [] } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -146,7 +146,7 @@ RSpec.describe 'Predicates: Empty' do
           let(:input) { { 'foo' => {} } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -154,7 +154,7 @@ RSpec.describe 'Predicates: Empty' do
           let(:input) { {} }
 
           it 'is not successful' do
-            refute_successful result, ['is missing', 'must be empty']
+            expect_not_successful result, ['is missing', 'must be empty']
           end
         end
 
@@ -162,7 +162,7 @@ RSpec.describe 'Predicates: Empty' do
           let(:input) { { 'foo' => nil } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -170,7 +170,7 @@ RSpec.describe 'Predicates: Empty' do
           let(:input) { { 'foo' => '' } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -178,7 +178,7 @@ RSpec.describe 'Predicates: Empty' do
           let(:input) { { 'foo' => ['23'] } }
 
           it 'is not successful' do
-            refute_successful result, ['must be empty']
+            expect_not_successful result, ['must be empty']
           end
         end
       end
@@ -220,7 +220,7 @@ RSpec.describe 'Predicates: Empty' do
           let(:input) { { 'foo' => [] } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -228,7 +228,7 @@ RSpec.describe 'Predicates: Empty' do
           let(:input) { { 'foo' => {} } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -236,7 +236,7 @@ RSpec.describe 'Predicates: Empty' do
           let(:input) { {} }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -244,7 +244,7 @@ RSpec.describe 'Predicates: Empty' do
           let(:input) { { 'foo' => nil } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -252,7 +252,7 @@ RSpec.describe 'Predicates: Empty' do
           let(:input) { { 'foo' => '' } }
 
           it 'is successful' do
-            assert_successful result
+            expect_successful result
           end
         end
 
@@ -260,7 +260,7 @@ RSpec.describe 'Predicates: Empty' do
           let(:input) { { 'foo' => ['23'] } }
 
           it 'is not successful' do
-            refute_successful result, ['must be empty']
+            expect_not_successful result, ['must be empty']
           end
         end
       end
