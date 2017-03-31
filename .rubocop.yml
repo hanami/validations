@@ -5,3 +5,5 @@ inherit_from:
 Metrics/BlockLength:
   Exclude:
     - 'test/**/*'
+Style/SymbolArray:
+  Enabled: false
