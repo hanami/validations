@@ -54,7 +54,7 @@ describe 'Predicates: custom' do
           'Validator'
         end
 
-        predicates Module.new {
+        predicates(Module.new do
           include Hanami::Validations::Predicates
 
           self.messages_path = 'test/fixtures/messages.yml'
@@ -62,7 +62,7 @@ describe 'Predicates: custom' do
           predicate(:email?) do |current|
             current.match(/@/)
           end
-        }
+        end)
 
         validations do
           required(:foo) { email? }
