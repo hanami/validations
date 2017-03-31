@@ -6,8 +6,8 @@ require 'hanami/validations/version'
 Gem::Specification.new do |spec|
   spec.name          = 'hanami-validations'
   spec.version       = Hanami::Validations::VERSION
-  spec.authors       = ['Luca Guidi', 'Trung Lê', 'Alfonso Uceda']
-  spec.email         = ['me@lucaguidi.com', 'trung.le@ruby-journal.com', 'uceda73@gmail.com']
+  spec.authors       = ['Luca Guidi']
+  spec.email         = ['me@lucaguidi.com']
   spec.summary       = 'Validations mixin for Ruby objects'
   spec.description   = 'Validations mixin for Ruby objects and support for Hanami'
   spec.homepage      = 'http://hanamirb.org'
@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
   spec.required_ruby_version = '>= 2.3.0'
 
-  spec.add_dependency 'hanami-utils',   '~> 1.0.0.beta1'
+  spec.add_dependency 'hanami-utils',   '~> 1.0.0.rc1'
   spec.add_dependency 'dry-validation', '~> 0.10'
 
   spec.add_development_dependency 'bundler',  '~> 1.6'
