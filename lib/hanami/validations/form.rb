@@ -14,7 +14,18 @@ module Hanami
     #
     #   class Signup
     #     include Hanami::Validations::Form
+    #
+    #     validations do
+    #       required(:name).filled(:foo?)
+    #       optional(:location).maybe(:str?)
+    #     end
     #   end
+    #
+    #   result = Signup.new('location' => 'Rome').validate
+    #   result.success? # => false
+    #
+    #   result = Signup.new('name' => 'Luca').validate
+    #   result.success? # => true
     module Form
       # Override Ruby's hook for modules.
       #
