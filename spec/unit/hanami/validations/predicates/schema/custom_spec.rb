@@ -53,7 +53,6 @@ RSpec.describe 'Predicates: custom' do
         predicates(
           Module.new do
             include Hanami::Validations::Predicates
-
             self.messages_path = "spec/support/fixtures/messages.yml"
 
             predicate(:email?) do |current|
