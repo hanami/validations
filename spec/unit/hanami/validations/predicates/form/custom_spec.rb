@@ -12,7 +12,7 @@ RSpec.describe 'Predicates: custom' do
 
         validations do
           configure do
-            config.messages_file = 'test/fixtures/messages.yml'
+            config.messages_file = "spec/support/fixtures/messages.yml"
 
             def email?(current)
               current.match(/\@/)
@@ -53,8 +53,7 @@ RSpec.describe 'Predicates: custom' do
         predicates(
           Module.new do
             include Hanami::Validations::Predicates
-
-            self.messages_path = 'test/fixtures/messages.yml'
+            self.messages_path = "spec/support/fixtures/messages.yml"
 
             predicate(:email?) do |current|
               current.match(/@/)
@@ -193,7 +192,7 @@ RSpec.describe 'Predicates: custom' do
         validations do
           required(:details).schema do
             configure do
-              config.messages_file = 'test/fixtures/messages.yml'
+              config.messages_file = "spec/support/fixtures/messages.yml"
 
               def odd?(current)
                 current.odd?
