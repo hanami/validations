@@ -1,7 +1,7 @@
 require 'i18n'
 require 'dry/validation/messages/i18n'
 
-I18n.load_path.concat(Dir['test/fixtures/i18n/*.yml'])
+I18n.load_path.concat(Dir["spec/support/fixtures/i18n/*.yml"])
 I18n.backend.load_translations
 
 module SharedPredicates
@@ -16,7 +16,7 @@ end
 
 class SignupValidator
   include Hanami::Validations
-  messages_path 'test/fixtures/messages.yml'
+  messages_path "spec/support/fixtures/messages.yml"
 
   validations do
     required(:age).filled(:int?, gt?: 18)
@@ -29,7 +29,7 @@ module Web
       class Create
         class Params
           include Hanami::Validations::Form
-          messages_path 'test/fixtures/messages.yml'
+          messages_path "spec/support/fixtures/messages.yml"
 
           validations do
             required(:age).filled(:int?, gt?: 18)

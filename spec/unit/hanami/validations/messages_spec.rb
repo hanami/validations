@@ -3,7 +3,7 @@ RSpec.describe 'Messages' do
     before do
       @validator = Class.new do
         include Hanami::Validations
-        messages_path 'test/fixtures/messages.yml'
+        messages_path "spec/support/fixtures/messages.yml"
         namespace :foo
 
         validations do
