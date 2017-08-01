@@ -16,8 +16,8 @@ module Hanami
     #     include Hanami::Validations::Form
     #
     #     validations do
-    #       required(:name).filled(:foo?)
-    #       optional(:location).maybe(:str?)
+    #       required(:name).filled(:str?)
+    #       optional(:location).filled(:str?)
     #     end
     #   end
     #
@@ -25,6 +25,16 @@ module Hanami
     #   result.success? # => false
     #
     #   result = Signup.new('name' => 'Luca').validate
+    #   result.success? # => true
+    #
+    #   # it works with symbol keys too
+    #   result = Signup.new(location: 'Rome').validate
+    #   result.success? # => false
+    #
+    #   result = Signup.new(name: 'Luca').validate
+    #   result.success? # => true
+    #
+    #   result = Signup.new(name: 'Luca', location: 'Rome').validate
     #   result.success? # => true
     module Form
       # Override Ruby's hook for modules.
