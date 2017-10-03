@@ -7,7 +7,7 @@ RSpec.describe 'Predicates: Included In' do
         include Hanami::Validations::Form
 
         validations do
-          required(:foo) { included_in?(%w(1 3 5)) }
+          required(:foo) { included_in?(%w[1 3 5]) }
         end
       end
     end
@@ -67,7 +67,7 @@ RSpec.describe 'Predicates: Included In' do
         include Hanami::Validations::Form
 
         validations do
-          optional(:foo) { included_in?(%w(1 3 5)) }
+          optional(:foo) { included_in?(%w[1 3 5]) }
         end
       end
     end
@@ -129,7 +129,7 @@ RSpec.describe 'Predicates: Included In' do
             include Hanami::Validations::Form
 
             validations do
-              required(:foo).value(included_in?: %w(1 3 5))
+              required(:foo).value(included_in?: %w[1 3 5])
             end
           end
         end
@@ -189,7 +189,7 @@ RSpec.describe 'Predicates: Included In' do
             include Hanami::Validations::Form
 
             validations do
-              required(:foo).filled(included_in?: %w(1 3 5))
+              required(:foo).filled(included_in?: %w[1 3 5])
             end
           end
         end
@@ -249,7 +249,7 @@ RSpec.describe 'Predicates: Included In' do
             include Hanami::Validations::Form
 
             validations do
-              required(:foo).maybe(included_in?: %w(1 3 5))
+              required(:foo).maybe(included_in?: %w[1 3 5])
             end
           end
         end
@@ -311,7 +311,7 @@ RSpec.describe 'Predicates: Included In' do
             include Hanami::Validations::Form
 
             validations do
-              optional(:foo).value(included_in?: %w(1 3 5))
+              optional(:foo).value(included_in?: %w[1 3 5])
             end
           end
         end
@@ -371,7 +371,7 @@ RSpec.describe 'Predicates: Included In' do
             include Hanami::Validations::Form
 
             validations do
-              optional(:foo).filled(included_in?: %w(1 3 5))
+              optional(:foo).filled(included_in?: %w[1 3 5])
             end
           end
         end
@@ -431,7 +431,7 @@ RSpec.describe 'Predicates: Included In' do
             include Hanami::Validations::Form
 
             validations do
-              optional(:foo).maybe(included_in?: %w(1 3 5))
+              optional(:foo).maybe(included_in?: %w[1 3 5])
             end
           end
         end

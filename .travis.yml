@@ -1,7 +1,7 @@
 language: ruby
 sudo: false
 cache: bundler
-script: 'bundle exec rake spec:coverage --trace && bundle exec rubocop'
+script: ./script/ci
 before_install:
 - rvm @global do gem uninstall bundler -a -x
 - rvm @global do gem install bundler -v 1.13.7

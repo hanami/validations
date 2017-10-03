@@ -16,7 +16,7 @@ describe 'Predicates: Size' do
       end
 
       describe 'with valid input' do
-        let(:input) { { 'foo' => %w(1 2 3) } }
+        let(:input) { { 'foo' => %w[1 2 3] } }
 
         it 'is successful' do
           expect_successful result
@@ -68,7 +68,7 @@ describe 'Predicates: Size' do
       end
 
       describe 'with valid input' do
-        let(:input) { { 'foo' => %w(1 2 3) } }
+        let(:input) { { 'foo' => %w[1 2 3] } }
 
         it 'is successful' do
           expect_successful result
@@ -122,7 +122,7 @@ describe 'Predicates: Size' do
           end
 
           describe 'with valid input' do
-            let(:input) { { 'foo' => %w(1 2 3) } }
+            let(:input) { { 'foo' => %w[1 2 3] } }
 
             it 'is successful' do
               expect_successful result
@@ -174,7 +174,7 @@ describe 'Predicates: Size' do
           end
 
           describe 'with valid input' do
-            let(:input) { { 'foo' => %w(1 2 3) } }
+            let(:input) { { 'foo' => %w[1 2 3] } }
 
             it 'is successful' do
               expect_successful result
@@ -226,7 +226,7 @@ describe 'Predicates: Size' do
           end
 
           describe 'with valid input' do
-            let(:input) { { 'foo' => %w(1 2 3) } }
+            let(:input) { { 'foo' => %w[1 2 3] } }
 
             it 'is successful' do
               expect_successful result
@@ -280,7 +280,7 @@ describe 'Predicates: Size' do
           end
 
           describe 'with valid input' do
-            let(:input) { { 'foo' => %w(1 2 3) } }
+            let(:input) { { 'foo' => %w[1 2 3] } }
 
             it 'is successful' do
               expect_successful result
@@ -332,7 +332,7 @@ describe 'Predicates: Size' do
           end
 
           describe 'with valid input' do
-            let(:input) { { 'foo' => %w(1 2 3) } }
+            let(:input) { { 'foo' => %w[1 2 3] } }
 
             it 'is successful' do
               expect_successful result
@@ -384,7 +384,7 @@ describe 'Predicates: Size' do
           end
 
           describe 'with valid input' do
-            let(:input) { { 'foo' => %w(1 2 3) } }
+            let(:input) { { 'foo' => %w[1 2 3] } }
 
             it 'is successful' do
               expect_successful result
