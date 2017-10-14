@@ -18,7 +18,7 @@ RSpec.describe Hanami::Validations::Form do
 
           optional(:website).filled(:str?, format?: URI::REGEXP)
 
-          rule(location: %i(location remote)) do |location, remote|
+          rule(location: %i[location remote]) do |location, remote|
             (remote.none? | remote.false?).then(location.filled?) &
               remote.true?.then(location.none?)
           end

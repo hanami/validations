@@ -61,7 +61,7 @@ RSpec.describe 'Predicates: Array' do
     end
 
     describe 'with invalid input (array with non-integers)' do
-      let(:input) { { 'foo' => %w(foo bar) } }
+      let(:input) { { 'foo' => %w[foo bar] } }
 
       it 'is not successful' do
         expect_not_successful result, 0 => ['must be an integer'], 1 => ['must be an integer']
@@ -69,7 +69,7 @@ RSpec.describe 'Predicates: Array' do
     end
 
     describe 'with invalid input (mixed array)' do
-      let(:input) { { 'foo' => %w(1 bar) } }
+      let(:input) { { 'foo' => %w[1 bar] } }
 
       it 'is not successful' do
         expect_not_successful result, 1 => ['must be an integer']
@@ -83,7 +83,7 @@ RSpec.describe 'Predicates: Array' do
         include Hanami::Validations::Form
 
         validations do
-          optional(:foo) { included_in?(%w(1 3 5)) }
+          optional(:foo) { included_in?(%w[1 3 5]) }
         end
       end
     end
