@@ -43,9 +43,12 @@ module Hanami
     #
     # @return [Dry::Validations::Result]
     #
-    # @since 0.2.4
-    def validate
-      self.class.schema.call(@input)
+    # @since next
+    # @api unstable
+    def call(input)
+      @result = self.class.schema.call(input)
+
+      @result
     end
 
     # Returns a Hash with the defined attributes as symbolized keys, and their
@@ -55,7 +58,9 @@ module Hanami
     #
     # @since 0.1.0
     def to_h
-      validate.output
+      return {} unless defined?(@result)
+
+      @result.output
     end
   end
 end

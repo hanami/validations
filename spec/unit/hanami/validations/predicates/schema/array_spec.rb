@@ -2,8 +2,8 @@ RSpec.describe 'Predicates: Array' do
   include_context 'validator result'
 
   describe 'with required' do
-    before do
-      @validator = Class.new(Hanami::Validations) do
+    let(:validator_class) do
+      Class.new(Hanami::Validations) do
         validations do
           required(:foo) { array? { each { int? } } }
         end
@@ -79,8 +79,8 @@ RSpec.describe 'Predicates: Array' do
   end
 
   describe 'with optional' do
-    before do
-      @validator = Class.new(Hanami::Validations) do
+    let(:validator_class) do
+      Class.new(Hanami::Validations) do
         validations do
           optional(:foo) { included_in?([1, 3, 5]) }
         end
@@ -138,8 +138,8 @@ RSpec.describe 'Predicates: Array' do
 
   describe 'as macro' do
     describe 'with required' do
-      before do
-        @validator = Class.new(Hanami::Validations) do
+      let(:validator_class) do
+        Class.new(Hanami::Validations) do
           validations do
             required(:foo).each(:int?)
           end
@@ -188,8 +188,8 @@ RSpec.describe 'Predicates: Array' do
     end
 
     describe 'with optional' do
-      before do
-        @validator = Class.new(Hanami::Validations) do
+      let(:validator_class) do
+        Class.new(Hanami::Validations) do
           validations do
             optional(:foo).each(:int?)
           end

@@ -2,8 +2,8 @@ RSpec.describe 'Predicates: Eql' do
   include_context 'validator result'
 
   describe 'with required' do
-    before do
-      @validator = Class.new(Hanami::Validations::Form) do
+    let(:validator_class) do
+      Class.new(Hanami::Validations::Form) do
         validations do
           required(:foo) { eql?('23') }
         end
@@ -44,8 +44,8 @@ RSpec.describe 'Predicates: Eql' do
   end
 
   describe 'with optional' do
-    before do
-      @validator = Class.new(Hanami::Validations::Form) do
+    let(:validator_class) do
+      Class.new(Hanami::Validations::Form) do
         validations do
           optional(:foo) { eql?('23') }
         end
@@ -88,8 +88,8 @@ RSpec.describe 'Predicates: Eql' do
   describe 'as macro' do
     describe 'with required' do
       describe 'with value' do
-        before do
-          @validator = Class.new(Hanami::Validations::Form) do
+        let(:validator_class) do
+          Class.new(Hanami::Validations::Form) do
             validations do
               required(:foo).value(eql?: '23')
             end
@@ -130,8 +130,8 @@ RSpec.describe 'Predicates: Eql' do
       end
 
       describe 'with filled' do
-        before do
-          @validator = Class.new(Hanami::Validations::Form) do
+        let(:validator_class) do
+          Class.new(Hanami::Validations::Form) do
             validations do
               required(:foo).filled(eql?: '23')
             end
@@ -172,8 +172,8 @@ RSpec.describe 'Predicates: Eql' do
       end
 
       describe 'with maybe' do
-        before do
-          @validator = Class.new(Hanami::Validations::Form) do
+        let(:validator_class) do
+          Class.new(Hanami::Validations::Form) do
             validations do
               required(:foo).maybe(eql?: '23')
             end
@@ -216,8 +216,8 @@ RSpec.describe 'Predicates: Eql' do
 
     describe 'with optional' do
       describe 'with value' do
-        before do
-          @validator = Class.new(Hanami::Validations::Form) do
+        let(:validator_class) do
+          Class.new(Hanami::Validations::Form) do
             validations do
               optional(:foo).value(eql?: '23')
             end
@@ -258,8 +258,8 @@ RSpec.describe 'Predicates: Eql' do
       end
 
       describe 'with filled' do
-        before do
-          @validator = Class.new(Hanami::Validations::Form) do
+        let(:validator_class) do
+          Class.new(Hanami::Validations::Form) do
             validations do
               optional(:foo).filled(eql?: '23')
             end
@@ -300,8 +300,8 @@ RSpec.describe 'Predicates: Eql' do
       end
 
       describe 'with maybe' do
-        before do
-          @validator = Class.new(Hanami::Validations::Form) do
+        let(:validator_class) do
+          Class.new(Hanami::Validations::Form) do
             validations do
               optional(:foo).maybe(eql?: '23')
             end

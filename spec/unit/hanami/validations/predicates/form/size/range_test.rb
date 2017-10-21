@@ -5,8 +5,8 @@ describe 'Predicates: Size' do
 
   describe 'Range' do
     describe 'with required' do
-      before do
-        @validator = Class.new do
+      let(:validator_class) do
+        Class.new do
           include Hanami::Validations::Form
 
           validations do
@@ -57,8 +57,8 @@ describe 'Predicates: Size' do
     end
 
     describe 'with optional' do
-      before do
-        @validator = Class.new do
+      let(:validator_class) do
+        Class.new do
           include Hanami::Validations::Form
 
           validations do
@@ -111,8 +111,8 @@ describe 'Predicates: Size' do
     describe 'as macro' do
       describe 'with required' do
         describe 'with value' do
-          before do
-            @validator = Class.new do
+          let(:validator_class) do
+            Class.new do
               include Hanami::Validations::Form
 
               validations do
@@ -163,8 +163,8 @@ describe 'Predicates: Size' do
         end
 
         describe 'with filled' do
-          before do
-            @validator = Class.new do
+          let(:validator_class) do
+            Class.new do
               include Hanami::Validations::Form
 
               validations do
@@ -215,8 +215,8 @@ describe 'Predicates: Size' do
         end
 
         describe 'with maybe' do
-          before do
-            @validator = Class.new do
+          let(:validator_class) do
+            Class.new do
               include Hanami::Validations::Form
 
               validations do
@@ -269,8 +269,8 @@ describe 'Predicates: Size' do
 
       describe 'with optional' do
         describe 'with value' do
-          before do
-            @validator = Class.new do
+          let(:validator_class) do
+            Class.new do
               include Hanami::Validations::Form
 
               validations do
@@ -321,8 +321,8 @@ describe 'Predicates: Size' do
         end
 
         describe 'with filled' do
-          before do
-            @validator = Class.new do
+          let(:validator_class) do
+            Class.new do
               include Hanami::Validations::Form
 
               validations do
@@ -373,8 +373,8 @@ describe 'Predicates: Size' do
         end
 
         describe 'with maybe' do
-          before do
-            @validator = Class.new do
+          let(:validator_class) do
+            Class.new do
               include Hanami::Validations::Form
 
               validations do

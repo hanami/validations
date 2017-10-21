@@ -20,20 +20,20 @@ module Hanami
     #     end
     #   end
     #
-    #   result = Signup.new('location' => 'Rome').validate
+    #   result = Signup.new.call('location' => 'Rome')
     #   result.success? # => false
     #
-    #   result = Signup.new('name' => 'Luca').validate
+    #   result = Signup.new.call('name' => 'Luca')
     #   result.success? # => true
     #
     #   # it works with symbol keys too
-    #   result = Signup.new(location: 'Rome').validate
+    #   result = Signup.new.call(location: 'Rome')
     #   result.success? # => false
     #
-    #   result = Signup.new(name: 'Luca').validate
+    #   result = Signup.new.call(name: 'Luca')
     #   result.success? # => true
     #
-    #   result = Signup.new(name: 'Luca', location: 'Rome').validate
+    #   result = Signup.new.call(name: 'Luca', location: 'Rome')
     #   result.success? # => true
     class Form < Validations
       # @param base [Class] the target action

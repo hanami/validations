@@ -2,8 +2,8 @@ RSpec.describe 'Predicates: custom' do
   include_context 'validator result'
 
   describe 'with custom predicate' do
-    before do
-      @validator = Class.new(Hanami::Validations) do
+    let(:validator_class) do
+      Class.new(Hanami::Validations) do
         def self.name
           'Validator'
         end
@@ -40,8 +40,8 @@ RSpec.describe 'Predicates: custom' do
   end
 
   describe 'with custom predicates as module' do
-    before do
-      @validator = Class.new(Hanami::Validations) do
+    let(:validator_class) do
+      Class.new(Hanami::Validations) do
         def self.name
           'Validator'
         end
@@ -81,8 +81,8 @@ RSpec.describe 'Predicates: custom' do
   end
 
   describe 'with custom predicate within predicates block' do
-    before do
-      @validator = Class.new(Hanami::Validations) do
+    let(:validator_class) do
+      Class.new(Hanami::Validations) do
         def self.name
           'Validator'
         end
@@ -132,8 +132,8 @@ RSpec.describe 'Predicates: custom' do
 
   # See: https://github.com/hanami/validations/issues/119
   describe 'with custom predicate and error messages' do
-    before do
-      @validator = Class.new(Hanami::Validations) do
+    let(:validator_class) do
+      Class.new(Hanami::Validations) do
         messages_path "spec/support/fixtures/messages.yml"
 
         predicate(:adult?, message: 'not old enough') do |current|
@@ -147,9 +147,9 @@ RSpec.describe 'Predicates: custom' do
       end
     end
 
-    it 'respects messages from configuration file' do
-      result = @validator.new(name: 'John', age: 15).validate
+    let(:input) { Hash[name: 'John', age: 15] }
 
+    it 'respects messages from configuration file' do
       expect(result).not_to be_success
       expect(result.messages[:name]).to eq ['must be frank']
       expect(result.messages[:age]).to eq ['not old enough']
@@ -157,8 +157,8 @@ RSpec.describe 'Predicates: custom' do
   end
 
   describe 'with nested validations' do
-    before do
-      @validator = Class.new(Hanami::Validations) do
+    let(:validator_class) do
+      Class.new(Hanami::Validations) do
         def self.name
           'Validator'
         end
@@ -179,9 +179,9 @@ RSpec.describe 'Predicates: custom' do
       end
     end
 
-    it 'allows groups to define their own custom predicates' do
-      result = @validator.new(details: { foo: 2 }).validate
+    let(:input) { Hash[details: { foo: 2 }] }
 
+    it 'allows groups to define their own custom predicates' do
       expect(result).not_to be_success
       expect(result.messages[:details][:foo]).to eq ['must be odd']
     end

@@ -2,8 +2,8 @@ RSpec.describe 'Predicates: Max Size' do
   include_context 'validator result'
 
   describe 'with required' do
-    before do
-      @validator = Class.new(Hanami::Validations::Form) do
+    let(:validator_class) do
+      Class.new(Hanami::Validations::Form) do
         validations do
           required(:foo) { max_size?(3) }
         end
@@ -52,8 +52,8 @@ RSpec.describe 'Predicates: Max Size' do
   end
 
   describe 'with optional' do
-    before do
-      @validator = Class.new(Hanami::Validations::Form) do
+    let(:validator_class) do
+      Class.new(Hanami::Validations::Form) do
         validations do
           optional(:foo) { max_size?(3) }
         end
@@ -104,8 +104,8 @@ RSpec.describe 'Predicates: Max Size' do
   describe 'as macro' do
     describe 'with required' do
       describe 'with value' do
-        before do
-          @validator = Class.new(Hanami::Validations::Form) do
+        let(:validator_class) do
+          Class.new(Hanami::Validations::Form) do
             validations do
               required(:foo).value(max_size?: 3)
             end
@@ -154,8 +154,8 @@ RSpec.describe 'Predicates: Max Size' do
       end
 
       describe 'with filled' do
-        before do
-          @validator = Class.new(Hanami::Validations::Form) do
+        let(:validator_class) do
+          Class.new(Hanami::Validations::Form) do
             validations do
               required(:foo).filled(max_size?: 3)
             end
@@ -204,8 +204,8 @@ RSpec.describe 'Predicates: Max Size' do
       end
 
       describe 'with maybe' do
-        before do
-          @validator = Class.new(Hanami::Validations::Form) do
+        let(:validator_class) do
+          Class.new(Hanami::Validations::Form) do
             validations do
               required(:foo).maybe(max_size?: 3)
             end
@@ -256,8 +256,8 @@ RSpec.describe 'Predicates: Max Size' do
 
     describe 'with optional' do
       describe 'with value' do
-        before do
-          @validator = Class.new(Hanami::Validations::Form) do
+        let(:validator_class) do
+          Class.new(Hanami::Validations::Form) do
             validations do
               optional(:foo).value(max_size?: 3)
             end
@@ -306,8 +306,8 @@ RSpec.describe 'Predicates: Max Size' do
       end
 
       describe 'with filled' do
-        before do
-          @validator = Class.new(Hanami::Validations::Form) do
+        let(:validator_class) do
+          Class.new(Hanami::Validations::Form) do
             validations do
               optional(:foo).filled(max_size?: 3)
             end
@@ -356,8 +356,8 @@ RSpec.describe 'Predicates: Max Size' do
       end
 
       describe 'with maybe' do
-        before do
-          @validator = Class.new(Hanami::Validations::Form) do
+        let(:validator_class) do
+          Class.new(Hanami::Validations::Form) do
             validations do
               optional(:foo).maybe(max_size?: 3)
             end

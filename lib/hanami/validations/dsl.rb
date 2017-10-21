@@ -54,13 +54,13 @@ module Hanami
         #     end
         #   end
         #
-        #   result = Signup.new(name: "Luca").validate
+        #   result = Signup.new.call(name: "Luca")
         #
         #   result.success? # => true
         #   result.messages # => []
         #   result.output   # => {:name=>""}
         #
-        #   result = Signup.new(name: "").validate
+        #   result = Signup.new.call(name: "")
         #
         #   result.success? # => false
         #   result.messages # => {:name=>["must be filled"]}

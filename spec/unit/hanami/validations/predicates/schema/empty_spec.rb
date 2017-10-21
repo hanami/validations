@@ -2,8 +2,8 @@ RSpec.describe 'Predicates: Empty' do
   include_context 'validator result'
 
   describe 'with required' do
-    before do
-      @validator = Class.new(Hanami::Validations) do
+    let(:validator_class) do
+      Class.new(Hanami::Validations) do
         validations do
           required(:foo) { empty? }
         end
@@ -60,8 +60,8 @@ RSpec.describe 'Predicates: Empty' do
   end
 
   describe 'with optional' do
-    before do
-      @validator = Class.new(Hanami::Validations) do
+    let(:validator_class) do
+      Class.new(Hanami::Validations) do
         validations do
           optional(:foo) { empty? }
         end
@@ -120,8 +120,8 @@ RSpec.describe 'Predicates: Empty' do
   describe 'as macro' do
     describe 'with required' do
       describe 'with value' do
-        before do
-          @validator = Class.new(Hanami::Validations) do
+        let(:validator_class) do
+          Class.new(Hanami::Validations) do
             validations do
               required(:foo).value(:empty?)
             end
@@ -200,8 +200,8 @@ RSpec.describe 'Predicates: Empty' do
 
     describe 'with optional' do
       describe 'with value' do
-        before do
-          @validator = Class.new(Hanami::Validations) do
+        let(:validator_class) do
+          Class.new(Hanami::Validations) do
             validations do
               optional(:foo).value(:empty?)
             end
