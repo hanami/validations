@@ -1,9 +1,7 @@
 RSpec.describe Hanami::Validations do
   describe 'nested validations' do
     before do
-      @validator = Class.new do
-        include Hanami::Validations
-
+      @validator = Class.new(Hanami::Validations) do
         validations do
           required(:number) { filled? }
           required(:code) { filled? & eql?('foo') }

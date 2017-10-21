@@ -3,9 +3,7 @@ RSpec.describe 'Predicates: Gt' do
 
   describe 'with required' do
     before do
-      @validator = Class.new do
-        include Hanami::Validations
-
+      @validator = Class.new(Hanami::Validations) do
         validations do
           required(:foo) { gt?(23) }
         end
@@ -71,9 +69,7 @@ RSpec.describe 'Predicates: Gt' do
 
   describe 'with optional' do
     before do
-      @validator = Class.new do
-        include Hanami::Validations
-
+      @validator = Class.new(Hanami::Validations) do
         validations do
           optional(:foo) { gt?(23) }
         end
@@ -141,9 +137,7 @@ RSpec.describe 'Predicates: Gt' do
     describe 'with required' do
       describe 'with value' do
         before do
-          @validator = Class.new do
-            include Hanami::Validations
-
+          @validator = Class.new(Hanami::Validations) do
             validations do
               required(:foo).value(gt?: 23)
             end
@@ -209,9 +203,7 @@ RSpec.describe 'Predicates: Gt' do
 
       describe 'with filled' do
         before do
-          @validator = Class.new do
-            include Hanami::Validations
-
+          @validator = Class.new(Hanami::Validations) do
             validations do
               required(:foo).filled(gt?: 23)
             end
@@ -277,9 +269,7 @@ RSpec.describe 'Predicates: Gt' do
 
       describe 'with maybe' do
         before do
-          @validator = Class.new do
-            include Hanami::Validations
-
+          @validator = Class.new(Hanami::Validations) do
             validations do
               required(:foo).maybe(gt?: 23)
             end
@@ -347,9 +337,7 @@ RSpec.describe 'Predicates: Gt' do
     describe 'with optional' do
       describe 'with value' do
         before do
-          @validator = Class.new do
-            include Hanami::Validations
-
+          @validator = Class.new(Hanami::Validations) do
             validations do
               optional(:foo).value(gt?: 23)
             end
@@ -415,9 +403,7 @@ RSpec.describe 'Predicates: Gt' do
 
       describe 'with filled' do
         before do
-          @validator = Class.new do
-            include Hanami::Validations
-
+          @validator = Class.new(Hanami::Validations) do
             validations do
               optional(:foo).filled(gt?: 23)
             end
@@ -483,9 +469,7 @@ RSpec.describe 'Predicates: Gt' do
 
       describe 'with maybe' do
         before do
-          @validator = Class.new do
-            include Hanami::Validations
-
+          @validator = Class.new(Hanami::Validations) do
             validations do
               optional(:foo).maybe(gt?: 23)
             end

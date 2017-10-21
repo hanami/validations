@@ -1,17 +1,13 @@
 RSpec.describe Hanami::Validations do
   describe 'combinable validations' do
     before do
-      address = Class.new do
-        include Hanami::Validations
-
+      address = Class.new(Hanami::Validations) do
         validations do
           required(:city) { filled? }
         end
       end
 
-      customer = Class.new do
-        include Hanami::Validations
-
+      customer = Class.new(Hanami::Validations) do
         validations do
           required(:name) { filled? }
           # FIXME: ask dry team to support any object that responds to #schema.
@@ -19,9 +15,7 @@ RSpec.describe Hanami::Validations do
         end
       end
 
-      @order = Class.new do
-        include Hanami::Validations
-
+      @order = Class.new(Hanami::Validations) do
         validations do
           required(:number) { filled? }
           required(:customer).schema(customer.schema)

@@ -1,9 +1,7 @@
 RSpec.describe Hanami::Validations::Form do
   describe 'base validations' do
     before do
-      @validator = Class.new do
-        include Hanami::Validations::Form
-
+      @validator = Class.new(Hanami::Validations::Form) do
         def self._base_rules
           lambda do
             optional(:_csrf_token).filled(:str?)

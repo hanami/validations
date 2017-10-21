@@ -3,9 +3,7 @@ RSpec.describe 'Predicates: Filled' do
 
   describe 'with key' do
     before do
-      @validator = Class.new do
-        include Hanami::Validations::Form
-
+      @validator = Class.new(Hanami::Validations::Form) do
         validations do
           required(:foo) { filled? }
         end
@@ -63,9 +61,7 @@ RSpec.describe 'Predicates: Filled' do
 
   describe 'with optional' do
     before do
-      @validator = Class.new do
-        include Hanami::Validations::Form
-
+      @validator = Class.new(Hanami::Validations::Form) do
         validations do
           optional(:foo) { filled? }
         end
@@ -125,9 +121,7 @@ RSpec.describe 'Predicates: Filled' do
     describe 'with required' do
       describe 'with value' do
         before do
-          @validator = Class.new do
-            include Hanami::Validations::Form
-
+          @validator = Class.new(Hanami::Validations::Form) do
             validations do
               required(:foo).value(:filled?)
             end
@@ -185,9 +179,7 @@ RSpec.describe 'Predicates: Filled' do
 
       describe 'with filled' do
         before do
-          @validator = Class.new do
-            include Hanami::Validations::Form
-
+          @validator = Class.new(Hanami::Validations::Form) do
             validations do
               required(:foo).filled
             end
@@ -245,9 +237,7 @@ RSpec.describe 'Predicates: Filled' do
 
       describe 'with maybe' do
         before do
-          @validator = Class.new do
-            include Hanami::Validations::Form
-
+          @validator = Class.new(Hanami::Validations::Form) do
             validations do
               required(:foo).maybe(:filled?)
             end
@@ -307,9 +297,7 @@ RSpec.describe 'Predicates: Filled' do
     describe 'with optional' do
       describe 'with value' do
         before do
-          @validator = Class.new do
-            include Hanami::Validations::Form
-
+          @validator = Class.new(Hanami::Validations::Form) do
             validations do
               optional(:foo).value(:filled?)
             end
@@ -367,9 +355,7 @@ RSpec.describe 'Predicates: Filled' do
 
       describe 'with filled' do
         before do
-          @validator = Class.new do
-            include Hanami::Validations::Form
-
+          @validator = Class.new(Hanami::Validations::Form) do
             validations do
               optional(:foo).filled
             end
@@ -427,9 +413,7 @@ RSpec.describe 'Predicates: Filled' do
 
       describe 'with maybe' do
         before do
-          @validator = Class.new do
-            include Hanami::Validations::Form
-
+          @validator = Class.new(Hanami::Validations::Form) do
             validations do
               optional(:foo).maybe(:filled?)
             end

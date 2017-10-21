@@ -3,9 +3,7 @@ RSpec.describe 'Predicates: None' do
 
   describe 'with required' do
     before do
-      @validator = Class.new do
-        include Hanami::Validations
-
+      @validator = Class.new(Hanami::Validations) do
         validations do
           required(:foo) { none? }
         end
@@ -47,9 +45,7 @@ RSpec.describe 'Predicates: None' do
 
   describe 'with optional' do
     before do
-      @validator = Class.new do
-        include Hanami::Validations
-
+      @validator = Class.new(Hanami::Validations) do
         validations do
           optional(:foo) { none? }
         end
@@ -93,9 +89,7 @@ RSpec.describe 'Predicates: None' do
     describe 'with required' do
       describe 'with value' do
         before do
-          @validator = Class.new do
-            include Hanami::Validations
-
+          @validator = Class.new(Hanami::Validations) do
             validations do
               required(:foo).value(:none?)
             end
@@ -137,9 +131,7 @@ RSpec.describe 'Predicates: None' do
 
       describe 'with filled' do
         before do
-          @validator = Class.new do
-            include Hanami::Validations
-
+          @validator = Class.new(Hanami::Validations) do
             validations do
               required(:foo).filled(:none?)
             end
@@ -193,9 +185,7 @@ RSpec.describe 'Predicates: None' do
     describe 'with optional' do
       describe 'with value' do
         before do
-          @validator = Class.new do
-            include Hanami::Validations
-
+          @validator = Class.new(Hanami::Validations) do
             validations do
               optional(:foo).value(:none?)
             end
@@ -237,9 +227,7 @@ RSpec.describe 'Predicates: None' do
 
       describe 'with filled' do
         before do
-          @validator = Class.new do
-            include Hanami::Validations
-
+          @validator = Class.new(Hanami::Validations) do
             validations do
               optional(:foo).filled(:none?)
             end

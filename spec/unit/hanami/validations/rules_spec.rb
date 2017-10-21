@@ -3,9 +3,7 @@ require 'securerandom'
 RSpec.describe Hanami::Validations do
   describe 'rules' do
     before do
-      @validator = Class.new do
-        include Hanami::Validations
-
+      @validator = Class.new(Hanami::Validations) do
         validations do
           configure do
             def self.messages

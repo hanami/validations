@@ -4,9 +4,7 @@ RSpec.describe 'Predicates: Size' do
   describe 'Range' do
     describe 'with required' do
       before do
-        @validator = Class.new do
-          include Hanami::Validations
-
+        @validator = Class.new(Hanami::Validations) do
           validations do
             required(:foo) { size?(2..3) }
           end
@@ -56,9 +54,7 @@ RSpec.describe 'Predicates: Size' do
 
     describe 'with optional' do
       before do
-        @validator = Class.new do
-          include Hanami::Validations
-
+        @validator = Class.new(Hanami::Validations) do
           validations do
             optional(:foo) { size?(2..3) }
           end
@@ -110,9 +106,7 @@ RSpec.describe 'Predicates: Size' do
       describe 'with required' do
         describe 'with value' do
           before do
-            @validator = Class.new do
-              include Hanami::Validations
-
+            @validator = Class.new(Hanami::Validations) do
               validations do
                 required(:foo).value(size?: 2..3)
               end
@@ -162,9 +156,7 @@ RSpec.describe 'Predicates: Size' do
 
         describe 'with filled' do
           before do
-            @validator = Class.new do
-              include Hanami::Validations
-
+            @validator = Class.new(Hanami::Validations) do
               validations do
                 required(:foo).filled(size?: 2..3)
               end
@@ -214,9 +206,7 @@ RSpec.describe 'Predicates: Size' do
 
         describe 'with maybe' do
           before do
-            @validator = Class.new do
-              include Hanami::Validations
-
+            @validator = Class.new(Hanami::Validations) do
               validations do
                 required(:foo).maybe(size?: 2..3)
               end
@@ -268,9 +258,7 @@ RSpec.describe 'Predicates: Size' do
       describe 'with optional' do
         describe 'with value' do
           before do
-            @validator = Class.new do
-              include Hanami::Validations
-
+            @validator = Class.new(Hanami::Validations) do
               validations do
                 optional(:foo).value(size?: 2..3)
               end
@@ -320,9 +308,7 @@ RSpec.describe 'Predicates: Size' do
 
         describe 'with filled' do
           before do
-            @validator = Class.new do
-              include Hanami::Validations
-
+            @validator = Class.new(Hanami::Validations) do
               validations do
                 optional(:foo).filled(size?: 2..3)
               end
@@ -372,9 +358,7 @@ RSpec.describe 'Predicates: Size' do
 
         describe 'with maybe' do
           before do
-            @validator = Class.new do
-              include Hanami::Validations
-
+            @validator = Class.new(Hanami::Validations) do
               validations do
                 optional(:foo).maybe(size?: 2..3)
               end

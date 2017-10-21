@@ -3,9 +3,7 @@ RSpec.describe 'Predicates: Format' do
 
   describe 'with required' do
     before do
-      @validator = Class.new do
-        include Hanami::Validations::Form
-
+      @validator = Class.new(Hanami::Validations::Form) do
         validations do
           required(:foo) { format?(/bar/) }
         end
@@ -64,9 +62,7 @@ RSpec.describe 'Predicates: Format' do
 
   describe 'with optional' do
     before do
-      @validator = Class.new do
-        include Hanami::Validations::Form
-
+      @validator = Class.new(Hanami::Validations::Form) do
         validations do
           optional(:foo) { format?(/bar/) }
         end
@@ -126,9 +122,7 @@ RSpec.describe 'Predicates: Format' do
     describe 'with required' do
       describe 'with value' do
         before do
-          @validator = Class.new do
-            include Hanami::Validations::Form
-
+          @validator = Class.new(Hanami::Validations::Form) do
             validations do
               required(:foo).value(format?: /bar/)
             end
@@ -186,9 +180,7 @@ RSpec.describe 'Predicates: Format' do
 
       describe 'with filled' do
         before do
-          @validator = Class.new do
-            include Hanami::Validations::Form
-
+          @validator = Class.new(Hanami::Validations::Form) do
             validations do
               required(:foo).filled(format?: /bar/)
             end
@@ -246,9 +238,7 @@ RSpec.describe 'Predicates: Format' do
 
       describe 'with maybe' do
         before do
-          @validator = Class.new do
-            include Hanami::Validations::Form
-
+          @validator = Class.new(Hanami::Validations::Form) do
             validations do
               required(:foo).maybe(format?: /bar/)
             end
@@ -309,9 +299,7 @@ RSpec.describe 'Predicates: Format' do
     describe 'with optional' do
       describe 'with value' do
         before do
-          @validator = Class.new do
-            include Hanami::Validations::Form
-
+          @validator = Class.new(Hanami::Validations::Form) do
             validations do
               optional(:foo).value(format?: /bar/)
             end
@@ -369,9 +357,7 @@ RSpec.describe 'Predicates: Format' do
 
       describe 'with filled' do
         before do
-          @validator = Class.new do
-            include Hanami::Validations::Form
-
+          @validator = Class.new(Hanami::Validations::Form) do
             validations do
               optional(:foo).filled(format?: /bar/)
             end
@@ -429,9 +415,7 @@ RSpec.describe 'Predicates: Format' do
 
       describe 'with maybe' do
         before do
-          @validator = Class.new do
-            include Hanami::Validations::Form
-
+          @validator = Class.new(Hanami::Validations::Form) do
             validations do
               optional(:foo).maybe(format?: /bar/)
             end

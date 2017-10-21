@@ -3,9 +3,7 @@ RSpec.describe 'Predicates: custom' do
 
   describe 'with custom predicate' do
     before do
-      @validator = Class.new do
-        include Hanami::Validations
-
+      @validator = Class.new(Hanami::Validations) do
         def self.name
           'Validator'
         end
@@ -43,9 +41,7 @@ RSpec.describe 'Predicates: custom' do
 
   describe 'with custom predicates as module' do
     before do
-      @validator = Class.new do
-        include Hanami::Validations
-
+      @validator = Class.new(Hanami::Validations) do
         def self.name
           'Validator'
         end
@@ -86,9 +82,7 @@ RSpec.describe 'Predicates: custom' do
 
   describe 'with custom predicate within predicates block' do
     before do
-      @validator = Class.new do
-        include Hanami::Validations
-
+      @validator = Class.new(Hanami::Validations) do
         def self.name
           'Validator'
         end
@@ -123,9 +117,7 @@ RSpec.describe 'Predicates: custom' do
   describe 'without custom predicate' do
     it 'raises error if try to use an unknown predicate' do
       expect do
-        Class.new do
-          include Hanami::Validations
-
+        Class.new(Hanami::Validations) do
           def self.name
             'Validator'
           end
@@ -141,8 +133,7 @@ RSpec.describe 'Predicates: custom' do
   # See: https://github.com/hanami/validations/issues/119
   describe 'with custom predicate and error messages' do
     before do
-      @validator = Class.new do
-        include Hanami::Validations
+      @validator = Class.new(Hanami::Validations) do
         messages_path "spec/support/fixtures/messages.yml"
 
         predicate(:adult?, message: 'not old enough') do |current|
@@ -167,9 +158,7 @@ RSpec.describe 'Predicates: custom' do
 
   describe 'with nested validations' do
     before do
-      @validator = Class.new do
-        include Hanami::Validations
-
+      @validator = Class.new(Hanami::Validations) do
         def self.name
           'Validator'
         end

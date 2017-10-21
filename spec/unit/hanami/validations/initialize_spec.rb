@@ -1,17 +1,13 @@
 RSpec.describe Hanami::Validations do
   describe '#initialize' do
     before do
-      @validator = Class.new do
-        include Hanami::Validations
-
+      @validator = Class.new(Hanami::Validations) do
         validations do
           required(:attr) { type?(Integer) }
         end
       end
 
-      @nested = Class.new do
-        include Hanami::Validations
-
+      @nested = Class.new(Hanami::Validations) do
         validations do
           required(:foo) { filled? }
           required(:num) { type?(Integer) & eql?(23) }
@@ -22,7 +18,7 @@ RSpec.describe Hanami::Validations do
         end
       end
 
-      @params = Class.new do
+      @params = Class.new(Hanami::Validations) do
         def initialize(attributes)
           @attributes = Hash[*attributes]
         end

@@ -1,8 +1,7 @@
 RSpec.describe 'Messages' do
   describe 'with anonymous class' do
     before do
-      @validator = Class.new do
-        include Hanami::Validations
+      @validator = Class.new(Hanami::Validations) do
         messages_path "spec/support/fixtures/messages.yml"
         namespace :foo
 

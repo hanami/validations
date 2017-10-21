@@ -1,5 +1,5 @@
 module Hanami
-  module Validations
+  class Validations
     # Inline predicate
     #
     # @since 0.6.0

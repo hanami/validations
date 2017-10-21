@@ -1,8 +1,6 @@
 RSpec.describe Hanami::Validations do
   before do
-    @validator = Class.new do
-      include Hanami::Validations
-
+    @validator = Class.new(Hanami::Validations) do
       validations do
         required(:name) { filled? }
       end

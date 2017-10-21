@@ -3,9 +3,7 @@ RSpec.describe 'Predicates: Array' do
 
   describe 'with required' do
     before do
-      @validator = Class.new do
-        include Hanami::Validations::Form
-
+      @validator = Class.new(Hanami::Validations::Form) do
         validations do
           required(:foo) { array? { each { int? } } }
         end
@@ -79,9 +77,7 @@ RSpec.describe 'Predicates: Array' do
 
   describe 'with optional' do
     before do
-      @validator = Class.new do
-        include Hanami::Validations::Form
-
+      @validator = Class.new(Hanami::Validations::Form) do
         validations do
           optional(:foo) { included_in?(%w[1 3 5]) }
         end
@@ -140,9 +136,7 @@ RSpec.describe 'Predicates: Array' do
   describe 'as macro' do
     describe 'with required' do
       before do
-        @validator = Class.new do
-          include Hanami::Validations::Form
-
+        @validator = Class.new(Hanami::Validations::Form) do
           validations do
             required(:foo).each(:int?)
           end
@@ -192,9 +186,7 @@ RSpec.describe 'Predicates: Array' do
 
     describe 'with optional' do
       before do
-        @validator = Class.new do
-          include Hanami::Validations::Form
-
+        @validator = Class.new(Hanami::Validations::Form) do
           validations do
             optional(:foo).each(:int?)
           end

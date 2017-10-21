@@ -1,7 +1,7 @@
 require 'hanami/utils/string'
 
 module Hanami
-  module Validations
+  class Validations
     # Validations message namespace.
     #
     # For a given `FooValidator` class, it will look for I18n messages within

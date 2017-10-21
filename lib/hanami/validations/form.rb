@@ -1,7 +1,7 @@
 require 'hanami/validations'
 
 module Hanami
-  module Validations
+  class Validations
     # Validations mixin for forms/HTTP params.
     #
     # This must be used when the input comes from a browser or an HTTP endpoint.
@@ -12,8 +12,7 @@ module Hanami
     # @example
     #   require 'hanami/validations/form'
     #
-    #   class Signup
-    #     include Hanami::Validations::Form
+    #   class Signup < Hanami::Validations::Form
     #
     #     validations do
     #       required(:name).filled(:str?)
@@ -36,25 +35,12 @@ module Hanami
     #
     #   result = Signup.new(name: 'Luca', location: 'Rome').validate
     #   result.success? # => true
-    module Form
-      # Override Ruby's hook for modules.
-      #
+    class Form < Validations
       # @param base [Class] the target action
       #
       # @since 0.6.0
       # @api private
-      #
-      # @see http://www.ruby-doc.org/core/Module.html#method-i-included
-      def self.included(base)
-        base.class_eval do
-          include Validations
-          extend  ClassMethods
-        end
-      end
-
-      # @since 0.6.0
-      # @api private
-      module ClassMethods
+      class << self
         private
 
         # @since 0.6.0

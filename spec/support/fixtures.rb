@@ -14,8 +14,7 @@ module SharedPredicates
   end
 end
 
-class SignupValidator
-  include Hanami::Validations
+class SignupValidator < Hanami::Validations
   messages_path "spec/support/fixtures/messages.yml"
 
   validations do
@@ -27,8 +26,7 @@ module Web
   module Controllers
     module Signup
       class Create
-        class Params
-          include Hanami::Validations::Form
+        class Params < Hanami::Validations::Form
           messages_path "spec/support/fixtures/messages.yml"
 
           validations do
@@ -40,8 +38,7 @@ module Web
   end
 end
 
-class DomainValidator
-  include Hanami::Validations
+class DomainValidator < Hanami::Validations
   messages :i18n
 
   validations do
@@ -49,9 +46,7 @@ class DomainValidator
   end
 end
 
-class ChangedTermsOfServicesValidator
-  include Hanami::Validations::Form
-
+class ChangedTermsOfServicesValidator < Hanami::Validations::Form
   predicates SharedPredicates
 
   validations do
