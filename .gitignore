@@ -13,4 +13,4 @@
 *.a
 mkmf.log
 .greenbar
-.rubocop-https---raw-githubusercontent-com-hanami-hanami-master--rubocop-yml
+.rubocop-*yml

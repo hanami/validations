@@ -6,9 +6,9 @@ require 'hanami/validations/inline_predicate'
 require 'set'
 
 Dry::Validation::Messages::Namespaced.configure do |config|
-  config.lookup_paths = config.lookup_paths + %w(
-    %{root}.%{rule}.%{predicate}
-  ).freeze
+  config.lookup_paths = config.lookup_paths + %w[
+    %<root>s.%<rule>s.%<predicate>s
+  ].freeze
 end
 
 # @since 0.1.0
@@ -289,7 +289,7 @@ module Hanami
         return if _predicates_module.nil? && _predicates.empty?
 
         lambda do |config|
-          config.messages      = _predicates_module && _predicates_module.messages || DEFAULT_MESSAGES_ENGINE
+          config.messages      = _predicates_module&.messages || DEFAULT_MESSAGES_ENGINE
           config.messages_file = _predicates_module.messages_path unless _predicates_module.nil?
         end
       end

@@ -52,7 +52,7 @@ module Hanami
       # @since 0.6.0
       # @api private
       def underscored_name
-        Utils::String.new(name_without_suffix).underscore
+        Utils::String.underscore(name_without_suffix)
       end
 
       # @since 0.6.0

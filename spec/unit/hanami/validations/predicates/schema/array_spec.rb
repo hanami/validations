@@ -64,7 +64,7 @@ RSpec.describe 'Predicates: Array' do
     end
 
     describe 'with invalid input (array with non-integers)' do
-      let(:input) { { foo: %i(foo bar) } }
+      let(:input) { { foo: %i[foo bar] } }
 
       it 'is not successful' do
         expect_not_successful result, 0 => ['must be an integer'], 1 => ['must be an integer']

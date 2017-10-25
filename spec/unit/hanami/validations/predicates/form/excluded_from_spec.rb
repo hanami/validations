@@ -7,7 +7,7 @@ RSpec.describe 'Predicates: Excluded From' do
         include Hanami::Validations::Form
 
         validations do
-          required(:foo) { excluded_from?(%w(1 3 5)) }
+          required(:foo) { excluded_from?(%w[1 3 5]) }
         end
       end
     end
@@ -67,7 +67,7 @@ RSpec.describe 'Predicates: Excluded From' do
         include Hanami::Validations::Form
 
         validations do
-          optional(:foo) { excluded_from?(%w(1 3 5)) }
+          optional(:foo) { excluded_from?(%w[1 3 5]) }
         end
       end
     end
@@ -129,7 +129,7 @@ RSpec.describe 'Predicates: Excluded From' do
             include Hanami::Validations::Form
 
             validations do
-              required(:foo).value(excluded_from?: %w(1 3 5))
+              required(:foo).value(excluded_from?: %w[1 3 5])
             end
           end
         end
@@ -189,7 +189,7 @@ RSpec.describe 'Predicates: Excluded From' do
             include Hanami::Validations::Form
 
             validations do
-              required(:foo).filled(excluded_from?: %w(1 3 5))
+              required(:foo).filled(excluded_from?: %w[1 3 5])
             end
           end
         end
@@ -249,7 +249,7 @@ RSpec.describe 'Predicates: Excluded From' do
             include Hanami::Validations::Form
 
             validations do
-              required(:foo).maybe(excluded_from?: %w(1 3 5))
+              required(:foo).maybe(excluded_from?: %w[1 3 5])
             end
           end
         end
@@ -311,7 +311,7 @@ RSpec.describe 'Predicates: Excluded From' do
             include Hanami::Validations::Form
 
             validations do
-              optional(:foo).value(excluded_from?: %w(1 3 5))
+              optional(:foo).value(excluded_from?: %w[1 3 5])
             end
           end
         end
@@ -371,7 +371,7 @@ RSpec.describe 'Predicates: Excluded From' do
             include Hanami::Validations::Form
 
             validations do
-              optional(:foo).filled(excluded_from?: %w(1 3 5))
+              optional(:foo).filled(excluded_from?: %w[1 3 5])
             end
           end
         end
@@ -431,7 +431,7 @@ RSpec.describe 'Predicates: Excluded From' do
             include Hanami::Validations::Form
 
             validations do
-              optional(:foo).maybe(excluded_from?: %w(1 3 5))
+              optional(:foo).maybe(excluded_from?: %w[1 3 5])
             end
           end
         end

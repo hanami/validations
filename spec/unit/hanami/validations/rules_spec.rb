@@ -20,15 +20,15 @@ RSpec.describe Hanami::Validations do
             end
           end
 
-          required(:connection_type).filled(:str?, included_in?: %w(a b c))
+          required(:connection_type).filled(:str?, included_in?: %w[a b c])
           optional(:quick_code).maybe(:str?)
           optional(:uuid).maybe(:str?)
 
-          rule(quick_code_presence: %i(connection_type quick_code)) do |connection_type, quick_code|
+          rule(quick_code_presence: %i[connection_type quick_code]) do |connection_type, quick_code|
             connection_type.eql?('a') > quick_code.filled?
           end
 
-          rule(uuid_presence: %i(connection_type uuid)) do |connection_type, uuid|
+          rule(uuid_presence: %i[connection_type uuid]) do |connection_type, uuid|
             connection_type.eql?('b') > uuid.filled?
           end
         end

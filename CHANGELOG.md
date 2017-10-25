@@ -1,6 +1,16 @@
 # Hanami::Validations
 Validations mixin for Ruby objects
 
+## v1.1.0 - 2017-10-25
+
+## v1.1.0.rc1 - 2017-10-16
+
+## v1.1.0.beta3 - 2017-10-04
+
+## v1.1.0.beta2 - 2017-10-03
+
+## v1.1.0.beta1 - 2017-08-11
+
 ## v1.0.0 - 2017-04-06
 
 ## v1.0.0.rc1 - 2017-03-31
