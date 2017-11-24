@@ -30,15 +30,6 @@ module Hanami
   class Validations
     include Validations::Dsl
 
-    # Initialize a new instance of a validator
-    #
-    # @param input [#to_h] a set of input data
-    #
-    # @since 0.6.0
-    def initialize(input = {})
-      @input = input.to_h
-    end
-
     # Validates the object.
     #
     # @return [Dry::Validations::Result]
