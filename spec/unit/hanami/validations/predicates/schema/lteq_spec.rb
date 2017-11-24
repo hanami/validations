@@ -2,10 +2,8 @@ RSpec.describe 'Predicates: Lteq' do
   include_context 'validator result'
 
   describe 'with required' do
-    before do
-      @validator = Class.new do
-        include Hanami::Validations
-
+    let(:validator_class) do
+      Class.new(Hanami::Validations) do
         validations do
           required(:foo) { lteq?(23) }
         end
@@ -70,10 +68,8 @@ RSpec.describe 'Predicates: Lteq' do
   end
 
   describe 'with optional' do
-    before do
-      @validator = Class.new do
-        include Hanami::Validations
-
+    let(:validator_class) do
+      Class.new(Hanami::Validations) do
         validations do
           optional(:foo) { lteq?(23) }
         end
@@ -140,10 +136,8 @@ RSpec.describe 'Predicates: Lteq' do
   describe 'as macro' do
     describe 'with required' do
       describe 'with value' do
-        before do
-          @validator = Class.new do
-            include Hanami::Validations
-
+        let(:validator_class) do
+          Class.new(Hanami::Validations) do
             validations do
               required(:foo).value(lteq?: 23)
             end
@@ -208,10 +202,8 @@ RSpec.describe 'Predicates: Lteq' do
       end
 
       describe 'with filled' do
-        before do
-          @validator = Class.new do
-            include Hanami::Validations
-
+        let(:validator_class) do
+          Class.new(Hanami::Validations) do
             validations do
               required(:foo).filled(lteq?: 23)
             end
@@ -276,10 +268,8 @@ RSpec.describe 'Predicates: Lteq' do
       end
 
       describe 'with maybe' do
-        before do
-          @validator = Class.new do
-            include Hanami::Validations
-
+        let(:validator_class) do
+          Class.new(Hanami::Validations) do
             validations do
               required(:foo).maybe(lteq?: 23)
             end
@@ -346,10 +336,8 @@ RSpec.describe 'Predicates: Lteq' do
 
     describe 'with optional' do
       describe 'with value' do
-        before do
-          @validator = Class.new do
-            include Hanami::Validations
-
+        let(:validator_class) do
+          Class.new(Hanami::Validations) do
             validations do
               optional(:foo).value(lteq?: 23)
             end
@@ -414,10 +402,8 @@ RSpec.describe 'Predicates: Lteq' do
       end
 
       describe 'with filled' do
-        before do
-          @validator = Class.new do
-            include Hanami::Validations
-
+        let(:validator_class) do
+          Class.new(Hanami::Validations) do
             validations do
               optional(:foo).filled(lteq?: 23)
             end
@@ -482,10 +468,8 @@ RSpec.describe 'Predicates: Lteq' do
       end
 
       describe 'with maybe' do
-        before do
-          @validator = Class.new do
-            include Hanami::Validations
-
+        let(:validator_class) do
+          Class.new(Hanami::Validations) do
             validations do
               optional(:foo).maybe(lteq?: 23)
             end

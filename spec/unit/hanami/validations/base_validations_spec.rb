@@ -1,9 +1,7 @@
 RSpec.describe Hanami::Validations do
   describe 'base validations' do
-    before do
-      @validator = Class.new do
-        include Hanami::Validations
-
+    let(:validator_class) do
+      Class.new(Hanami::Validations) do
         def self._base_rules
           lambda do
             optional(:_csrf_token).filled(:str?)
@@ -16,8 +14,10 @@ RSpec.describe Hanami::Validations do
       end
     end
 
+    let(:validator) { validator_class.new }
+
     it 'returns successful validation result with bare minimum valid data' do
-      result = @validator.new(number: 23).validate
+      result = validator.call(number: 23)
 
       expect(result).to be_success
       expect(result.errors).to be_empty
@@ -26,7 +26,7 @@ RSpec.describe Hanami::Validations do
     end
 
     it 'returns successful validation result with full valid data' do
-      result = @validator.new(number: 23, _csrf_token: 'abc').validate
+      result = validator.call(number: 23, _csrf_token: 'abc')
 
       expect(result).to be_success
       expect(result.messages).to be_empty
@@ -35,7 +35,7 @@ RSpec.describe Hanami::Validations do
     end
 
     it 'returns failing validation result with bare minimum invalid data' do
-      result = @validator.new(number: 11).validate
+      result = validator.call(number: 11)
 
       expect(result).not_to be_success
       expect(result.messages.fetch(:number)).to eq          ['must be equal to 23']
@@ -45,7 +45,7 @@ RSpec.describe Hanami::Validations do
     end
 
     it 'returns failing validation result with full invalid data' do
-      result = @validator.new(number: 8, _csrf_token: '').validate
+      result = validator.call(number: 8, _csrf_token: '')
 
       expect(result).not_to be_success
       expect(result.messages.fetch(:number)).to eq      ['must be equal to 23']
@@ -55,7 +55,7 @@ RSpec.describe Hanami::Validations do
     end
 
     it 'returns failing validation result with base invalid data' do
-      result = @validator.new(number: 23, _csrf_token: '').validate
+      result = validator.call(number: 23, _csrf_token: '')
 
       expect(result).not_to be_success
       expect(result.messages.fetch(:number, [])).to eq  []
@@ -65,7 +65,7 @@ RSpec.describe Hanami::Validations do
     end
 
     it 'returns failing validation result for invalid data' do
-      result = @validator.new({}).validate
+      result = validator.call({})
 
       expect(result).not_to be_success
       expect(result.messages.fetch(:number)).to eq          ['is missing', 'must be equal to 23']

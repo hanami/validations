@@ -1,8 +1,9 @@
 RSpec.describe 'Messages' do
+  let(:validator) { validator_class.new }
+
   describe 'with anonymous class' do
-    before do
-      @validator = Class.new do
-        include Hanami::Validations
+    let(:validator_class) do
+      Class.new(Hanami::Validations) do
         messages_path "spec/support/fixtures/messages.yml"
         namespace :foo
 
@@ -13,7 +14,7 @@ RSpec.describe 'Messages' do
     end
 
     it 'returns configured message' do
-      result = @validator.new(age: 11).validate
+      result = validator.call(age: 11)
 
       expect(result).not_to be_success
       expect(result.messages.fetch(:age)).to eq ['must be an adult']
@@ -21,12 +22,12 @@ RSpec.describe 'Messages' do
   end
 
   describe 'with concrete class' do
-    before do
-      @validator = SignupValidator
+    let(:validator_class) do
+      SignupValidator
     end
 
     it 'returns configured message' do
-      result = @validator.new(age: 11).validate
+      result = validator.call(age: 11)
 
       expect(result).not_to be_success
       expect(result.messages.fetch(:age)).to eq ['must be an adult']
@@ -34,12 +35,12 @@ RSpec.describe 'Messages' do
   end
 
   describe 'with concrete namespaced class' do
-    before do
-      @validator = Web::Controllers::Signup::Create::Params
+    let(:validator_class) do
+      Web::Controllers::Signup::Create::Params
     end
 
     it 'returns configured message' do
-      result = @validator.new(age: 11).validate
+      result = validator.call(age: 11)
 
       expect(result).not_to be_success
       expect(result.messages.fetch(:age)).to eq ['must be an adult']
@@ -47,12 +48,12 @@ RSpec.describe 'Messages' do
   end
 
   describe 'with i18n support' do
-    before do
-      @validator = DomainValidator
+    let(:validator_class) do
+      DomainValidator
     end
 
     it 'returns configured message' do
-      result = @validator.new(name: 'a' * 256).validate
+      result = validator.call(name: 'a' * 256)
 
       expect(result).not_to be_success
       expect(result.messages.fetch(:name)).to eq ['is too long']
@@ -60,12 +61,12 @@ RSpec.describe 'Messages' do
   end
 
   describe 'with i18n support and shared predicates' do
-    before do
-      @validator = ChangedTermsOfServicesValidator
+    let(:validator_class) do
+      ChangedTermsOfServicesValidator
     end
 
     it 'returns configured message' do
-      result = @validator.new(terms: 'false').validate
+      result = validator.call(terms: 'false')
 
       expect(result).not_to be_success
       expect(result.messages.fetch(:terms)).to eq ['must be accepted']

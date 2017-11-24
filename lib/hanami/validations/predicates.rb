@@ -2,7 +2,7 @@ require 'dry/logic/predicates'
 require 'hanami/utils/class_attribute'
 
 module Hanami
-  module Validations
+  class Validations
     # Mixin to include when defining shared predicates
     #
     # @since 0.6.0

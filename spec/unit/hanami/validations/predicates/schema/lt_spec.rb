@@ -2,10 +2,8 @@ RSpec.describe 'Predicates: Lt' do
   include_context 'validator result'
 
   describe 'with required' do
-    before do
-      @validator = Class.new do
-        include Hanami::Validations
-
+    let(:validator_class) do
+      Class.new(Hanami::Validations) do
         validations do
           required(:foo) { lt?(23) }
         end
@@ -70,10 +68,8 @@ RSpec.describe 'Predicates: Lt' do
   end
 
   describe 'with optional' do
-    before do
-      @validator = Class.new do
-        include Hanami::Validations
-
+    let(:validator_class) do
+      Class.new(Hanami::Validations) do
         validations do
           optional(:foo) { lt?(23) }
         end
@@ -140,10 +136,8 @@ RSpec.describe 'Predicates: Lt' do
   describe 'as macro' do
     describe 'with required' do
       describe 'with value' do
-        before do
-          @validator = Class.new do
-            include Hanami::Validations
-
+        let(:validator_class) do
+          Class.new(Hanami::Validations) do
             validations do
               required(:foo).value(lt?: 23)
             end
@@ -208,10 +202,8 @@ RSpec.describe 'Predicates: Lt' do
       end
 
       describe 'with filled' do
-        before do
-          @validator = Class.new do
-            include Hanami::Validations
-
+        let(:validator_class) do
+          Class.new(Hanami::Validations) do
             validations do
               required(:foo).filled(lt?: 23)
             end
@@ -276,10 +268,8 @@ RSpec.describe 'Predicates: Lt' do
       end
 
       describe 'with maybe' do
-        before do
-          @validator = Class.new do
-            include Hanami::Validations
-
+        let(:validator_class) do
+          Class.new(Hanami::Validations) do
             validations do
               required(:foo).maybe(lt?: 23)
             end
@@ -346,10 +336,8 @@ RSpec.describe 'Predicates: Lt' do
 
     describe 'with optional' do
       describe 'with value' do
-        before do
-          @validator = Class.new do
-            include Hanami::Validations
-
+        let(:validator_class) do
+          Class.new(Hanami::Validations) do
             validations do
               optional(:foo).value(lt?: 23)
             end
@@ -414,10 +402,8 @@ RSpec.describe 'Predicates: Lt' do
       end
 
       describe 'with filled' do
-        before do
-          @validator = Class.new do
-            include Hanami::Validations
-
+        let(:validator_class) do
+          Class.new(Hanami::Validations) do
             validations do
               optional(:foo).filled(lt?: 23)
             end
@@ -482,10 +468,8 @@ RSpec.describe 'Predicates: Lt' do
       end
 
       describe 'with maybe' do
-        before do
-          @validator = Class.new do
-            include Hanami::Validations
-
+        let(:validator_class) do
+          Class.new(Hanami::Validations) do
             validations do
               optional(:foo).maybe(lt?: 23)
             end

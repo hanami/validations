@@ -1,9 +1,7 @@
 RSpec.describe Hanami::Validations::Form do
   describe 'nested validations' do
-    before do
-      @validator = Class.new do
-        include Hanami::Validations::Form
-
+    let(:validator_class) do
+      Class.new(Hanami::Validations::Form) do
         validations do
           required(:number) { filled? }
 
@@ -18,15 +16,17 @@ RSpec.describe Hanami::Validations::Form do
       end
     end
 
+    let(:validator) { validator_class.new }
+
     it 'returns successful validation result for valid data' do
-      result = @validator.new('number' => '23', 'customer' => { 'name' => 'Luca', 'address' => { 'city' => 'Rome' } }).validate
+      result = validator.call('number' => '23', 'customer' => { 'name' => 'Luca', 'address' => { 'city' => 'Rome' } })
 
       expect(result).to be_success
       expect(result.errors).to be_empty
     end
 
     it 'returns failing validation result for invalid data' do
-      result = @validator.new({}).validate
+      result = validator.call({})
 
       expect(result).not_to be_success
       expect(result.messages.fetch(:number)).to eq ['is missing']
@@ -36,8 +36,8 @@ RSpec.describe Hanami::Validations::Form do
     # Bug
     # See https://github.com/hanami/validations/issues/58
     it 'safely serialize to nested Hash' do
-      data      = { 'customer' => { 'name' => 'John Smith', 'address' => { 'city' => 'London' } } }
-      validator = @validator.new(data)
+      data = { 'customer' => { 'name' => 'John Smith', 'address' => { 'city' => 'London' } } }
+      validator.call(data)
 
       expect(validator.to_h).to eq(customer: { name: 'John Smith', address: { city: 'London' } })
     end

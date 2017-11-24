@@ -1,3 +1,4 @@
 RSpec.shared_context 'validator result' do
-  let(:result) { @validator.new(input).validate }
+  let(:validator) { validator_class.new }
+  let(:result) { validator.call(input) }
 end

@@ -2,10 +2,8 @@ RSpec.describe 'Predicates: custom' do
   include_context 'validator result'
 
   describe 'with custom predicate' do
-    before do
-      @validator = Class.new do
-        include Hanami::Validations::Form
-
+    let(:validator_class) do
+      Class.new(Hanami::Validations::Form) do
         def self.name
           'Validator'
         end
@@ -42,10 +40,8 @@ RSpec.describe 'Predicates: custom' do
   end
 
   describe 'with custom predicates as module' do
-    before do
-      @validator = Class.new do
-        include Hanami::Validations::Form
-
+    let(:validator_class) do
+      Class.new(Hanami::Validations::Form) do
         def self.name
           'Validator'
         end
@@ -85,10 +81,8 @@ RSpec.describe 'Predicates: custom' do
   end
 
   describe 'with custom predicate within predicates block' do
-    before do
-      @validator = Class.new do
-        include Hanami::Validations::Form
-
+    let(:validator_class) do
+      Class.new(Hanami::Validations::Form) do
         def self.name
           'Validator'
         end
@@ -121,10 +115,8 @@ RSpec.describe 'Predicates: custom' do
   end
 
   describe 'with custom predicate with predicate macro' do
-    before do
-      @validator = Class.new do
-        include Hanami::Validations::Form
-
+    let(:validator_class) do
+      Class.new(Hanami::Validations::Form) do
         def self.name
           'Validator'
         end
@@ -165,9 +157,7 @@ RSpec.describe 'Predicates: custom' do
   describe 'without custom predicate' do
     it 'raises error if try to use an unknown predicate' do
       expect do
-        Class.new do
-          include Hanami::Validations::Form
-
+        Class.new(Hanami::Validations::Form) do
           def self.name
             'Validator'
           end
@@ -181,10 +171,8 @@ RSpec.describe 'Predicates: custom' do
   end
 
   describe 'with nested validations' do
-    before do
-      @validator = Class.new do
-        include Hanami::Validations::Form
-
+    let(:validator_class) do
+      Class.new(Hanami::Validations::Form) do
         def self.name
           'Validator'
         end
@@ -205,9 +193,9 @@ RSpec.describe 'Predicates: custom' do
       end
     end
 
-    it 'allows groups to define their own custom predicates' do
-      result = @validator.new(details: { foo: 2 }).validate
+    let(:input) { Hash[details: { foo: 2 }] }
 
+    it 'allows groups to define their own custom predicates' do
       expect(result).not_to be_success
       expect(result.messages[:details][:foo]).to eq ['must be odd']
     end

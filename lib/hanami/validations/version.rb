@@ -1,5 +1,5 @@
 module Hanami
-  module Validations
+  class Validations
     # @since 0.1.0
     VERSION = '1.1.0.beta3'.freeze
   end

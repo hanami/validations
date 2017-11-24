@@ -2,10 +2,8 @@ RSpec.describe 'Predicates: Type' do
   include_context 'validator result'
 
   describe 'with required' do
-    before do
-      @validator = Class.new do
-        include Hanami::Validations::Form
-
+    let(:validator_class) do
+      Class.new(Hanami::Validations::Form) do
         validations do
           required(:foo) { type?(Integer) }
         end
@@ -54,10 +52,8 @@ RSpec.describe 'Predicates: Type' do
   end
 
   describe 'with optional' do
-    before do
-      @validator = Class.new do
-        include Hanami::Validations::Form
-
+    let(:validator_class) do
+      Class.new(Hanami::Validations::Form) do
         validations do
           optional(:foo) { type?(Integer) }
         end
@@ -108,10 +104,8 @@ RSpec.describe 'Predicates: Type' do
   describe 'as macro' do
     describe 'with required' do
       describe 'with value' do
-        before do
-          @validator = Class.new do
-            include Hanami::Validations::Form
-
+        let(:validator_class) do
+          Class.new(Hanami::Validations::Form) do
             validations do
               required(:foo).value(type?: Integer)
             end
@@ -160,10 +154,8 @@ RSpec.describe 'Predicates: Type' do
       end
 
       describe 'with filled' do
-        before do
-          @validator = Class.new do
-            include Hanami::Validations::Form
-
+        let(:validator_class) do
+          Class.new(Hanami::Validations::Form) do
             validations do
               required(:foo).filled(type?: Integer)
             end
@@ -212,10 +204,8 @@ RSpec.describe 'Predicates: Type' do
       end
 
       describe 'with maybe' do
-        before do
-          @validator = Class.new do
-            include Hanami::Validations::Form
-
+        let(:validator_class) do
+          Class.new(Hanami::Validations::Form) do
             validations do
               required(:foo).maybe(type?: Integer)
             end
@@ -266,10 +256,8 @@ RSpec.describe 'Predicates: Type' do
 
     describe 'with optional' do
       describe 'with value' do
-        before do
-          @validator = Class.new do
-            include Hanami::Validations::Form
-
+        let(:validator_class) do
+          Class.new(Hanami::Validations::Form) do
             validations do
               optional(:foo).value(type?: Integer)
             end
@@ -318,10 +306,8 @@ RSpec.describe 'Predicates: Type' do
       end
 
       describe 'with filled' do
-        before do
-          @validator = Class.new do
-            include Hanami::Validations::Form
-
+        let(:validator_class) do
+          Class.new(Hanami::Validations::Form) do
             validations do
               optional(:foo).filled(type?: Integer)
             end
@@ -370,10 +356,8 @@ RSpec.describe 'Predicates: Type' do
       end
 
       describe 'with maybe' do
-        before do
-          @validator = Class.new do
-            include Hanami::Validations::Form
-
+        let(:validator_class) do
+          Class.new(Hanami::Validations::Form) do
             validations do
               optional(:foo).maybe(type?: Integer)
             end
