@@ -21,7 +21,7 @@ module Hanami
   # @example
   #   require 'hanami/validations'
   #
-  #   class Signup < include Hanami::Validations
+  #   class Signup < Hanami::Validations
   #
   #     validations do
   #       # ...
