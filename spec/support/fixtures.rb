@@ -1,5 +1,7 @@
-require 'i18n'
-require 'dry/validation/messages/i18n'
+# frozen_string_literal: true
+
+require "i18n"
+require "dry/validation/messages/i18n"
 
 I18n.load_path.concat(Dir["spec/support/fixtures/i18n/*.yml"])
 I18n.backend.load_translations

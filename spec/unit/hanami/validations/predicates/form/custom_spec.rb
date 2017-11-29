@@ -1,13 +1,15 @@
-RSpec.describe 'Predicates: custom' do
-  include_context 'validator result'
+# frozen_string_literal: true
 
-  describe 'with custom predicate' do
+RSpec.describe "Predicates: custom" do
+  include_context "validator result"
+
+  describe "with custom predicate" do
     before do
       @validator = Class.new do
         include Hanami::Validations::Form
 
         def self.name
-          'Validator'
+          "Validator"
         end
 
         validations do
@@ -24,30 +26,30 @@ RSpec.describe 'Predicates: custom' do
       end
     end
 
-    describe 'with valid input' do
-      let(:input) { { foo: 'test@hanamirb.org' } }
+    describe "with valid input" do
+      let(:input) { { foo: "test@hanamirb.org" } }
 
-      it 'is successful' do
+      it "is successful" do
         expect_successful result
       end
     end
 
-    describe 'with invalid input' do
-      let(:input) { { foo: 'test' } }
+    describe "with invalid input" do
+      let(:input) { { foo: "test" } }
 
-      it 'is not successful' do
-        expect_not_successful result, ['must be an email']
+      it "is not successful" do
+        expect_not_successful result, ["must be an email"]
       end
     end
   end
 
-  describe 'with custom predicates as module' do
+  describe "with custom predicates as module" do
     before do
       @validator = Class.new do
         include Hanami::Validations::Form
 
         def self.name
-          'Validator'
+          "Validator"
         end
 
         predicates(
@@ -67,34 +69,34 @@ RSpec.describe 'Predicates: custom' do
       end
     end
 
-    describe 'with valid input' do
-      let(:input) { { foo: 'test@hanamirb.org' } }
+    describe "with valid input" do
+      let(:input) { { foo: "test@hanamirb.org" } }
 
-      it 'is successful' do
+      it "is successful" do
         expect_successful result
       end
     end
 
-    describe 'with invalid input' do
-      let(:input) { { foo: 'test' } }
+    describe "with invalid input" do
+      let(:input) { { foo: "test" } }
 
-      it 'is not successful' do
-        expect_not_successful result, ['must be an email']
+      it "is not successful" do
+        expect_not_successful result, ["must be an email"]
       end
     end
   end
 
-  describe 'with custom predicate within predicates block' do
+  describe "with custom predicate within predicates block" do
     before do
       @validator = Class.new do
         include Hanami::Validations::Form
 
         def self.name
-          'Validator'
+          "Validator"
         end
 
-        predicate :url?, message: 'must be an URL' do |current|
-          current.start_with?('http')
+        predicate :url?, message: "must be an URL" do |current|
+          current.start_with?("http")
         end
 
         validations do
@@ -103,33 +105,33 @@ RSpec.describe 'Predicates: custom' do
       end
     end
 
-    describe 'with valid input' do
-      let(:input) { { foo: 'http://hanamirb.org' } }
+    describe "with valid input" do
+      let(:input) { { foo: "http://hanamirb.org" } }
 
-      it 'is successful' do
+      it "is successful" do
         expect_successful result
       end
     end
 
-    describe 'with invalid input' do
-      let(:input) { { foo: 'test' } }
+    describe "with invalid input" do
+      let(:input) { { foo: "test" } }
 
-      it 'is successful' do
-        expect_not_successful result, ['must be an URL']
+      it "is successful" do
+        expect_not_successful result, ["must be an URL"]
       end
     end
   end
 
-  describe 'with custom predicate with predicate macro' do
+  describe "with custom predicate with predicate macro" do
     before do
       @validator = Class.new do
         include Hanami::Validations::Form
 
         def self.name
-          'Validator'
+          "Validator"
         end
 
-        predicate :api_date?, message: 'must be in iso8601 format' do |value|
+        predicate :api_date?, message: "must be in iso8601 format" do |value|
           begin
             Date.iso8601(value)
             true
@@ -145,48 +147,48 @@ RSpec.describe 'Predicates: custom' do
       end
     end
 
-    describe 'with valid data' do
+    describe "with valid data" do
       let(:input) { { id: 1, confirmed_at: Date.today.iso8601 } }
 
-      it 'is successful' do
+      it "is successful" do
         expect_successful result
       end
     end
 
-    describe 'with invalid data' do
-      let(:input) { { id: 1, confirmed_at: 'foo' } }
+    describe "with invalid data" do
+      let(:input) { { id: 1, confirmed_at: "foo" } }
 
-      it 'is not successful' do
-        expect_not_successful result, ['must be in iso8601 format'], :confirmed_at
+      it "is not successful" do
+        expect_not_successful result, ["must be in iso8601 format"], :confirmed_at
       end
     end
   end
 
-  describe 'without custom predicate' do
-    it 'raises error if try to use an unknown predicate' do
+  describe "without custom predicate" do
+    it "raises error if try to use an unknown predicate" do
       expect do
         Class.new do
           include Hanami::Validations::Form
 
           def self.name
-            'Validator'
+            "Validator"
           end
 
           validations do
             required(:foo) { email? }
           end
         end
-      end.to raise_error(ArgumentError, '+email?+ is not a valid predicate name')
+      end.to raise_error(ArgumentError, "+email?+ is not a valid predicate name")
     end
   end
 
-  describe 'with nested validations' do
+  describe "with nested validations" do
     before do
       @validator = Class.new do
         include Hanami::Validations::Form
 
         def self.name
-          'Validator'
+          "Validator"
         end
 
         validations do
@@ -205,11 +207,11 @@ RSpec.describe 'Predicates: custom' do
       end
     end
 
-    it 'allows groups to define their own custom predicates' do
+    it "allows groups to define their own custom predicates" do
       result = @validator.new(details: { foo: 2 }).validate
 
       expect(result).not_to be_success
-      expect(result.messages[:details][:foo]).to eq ['must be odd']
+      expect(result.messages[:details][:foo]).to eq ["must be odd"]
     end
   end
 end
