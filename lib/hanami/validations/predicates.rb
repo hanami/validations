@@ -15,7 +15,7 @@ module Hanami
     #   module MySharedPredicates
     #     include Hanami::Validations::Predicates
     #
-    #     predicate :foo? fo |actual|
+    #     predicate :foo? do |actual|
     #       actual == 'foo'
     #     end
     #   end

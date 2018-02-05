@@ -6,9 +6,14 @@ require 'hanami/validations/inline_predicate'
 require 'set'
 
 Dry::Validation::Messages::Namespaced.configure do |config|
+  # rubocop:disable Lint/NestedPercentLiteral
+  #
+  # This is probably a false positive.
+  # See: https://github.com/bbatsov/rubocop/issues/5314
   config.lookup_paths = config.lookup_paths + %w[
     %<root>s.%<rule>s.%<predicate>s
   ].freeze
+  # rubocop:enable Lint/NestedPercentLiteral
 end
 
 # @since 0.1.0
