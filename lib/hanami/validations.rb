@@ -7,6 +7,9 @@ require "hanami/validations/predicates"
 require "hanami/validations/inline_predicate"
 require "set"
 
+require "hanami/result"
+require "hanami/utils/string"
+
 Dry::Validation::Messages::Namespaced.configure do |config|
   # rubocop:disable Lint/NestedPercentLiteral
   #
@@ -53,7 +56,13 @@ module Hanami
     end
 
     def call(input)
-      self.class.schema.call(input)
+      result = self.class.schema.call(input)
+
+      if result.success?
+        Hanami::Success.new(result.output)
+      else
+        Hanami::Validations::Failure.new(result.messages, result.output)
+      end
     end
   end
 
@@ -72,6 +81,31 @@ module Hanami
   #     end
   #   end
   module Validations
+    # Failure
+    class Failure < Hanami::Failure
+      # Hash
+      attr_reader :messages
+
+      def initialize(messages, **data)
+        @messages = messages.freeze
+        @data     = data.freeze
+      end
+
+      def full_messages(error_set = messages)
+        error_set.each_with_object([]) do |(key, messages), result|
+          k = Utils::String.titleize(key)
+
+          msgs = if messages.is_a?(::Hash)
+                   full_messages(messages)
+                 else
+                   messages.map { |message| "#{k} #{message}" }
+                 end
+
+          result.concat(msgs)
+        end
+      end
+    end
+
     # @since 0.6.0
     # @api private
     DEFAULT_MESSAGES_ENGINE = :yaml
