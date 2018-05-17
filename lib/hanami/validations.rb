@@ -20,6 +20,43 @@ end
 
 # @since 0.1.0
 module Hanami
+  # Validator
+  class Validator
+    def self.inherited(base)
+      super
+
+      base.class_eval do
+        @schema = nil
+        extend ClassMethods
+      end
+    end
+
+    # Class level interface
+    module ClassMethods
+      def validations(type = :schema, &blk)
+        t = case type
+            when :schema then :Schema
+            when :form   then :Form
+            when :json   then :JSON
+            else
+              raise ArgumentError.new("unsupported schema type: #{type.inspect}")
+            end
+
+        @schema = Dry::Validation.send(t, &blk)
+      end
+
+      attr_reader :schema
+    end
+
+    def initialize
+      freeze
+    end
+
+    def call(input)
+      self.class.schema.call(input)
+    end
+  end
+
   # Hanami::Validations is a set of lightweight validations for Ruby objects.
   #
   # @since 0.1.0
