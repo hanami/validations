@@ -56,7 +56,7 @@ module Hanami
     end
 
     def call(input)
-      result = self.class.schema.call(input)
+      result = self.class.schema.call(input.to_hash)
 
       if result.success?
         Hanami::Success.new(result.output)
