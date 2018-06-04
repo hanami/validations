@@ -39,7 +39,7 @@ module Hanami
       def validations(type = :schema, &blk)
         t = case type
             when :schema then :Schema
-            when :form   then :Form
+            when :form   then :Params
             when :json   then :JSON
             else
               raise ArgumentError.new("unsupported schema type: #{type.inspect}")
