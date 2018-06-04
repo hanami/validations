@@ -3,6 +3,10 @@ Validations mixin for Ruby objects
 
 ## v1.3.0.beta1 (unreleased)
 
+## v1.2.1 - 2018-06-04
+### Fixed
+- [Luca Guidi] Bump dependency to `dry-validation` to `~> 0.12`
+
 ## v1.2.0 - 2018-04-11
 
 ## v1.2.0.rc2 - 2018-04-06
