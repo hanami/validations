@@ -60,7 +60,7 @@ module Hanami
         # @since 0.6.0
         # @api private
         def _schema_type
-          :Params
+          :Form
         end
       end
     end
