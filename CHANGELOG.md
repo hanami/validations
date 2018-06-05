@@ -1,6 +1,10 @@
 # Hanami::Validations
 Validations mixin for Ruby objects
 
+## v1.2.2 - 2018-06-05
+### Fixed
+- [Luca Guidi] Revert dependency to `dry-validation` to `~> 0.11`, `< 0.12`
+
 ## v1.2.1 - 2018-06-04
 ### Fixed
 - [Luca Guidi] Bump dependency to `dry-validation` to `~> 0.12`
