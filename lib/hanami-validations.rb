@@ -1,1 +1,1 @@
-require 'hanami/validations' # rubocop:disable Naming/FileName
+require 'hanami/validations'
