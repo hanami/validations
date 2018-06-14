@@ -2,12 +2,10 @@
 
 require "securerandom"
 
-RSpec.describe Hanami::Validations do
+RSpec.describe Hanami::Validator do
   describe "rules" do
-    before do
-      @validator = Class.new do
-        include Hanami::Validations
-
+    subject do
+      Class.new(Hanami::Validator) do
         validations do
           configure do
             def self.messages
@@ -34,37 +32,35 @@ RSpec.describe Hanami::Validations do
             connection_type.eql?("b") > uuid.filled?
           end
         end
-      end
+      end.new
     end
 
     describe "quick code" do
       it "returns successful validation result for valid data" do
-        result = @validator.new(connection_type: "a", quick_code: "123").validate
+        result = subject.call(connection_type: "a", quick_code: "123")
 
-        expect(result).to be_success
-        expect(result.errors).to be_empty
+        expect(result).to be_successful
       end
 
       it "returns failing validation result when quick code is missing" do
-        result = @validator.new(connection_type: "a").validate
+        result = subject.call(connection_type: "a")
 
-        expect(result).not_to be_success
+        expect(result).to be_failing
         expect(result.messages.fetch(:quick_code_presence)).to eq ['you must set quick code for connection type "a"']
       end
     end
 
     describe "uuid" do
       it "returns successful validation result for valid data" do
-        result = @validator.new(connection_type: "b", uuid: SecureRandom.uuid).validate
+        result = subject.call(connection_type: "b", uuid: SecureRandom.uuid)
 
-        expect(result).to be_success
-        expect(result.errors).to be_empty
+        expect(result).to be_successful
       end
 
       it "returns failing validation result when uuid is missing" do
-        result = @validator.new(connection_type: "b").validate
+        result = subject.call(connection_type: "b")
 
-        expect(result).not_to be_success
+        expect(result).not_to be_successful
         expect(result.messages.fetch(:uuid_presence)).to eq ['you must set uuid for connection type "b"']
       end
     end

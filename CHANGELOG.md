@@ -1,6 +1,21 @@
 # Hanami::Validations
 Validations mixin for Ruby objects
 
+## v2.0.0.alpha1 (unreleased)
+### Added
+- [Luca Guidi] The result object respond to `#failing?`
+- [Luca Guidi] The result object can serialize data with `#to_hash`
+
+### Changed
+- [Luca Guidi] Introduced `Hanami::Validator` as superclass to inherit from
+- [Luca Guidi] Including `Hanami::Validations` will not inject validations
+- [Luca Guidi] Removed `Hanami::Validations::Form`, in favor of `validations(:form)`
+- [Luca Guidi] `#initialize` doesn't accept any argument
+- [Luca Guidi] Validators are frozen
+- [Luca Guidi] Input data must be passed as argument to `#call`, instead of `#initialize`
+- [Luca Guidi] The returning value of a validation (result) can be `Hanami::Success` or `Hanami::Validations::Failure`
+- [Luca Guidi] The result object doesn't respond to `#success?` but to `#successful?`
+
 ## v1.3.0.beta1 (unreleased)
 
 ## v1.2.2 - 2018-06-05
