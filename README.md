@@ -46,40 +46,34 @@ $ gem install hanami-validations
 
 ## Usage
 
-`Hanami::Validator` is a superclass to inherit from, it allows to define validation rules.
+`Hanami::Validations` is a mixin that, once included by an object, adds lightweight set of validations to it.
 
-It works with input hashes and lets us to define a set of validation rules **for each** key/value pair.
-These rules are wrapped by lambdas (or special DSL) that check the input for a specific key to determine if it's valid or not.
-To do that, we translate business requirements into predicates that are chained together with Ruby _faux boolean logic_ operators (eg. `&` or `|`).
+It works with input hashes and lets us to define a set of validation rules **for each** key/value pair. These rules are wrapped by lambdas (or special DSL) that check the input for a specific key to determine if it's valid or not. To do that, we translate business requirements into predicates that are chained together with Ruby _faux boolean logic_ operators (eg. `&` or `|`).
 
-Think of a signup form. We need to ensure data integrity for the  `name` field with the following rules.
-It is required, it has to be: filled **and** a string **and** its size must be greater than 3 chars, but lesser than 64.
-Here’s the code, **read it aloud** and notice how it perfectly expresses our needs for `name`.
+Think of a signup form. We need to ensure data integrity for the  `name` field with the following rules. It is required, it has to be: filled **and** a string **and** its size must be greater than 3 chars, but lesser than 64. Here’s the code, **read it aloud** and notice how it perfectly expresses our needs for `name`.
 
 ```ruby
-class SignupValidator < Hanami::Validator
+class Signup
+  include Hanami::Validations
+
   validations do
     required(:name) { filled? & str? & size?(3..64) }
   end
 end
 
-result = Signup.new.call(name: "Luca")
-result.successful? # => true
+result = Signup.new(name: "Luca").validate
+result.success? # => true
 ```
 
-There is more that `Hanami::Validator` can do: **type safety**, **composition**, **complex data structures**, **built-in and custom predicates**.
+There is more that `Hanami::Validations` can do: **type safety**, **composition**, **complex data structures**, **built-in and custom predicates**.
 
 But before to dive into advanced topics, we need to understand the basics of _boolean logic_.
 
 ### Boolean Logic
 
-When we check data, we expect only two outcomes: an input can be valid or not.
-No grey areas, nor fuzzy results.
-It’s white or black, 1 or 0, `true` or `false` and _boolean logic_ is the perfect tool to express these two states.
-Indeed, a Ruby _boolean expression_ can only return `true` or `false`.
+When we check data, we expect only two outcomes: an input can be valid or not. No grey areas, nor fuzzy results. It’s white or black, 1 or 0, `true` or `false` and _boolean logic_ is the perfect tool to express these two states. Indeed, a Ruby _boolean expression_ can only return `true` or `false`.
 
-To better recognise the pattern, let’s get back to the example above.
-This time we will map the natural language rules with programming language rules.
+To better recognise the pattern, let’s get back to the example above. This time we will map the natural language rules with programming language rules.
 
 ```
         A name must be filled  and be a string and its size must be included between 3 and 64.
@@ -88,7 +82,7 @@ required(:name)      { filled?  &       str?   &      size?                     
 
 ```
 
-Now, I hope you’ll never format code like that, but in this case, that formatting serves well our purpose to show how Ruby’s simplicity helps to define complex rules with no effort.
+Now, I hope you’ll never format code like that, but in this case, that formatting serves well our purpose to show how Ruby’s  simplicity helps to define complex rules with no effort.
 
 From a high level perspective, we can tell that input data for `name` is _valid_ only if **all** the requirements are satisfied. That’s because we used `&`.
 
@@ -106,20 +100,16 @@ We support four logic operators:
 **Please notice that we used `&` over Ruby's `&&` keyword.**
 That's because the context of execution of these validations isn't a plain lambda, but something richer.
 
-For real world projects, we want to support common scenarios without the need of reinventing the wheel ourselves.
-Scenarios like _password confirmation_, _size check_ are already prepackaged with `Hanami::Validator`.
+For real world projects, we want to support common scenarios without the need of reinventing the wheel ourselves. Scenarios like _password confirmation_, _size check_ are already prepackaged with `Hanami::Validations`.
 
 
 ⚠ **For this reason, we don't allow any arbitrary Ruby code to be executed, but only well defined predicates.** ⚠
 
 ### Predicates
 
-To meet our needs, `Hanami::Validator` has an extensive collection of **built-in** predicates.
-**A predicate is the expression of a business requirement** (e.g. _size greater than_).
-The chain of several predicates determines if input data is valid or not.
+To meet our needs, `Hanami::Validations` has an extensive collection of **built-in** predicates. **A predicate is the expression of a business requirement** (e.g. _size greater than_). The chain of several predicates determines if input data is valid or not.
 
-We already met `filled?` and `size?`, now let’s introduce the rest of them.
-They capture **common use cases with web forms**.
+We already met `filled?` and `size?`, now let’s introduce the rest of them. They capture **common use cases with web forms**.
 
 ### Array
 
@@ -276,12 +266,32 @@ We have seen that built-in predicates as an expressive tool to get our job done 
 
 But what if our case is not common? We can define our own custom predicates.
 
+#### Inline Custom Predicates
+
+If we are facing a really unique validation that don't need to be reused across our code, we can opt for an inline custom predicate:
+
+```ruby
+require 'hanami/validations'
+
+class Signup
+  include Hanami::Validations
+
+  predicate :url?, message: 'must be an URL' do |current|
+    # ...
+  end
+
+  validations do
+    required(:website) { url? }
+  end
+end
+```
+
 #### Global Custom Predicates
 
 If our goal is to share common used custom predicates, we can include them in a module to use in all our validators:
 
 ```ruby
-require "hanami/validations"
+require 'hanami/validations'
 
 module MyPredicates
   include Hanami::Validations::Predicates
@@ -297,15 +307,14 @@ end
 We have defined a module `MyPredicates` with the purpose to share its custom predicates with all the validators that need them.
 
 ```ruby
-require "hanami/validations"
-require_relative "./my_predicates"
+require 'hanami/validations'
+require_relative 'my_predicates'
 
-class SignupValidator < Hanami::Validator
+class Signup
+  include Hanami::Validations
+  predicates MyPredicates
+
   validations do
-    configure do
-      predicates(MyPredicates)
-    end
-
     required(:email) { email? }
   end
 end
@@ -316,9 +325,11 @@ end
 HTML forms can have required or optional fields. We can express this concept with two methods in our validations: `required` (which we already met in previous examples), and `optional`.
 
 ```ruby
-require "hanami/validations"
+require 'hanami/validations'
 
-class SignupValidator < Hanami::Validator
+class Signup
+  include Hanami::Validations
+
   validations do
     required(:email)    { ... }
     optional(:referral) { ... }
@@ -328,27 +339,21 @@ end
 
 ### Type Safety
 
-At this point, we need to explicitly tell something really important about built-in predicates.
-Each of them have expectations about the methods that an input is able to respond to.
+At this point, we need to explicitly tell something really important about built-in predicates. Each of them have expectations about the methods that an input is able to respond to.
 
-Why this is so important?
-Because if we try to invoke a method on the input we’ll get a `NoMethodError` if the input doesn’t respond to it.
-Which isn’t nice, right?
+Why this is so important? Because if we try to invoke a method on the input we’ll get a `NoMethodError` if the input doesn’t respond to it. Which isn’t nice, right?
 
-Before to use a predicate, we want to ensure that the input is an instance of the expected type.
-Let’s introduce another new predicate for our need: `#type?`.
+Before to use a predicate, we want to ensure that the input is an instance of the expected type. Let’s introduce another new predicate for our need: `#type?`.
 
 ```ruby
 required(:age) { type?(Integer) & gteq?(18) }
 ```
 
-It takes the input and tries to coerce it.
-If it fails, the execution stops.
-If it succeed, the subsequent predicates can trust `#type?` and be sure that the input is an integer.
+It takes the input and tries to coerce it. If it fails, the execution stops. If it succeed, the subsequent predicates can trust `#type?` and be sure that the input is an integer.
 
 **We suggest to use `#type?` at the beginning of the validations block. This _type safety_ policy is crucial to prevent runtime errors.**
 
-`Hanami::Validator` supports the most common Ruby types:
+`Hanami::Validations` supports the most common Ruby types:
 
   * `Array` (aliased as `array?`)
   * `BigDecimal` (aliased as `decimal?`)
@@ -361,8 +366,7 @@ If it succeed, the subsequent predicates can trust `#type?` and be sure that the
   * `String` (aliased as `str?`)
   * `Time` (aliased as `time?`)
 
-For each supported type, there a convenient predicate that acts as an alias.
-For instance, the two lines of code below are **equivalent**.
+For each supported type, there a convenient predicate that acts as an alias. For instance, the two lines of code below are **equivalent**.
 
 ```ruby
 required(:age) { type?(Integer) }
@@ -372,7 +376,7 @@ required(:age) { int? }
 ### Macros
 
 Rule composition with blocks is powerful, but it can become verbose.
-To reduce verbosity, `Hanami::Validator` offers convenient _macros_ that are internally _expanded_ (aka interpreted) to an equivalent _block expression_
+To reduce verbosity, `Hanami::Validations` offers convenient _macros_ that are internally _expanded_ (aka interpreted) to an equivalent _block expression_
 
 #### Filled
 
@@ -443,21 +447,10 @@ It is valid if the input has `password` and `password_confirmation` keys with th
 ### Forms
 
 An important precondition to check before to implement a validator is about the expected input.
-When we use validators for already preprocessed data it's safe to use basic validations from `Hanami::Validator`.
+When we use validators for already preprocessed data it's safe to use basic validations from `Hanami::Validations` mixin.
 
-If the data is coming directly from user input via a HTTP form, it's advisable to use `validations(:form)` instead.
-**The two mixins have the same API, but the latter is able to do low level input preprocessing specific for forms**.
-For instance, blank inputs are casted to `nil` in order to avoid blank strings in the database.
-
-```ruby
-require "hanami/validations"
-
-class SignupValidator < Hanami::Validator
-  validations(:form) do
-    # ...
-  end
-end
-```
+If the data is coming directly from user input via a HTTP form, it's advisable to use `Hanami::Validations::Form` instead.
+**The two mixins have the same API, but the latter is able to do low level input preprocessing specific for forms**. For instance, blank inputs are casted to `nil` in order to avoid blank strings in the database.
 
 ### Rules
 
@@ -466,14 +459,15 @@ If the outcome of a validation depends on two or more attributes we can use _rul
 
 Here's a practical example: a job board.
 We want to validate the form of the job creation with some mandatory fields: `type` (full time, part-time, contract), `title` (eg. Developer), `description`, `company` (just the name) and a `website` (which is optional).
-An user must specify the location: on-site or remote.
-If it's on site, they must specify the `location`, otherwise they have to tick the checkbox for `remote`.
+An user must specify the location: on-site or remote. If it's on site, they must specify the `location`, otherwise they have to tick the checkbox for `remote`.
 
 Here's the code:
 
 ```ruby
-class CreateJob < Hanami::Validator
-  validations(:form) do
+class CreateJob
+  include Hanami::Validations::Form
+
+  validations do
     required(:type).filled(:int?, included_in?: [1, 2, 3])
 
     optional(:location).maybe(:str?)
@@ -506,9 +500,7 @@ We can use these variables to define the rule. We covered a few cases:
 
 ### Nested Input Data
 
-While we’re building complex web forms, we may find comfortable to organise data in a hierarchy of cohesive input fields.
-For instance, all the fields related to a customer, may have the `customer` prefix.
-To reflect this arrangement on the server side, we can group keys.
+While we’re building complex web forms, we may find comfortable to organise data in a hierarchy of cohesive input fields. For instance, all the fields related to a customer, may have the `customer` prefix. To reflect this arrangement on the server side, we can group keys.
 
 ```ruby
 validations do
@@ -537,13 +529,14 @@ end
 
 ### Composition
 
-Until now, we have seen only small snippets to show specific features.
-That really close view prevents us to see the big picture of complex real world projects.
+Until now, we have seen only small snippets to show specific features. That really close view prevents us to see the big picture of complex real world projects.
 
 As the code base grows, it’s a good practice to DRY validation rules.
 
 ```ruby
-class AddressValidator < Hanami::Validator
+class AddressValidator
+  include Hanami::Validations
+
   validations do
     required(:street) { … }
   end
@@ -553,7 +546,9 @@ end
 This validator can be reused by other validators.
 
 ```ruby
-class CustomerValidator < Hanami::Validator
+class CustomerValidator
+  include Hanami::Validations
+
   validations do
     required(:email) { … }
     required(:address).schema(AddressValidator)
@@ -564,7 +559,9 @@ end
 Again, there is no limit to the nesting levels.
 
 ```ruby
-class OrderValidator < Hanami::Validator
+class OrderValidator
+  include Hanami::Validations
+
   validations do
     required(:number) { … }
     required(:customer).schema(CustomerValidator)
@@ -591,19 +588,18 @@ In the end, `OrderValidator` is able to validate a complex data structure like t
 Another fundamental role that validators plays in the architecture of our projects is input whitelisting.
 For security reasons, we want to allow known keys to come in and reject everything else.
 
-This process happens when we invoke `#call`.
+This process happens when we invoke `#validate`.
 Allowed keys are the ones defined with `.required`.
 
-**Please note that whitelisting is only available for `Hanami::Validator` using `:form` schema.**
+**Please note that whitelisting is only available for `Hanami::Validations::Form` mixin.**
 
 ### Result
 
-When we trigger the validation process with `#call`, we get a result object in return.
-It’s able to tell if it’s successful, which rules the input data has violated and an output data bag.
+When we trigger the validation process with `#validate`, we get a result object in return. It’s able to tell if it’s successful, which rules the input data has violated and an output data bag.
 
 ```ruby
-result = OrderValidator.new.call({})
-result.successful? # => false
+result = OrderValidator.new({}).validate
+result.success? # => false
 ```
 
 #### Messages
@@ -619,8 +615,7 @@ result.messages.fetch(:customer) # => ["is missing"]
 
 #### Output
 
-`result.to_hash` is a `Hash` which is the result of whitelisting and coercions.
-It’s useful to pass it do other components that may want to persist that data.
+`result.output` is a `Hash` which is the result of whitelisting and coercions. It’s useful to pass it do other components that may want to persist that data.
 
 ```ruby
 {
@@ -629,10 +624,10 @@ It’s useful to pass it do other components that may want to persist that data.
 }
 ```
 
-If we receive the input above, `to_hash` will look like this.
+If we receive the input above, `output` will look like this.
 
 ```ruby
-result.to_hash
+result.output
   # => { :number => 123 }
 ```
 
@@ -642,20 +637,33 @@ We can observe that:
   * Only whitelisted keys are included
   * Data is coerced
 
-#### Data
-
-While `#to_hash` is useful to get all the output data, we can also want access just a single value.
-This can be done via the following syntax:
-
-```ruby
-result[:number] # => 123
-result[:foo] # => nil
-```
-
 ### Error Messages
 
 To pick the right error message is crucial for user experience.
-As usual `Hanami::Validator` comes to the rescue for most common cases and it leaves space to customization of behaviors.
+As usual `Hanami::Validations` comes to the rescue for most common cases and it leaves space to customization of behaviors.
+
+We have seen that builtin predicates have default messages, while [inline predicates](#inline-custom-predicates) allow to specify a custom message via the `:message` option.
+
+```ruby
+class SignupValidator
+  include Hanami::Validations
+
+  predicate :email?, message: 'must be an email' do |current|
+    # ...
+  end
+
+  validations do
+    required(:email).filled(:str?, :email?)
+    required(:age).filled(:int?, gt?: 18)
+  end
+end
+
+result = SignupValidator.new(email: 'foo', age: 1).validate
+
+result.success?               # => false
+result.messages.fetch(:email) # => ['must be an email']
+result.messages.fetch(:age)   # => ['must be greater than 18']
+```
 
 #### Configurable Error Messages
 
@@ -668,37 +676,29 @@ en:
     email?: "must be an email"
 ```
 
-```ruby
-require "hanami/validations"
-
-module MyPredicates
-  include Hanami::Validations::Predicates
-
-  predicate(:email?) do |current|
-    current.match(/.../)
-  end
-end
-
 To be used like this:
 
 ```ruby
-class SignupValidator < Hanami::Validator
-  validations do
-    configure do
-      config.messages_file = "config/messages.yml"
-    end
+class SignupValidator
+  include Hanami::Validations
+  messages_path 'config/messages.yml'
 
+  predicate :email? do |current|
+    # ...
+  end
+
+  validations do
     required(:email).filled(:str?, :email?)
     required(:age).filled(:int?, gt?: 18)
   end
 end
+
 ```
 
 
 #### Custom Error Messages
 
-In the example above, the failure message for age is fine: `"must be greater than 18"`, but how to tweak it? What if we need to change into something diffent?
-Again, we can use the YAML configuration file for our purpose.
+In the example above, the failure message for age is fine: `"must be greater than 18"`, but how to tweak it? What if we need to change into something diffent? Again, we can use the YAML configuration file for our purpose.
 
 ```yaml
 # config/messages.yml
@@ -716,10 +716,40 @@ en:
 Now our validator is able to look at the right error message.
 
 ```ruby
-result = SignupValidator.new.call(email: 'foo', age: 1)
+result = SignupValidator.new(email: 'foo', age: 1).validate
 
-result.successful?          # => false
+result.success?             # => false
 result.messages.fetch(:age) # => ['must be an adult']
+```
+
+##### Custom namespace
+
+⚠ **CONVENTION:** For a given validator named `SignupValidator`, the framework will look for `signup` translation key. ⚠
+
+If for some reason that doesn't work for us, we can customize the namespace:
+
+```ruby
+class SignupValidator
+  include Hanami::Validations
+
+  messages_path 'config/messages.yml'
+  namespace     :my_signup
+
+  # ...
+end
+```
+
+The new namespace should be used in the YAML file too.
+
+```yaml
+# config/messages.yml
+en:
+  # ...
+    rules:
+      my_signup:
+        age:
+          gt?: "must be an adult"
+
 ```
 
 #### Internationalization (I18n)
@@ -728,14 +758,12 @@ If your project already depends on `i18n` gem, `Hanami::Validations` is able to 
 
 
 ```ruby
-class SignupValidator < Hanami::Validator
-  validations do
-    configure do
-      confg.messages = :i18n
-    end
+class SignupValidator
+  include Hanami::Validations
 
-    # ...
-  end
+  messages :i18n
+
+  # ...
 end
 ```
 
@@ -750,9 +778,8 @@ en:
 ## FAQs
 ### Uniqueness Validation
 
-Uniqueness validation isn't implemented by `Hanami::Validator` because the context of execution is completely decoupled from persistence.
-Please remember that **uniqueness validation is a huge race condition between application and the database, and it doesn't guarantee records uniqueness for real.**
-To effectively enforce this policy you can use SQL database constraints.
+Uniqueness validation isn't implemented by `Hanami::Validations` because the context of execution is completely decoupled from persistence.
+Please remember that **uniqueness validation is a huge race condition between application and the database, and it doesn't guarantee records uniqueness for real.** To effectively enforce this policy you can use SQL database constraints.
 
 Please read more at: [The Perils of Uniqueness Validations](http://robots.thoughtbot.com/the-perils-of-uniqueness-validations).
 
@@ -771,6 +798,6 @@ Thanks to [dry-rb](http://dry-rb.org) Community for their priceless support. ❤
 
 ## Copyright
 
-Copyright © 2014-2018 Luca Guidi – Released under MIT License
+Copyright © 2014-2017 Luca Guidi – Released under MIT License
 
 This project was formerly known as Lotus (`lotus-validations`).
