@@ -16,12 +16,11 @@ module SharedPredicates
   end
 end
 
-class SignupValidator < Hanami::Validator
-  validations do
-    configure do
-      config.messages_file = "spec/support/fixtures/messages.yml"
-    end
+class SignupValidator
+  include Hanami::Validations
+  messages_path "spec/support/fixtures/messages.yml"
 
+  validations do
     required(:age).filled(:int?, gt?: 18)
   end
 end
@@ -30,12 +29,11 @@ module Web
   module Controllers
     module Signup
       class Create
-        class Params < Hanami::Validator
-          validations(:form) do
-            configure do
-              config.messages_file = "spec/support/fixtures/messages.yml"
-            end
+        class Params
+          include Hanami::Validations::Form
+          messages_path "spec/support/fixtures/messages.yml"
 
+          validations do
             required(:age).filled(:int?, gt?: 18)
           end
         end
@@ -44,22 +42,21 @@ module Web
   end
 end
 
-class DomainValidator < Hanami::Validator
-  validations do
-    configure do
-      config.messages = :i18n
-    end
+class DomainValidator
+  include Hanami::Validations
+  messages :i18n
 
+  validations do
     required(:name).filled(:str?, max_size?: 253)
   end
 end
 
-class ChangedTermsOfServicesValidator < Hanami::Validator
-  validations(:form) do
-    configure do
-      predicates(SharedPredicates)
-    end
+class ChangedTermsOfServicesValidator
+  include Hanami::Validations::Form
 
+  predicates SharedPredicates
+
+  validations do
     required(:terms).filled(:bool?, :accepted?)
   end
 end

@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-RSpec.describe Hanami::Validations do
+RSpec.describe Hanami::Validations::Form do
   describe "#initialize" do
     before do
       @validator = Class.new do
-        include Hanami::Validations
+        include Hanami::Validations::Form
 
         validations do
           required(:attr) { type?(Integer) }
@@ -12,7 +12,7 @@ RSpec.describe Hanami::Validations do
       end
 
       @nested = Class.new do
-        include Hanami::Validations
+        include Hanami::Validations::Form
 
         validations do
           required(:foo) { filled? }
@@ -52,11 +52,6 @@ RSpec.describe Hanami::Validations do
       expect(validator.to_h.fetch(:attr)).to eq 23
     end
 
-    it "accepts zero arguments" do
-      validator = @validator.new
-      expect(validator.to_h).to eq({})
-    end
-
     it "doesn't modify the original attributes" do
       data       = { attr: "23" }
       validator  = @validator.new(data)
@@ -65,14 +60,14 @@ RSpec.describe Hanami::Validations do
       expect(data[:attr]).to eq("23")
     end
 
-    it "accepts symbols as keys, without coercing and whitelisting" do
+    it "accepts strings as keys, only for the defined attributes" do
       validator = @nested.new(
-        foo:     "ok",
-        num:     23,
-        unknown: "no",
-        bar: {
-          baz: "yo",
-          wat: "oh"
+        "foo"     => "ok",
+        "num"     => "23",
+        "unknown" => "no",
+        "bar" => {
+          "baz" => "yo",
+          "wat" => "oh"
         }
       )
 
@@ -80,12 +75,10 @@ RSpec.describe Hanami::Validations do
 
       expect(result).to be_success
       expect(result.output).to eq(
-        foo:     "ok",
-        num:     23,
-        unknown: "no",
+        foo: "ok",
+        num: 23,
         bar: {
-          baz: "yo",
-          wat: "oh"
+          baz: "yo"
         }
       )
 
