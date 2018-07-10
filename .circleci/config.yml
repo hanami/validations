@@ -81,7 +81,7 @@ jobs:
             ./script/ci
   "jruby-9.1":
     docker:
-       - image: circleci/jruby:9.1.17.0
+       - image: circleci/jruby:9.1-jdk
     working_directory: ~/hanami-utils
     steps:
       - checkout
