@@ -4,11 +4,11 @@ Validations mixin for Ruby objects
 
 ## Status
 
-[![Gem Version](http://img.shields.io/gem/v/hanami-validations.svg)](https://badge.fury.io/rb/hanami-validations)
-[![Build Status](http://img.shields.io/travis/hanami/validations/master.svg)](https://travis-ci.org/hanami/validations?branch=master)
-[![Coverage](http://img.shields.io/coveralls/hanami/validations/master.svg)](https://coveralls.io/r/hanami/validations)
-[![Code Climate](http://img.shields.io/codeclimate/github/hanami/validations.svg)](https://codeclimate.com/github/hanami/validations)
-[![Dependencies](http://img.shields.io/gemnasium/hanami/validations.svg)](https://gemnasium.com/hanami/validations)
+[![Gem Version](https://badge.fury.io/rb/hanami-validations.svg)](https://badge.fury.io/rb/hanami-validations)
+[![TravisCI](https://travis-ci.org/hanami/validations.svg?branch=master)](https://travis-ci.org/hanami/validations)
+[![CircleCI](https://circleci.com/gh/hanami/validations/tree/master.svg?style=svg)](https://circleci.com/gh/hanami/validations/tree/master)
+[![Test Coverage](https://codecov.io/gh/hanami/validations/branch/master/graph/badge.svg)](https://codecov.io/gh/hanami/validations)
+[![Depfu](https://badges.depfu.com/badges/a8545fb67cf32a2c75b6227bc0821027/overview.svg)](https://depfu.com/github/hanami/validations?project=Bundler)
 [![Inline Docs](http://inch-ci.org/github/hanami/validations.svg)](http://inch-ci.org/github/hanami/validations)
 
 ## Contact
