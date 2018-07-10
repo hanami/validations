@@ -8,7 +8,7 @@ Validations mixin for Ruby objects
 [![TravisCI](https://travis-ci.org/hanami/validations.svg?branch=master)](https://travis-ci.org/hanami/validations)
 [![CircleCI](https://circleci.com/gh/hanami/validations/tree/master.svg?style=svg)](https://circleci.com/gh/hanami/validations/tree/master)
 [![Test Coverage](https://codecov.io/gh/hanami/validations/branch/master/graph/badge.svg)](https://codecov.io/gh/hanami/validations)
-[![Depfu](https://badges.depfu.com/badges/a8545fb67cf32a2c75b6227bc0821027/overview.svg)](https://depfu.com/github/hanami/validations?project=Bundler)
+[![Depfu](https://badges.depfu.com/badges/af6c6be539d9d587c7541ae7a013c9ff/overview.svg)](https://depfu.com/github/hanami/validations?project=Bundler)
 [![Inline Docs](http://inch-ci.org/github/hanami/validations.svg)](http://inch-ci.org/github/hanami/validations)
 
 ## Contact
