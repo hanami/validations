@@ -1,7 +1,9 @@
 # Hanami::Validations
 Validations mixin for Ruby objects
 
-## v1.3.0.beta1 (unreleased)
+## v1.3.0.beta1 - 2018-08-08
+### Added
+- [Luca Guidi] Official support for JRuby 9.2.0.0
 
 ## v1.2.2 - 2018-06-05
 ### Fixed
