@@ -1,6 +1,10 @@
 # Hanami::Validations
 Validations mixin for Ruby objects
 
+## v1.3.0.beta1 - 2018-08-08
+### Added
+- [Luca Guidi] Official support for JRuby 9.2.0.0
+
 ## v1.2.2 - 2018-06-05
 ### Fixed
 - [Luca Guidi] Revert dependency to `dry-validation` to `~> 0.11`, `< 0.12`
