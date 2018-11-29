@@ -4,7 +4,7 @@ RSpec.describe 'Predicates: custom' do
   describe 'with custom predicate' do
     before do
       @validator = Class.new do
-        include Hanami::Validations::Params
+        include Hanami::Validations::Form
 
         def self.name
           'Validator'
@@ -44,7 +44,7 @@ RSpec.describe 'Predicates: custom' do
   describe 'with custom predicates as module' do
     before do
       @validator = Class.new do
-        include Hanami::Validations::Params
+        include Hanami::Validations::Form
 
         def self.name
           'Validator'
@@ -87,7 +87,7 @@ RSpec.describe 'Predicates: custom' do
   describe 'with custom predicate within predicates block' do
     before do
       @validator = Class.new do
-        include Hanami::Validations::Params
+        include Hanami::Validations::Form
 
         def self.name
           'Validator'
@@ -123,7 +123,7 @@ RSpec.describe 'Predicates: custom' do
   describe 'with custom predicate with predicate macro' do
     before do
       @validator = Class.new do
-        include Hanami::Validations::Params
+        include Hanami::Validations::Form
 
         def self.name
           'Validator'
@@ -166,7 +166,7 @@ RSpec.describe 'Predicates: custom' do
     it 'raises error if try to use an unknown predicate' do
       expect do
         Class.new do
-          include Hanami::Validations::Params
+          include Hanami::Validations::Form
 
           def self.name
             'Validator'
@@ -183,7 +183,7 @@ RSpec.describe 'Predicates: custom' do
   describe 'with nested validations' do
     before do
       @validator = Class.new do
-        include Hanami::Validations::Params
+        include Hanami::Validations::Form
 
         def self.name
           'Validator'

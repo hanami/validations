@@ -1,19 +1,19 @@
-RSpec.describe 'Predicates: Lteq' do
+RSpec.describe 'Predicates: Gteq' do
   include_context 'validator result'
 
   describe 'with required' do
     before do
       @validator = Class.new do
-        include Hanami::Validations::Params
+        include Hanami::Validations::Form
 
         validations do
-          required(:foo) { int? & lteq?(23) }
+          required(:foo) { int? & gteq?(23) }
         end
       end
     end
 
     describe 'with valid input' do
-      let(:input) { { 'foo' => '1' } }
+      let(:input) { { 'foo' => '33' } }
 
       it 'is successful' do
         expect_successful result
@@ -24,7 +24,7 @@ RSpec.describe 'Predicates: Lteq' do
       let(:input) { {} }
 
       it 'is not successful' do
-        expect_not_successful result, ['is missing', 'must be less than or equal to 23']
+        expect_not_successful result, ['is missing', 'must be greater than or equal to 23']
       end
     end
 
@@ -32,7 +32,7 @@ RSpec.describe 'Predicates: Lteq' do
       let(:input) { { 'foo' => nil } }
 
       it 'is not successful' do
-        expect_not_successful result, ['must be an integer', 'must be less than or equal to 23']
+        expect_not_successful result, ['must be an integer', 'must be greater than or equal to 23']
       end
     end
 
@@ -40,7 +40,7 @@ RSpec.describe 'Predicates: Lteq' do
       let(:input) { { 'foo' => '' } }
 
       it 'is not successful' do
-        expect_not_successful result, ['must be an integer', 'must be less than or equal to 23']
+        expect_not_successful result, ['must be an integer', 'must be greater than or equal to 23']
       end
     end
 
@@ -48,7 +48,7 @@ RSpec.describe 'Predicates: Lteq' do
       let(:input) { { 'foo' => [] } }
 
       it 'is not successful' do
-        expect_not_successful result, ['must be an integer', 'must be less than or equal to 23']
+        expect_not_successful result, ['must be an integer', 'must be greater than or equal to 23']
       end
     end
 
@@ -60,11 +60,11 @@ RSpec.describe 'Predicates: Lteq' do
       end
     end
 
-    describe 'with greater than input' do
-      let(:input) { { 'foo' => '99' } }
+    describe 'with less than input' do
+      let(:input) { { 'foo' => '0' } }
 
       it 'is not successful' do
-        expect_not_successful result, ['must be less than or equal to 23']
+        expect_not_successful result, ['must be greater than or equal to 23']
       end
     end
   end
@@ -72,16 +72,16 @@ RSpec.describe 'Predicates: Lteq' do
   describe 'with optional' do
     before do
       @validator = Class.new do
-        include Hanami::Validations::Params
+        include Hanami::Validations::Form
 
         validations do
-          optional(:foo) { int? & lteq?(23) }
+          optional(:foo) { int? & gteq?(23) }
         end
       end
     end
 
     describe 'with valid input' do
-      let(:input) { { 'foo' => '1' } }
+      let(:input) { { 'foo' => '33' } }
 
       it 'is successful' do
         expect_successful result
@@ -100,7 +100,7 @@ RSpec.describe 'Predicates: Lteq' do
       let(:input) { { 'foo' => nil } }
 
       it 'is not successful' do
-        expect_not_successful result, ['must be an integer', 'must be less than or equal to 23']
+        expect_not_successful result, ['must be an integer', 'must be greater than or equal to 23']
       end
     end
 
@@ -108,7 +108,7 @@ RSpec.describe 'Predicates: Lteq' do
       let(:input) { { 'foo' => '' } }
 
       it 'is not successful' do
-        expect_not_successful result, ['must be an integer', 'must be less than or equal to 23']
+        expect_not_successful result, ['must be an integer', 'must be greater than or equal to 23']
       end
     end
 
@@ -116,7 +116,7 @@ RSpec.describe 'Predicates: Lteq' do
       let(:input) { { 'foo' => [] } }
 
       it 'is not successful' do
-        expect_not_successful result, ['must be an integer', 'must be less than or equal to 23']
+        expect_not_successful result, ['must be an integer', 'must be greater than or equal to 23']
       end
     end
 
@@ -128,11 +128,11 @@ RSpec.describe 'Predicates: Lteq' do
       end
     end
 
-    describe 'with greater than input' do
-      let(:input) { { 'foo' => '99' } }
+    describe 'with less than input' do
+      let(:input) { { 'foo' => '0' } }
 
       it 'is not successful' do
-        expect_not_successful result, ['must be less than or equal to 23']
+        expect_not_successful result, ['must be greater than or equal to 23']
       end
     end
   end
@@ -142,16 +142,16 @@ RSpec.describe 'Predicates: Lteq' do
       describe 'with value' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Params
+            include Hanami::Validations::Form
 
             validations do
-              required(:foo).value(:int?, lteq?: 23)
+              required(:foo).value(:int?, gteq?: 23)
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => '1' } }
+          let(:input) { { 'foo' => '33' } }
 
           it 'is successful' do
             expect_successful result
@@ -162,7 +162,7 @@ RSpec.describe 'Predicates: Lteq' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect_not_successful result, ['is missing', 'must be less than or equal to 23']
+            expect_not_successful result, ['is missing', 'must be greater than or equal to 23']
           end
         end
 
@@ -170,7 +170,7 @@ RSpec.describe 'Predicates: Lteq' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be an integer', 'must be less than or equal to 23']
+            expect_not_successful result, ['must be an integer', 'must be greater than or equal to 23']
           end
         end
 
@@ -178,7 +178,7 @@ RSpec.describe 'Predicates: Lteq' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be an integer', 'must be less than or equal to 23']
+            expect_not_successful result, ['must be an integer', 'must be greater than or equal to 23']
           end
         end
 
@@ -186,7 +186,7 @@ RSpec.describe 'Predicates: Lteq' do
           let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be an integer', 'must be less than or equal to 23']
+            expect_not_successful result, ['must be an integer', 'must be greater than or equal to 23']
           end
         end
 
@@ -198,11 +198,11 @@ RSpec.describe 'Predicates: Lteq' do
           end
         end
 
-        describe 'with greater than input' do
-          let(:input) { { 'foo' => '99' } }
+        describe 'with less than input' do
+          let(:input) { { 'foo' => '0' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be less than or equal to 23']
+            expect_not_successful result, ['must be greater than or equal to 23']
           end
         end
       end
@@ -210,16 +210,16 @@ RSpec.describe 'Predicates: Lteq' do
       describe 'with filled' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Params
+            include Hanami::Validations::Form
 
             validations do
-              required(:foo).filled(:int?, lteq?: 23)
+              required(:foo).filled(:int?, gteq?: 23)
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => '1' } }
+          let(:input) { { 'foo' => '33' } }
 
           it 'is successful' do
             expect_successful result
@@ -230,7 +230,7 @@ RSpec.describe 'Predicates: Lteq' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect_not_successful result, ['is missing', 'must be less than or equal to 23']
+            expect_not_successful result, ['is missing', 'must be greater than or equal to 23']
           end
         end
 
@@ -238,7 +238,7 @@ RSpec.describe 'Predicates: Lteq' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be filled', 'must be less than or equal to 23']
+            expect_not_successful result, ['must be filled', 'must be greater than or equal to 23']
           end
         end
 
@@ -246,7 +246,7 @@ RSpec.describe 'Predicates: Lteq' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be filled', 'must be less than or equal to 23']
+            expect_not_successful result, ['must be filled', 'must be greater than or equal to 23']
           end
         end
 
@@ -254,7 +254,7 @@ RSpec.describe 'Predicates: Lteq' do
           let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be filled', 'must be less than or equal to 23']
+            expect_not_successful result, ['must be filled', 'must be greater than or equal to 23']
           end
         end
 
@@ -266,11 +266,11 @@ RSpec.describe 'Predicates: Lteq' do
           end
         end
 
-        describe 'with greater than input' do
-          let(:input) { { 'foo' => '99' } }
+        describe 'with less than input' do
+          let(:input) { { 'foo' => '0' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be less than or equal to 23']
+            expect_not_successful result, ['must be greater than or equal to 23']
           end
         end
       end
@@ -278,16 +278,16 @@ RSpec.describe 'Predicates: Lteq' do
       describe 'with maybe' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Params
+            include Hanami::Validations::Form
 
             validations do
-              required(:foo).maybe(:int?, lteq?: 23)
+              required(:foo).maybe(:int?, gteq?: 23)
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => '1' } }
+          let(:input) { { 'foo' => '33' } }
 
           it 'is successful' do
             expect_successful result
@@ -298,7 +298,7 @@ RSpec.describe 'Predicates: Lteq' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect_not_successful result, ['is missing', 'must be less than or equal to 23']
+            expect_not_successful result, ['is missing', 'must be greater than or equal to 23']
           end
         end
 
@@ -322,7 +322,7 @@ RSpec.describe 'Predicates: Lteq' do
           let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be an integer', 'must be less than or equal to 23']
+            expect_not_successful result, ['must be an integer', 'must be greater than or equal to 23']
           end
         end
 
@@ -334,11 +334,11 @@ RSpec.describe 'Predicates: Lteq' do
           end
         end
 
-        describe 'with greater than input' do
-          let(:input) { { 'foo' => '99' } }
+        describe 'with less than input' do
+          let(:input) { { 'foo' => '0' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be less than or equal to 23']
+            expect_not_successful result, ['must be greater than or equal to 23']
           end
         end
       end
@@ -348,16 +348,16 @@ RSpec.describe 'Predicates: Lteq' do
       describe 'with value' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Params
+            include Hanami::Validations::Form
 
             validations do
-              optional(:foo).value(:int?, lteq?: 23)
+              optional(:foo).value(:int?, gteq?: 23)
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => '1' } }
+          let(:input) { { 'foo' => '33' } }
 
           it 'is successful' do
             expect_successful result
@@ -376,7 +376,7 @@ RSpec.describe 'Predicates: Lteq' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be an integer', 'must be less than or equal to 23']
+            expect_not_successful result, ['must be an integer', 'must be greater than or equal to 23']
           end
         end
 
@@ -384,7 +384,7 @@ RSpec.describe 'Predicates: Lteq' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be an integer', 'must be less than or equal to 23']
+            expect_not_successful result, ['must be an integer', 'must be greater than or equal to 23']
           end
         end
 
@@ -392,7 +392,7 @@ RSpec.describe 'Predicates: Lteq' do
           let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be an integer', 'must be less than or equal to 23']
+            expect_not_successful result, ['must be an integer', 'must be greater than or equal to 23']
           end
         end
 
@@ -404,11 +404,11 @@ RSpec.describe 'Predicates: Lteq' do
           end
         end
 
-        describe 'with greater than input' do
-          let(:input) { { 'foo' => '99' } }
+        describe 'with less than input' do
+          let(:input) { { 'foo' => '0' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be less than or equal to 23']
+            expect_not_successful result, ['must be greater than or equal to 23']
           end
         end
       end
@@ -416,16 +416,16 @@ RSpec.describe 'Predicates: Lteq' do
       describe 'with filled' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Params
+            include Hanami::Validations::Form
 
             validations do
-              optional(:foo).filled(:int?, lteq?: 23)
+              optional(:foo).filled(:int?, gteq?: 23)
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => '1' } }
+          let(:input) { { 'foo' => '33' } }
 
           it 'is successful' do
             expect_successful result
@@ -444,7 +444,7 @@ RSpec.describe 'Predicates: Lteq' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be filled', 'must be less than or equal to 23']
+            expect_not_successful result, ['must be filled', 'must be greater than or equal to 23']
           end
         end
 
@@ -452,7 +452,7 @@ RSpec.describe 'Predicates: Lteq' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be filled', 'must be less than or equal to 23']
+            expect_not_successful result, ['must be filled', 'must be greater than or equal to 23']
           end
         end
 
@@ -460,7 +460,7 @@ RSpec.describe 'Predicates: Lteq' do
           let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be filled', 'must be less than or equal to 23']
+            expect_not_successful result, ['must be filled', 'must be greater than or equal to 23']
           end
         end
 
@@ -472,11 +472,11 @@ RSpec.describe 'Predicates: Lteq' do
           end
         end
 
-        describe 'with greater than input' do
-          let(:input) { { 'foo' => '99' } }
+        describe 'with less than input' do
+          let(:input) { { 'foo' => '0' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be less than or equal to 23']
+            expect_not_successful result, ['must be greater than or equal to 23']
           end
         end
       end
@@ -484,16 +484,16 @@ RSpec.describe 'Predicates: Lteq' do
       describe 'with maybe' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Params
+            include Hanami::Validations::Form
 
             validations do
-              optional(:foo).maybe(:int?, lteq?: 23)
+              optional(:foo).maybe(:int?, gteq?: 23)
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => '1' } }
+          let(:input) { { 'foo' => '33' } }
 
           it 'is successful' do
             expect_successful result
@@ -528,7 +528,7 @@ RSpec.describe 'Predicates: Lteq' do
           let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be an integer', 'must be less than or equal to 23']
+            expect_not_successful result, ['must be an integer', 'must be greater than or equal to 23']
           end
         end
 
@@ -540,11 +540,11 @@ RSpec.describe 'Predicates: Lteq' do
           end
         end
 
-        describe 'with greater than input' do
-          let(:input) { { 'foo' => '99' } }
+        describe 'with less than input' do
+          let(:input) { { 'foo' => '0' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be less than or equal to 23']
+            expect_not_successful result, ['must be greater than or equal to 23']
           end
         end
       end

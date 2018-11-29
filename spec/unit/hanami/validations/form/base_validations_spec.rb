@@ -1,8 +1,8 @@
-RSpec.describe Hanami::Validations::Params do
+RSpec.describe Hanami::Validations::Form do
   describe 'base validations' do
     before do
       @validator = Class.new do
-        include Hanami::Validations::Params
+        include Hanami::Validations::Form
 
         def self._base_rules
           lambda do

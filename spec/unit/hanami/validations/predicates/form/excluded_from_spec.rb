@@ -1,19 +1,19 @@
-RSpec.describe 'Predicates: Type' do
+RSpec.describe 'Predicates: Excluded From' do
   include_context 'validator result'
 
   describe 'with required' do
     before do
       @validator = Class.new do
-        include Hanami::Validations::Params
+        include Hanami::Validations::Form
 
         validations do
-          required(:foo) { type?(Integer) }
+          required(:foo) { excluded_from?(%w[1 3 5]) }
         end
       end
     end
 
     describe 'with valid input' do
-      let(:input) { { 'foo' => '23' } }
+      let(:input) { { 'foo' => '2' } }
 
       it 'is successful' do
         expect_successful result
@@ -24,31 +24,39 @@ RSpec.describe 'Predicates: Type' do
       let(:input) { {} }
 
       it 'is not successful' do
-        expect_not_successful result, ['is missing', 'must be Integer']
+        expect_not_successful result, ['is missing', 'must not be one of: 1, 3, 5']
       end
     end
 
     describe 'with nil input' do
       let(:input) { { 'foo' => nil } }
 
-      it 'is not successful' do
-        expect_not_successful result, ['must be Integer']
+      it 'is successful' do
+        expect_successful result
       end
     end
 
     describe 'with blank input' do
       let(:input) { { 'foo' => '' } }
 
-      it 'is not successful' do
-        expect_not_successful result, ['must be Integer']
+      it 'is successful' do
+        expect_successful result
       end
     end
 
     describe 'with invalid type' do
-      let(:input) { { 'foo' => ['x'] } }
+      let(:input) { { 'foo' => { 'a' => '1' } } }
+
+      it 'is successful' do
+        expect_successful result
+      end
+    end
+
+    describe 'with invalid input' do
+      let(:input) { { 'foo' => '5' } }
 
       it 'is not successful' do
-        expect_not_successful result, ['must be Integer']
+        expect_not_successful result, ['must not be one of: 1, 3, 5']
       end
     end
   end
@@ -56,16 +64,16 @@ RSpec.describe 'Predicates: Type' do
   describe 'with optional' do
     before do
       @validator = Class.new do
-        include Hanami::Validations::Params
+        include Hanami::Validations::Form
 
         validations do
-          optional(:foo) { type?(Integer) }
+          optional(:foo) { excluded_from?(%w[1 3 5]) }
         end
       end
     end
 
     describe 'with valid input' do
-      let(:input) { { 'foo' => '23' } }
+      let(:input) { { 'foo' => '2' } }
 
       it 'is successful' do
         expect_successful result
@@ -83,24 +91,32 @@ RSpec.describe 'Predicates: Type' do
     describe 'with nil input' do
       let(:input) { { 'foo' => nil } }
 
-      it 'is not successful' do
-        expect_not_successful result, ['must be Integer']
+      it 'is successful' do
+        expect_successful result
       end
     end
 
     describe 'with blank input' do
       let(:input) { { 'foo' => '' } }
 
-      it 'is not successful' do
-        expect_not_successful result, ['must be Integer']
+      it 'is successful' do
+        expect_successful result
       end
     end
 
     describe 'with invalid type' do
-      let(:input) { { 'foo' => ['x'] } }
+      let(:input) { { 'foo' => { 'a' => '1' } } }
+
+      it 'is successful' do
+        expect_successful result
+      end
+    end
+
+    describe 'with invalid input' do
+      let(:input) { { 'foo' => '5' } }
 
       it 'is not successful' do
-        expect_not_successful result, ['must be Integer']
+        expect_not_successful result, ['must not be one of: 1, 3, 5']
       end
     end
   end
@@ -110,16 +126,16 @@ RSpec.describe 'Predicates: Type' do
       describe 'with value' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Params
+            include Hanami::Validations::Form
 
             validations do
-              required(:foo).value(type?: Integer)
+              required(:foo).value(excluded_from?: %w[1 3 5])
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => '23' } }
+          let(:input) { { 'foo' => '2' } }
 
           it 'is successful' do
             expect_successful result
@@ -130,31 +146,39 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect_not_successful result, ['is missing', 'must be Integer']
+            expect_not_successful result, ['is missing', 'must not be one of: 1, 3, 5']
           end
         end
 
         describe 'with nil input' do
           let(:input) { { 'foo' => nil } }
 
-          it 'is not successful' do
-            expect_not_successful result, ['must be Integer']
+          it 'is successful' do
+            expect_successful result
           end
         end
 
         describe 'with blank input' do
           let(:input) { { 'foo' => '' } }
 
-          it 'is not successful' do
-            expect_not_successful result, ['must be Integer']
+          it 'is successful' do
+            expect_successful result
           end
         end
 
         describe 'with invalid type' do
-          let(:input) { { 'foo' => ['x'] } }
+          let(:input) { { 'foo' => { 'a' => '1' } } }
+
+          it 'is successful' do
+            expect_successful result
+          end
+        end
+
+        describe 'with invalid input' do
+          let(:input) { { 'foo' => '5' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be Integer']
+            expect_not_successful result, ['must not be one of: 1, 3, 5']
           end
         end
       end
@@ -162,16 +186,16 @@ RSpec.describe 'Predicates: Type' do
       describe 'with filled' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Params
+            include Hanami::Validations::Form
 
             validations do
-              required(:foo).filled(type?: Integer)
+              required(:foo).filled(excluded_from?: %w[1 3 5])
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => '23' } }
+          let(:input) { { 'foo' => '2' } }
 
           it 'is successful' do
             expect_successful result
@@ -182,7 +206,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect_not_successful result, ['is missing', 'must be Integer']
+            expect_not_successful result, ['is missing', 'must not be one of: 1, 3, 5']
           end
         end
 
@@ -190,7 +214,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be filled', 'must be Integer']
+            expect_not_successful result, ['must be filled', 'must not be one of: 1, 3, 5']
           end
         end
 
@@ -198,15 +222,23 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be filled', 'must be Integer']
+            expect_not_successful result, ['must be filled', 'must not be one of: 1, 3, 5']
           end
         end
 
         describe 'with invalid type' do
-          let(:input) { { 'foo' => ['x'] } }
+          let(:input) { { 'foo' => { 'a' => '1' } } }
+
+          it 'is successful' do
+            expect_successful result
+          end
+        end
+
+        describe 'with invalid input' do
+          let(:input) { { 'foo' => '5' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be Integer']
+            expect_not_successful result, ['must not be one of: 1, 3, 5']
           end
         end
       end
@@ -214,16 +246,16 @@ RSpec.describe 'Predicates: Type' do
       describe 'with maybe' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Params
+            include Hanami::Validations::Form
 
             validations do
-              required(:foo).maybe(type?: Integer)
+              required(:foo).maybe(excluded_from?: %w[1 3 5])
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => '23' } }
+          let(:input) { { 'foo' => '2' } }
 
           it 'is successful' do
             expect_successful result
@@ -234,7 +266,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect_not_successful result, ['is missing', 'must be Integer']
+            expect_not_successful result, ['is missing', 'must not be one of: 1, 3, 5']
           end
         end
 
@@ -255,10 +287,18 @@ RSpec.describe 'Predicates: Type' do
         end
 
         describe 'with invalid type' do
-          let(:input) { { 'foo' => ['x'] } }
+          let(:input) { { 'foo' => { 'a' => '1' } } }
+
+          it 'is successful' do
+            expect_successful result
+          end
+        end
+
+        describe 'with invalid input' do
+          let(:input) { { 'foo' => '5' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be Integer']
+            expect_not_successful result, ['must not be one of: 1, 3, 5']
           end
         end
       end
@@ -268,16 +308,16 @@ RSpec.describe 'Predicates: Type' do
       describe 'with value' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Params
+            include Hanami::Validations::Form
 
             validations do
-              optional(:foo).value(type?: Integer)
+              optional(:foo).value(excluded_from?: %w[1 3 5])
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => '23' } }
+          let(:input) { { 'foo' => '2' } }
 
           it 'is successful' do
             expect_successful result
@@ -295,24 +335,32 @@ RSpec.describe 'Predicates: Type' do
         describe 'with nil input' do
           let(:input) { { 'foo' => nil } }
 
-          it 'is not successful' do
-            expect_not_successful result, ['must be Integer']
+          it 'is successful' do
+            expect_successful result
           end
         end
 
         describe 'with blank input' do
           let(:input) { { 'foo' => '' } }
 
-          it 'is not successful' do
-            expect_not_successful result, ['must be Integer']
+          it 'is successful' do
+            expect_successful result
           end
         end
 
         describe 'with invalid type' do
-          let(:input) { { 'foo' => ['x'] } }
+          let(:input) { { 'foo' => { 'a' => '1' } } }
+
+          it 'is successful' do
+            expect_successful result
+          end
+        end
+
+        describe 'with invalid input' do
+          let(:input) { { 'foo' => '5' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be Integer']
+            expect_not_successful result, ['must not be one of: 1, 3, 5']
           end
         end
       end
@@ -320,16 +368,16 @@ RSpec.describe 'Predicates: Type' do
       describe 'with filled' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Params
+            include Hanami::Validations::Form
 
             validations do
-              optional(:foo).filled(type?: Integer)
+              optional(:foo).filled(excluded_from?: %w[1 3 5])
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => '23' } }
+          let(:input) { { 'foo' => '2' } }
 
           it 'is successful' do
             expect_successful result
@@ -348,7 +396,7 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be filled', 'must be Integer']
+            expect_not_successful result, ['must be filled', 'must not be one of: 1, 3, 5']
           end
         end
 
@@ -356,15 +404,23 @@ RSpec.describe 'Predicates: Type' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be filled', 'must be Integer']
+            expect_not_successful result, ['must be filled', 'must not be one of: 1, 3, 5']
           end
         end
 
         describe 'with invalid type' do
-          let(:input) { { 'foo' => ['x'] } }
+          let(:input) { { 'foo' => { 'a' => '1' } } }
+
+          it 'is successful' do
+            expect_successful result
+          end
+        end
+
+        describe 'with invalid input' do
+          let(:input) { { 'foo' => '5' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be Integer']
+            expect_not_successful result, ['must not be one of: 1, 3, 5']
           end
         end
       end
@@ -372,16 +428,16 @@ RSpec.describe 'Predicates: Type' do
       describe 'with maybe' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Params
+            include Hanami::Validations::Form
 
             validations do
-              optional(:foo).maybe(type?: Integer)
+              optional(:foo).maybe(excluded_from?: %w[1 3 5])
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => '23' } }
+          let(:input) { { 'foo' => '2' } }
 
           it 'is successful' do
             expect_successful result
@@ -413,10 +469,18 @@ RSpec.describe 'Predicates: Type' do
         end
 
         describe 'with invalid type' do
-          let(:input) { { 'foo' => ['x'] } }
+          let(:input) { { 'foo' => { 'a' => '1' } } }
+
+          it 'is successful' do
+            expect_successful result
+          end
+        end
+
+        describe 'with invalid input' do
+          let(:input) { { 'foo' => '5' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be Integer']
+            expect_not_successful result, ['must not be one of: 1, 3, 5']
           end
         end
       end

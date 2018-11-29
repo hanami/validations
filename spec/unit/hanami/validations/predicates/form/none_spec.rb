@@ -1,30 +1,14 @@
-RSpec.describe 'Predicates: Empty' do
+RSpec.describe 'Predicates: None' do
   include_context 'validator result'
 
   describe 'with required' do
     before do
       @validator = Class.new do
-        include Hanami::Validations::Params
+        include Hanami::Validations::Form
 
         validations do
-          required(:foo) { empty? }
+          required(:foo) { none? }
         end
-      end
-    end
-
-    describe 'with valid input (array)' do
-      let(:input) { { 'foo' => [] } }
-
-      it 'is successful' do
-        expect_successful result
-      end
-    end
-
-    describe 'with valid input (hash)' do
-      let(:input) { { 'foo' => {} } }
-
-      it 'is successful' do
-        expect_successful result
       end
     end
 
@@ -32,7 +16,7 @@ RSpec.describe 'Predicates: Empty' do
       let(:input) { {} }
 
       it 'is not successful' do
-        expect_not_successful result, ['is missing', 'must be empty']
+        expect_not_successful result, ['is missing']
       end
     end
 
@@ -52,11 +36,11 @@ RSpec.describe 'Predicates: Empty' do
       end
     end
 
-    describe 'with invalid input' do
-      let(:input) { { 'foo' => ['23'] } }
+    describe 'with other input' do
+      let(:input) { { 'foo' => '23' } }
 
       it 'is not successful' do
-        expect_not_successful result, ['must be empty']
+        expect_not_successful result, ['cannot be defined']
       end
     end
   end
@@ -64,27 +48,11 @@ RSpec.describe 'Predicates: Empty' do
   describe 'with optional' do
     before do
       @validator = Class.new do
-        include Hanami::Validations::Params
+        include Hanami::Validations::Form
 
         validations do
-          optional(:foo) { empty? }
+          optional(:foo) { none? }
         end
-      end
-    end
-
-    describe 'with valid input (array)' do
-      let(:input) { { 'foo' => [] } }
-
-      it 'is successful' do
-        expect_successful result
-      end
-    end
-
-    describe 'with valid input (hash)' do
-      let(:input) { { 'foo' => {} } }
-
-      it 'is successful' do
-        expect_successful result
       end
     end
 
@@ -112,11 +80,11 @@ RSpec.describe 'Predicates: Empty' do
       end
     end
 
-    describe 'with invalid input' do
-      let(:input) { { 'foo' => ['23'] } }
+    describe 'with other input' do
+      let(:input) { { 'foo' => '23' } }
 
       it 'is not successful' do
-        expect_not_successful result, ['must be empty']
+        expect_not_successful result, ['cannot be defined']
       end
     end
   end
@@ -126,27 +94,11 @@ RSpec.describe 'Predicates: Empty' do
       describe 'with value' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Params
+            include Hanami::Validations::Form
 
             validations do
-              required(:foo).value(:empty?)
+              required(:foo).value(:none?)
             end
-          end
-        end
-
-        describe 'with valid input (array)' do
-          let(:input) { { 'foo' => [] } }
-
-          it 'is successful' do
-            expect_successful result
-          end
-        end
-
-        describe 'with valid input (hash)' do
-          let(:input) { { 'foo' => {} } }
-
-          it 'is successful' do
-            expect_successful result
           end
         end
 
@@ -154,7 +106,7 @@ RSpec.describe 'Predicates: Empty' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect_not_successful result, ['is missing', 'must be empty']
+            expect_not_successful result, ['is missing']
           end
         end
 
@@ -174,32 +126,66 @@ RSpec.describe 'Predicates: Empty' do
           end
         end
 
-        describe 'with invalid input' do
-          let(:input) { { 'foo' => ['23'] } }
+        describe 'with other input' do
+          let(:input) { { 'foo' => '23' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be empty']
+            expect_not_successful result, ['cannot be defined']
           end
         end
       end
 
       describe 'with filled' do
-        # it doesn't make sense to ask for a filled key and at the same time assert it's empty
-        #
-        # Example:
-        #
-        #   validations do
-        #     required(:foo).filled(:empty?)
-        #   end
+        before do
+          @validator = Class.new do
+            include Hanami::Validations::Form
+
+            validations do
+              required(:foo).filled(:none?)
+            end
+          end
+        end
+
+        describe 'with missing input' do
+          let(:input) { {} }
+
+          it 'is not successful' do
+            expect_not_successful result, ['is missing']
+          end
+        end
+
+        describe 'with nil input' do
+          let(:input) { { 'foo' => nil } }
+
+          it 'is not successful' do
+            expect_not_successful result, ['must be filled']
+          end
+        end
+
+        describe 'with blank input' do
+          let(:input) { { 'foo' => '' } }
+
+          it 'is not successful' do
+            expect_not_successful result, ['must be filled']
+          end
+        end
+
+        describe 'with other input' do
+          let(:input) { { 'foo' => '23' } }
+
+          it 'is not successful' do
+            expect_not_successful result, ['cannot be defined']
+          end
+        end
       end
 
       describe 'with maybe' do
-        # it doesn't make sense to ask for a maybe key and at the same time assert it's empty
+        # it doesn't make sense to ask for a required key and at the same time assert it's none
         #
         # Example:
         #
         #   validations do
-        #     required(:foo).maybe(:empty?)
+        #     required(:foo).maybe(:none?)
         #   end
       end
     end
@@ -208,27 +194,11 @@ RSpec.describe 'Predicates: Empty' do
       describe 'with value' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Params
+            include Hanami::Validations::Form
 
             validations do
-              optional(:foo).value(:empty?)
+              optional(:foo).value(:none?)
             end
-          end
-        end
-
-        describe 'with valid input (array)' do
-          let(:input) { { 'foo' => [] } }
-
-          it 'is successful' do
-            expect_successful result
-          end
-        end
-
-        describe 'with valid input (hash)' do
-          let(:input) { { 'foo' => {} } }
-
-          it 'is successful' do
-            expect_successful result
           end
         end
 
@@ -251,37 +221,37 @@ RSpec.describe 'Predicates: Empty' do
         describe 'with blank input' do
           let(:input) { { 'foo' => '' } }
 
-          it 'is successful' do
+          it 'is  successful' do
             expect_successful result
           end
         end
 
-        describe 'with invalid input' do
-          let(:input) { { 'foo' => ['23'] } }
+        describe 'with other input' do
+          let(:input) { { 'foo' => '23' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be empty']
+            expect_not_successful result, ['cannot be defined']
           end
         end
       end
 
       describe 'with filled' do
-        # it doesn't make sense to ask for a filled key and at the same time assert it's empty
+        # it doesn't make sense to ask for a filled key and at the same time assert it's none
         #
         # Example:
         #
         #   validations do
-        #     optional(:foo).filled(:empty?)
+        #     optional(:foo).filled(:none?)
         #   end
       end
 
       describe 'with maybe' do
-        # it doesn't make sense to ask for a filled key and at the same time assert it's empty
+        # it doesn't make sense to ask for a maybe key and at the same time assert it's none
         #
         # Example:
         #
         #   validations do
-        #     optional(:foo).maybe(:empty?)
+        #     optional(:foo).maybe(:none?)
         #   end
       end
     end

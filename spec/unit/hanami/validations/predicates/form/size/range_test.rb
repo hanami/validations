@@ -3,14 +3,14 @@ require 'test_helper'
 describe 'Predicates: Size' do
   include TestUtils
 
-  describe 'Fixed (integer)' do
+  describe 'Range' do
     describe 'with required' do
       before do
         @validator = Class.new do
-          include Hanami::Validations::Params
+          include Hanami::Validations::Form
 
           validations do
-            required(:foo) { size?(3) }
+            required(:foo) { size?(2..3) }
           end
         end
       end
@@ -27,7 +27,7 @@ describe 'Predicates: Size' do
         let(:input) { {} }
 
         it 'is not successful' do
-          expect_not_successful result, ['is missing', 'size must be 3']
+          expect_not_successful result, ['is missing', 'size must be within 2 - 3']
         end
       end
 
@@ -43,7 +43,7 @@ describe 'Predicates: Size' do
         let(:input) { { 'foo' => '' } }
 
         it 'is not successful' do
-          expect_not_successful result, ['length must be 3']
+          expect_not_successful result, ['length must be within 2 - 3']
         end
       end
 
@@ -51,7 +51,7 @@ describe 'Predicates: Size' do
         let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
         it 'is not successful' do
-          expect_not_successful result, ['size must be 3']
+          expect_not_successful result, ['size must be within 2 - 3']
         end
       end
     end
@@ -59,10 +59,10 @@ describe 'Predicates: Size' do
     describe 'with optional' do
       before do
         @validator = Class.new do
-          include Hanami::Validations::Params
+          include Hanami::Validations::Form
 
           validations do
-            optional(:foo) { size?(3) }
+            optional(:foo) { size?(2..3) }
           end
         end
       end
@@ -95,7 +95,7 @@ describe 'Predicates: Size' do
         let(:input) { { 'foo' => '' } }
 
         it 'is not successful' do
-          expect_not_successful result, ['length must be 3']
+          expect_not_successful result, ['length must be within 2 - 3']
         end
       end
 
@@ -103,7 +103,7 @@ describe 'Predicates: Size' do
         let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
         it 'is not successful' do
-          expect_not_successful result, ['size must be 3']
+          expect_not_successful result, ['size must be within 2 - 3']
         end
       end
     end
@@ -113,10 +113,10 @@ describe 'Predicates: Size' do
         describe 'with value' do
           before do
             @validator = Class.new do
-              include Hanami::Validations::Params
+              include Hanami::Validations::Form
 
               validations do
-                required(:foo).value(size?: 3)
+                required(:foo).value(size?: 2..3)
               end
             end
           end
@@ -133,7 +133,7 @@ describe 'Predicates: Size' do
             let(:input) { {} }
 
             it 'is not successful' do
-              expect_not_successful result, ['is missing', 'size must be 3']
+              expect_not_successful result, ['is missing', 'size must be within 2 - 3']
             end
           end
 
@@ -149,7 +149,7 @@ describe 'Predicates: Size' do
             let(:input) { { 'foo' => '' } }
 
             it 'is not successful' do
-              expect_not_successful result, ['length must be 3']
+              expect_not_successful result, ['length must be within 2 - 3']
             end
           end
 
@@ -157,7 +157,7 @@ describe 'Predicates: Size' do
             let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
             it 'is not successful' do
-              expect_not_successful result, ['size must be 3']
+              expect_not_successful result, ['size must be within 2 - 3']
             end
           end
         end
@@ -165,10 +165,10 @@ describe 'Predicates: Size' do
         describe 'with filled' do
           before do
             @validator = Class.new do
-              include Hanami::Validations::Params
+              include Hanami::Validations::Form
 
               validations do
-                required(:foo).filled(size?: 3)
+                required(:foo).filled(size?: 2..3)
               end
             end
           end
@@ -185,7 +185,7 @@ describe 'Predicates: Size' do
             let(:input) { {} }
 
             it 'is not successful' do
-              expect_not_successful result, ['is missing', 'size must be 3']
+              expect_not_successful result, ['is missing', 'size must be within 2 - 3']
             end
           end
 
@@ -193,7 +193,7 @@ describe 'Predicates: Size' do
             let(:input) { { 'foo' => nil } }
 
             it 'is not successful' do
-              expect_not_successful result, ['must be filled', 'size must be 3']
+              expect_not_successful result, ['must be filled', 'size must be within 2 - 3']
             end
           end
 
@@ -201,7 +201,7 @@ describe 'Predicates: Size' do
             let(:input) { { 'foo' => '' } }
 
             it 'is not successful' do
-              expect_not_successful result, ['must be filled', 'length must be 3']
+              expect_not_successful result, ['must be filled', 'length must be within 2 - 3']
             end
           end
 
@@ -209,7 +209,7 @@ describe 'Predicates: Size' do
             let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
             it 'is not successful' do
-              expect_not_successful result, ['size must be 3']
+              expect_not_successful result, ['size must be within 2 - 3']
             end
           end
         end
@@ -217,10 +217,10 @@ describe 'Predicates: Size' do
         describe 'with maybe' do
           before do
             @validator = Class.new do
-              include Hanami::Validations::Params
+              include Hanami::Validations::Form
 
               validations do
-                required(:foo).maybe(size?: 3)
+                required(:foo).maybe(size?: 2..3)
               end
             end
           end
@@ -237,7 +237,7 @@ describe 'Predicates: Size' do
             let(:input) { {} }
 
             it 'is not successful' do
-              expect_not_successful result, ['is missing', 'size must be 3']
+              expect_not_successful result, ['is missing', 'size must be within 2 - 3']
             end
           end
 
@@ -261,7 +261,7 @@ describe 'Predicates: Size' do
             let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
             it 'is not successful' do
-              expect_not_successful result, ['size must be 3']
+              expect_not_successful result, ['size must be within 2 - 3']
             end
           end
         end
@@ -271,10 +271,10 @@ describe 'Predicates: Size' do
         describe 'with value' do
           before do
             @validator = Class.new do
-              include Hanami::Validations::Params
+              include Hanami::Validations::Form
 
               validations do
-                optional(:foo).value(size?: 3)
+                optional(:foo).value(size?: 2..3)
               end
             end
           end
@@ -307,7 +307,7 @@ describe 'Predicates: Size' do
             let(:input) { { 'foo' => '' } }
 
             it 'is not successful' do
-              expect_not_successful result, ['length must be 3']
+              expect_not_successful result, ['length must be within 2 - 3']
             end
           end
 
@@ -315,7 +315,7 @@ describe 'Predicates: Size' do
             let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
             it 'is not successful' do
-              expect_not_successful result, ['size must be 3']
+              expect_not_successful result, ['size must be within 2 - 3']
             end
           end
         end
@@ -323,10 +323,10 @@ describe 'Predicates: Size' do
         describe 'with filled' do
           before do
             @validator = Class.new do
-              include Hanami::Validations::Params
+              include Hanami::Validations::Form
 
               validations do
-                optional(:foo).filled(size?: 3)
+                optional(:foo).filled(size?: 2..3)
               end
             end
           end
@@ -351,7 +351,7 @@ describe 'Predicates: Size' do
             let(:input) { { 'foo' => nil } }
 
             it 'is not successful' do
-              expect_not_successful result, ['must be filled', 'size must be 3']
+              expect_not_successful result, ['must be filled', 'size must be within 2 - 3']
             end
           end
 
@@ -359,7 +359,7 @@ describe 'Predicates: Size' do
             let(:input) { { 'foo' => '' } }
 
             it 'is not successful' do
-              expect_not_successful result, ['must be filled', 'length must be 3']
+              expect_not_successful result, ['must be filled', 'length must be within 2 - 3']
             end
           end
 
@@ -367,7 +367,7 @@ describe 'Predicates: Size' do
             let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
             it 'is not successful' do
-              expect_not_successful result, ['size must be 3']
+              expect_not_successful result, ['size must be within 2 - 3']
             end
           end
         end
@@ -375,10 +375,10 @@ describe 'Predicates: Size' do
         describe 'with maybe' do
           before do
             @validator = Class.new do
-              include Hanami::Validations::Params
+              include Hanami::Validations::Form
 
               validations do
-                optional(:foo).maybe(size?: 3)
+                optional(:foo).maybe(size?: 2..3)
               end
             end
           end
@@ -419,7 +419,7 @@ describe 'Predicates: Size' do
             let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
 
             it 'is not successful' do
-              expect_not_successful result, ['size must be 3']
+              expect_not_successful result, ['size must be within 2 - 3']
             end
           end
         end

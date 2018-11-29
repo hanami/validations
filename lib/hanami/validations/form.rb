@@ -10,10 +10,10 @@ module Hanami
     # @since 0.6.0
     #
     # @example
-    #   require 'hanami/validations/params'
+    #   require 'hanami/validations/form'
     #
     #   class Signup
-    #     include Hanami::Validations::Params
+    #     include Hanami::Validations::Form
     #
     #     validations do
     #       required(:name).filled(:str?)
@@ -36,7 +36,7 @@ module Hanami
     #
     #   result = Signup.new(name: 'Luca', location: 'Rome').validate
     #   result.success? # => true
-    module Params
+    module Form
       # Override Ruby's hook for modules.
       #
       # @param base [Class] the target action
@@ -60,7 +60,7 @@ module Hanami
         # @since 0.6.0
         # @api private
         def _schema_type
-          :Params
+          :Form
         end
       end
     end

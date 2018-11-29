@@ -4,7 +4,7 @@ RSpec.describe 'Predicates: Gt' do
   describe 'with required' do
     before do
       @validator = Class.new do
-        include Hanami::Validations::Params
+        include Hanami::Validations::Form
 
         validations do
           required(:foo) { int? & gt?(23) }
@@ -72,7 +72,7 @@ RSpec.describe 'Predicates: Gt' do
   describe 'with optional' do
     before do
       @validator = Class.new do
-        include Hanami::Validations::Params
+        include Hanami::Validations::Form
 
         validations do
           optional(:foo) { int? & gt?(23) }
@@ -142,7 +142,7 @@ RSpec.describe 'Predicates: Gt' do
       describe 'with value' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Params
+            include Hanami::Validations::Form
 
             validations do
               required(:foo).value(:int?, gt?: 23)
@@ -210,7 +210,7 @@ RSpec.describe 'Predicates: Gt' do
       describe 'with filled' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Params
+            include Hanami::Validations::Form
 
             validations do
               required(:foo).filled(:int?, gt?: 23)
@@ -278,7 +278,7 @@ RSpec.describe 'Predicates: Gt' do
       describe 'with maybe' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Params
+            include Hanami::Validations::Form
 
             validations do
               required(:foo).maybe(:int?, gt?: 23)
@@ -348,7 +348,7 @@ RSpec.describe 'Predicates: Gt' do
       describe 'with value' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Params
+            include Hanami::Validations::Form
 
             validations do
               optional(:foo).value(:int?, gt?: 23)
@@ -416,7 +416,7 @@ RSpec.describe 'Predicates: Gt' do
       describe 'with filled' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Params
+            include Hanami::Validations::Form
 
             validations do
               optional(:foo).filled(:int?, gt?: 23)
@@ -484,7 +484,7 @@ RSpec.describe 'Predicates: Gt' do
       describe 'with maybe' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Params
+            include Hanami::Validations::Form
 
             validations do
               optional(:foo).maybe(:int?, gt?: 23)
