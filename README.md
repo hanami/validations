@@ -449,7 +449,7 @@ It is valid if the input has `password` and `password_confirmation` keys with th
 An important precondition to check before to implement a validator is about the expected input.
 When we use validators for already preprocessed data it's safe to use basic validations from `Hanami::Validations` mixin.
 
-If the data is coming directly from user input via a HTTP form, it's advisable to use `Hanami::Validations::Form` instead.
+If the data is coming directly from user input via a HTTP form, it's advisable to use `Hanami::Validations::Params` instead.
 **The two mixins have the same API, but the latter is able to do low level input preprocessing specific for forms**. For instance, blank inputs are casted to `nil` in order to avoid blank strings in the database.
 
 ### Rules
@@ -465,7 +465,7 @@ Here's the code:
 
 ```ruby
 class CreateJob
-  include Hanami::Validations::Form
+  include Hanami::Validations::Params
 
   validations do
     required(:type).filled(:int?, included_in?: [1, 2, 3])
@@ -591,7 +591,7 @@ For security reasons, we want to allow known keys to come in and reject everythi
 This process happens when we invoke `#validate`.
 Allowed keys are the ones defined with `.required`.
 
-**Please note that whitelisting is only available for `Hanami::Validations::Form` mixin.**
+**Please note that whitelisting is only available for `Hanami::Validations::Params` mixin.**
 
 ### Result
 
