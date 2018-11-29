@@ -1,8 +1,8 @@
-RSpec.describe Hanami::Validations::Form do
+RSpec.describe Hanami::Validations::Params do
   describe 'nested validations' do
     before do
       @validator = Class.new do
-        include Hanami::Validations::Form
+        include Hanami::Validations::Params
 
         validations do
           required(:number) { filled? }

@@ -1,19 +1,19 @@
-RSpec.describe 'Predicates: Included In' do
+RSpec.describe 'Predicates: Lt' do
   include_context 'validator result'
 
   describe 'with required' do
     before do
       @validator = Class.new do
-        include Hanami::Validations::Form
+        include Hanami::Validations::Params
 
         validations do
-          required(:foo) { included_in?(%w[1 3 5]) }
+          required(:foo) { int? & lt?(23) }
         end
       end
     end
 
     describe 'with valid input' do
-      let(:input) { { 'foo' => '3' } }
+      let(:input) { { 'foo' => '1' } }
 
       it 'is successful' do
         expect_successful result
@@ -24,7 +24,7 @@ RSpec.describe 'Predicates: Included In' do
       let(:input) { {} }
 
       it 'is not successful' do
-        expect_not_successful result, ['is missing', 'must be one of: 1, 3, 5']
+        expect_not_successful result, ['is missing', 'must be less than 23']
       end
     end
 
@@ -32,7 +32,7 @@ RSpec.describe 'Predicates: Included In' do
       let(:input) { { 'foo' => nil } }
 
       it 'is not successful' do
-        expect_not_successful result, ['must be one of: 1, 3, 5']
+        expect_not_successful result, ['must be an integer', 'must be less than 23']
       end
     end
 
@@ -40,23 +40,31 @@ RSpec.describe 'Predicates: Included In' do
       let(:input) { { 'foo' => '' } }
 
       it 'is not successful' do
-        expect_not_successful result, ['must be one of: 1, 3, 5']
+        expect_not_successful result, ['must be an integer', 'must be less than 23']
       end
     end
 
-    describe 'with invalid type' do
-      let(:input) { { 'foo' => { 'a' => '1' } } }
+    describe 'with invalid input type' do
+      let(:input) { { 'foo' => [] } }
 
       it 'is not successful' do
-        expect_not_successful result, ['must be one of: 1, 3, 5']
+        expect_not_successful result, ['must be an integer', 'must be less than 23']
       end
     end
 
-    describe 'with invalid input' do
-      let(:input) { { 'foo' => '4' } }
+    describe 'with equal input' do
+      let(:input) { { 'foo' => '23' } }
 
       it 'is not successful' do
-        expect_not_successful result, ['must be one of: 1, 3, 5']
+        expect_not_successful result, ['must be less than 23']
+      end
+    end
+
+    describe 'with greater than input' do
+      let(:input) { { 'foo' => '99' } }
+
+      it 'is not successful' do
+        expect_not_successful result, ['must be less than 23']
       end
     end
   end
@@ -64,16 +72,16 @@ RSpec.describe 'Predicates: Included In' do
   describe 'with optional' do
     before do
       @validator = Class.new do
-        include Hanami::Validations::Form
+        include Hanami::Validations::Params
 
         validations do
-          optional(:foo) { included_in?(%w[1 3 5]) }
+          optional(:foo) { int? & lt?(23) }
         end
       end
     end
 
     describe 'with valid input' do
-      let(:input) { { 'foo' => '3' } }
+      let(:input) { { 'foo' => '1' } }
 
       it 'is successful' do
         expect_successful result
@@ -92,7 +100,7 @@ RSpec.describe 'Predicates: Included In' do
       let(:input) { { 'foo' => nil } }
 
       it 'is not successful' do
-        expect_not_successful result, ['must be one of: 1, 3, 5']
+        expect_not_successful result, ['must be an integer', 'must be less than 23']
       end
     end
 
@@ -100,23 +108,31 @@ RSpec.describe 'Predicates: Included In' do
       let(:input) { { 'foo' => '' } }
 
       it 'is not successful' do
-        expect_not_successful result, ['must be one of: 1, 3, 5']
+        expect_not_successful result, ['must be an integer', 'must be less than 23']
       end
     end
 
-    describe 'with invalid type' do
-      let(:input) { { 'foo' => { 'a' => '1' } } }
+    describe 'with invalid input type' do
+      let(:input) { { 'foo' => [] } }
 
       it 'is not successful' do
-        expect_not_successful result, ['must be one of: 1, 3, 5']
+        expect_not_successful result, ['must be an integer', 'must be less than 23']
       end
     end
 
-    describe 'with invalid input' do
-      let(:input) { { 'foo' => '4' } }
+    describe 'with equal input' do
+      let(:input) { { 'foo' => '23' } }
 
       it 'is not successful' do
-        expect_not_successful result, ['must be one of: 1, 3, 5']
+        expect_not_successful result, ['must be less than 23']
+      end
+    end
+
+    describe 'with greater than input' do
+      let(:input) { { 'foo' => '99' } }
+
+      it 'is not successful' do
+        expect_not_successful result, ['must be less than 23']
       end
     end
   end
@@ -126,16 +142,16 @@ RSpec.describe 'Predicates: Included In' do
       describe 'with value' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Form
+            include Hanami::Validations::Params
 
             validations do
-              required(:foo).value(included_in?: %w[1 3 5])
+              required(:foo).value(:int?, lt?: 23)
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => '3' } }
+          let(:input) { { 'foo' => '1' } }
 
           it 'is successful' do
             expect_successful result
@@ -146,7 +162,7 @@ RSpec.describe 'Predicates: Included In' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect_not_successful result, ['is missing', 'must be one of: 1, 3, 5']
+            expect_not_successful result, ['is missing', 'must be less than 23']
           end
         end
 
@@ -154,7 +170,7 @@ RSpec.describe 'Predicates: Included In' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be one of: 1, 3, 5']
+            expect_not_successful result, ['must be an integer', 'must be less than 23']
           end
         end
 
@@ -162,23 +178,31 @@ RSpec.describe 'Predicates: Included In' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be one of: 1, 3, 5']
+            expect_not_successful result, ['must be an integer', 'must be less than 23']
           end
         end
 
-        describe 'with invalid type' do
-          let(:input) { { 'foo' => { 'a' => '1' } } }
+        describe 'with invalid input type' do
+          let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be one of: 1, 3, 5']
+            expect_not_successful result, ['must be an integer', 'must be less than 23']
           end
         end
 
-        describe 'with invalid input' do
-          let(:input) { { 'foo' => '4' } }
+        describe 'with equal input' do
+          let(:input) { { 'foo' => '23' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be one of: 1, 3, 5']
+            expect_not_successful result, ['must be less than 23']
+          end
+        end
+
+        describe 'with greater than input' do
+          let(:input) { { 'foo' => '99' } }
+
+          it 'is not successful' do
+            expect_not_successful result, ['must be less than 23']
           end
         end
       end
@@ -186,16 +210,16 @@ RSpec.describe 'Predicates: Included In' do
       describe 'with filled' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Form
+            include Hanami::Validations::Params
 
             validations do
-              required(:foo).filled(included_in?: %w[1 3 5])
+              required(:foo).filled(:int?, lt?: 23)
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => '3' } }
+          let(:input) { { 'foo' => '1' } }
 
           it 'is successful' do
             expect_successful result
@@ -206,7 +230,7 @@ RSpec.describe 'Predicates: Included In' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect_not_successful result, ['is missing', 'must be one of: 1, 3, 5']
+            expect_not_successful result, ['is missing', 'must be less than 23']
           end
         end
 
@@ -214,7 +238,7 @@ RSpec.describe 'Predicates: Included In' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be filled', 'must be one of: 1, 3, 5']
+            expect_not_successful result, ['must be filled', 'must be less than 23']
           end
         end
 
@@ -222,23 +246,31 @@ RSpec.describe 'Predicates: Included In' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be filled', 'must be one of: 1, 3, 5']
+            expect_not_successful result, ['must be filled', 'must be less than 23']
           end
         end
 
-        describe 'with invalid type' do
-          let(:input) { { 'foo' => { 'a' => '1' } } }
+        describe 'with invalid input type' do
+          let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be one of: 1, 3, 5']
+            expect_not_successful result, ['must be filled', 'must be less than 23']
           end
         end
 
-        describe 'with invalid input' do
-          let(:input) { { 'foo' => '4' } }
+        describe 'with equal input' do
+          let(:input) { { 'foo' => '23' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be one of: 1, 3, 5']
+            expect_not_successful result, ['must be less than 23']
+          end
+        end
+
+        describe 'with greater than input' do
+          let(:input) { { 'foo' => '99' } }
+
+          it 'is not successful' do
+            expect_not_successful result, ['must be less than 23']
           end
         end
       end
@@ -246,16 +278,16 @@ RSpec.describe 'Predicates: Included In' do
       describe 'with maybe' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Form
+            include Hanami::Validations::Params
 
             validations do
-              required(:foo).maybe(included_in?: %w[1 3 5])
+              required(:foo).maybe(:int?, lt?: 23)
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => '3' } }
+          let(:input) { { 'foo' => '1' } }
 
           it 'is successful' do
             expect_successful result
@@ -266,7 +298,7 @@ RSpec.describe 'Predicates: Included In' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect_not_successful result, ['is missing', 'must be one of: 1, 3, 5']
+            expect_not_successful result, ['is missing', 'must be less than 23']
           end
         end
 
@@ -286,19 +318,27 @@ RSpec.describe 'Predicates: Included In' do
           end
         end
 
-        describe 'with invalid type' do
-          let(:input) { { 'foo' => { 'a' => '1' } } }
+        describe 'with invalid input type' do
+          let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be one of: 1, 3, 5']
+            expect_not_successful result, ['must be an integer', 'must be less than 23']
           end
         end
 
-        describe 'with invalid input' do
-          let(:input) { { 'foo' => '4' } }
+        describe 'with equal input' do
+          let(:input) { { 'foo' => '23' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be one of: 1, 3, 5']
+            expect_not_successful result, ['must be less than 23']
+          end
+        end
+
+        describe 'with greater than input' do
+          let(:input) { { 'foo' => '99' } }
+
+          it 'is not successful' do
+            expect_not_successful result, ['must be less than 23']
           end
         end
       end
@@ -308,16 +348,16 @@ RSpec.describe 'Predicates: Included In' do
       describe 'with value' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Form
+            include Hanami::Validations::Params
 
             validations do
-              optional(:foo).value(included_in?: %w[1 3 5])
+              optional(:foo).value(:int?, lt?: 23)
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => '3' } }
+          let(:input) { { 'foo' => '1' } }
 
           it 'is successful' do
             expect_successful result
@@ -336,7 +376,7 @@ RSpec.describe 'Predicates: Included In' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be one of: 1, 3, 5']
+            expect_not_successful result, ['must be an integer', 'must be less than 23']
           end
         end
 
@@ -344,23 +384,31 @@ RSpec.describe 'Predicates: Included In' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be one of: 1, 3, 5']
+            expect_not_successful result, ['must be an integer', 'must be less than 23']
           end
         end
 
-        describe 'with invalid type' do
-          let(:input) { { 'foo' => { 'a' => '1' } } }
+        describe 'with invalid input type' do
+          let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be one of: 1, 3, 5']
+            expect_not_successful result, ['must be an integer', 'must be less than 23']
           end
         end
 
-        describe 'with invalid input' do
-          let(:input) { { 'foo' => '4' } }
+        describe 'with equal input' do
+          let(:input) { { 'foo' => '23' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be one of: 1, 3, 5']
+            expect_not_successful result, ['must be less than 23']
+          end
+        end
+
+        describe 'with greater than input' do
+          let(:input) { { 'foo' => '99' } }
+
+          it 'is not successful' do
+            expect_not_successful result, ['must be less than 23']
           end
         end
       end
@@ -368,16 +416,16 @@ RSpec.describe 'Predicates: Included In' do
       describe 'with filled' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Form
+            include Hanami::Validations::Params
 
             validations do
-              optional(:foo).filled(included_in?: %w[1 3 5])
+              optional(:foo).filled(:int?, lt?: 23)
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => '3' } }
+          let(:input) { { 'foo' => '1' } }
 
           it 'is successful' do
             expect_successful result
@@ -396,7 +444,7 @@ RSpec.describe 'Predicates: Included In' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be filled', 'must be one of: 1, 3, 5']
+            expect_not_successful result, ['must be filled', 'must be less than 23']
           end
         end
 
@@ -404,23 +452,31 @@ RSpec.describe 'Predicates: Included In' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be filled', 'must be one of: 1, 3, 5']
+            expect_not_successful result, ['must be filled', 'must be less than 23']
           end
         end
 
-        describe 'with invalid type' do
-          let(:input) { { 'foo' => { 'a' => '1' } } }
+        describe 'with invalid input type' do
+          let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be one of: 1, 3, 5']
+            expect_not_successful result, ['must be filled', 'must be less than 23']
           end
         end
 
-        describe 'with invalid input' do
-          let(:input) { { 'foo' => '4' } }
+        describe 'with equal input' do
+          let(:input) { { 'foo' => '23' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be one of: 1, 3, 5']
+            expect_not_successful result, ['must be less than 23']
+          end
+        end
+
+        describe 'with greater than input' do
+          let(:input) { { 'foo' => '99' } }
+
+          it 'is not successful' do
+            expect_not_successful result, ['must be less than 23']
           end
         end
       end
@@ -428,16 +484,16 @@ RSpec.describe 'Predicates: Included In' do
       describe 'with maybe' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Form
+            include Hanami::Validations::Params
 
             validations do
-              optional(:foo).maybe(included_in?: %w[1 3 5])
+              optional(:foo).maybe(:int?, lt?: 23)
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => '3' } }
+          let(:input) { { 'foo' => '1' } }
 
           it 'is successful' do
             expect_successful result
@@ -464,23 +520,31 @@ RSpec.describe 'Predicates: Included In' do
           let(:input) { { 'foo' => '' } }
 
           it 'is successful' do
-            expect_successful result
+            expect_successful result, []
           end
         end
 
-        describe 'with invalid type' do
-          let(:input) { { 'foo' => { 'a' => '1' } } }
+        describe 'with invalid input type' do
+          let(:input) { { 'foo' => [] } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be one of: 1, 3, 5']
+            expect_not_successful result, ['must be an integer', 'must be less than 23']
           end
         end
 
-        describe 'with invalid input' do
-          let(:input) { { 'foo' => '4' } }
+        describe 'with equal input' do
+          let(:input) { { 'foo' => '23' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be one of: 1, 3, 5']
+            expect_not_successful result, ['must be less than 23']
+          end
+        end
+
+        describe 'with greater than input' do
+          let(:input) { { 'foo' => '99' } }
+
+          it 'is not successful' do
+            expect_not_successful result, ['must be less than 23']
           end
         end
       end

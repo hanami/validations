@@ -1,10 +1,10 @@
 require 'uri'
 
-RSpec.describe Hanami::Validations::Form do
+RSpec.describe Hanami::Validations::Params do
   describe 'rules' do
     before do
       @validator = Class.new do
-        include Hanami::Validations::Form
+        include Hanami::Validations::Params
 
         validations do
           required(:type).filled(:int?, included_in?: [1, 2, 3])

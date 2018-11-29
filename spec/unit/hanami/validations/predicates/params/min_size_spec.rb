@@ -4,7 +4,7 @@ RSpec.describe 'Predicates: Min Size' do
   describe 'with required' do
     before do
       @validator = Class.new do
-        include Hanami::Validations::Form
+        include Hanami::Validations::Params
 
         validations do
           required(:foo) { min_size?(3) }
@@ -56,7 +56,7 @@ RSpec.describe 'Predicates: Min Size' do
   describe 'with optional' do
     before do
       @validator = Class.new do
-        include Hanami::Validations::Form
+        include Hanami::Validations::Params
 
         validations do
           optional(:foo) { min_size?(3) }
@@ -110,7 +110,7 @@ RSpec.describe 'Predicates: Min Size' do
       describe 'with value' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Form
+            include Hanami::Validations::Params
 
             validations do
               required(:foo).value(min_size?: 3)
@@ -162,7 +162,7 @@ RSpec.describe 'Predicates: Min Size' do
       describe 'with filled' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Form
+            include Hanami::Validations::Params
 
             validations do
               required(:foo).filled(min_size?: 3)
@@ -214,7 +214,7 @@ RSpec.describe 'Predicates: Min Size' do
       describe 'with maybe' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Form
+            include Hanami::Validations::Params
 
             validations do
               required(:foo).maybe(min_size?: 3)
@@ -268,7 +268,7 @@ RSpec.describe 'Predicates: Min Size' do
       describe 'with value' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Form
+            include Hanami::Validations::Params
 
             validations do
               optional(:foo).value(min_size?: 3)
@@ -320,7 +320,7 @@ RSpec.describe 'Predicates: Min Size' do
       describe 'with filled' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Form
+            include Hanami::Validations::Params
 
             validations do
               optional(:foo).filled(min_size?: 3)
@@ -372,7 +372,7 @@ RSpec.describe 'Predicates: Min Size' do
       describe 'with maybe' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Form
+            include Hanami::Validations::Params
 
             validations do
               optional(:foo).maybe(min_size?: 3)

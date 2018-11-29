@@ -1,19 +1,19 @@
-RSpec.describe 'Predicates: Max Size' do
+RSpec.describe 'Predicates: Format' do
   include_context 'validator result'
 
   describe 'with required' do
     before do
       @validator = Class.new do
-        include Hanami::Validations::Form
+        include Hanami::Validations::Params
 
         validations do
-          required(:foo) { max_size?(3) }
+          required(:foo) { format?(/bar/) }
         end
       end
     end
 
     describe 'with valid input' do
-      let(:input) { { 'foo' => %w[1 2 3] } }
+      let(:input) { { 'foo' => 'bar baz' } }
 
       it 'is successful' do
         expect_successful result
@@ -23,32 +23,41 @@ RSpec.describe 'Predicates: Max Size' do
     describe 'with missing input' do
       let(:input) { {} }
 
+      # FIXME: dry-v ticket: has an invalid format
       it 'is not successful' do
-        expect_not_successful result, ['is missing', 'size cannot be greater than 3']
+        expect_not_successful result, ['is missing']
       end
     end
 
     describe 'with nil input' do
       let(:input) { { 'foo' => nil } }
 
-      it 'is raises error' do
-        expect { result }.to raise_error(NoMethodError)
+      it 'is not successful' do
+        expect_not_successful result, ['is in invalid format']
       end
     end
 
     describe 'with blank input' do
       let(:input) { { 'foo' => '' } }
 
-      it 'is successful' do
-        expect_successful result
+      it 'is not successful' do
+        expect_not_successful result, ['is in invalid format']
+      end
+    end
+
+    describe 'with invalid type' do
+      let(:input) { { 'foo' => { 'a' => '1' } } }
+
+      it 'raises error' do
+        expect { result }.to raise_error TypeError
       end
     end
 
     describe 'with invalid input' do
-      let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
+      let(:input) { { 'foo' => 'wat' } }
 
       it 'is not successful' do
-        expect_not_successful result, ['size cannot be greater than 3']
+        expect_not_successful result, ['is in invalid format']
       end
     end
   end
@@ -56,16 +65,16 @@ RSpec.describe 'Predicates: Max Size' do
   describe 'with optional' do
     before do
       @validator = Class.new do
-        include Hanami::Validations::Form
+        include Hanami::Validations::Params
 
         validations do
-          optional(:foo) { max_size?(3) }
+          optional(:foo) { format?(/bar/) }
         end
       end
     end
 
     describe 'with valid input' do
-      let(:input) { { 'foo' => %w[1 2 3] } }
+      let(:input) { { 'foo' => 'bar baz' } }
 
       it 'is successful' do
         expect_successful result
@@ -83,24 +92,32 @@ RSpec.describe 'Predicates: Max Size' do
     describe 'with nil input' do
       let(:input) { { 'foo' => nil } }
 
-      it 'is raises error' do
-        expect { result }.to raise_error(NoMethodError)
+      it 'is not successful' do
+        expect_not_successful result, ['is in invalid format']
       end
     end
 
     describe 'with blank input' do
       let(:input) { { 'foo' => '' } }
 
-      it 'is successful' do
-        expect_successful result
+      it 'is not successful' do
+        expect_not_successful result, ['is in invalid format']
+      end
+    end
+
+    describe 'with invalid type' do
+      let(:input) { { 'foo' => { 'a' => '1' } } }
+
+      it 'raises error' do
+        expect { result }.to raise_error TypeError
       end
     end
 
     describe 'with invalid input' do
-      let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
+      let(:input) { { 'foo' => 'wat' } }
 
       it 'is not successful' do
-        expect_not_successful result, ['size cannot be greater than 3']
+        expect_not_successful result, ['is in invalid format']
       end
     end
   end
@@ -110,16 +127,16 @@ RSpec.describe 'Predicates: Max Size' do
       describe 'with value' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Form
+            include Hanami::Validations::Params
 
             validations do
-              required(:foo).value(max_size?: 3)
+              required(:foo).value(format?: /bar/)
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => %w[1 2 3] } }
+          let(:input) { { 'foo' => 'bar baz' } }
 
           it 'is successful' do
             expect_successful result
@@ -130,7 +147,7 @@ RSpec.describe 'Predicates: Max Size' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect_not_successful result, ['is missing', 'size cannot be greater than 3']
+            expect_not_successful result, ['is missing']
           end
         end
 
@@ -138,23 +155,31 @@ RSpec.describe 'Predicates: Max Size' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect { result }.to raise_error(NoMethodError)
+            expect_not_successful result, ['is in invalid format']
           end
         end
 
         describe 'with blank input' do
           let(:input) { { 'foo' => '' } }
 
-          it 'is successful' do
-            expect_successful result
+          it 'is not successful' do
+            expect_not_successful result, ['is in invalid format']
+          end
+        end
+
+        describe 'with invalid type' do
+          let(:input) { { 'foo' => { 'a' => '1' } } }
+
+          it 'raises error' do
+            expect { result }.to raise_error TypeError
           end
         end
 
         describe 'with invalid input' do
-          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
+          let(:input) { { 'foo' => 'wat' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['size cannot be greater than 3']
+            expect_not_successful result, ['is in invalid format']
           end
         end
       end
@@ -162,16 +187,16 @@ RSpec.describe 'Predicates: Max Size' do
       describe 'with filled' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Form
+            include Hanami::Validations::Params
 
             validations do
-              required(:foo).filled(max_size?: 3)
+              required(:foo).filled(format?: /bar/)
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => %w[1 2 3] } }
+          let(:input) { { 'foo' => 'bar baz' } }
 
           it 'is successful' do
             expect_successful result
@@ -182,7 +207,7 @@ RSpec.describe 'Predicates: Max Size' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect_not_successful result, ['is missing', 'size cannot be greater than 3']
+            expect_not_successful result, ['is missing']
           end
         end
 
@@ -190,7 +215,7 @@ RSpec.describe 'Predicates: Max Size' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be filled', 'size cannot be greater than 3']
+            expect_not_successful result, ['must be filled']
           end
         end
 
@@ -198,15 +223,23 @@ RSpec.describe 'Predicates: Max Size' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be filled', 'size cannot be greater than 3']
+            expect_not_successful result, ['must be filled']
+          end
+        end
+
+        describe 'with invalid type' do
+          let(:input) { { 'foo' => { 'a' => '1' } } }
+
+          it 'raises error' do
+            expect { result }.to raise_error TypeError
           end
         end
 
         describe 'with invalid input' do
-          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
+          let(:input) { { 'foo' => 'wat' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['size cannot be greater than 3']
+            expect_not_successful result, ['is in invalid format']
           end
         end
       end
@@ -214,16 +247,16 @@ RSpec.describe 'Predicates: Max Size' do
       describe 'with maybe' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Form
+            include Hanami::Validations::Params
 
             validations do
-              required(:foo).maybe(max_size?: 3)
+              required(:foo).maybe(format?: /bar/)
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => %w[1 2 3] } }
+          let(:input) { { 'foo' => 'bar baz' } }
 
           it 'is successful' do
             expect_successful result
@@ -234,7 +267,7 @@ RSpec.describe 'Predicates: Max Size' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect_not_successful result, ['is missing', 'size cannot be greater than 3']
+            expect_not_successful result, ['is missing']
           end
         end
 
@@ -254,11 +287,20 @@ RSpec.describe 'Predicates: Max Size' do
           end
         end
 
+        describe 'with invalid type' do
+          let(:input) { { 'foo' => { 'a' => '1' } } }
+
+          it 'is not successful'
+          # it 'is not successful' do
+          #   expect_not_successful result, ['is in invalid format']
+          # end
+        end
+
         describe 'with invalid input' do
-          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
+          let(:input) { { 'foo' => 'wat' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['size cannot be greater than 3']
+            expect_not_successful result, ['is in invalid format']
           end
         end
       end
@@ -268,16 +310,16 @@ RSpec.describe 'Predicates: Max Size' do
       describe 'with value' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Form
+            include Hanami::Validations::Params
 
             validations do
-              optional(:foo).value(max_size?: 3)
+              optional(:foo).value(format?: /bar/)
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => %w[1 2 3] } }
+          let(:input) { { 'foo' => 'bar baz' } }
 
           it 'is successful' do
             expect_successful result
@@ -295,24 +337,32 @@ RSpec.describe 'Predicates: Max Size' do
         describe 'with nil input' do
           let(:input) { { 'foo' => nil } }
 
-          it 'is raises error' do
-            expect { result }.to raise_error(NoMethodError)
+          it 'is not successful' do
+            expect_not_successful result, ['is in invalid format']
           end
         end
 
         describe 'with blank input' do
           let(:input) { { 'foo' => '' } }
 
-          it 'is successful' do
-            expect_successful result
+          it 'is not successful' do
+            expect_not_successful result, ['is in invalid format']
+          end
+        end
+
+        describe 'with invalid type' do
+          let(:input) { { 'foo' => { 'a' => '1' } } }
+
+          it 'raises error' do
+            expect { result }.to raise_error TypeError
           end
         end
 
         describe 'with invalid input' do
-          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
+          let(:input) { { 'foo' => 'wat' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['size cannot be greater than 3']
+            expect_not_successful result, ['is in invalid format']
           end
         end
       end
@@ -320,16 +370,16 @@ RSpec.describe 'Predicates: Max Size' do
       describe 'with filled' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Form
+            include Hanami::Validations::Params
 
             validations do
-              optional(:foo).filled(max_size?: 3)
+              optional(:foo).filled(format?: /bar/)
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => %w[1 2 3] } }
+          let(:input) { { 'foo' => 'bar baz' } }
 
           it 'is successful' do
             expect_successful result
@@ -348,7 +398,7 @@ RSpec.describe 'Predicates: Max Size' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be filled', 'size cannot be greater than 3']
+            expect_not_successful result, ['must be filled']
           end
         end
 
@@ -356,15 +406,23 @@ RSpec.describe 'Predicates: Max Size' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be filled', 'size cannot be greater than 3']
+            expect_not_successful result, ['must be filled']
+          end
+        end
+
+        describe 'with invalid type' do
+          let(:input) { { 'foo' => { 'a' => '1' } } }
+
+          it 'raises error' do
+            expect { result }.to raise_error TypeError
           end
         end
 
         describe 'with invalid input' do
-          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
+          let(:input) { { 'foo' => 'wat' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['size cannot be greater than 3']
+            expect_not_successful result, ['is in invalid format']
           end
         end
       end
@@ -372,16 +430,16 @@ RSpec.describe 'Predicates: Max Size' do
       describe 'with maybe' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Form
+            include Hanami::Validations::Params
 
             validations do
-              optional(:foo).maybe(max_size?: 3)
+              optional(:foo).maybe(format?: /bar/)
             end
           end
         end
 
         describe 'with valid input' do
-          let(:input) { { 'foo' => %w([1 2 3) } }
+          let(:input) { { 'foo' => 'bar baz' } }
 
           it 'is successful' do
             expect_successful result
@@ -412,11 +470,20 @@ RSpec.describe 'Predicates: Max Size' do
           end
         end
 
+        describe 'with invalid type' do
+          let(:input) { { 'foo' => { 'a' => '1' } } }
+
+          it 'raises error'
+          # it 'raises error' do
+          #   expect { result }.to raise_error TypeError
+          # end
+        end
+
         describe 'with invalid input' do
-          let(:input) { { 'foo' => { 'a' => '1', 'b' => '2', 'c' => '3', 'd' => '4' } } }
+          let(:input) { { 'foo' => 'wat' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['size cannot be greater than 3']
+            expect_not_successful result, ['is in invalid format']
           end
         end
       end

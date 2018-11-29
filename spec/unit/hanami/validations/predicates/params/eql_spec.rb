@@ -1,27 +1,19 @@
-RSpec.describe 'Predicates: Filled' do
+RSpec.describe 'Predicates: Eql' do
   include_context 'validator result'
 
-  describe 'with key' do
+  describe 'with required' do
     before do
       @validator = Class.new do
-        include Hanami::Validations::Form
+        include Hanami::Validations::Params
 
         validations do
-          required(:foo) { filled? }
+          required(:foo) { eql?('23') }
         end
       end
     end
 
-    describe 'with valid input (array)' do
-      let(:input) { { 'foo' => ['23'] } }
-
-      it 'is successful' do
-        expect_successful result
-      end
-    end
-
-    describe 'with valid input (hash)' do
-      let(:input) { { 'foo' => { 'bar' => '23' } } }
+    describe 'with valid input' do
+      let(:input) { { 'foo' => '23' } }
 
       it 'is successful' do
         expect_successful result
@@ -32,7 +24,7 @@ RSpec.describe 'Predicates: Filled' do
       let(:input) { {} }
 
       it 'is not successful' do
-        expect_not_successful result, ['is missing']
+        expect_not_successful result, ['is missing', 'must be equal to 23']
       end
     end
 
@@ -40,7 +32,7 @@ RSpec.describe 'Predicates: Filled' do
       let(:input) { { 'foo' => nil } }
 
       it 'is not successful' do
-        expect_not_successful result, ['must be filled']
+        expect_not_successful result, ['must be equal to 23']
       end
     end
 
@@ -48,15 +40,7 @@ RSpec.describe 'Predicates: Filled' do
       let(:input) { { 'foo' => '' } }
 
       it 'is not successful' do
-        expect_not_successful result, ['must be filled']
-      end
-    end
-
-    describe 'with invalid input' do
-      let(:input) { { 'foo' => [] } }
-
-      it 'is not successful' do
-        expect_not_successful result, ['must be filled']
+        expect_not_successful result, ['must be equal to 23']
       end
     end
   end
@@ -64,24 +48,16 @@ RSpec.describe 'Predicates: Filled' do
   describe 'with optional' do
     before do
       @validator = Class.new do
-        include Hanami::Validations::Form
+        include Hanami::Validations::Params
 
         validations do
-          optional(:foo) { filled? }
+          optional(:foo) { eql?('23') }
         end
       end
     end
 
-    describe 'with valid input (array)' do
-      let(:input) { { 'foo' => ['23'] } }
-
-      it 'is successful' do
-        expect_successful result
-      end
-    end
-
-    describe 'with valid input (hash)' do
-      let(:input) { { 'foo' => { 'bar' => '23' } } }
+    describe 'with valid input' do
+      let(:input) { { 'foo' => '23' } }
 
       it 'is successful' do
         expect_successful result
@@ -100,7 +76,7 @@ RSpec.describe 'Predicates: Filled' do
       let(:input) { { 'foo' => nil } }
 
       it 'is not successful' do
-        expect_not_successful result, ['must be filled']
+        expect_not_successful result, ['must be equal to 23']
       end
     end
 
@@ -108,15 +84,7 @@ RSpec.describe 'Predicates: Filled' do
       let(:input) { { 'foo' => '' } }
 
       it 'is not successful' do
-        expect_not_successful result, ['must be filled']
-      end
-    end
-
-    describe 'with invalid input' do
-      let(:input) { { 'foo' => [] } }
-
-      it 'is not successful' do
-        expect_not_successful result, ['must be filled']
+        expect_not_successful result, ['must be equal to 23']
       end
     end
   end
@@ -126,24 +94,16 @@ RSpec.describe 'Predicates: Filled' do
       describe 'with value' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Form
+            include Hanami::Validations::Params
 
             validations do
-              required(:foo).value(:filled?)
+              required(:foo).value(eql?: '23')
             end
           end
         end
 
-        describe 'with valid input (array)' do
-          let(:input) { { 'foo' => ['23'] } }
-
-          it 'is successful' do
-            expect_successful result
-          end
-        end
-
-        describe 'with valid input (hash)' do
-          let(:input) { { 'foo' => { 'bar' => '23' } } }
+        describe 'with valid input' do
+          let(:input) { { 'foo' => '23' } }
 
           it 'is successful' do
             expect_successful result
@@ -154,7 +114,7 @@ RSpec.describe 'Predicates: Filled' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect_not_successful result, ['is missing']
+            expect_not_successful result, ['is missing', 'must be equal to 23']
           end
         end
 
@@ -162,7 +122,7 @@ RSpec.describe 'Predicates: Filled' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be filled']
+            expect_not_successful result, ['must be equal to 23']
           end
         end
 
@@ -170,15 +130,7 @@ RSpec.describe 'Predicates: Filled' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be filled']
-          end
-        end
-
-        describe 'with invalid input' do
-          let(:input) { { 'foo' => [] } }
-
-          it 'is not successful' do
-            expect_not_successful result, ['must be filled']
+            expect_not_successful result, ['must be equal to 23']
           end
         end
       end
@@ -186,24 +138,16 @@ RSpec.describe 'Predicates: Filled' do
       describe 'with filled' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Form
+            include Hanami::Validations::Params
 
             validations do
-              required(:foo).filled
+              required(:foo).filled(eql?: '23')
             end
           end
         end
 
-        describe 'with valid input (array)' do
-          let(:input) { { 'foo' => ['23'] } }
-
-          it 'is successful' do
-            expect_successful result
-          end
-        end
-
-        describe 'with valid input (hash)' do
-          let(:input) { { 'foo' => { 'bar' => '23' } } }
+        describe 'with valid input' do
+          let(:input) { { 'foo' => '23' } }
 
           it 'is successful' do
             expect_successful result
@@ -214,7 +158,7 @@ RSpec.describe 'Predicates: Filled' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect_not_successful result, ['is missing']
+            expect_not_successful result, ['is missing', 'must be equal to 23']
           end
         end
 
@@ -222,7 +166,7 @@ RSpec.describe 'Predicates: Filled' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be filled']
+            expect_not_successful result, ['must be filled', 'must be equal to 23']
           end
         end
 
@@ -230,15 +174,7 @@ RSpec.describe 'Predicates: Filled' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be filled']
-          end
-        end
-
-        describe 'with invalid input' do
-          let(:input) { { 'foo' => [] } }
-
-          it 'is not successful' do
-            expect_not_successful result, ['must be filled']
+            expect_not_successful result, ['must be filled', 'must be equal to 23']
           end
         end
       end
@@ -246,24 +182,16 @@ RSpec.describe 'Predicates: Filled' do
       describe 'with maybe' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Form
+            include Hanami::Validations::Params
 
             validations do
-              required(:foo).maybe(:filled?)
+              required(:foo).maybe(eql?: '23')
             end
           end
         end
 
-        describe 'with valid input (array)' do
-          let(:input) { { 'foo' => ['23'] } }
-
-          it 'is successful' do
-            expect_successful result
-          end
-        end
-
-        describe 'with valid input (hash)' do
-          let(:input) { { 'foo' => { 'bar' => '23' } } }
+        describe 'with valid input' do
+          let(:input) { { 'foo' => '23' } }
 
           it 'is successful' do
             expect_successful result
@@ -274,7 +202,7 @@ RSpec.describe 'Predicates: Filled' do
           let(:input) { {} }
 
           it 'is not successful' do
-            expect_not_successful result, ['is missing']
+            expect_not_successful result, ['is missing', 'must be equal to 23']
           end
         end
 
@@ -291,14 +219,6 @@ RSpec.describe 'Predicates: Filled' do
 
           it 'is successful' do
             expect_successful result
-          end
-        end
-
-        describe 'with invalid input' do
-          let(:input) { { 'foo' => [] } }
-
-          it 'is not successful' do
-            expect_not_successful result, ['must be filled']
           end
         end
       end
@@ -308,24 +228,16 @@ RSpec.describe 'Predicates: Filled' do
       describe 'with value' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Form
+            include Hanami::Validations::Params
 
             validations do
-              optional(:foo).value(:filled?)
+              optional(:foo).value(eql?: '23')
             end
           end
         end
 
-        describe 'with valid input (array)' do
-          let(:input) { { 'foo' => ['23'] } }
-
-          it 'is successful' do
-            expect_successful result
-          end
-        end
-
-        describe 'with valid input (hash)' do
-          let(:input) { { 'foo' => { 'bar' => '23' } } }
+        describe 'with valid input' do
+          let(:input) { { 'foo' => '23' } }
 
           it 'is successful' do
             expect_successful result
@@ -344,7 +256,7 @@ RSpec.describe 'Predicates: Filled' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be filled']
+            expect_not_successful result, ['must be equal to 23']
           end
         end
 
@@ -352,15 +264,7 @@ RSpec.describe 'Predicates: Filled' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be filled']
-          end
-        end
-
-        describe 'with invalid input' do
-          let(:input) { { 'foo' => [] } }
-
-          it 'is not successful' do
-            expect_not_successful result, ['must be filled']
+            expect_not_successful result, ['must be equal to 23']
           end
         end
       end
@@ -368,24 +272,16 @@ RSpec.describe 'Predicates: Filled' do
       describe 'with filled' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Form
+            include Hanami::Validations::Params
 
             validations do
-              optional(:foo).filled
+              optional(:foo).filled(eql?: '23')
             end
           end
         end
 
-        describe 'with valid input (array)' do
-          let(:input) { { 'foo' => ['23'] } }
-
-          it 'is successful' do
-            expect_successful result
-          end
-        end
-
-        describe 'with valid input (hash)' do
-          let(:input) { { 'foo' => { 'bar' => '23' } } }
+        describe 'with valid input' do
+          let(:input) { { 'foo' => '23' } }
 
           it 'is successful' do
             expect_successful result
@@ -404,7 +300,7 @@ RSpec.describe 'Predicates: Filled' do
           let(:input) { { 'foo' => nil } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be filled']
+            expect_not_successful result, ['must be filled', 'must be equal to 23']
           end
         end
 
@@ -412,15 +308,7 @@ RSpec.describe 'Predicates: Filled' do
           let(:input) { { 'foo' => '' } }
 
           it 'is not successful' do
-            expect_not_successful result, ['must be filled']
-          end
-        end
-
-        describe 'with invalid input' do
-          let(:input) { { 'foo' => [] } }
-
-          it 'is not successful' do
-            expect_not_successful result, ['must be filled']
+            expect_not_successful result, ['must be filled', 'must be equal to 23']
           end
         end
       end
@@ -428,24 +316,16 @@ RSpec.describe 'Predicates: Filled' do
       describe 'with maybe' do
         before do
           @validator = Class.new do
-            include Hanami::Validations::Form
+            include Hanami::Validations::Params
 
             validations do
-              optional(:foo).maybe(:filled?)
+              optional(:foo).maybe(eql?: '23')
             end
           end
         end
 
-        describe 'with valid input (array)' do
-          let(:input) { { 'foo' => ['23'] } }
-
-          it 'is successful' do
-            expect_successful result
-          end
-        end
-
-        describe 'with valid input (hash)' do
-          let(:input) { { 'foo' => { 'bar' => '23' } } }
+        describe 'with valid input' do
+          let(:input) { { 'foo' => '23' } }
 
           it 'is successful' do
             expect_successful result
@@ -473,14 +353,6 @@ RSpec.describe 'Predicates: Filled' do
 
           it 'is successful' do
             expect_successful result
-          end
-        end
-
-        describe 'with invalid input' do
-          let(:input) { { 'foo' => [] } }
-
-          it 'is not successful' do
-            expect_not_successful result, ['must be filled']
           end
         end
       end

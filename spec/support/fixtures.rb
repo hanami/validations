@@ -28,7 +28,7 @@ module Web
     module Signup
       class Create
         class Params
-          include Hanami::Validations::Form
+          include Hanami::Validations::Params
           messages_path "spec/support/fixtures/messages.yml"
 
           validations do
@@ -50,7 +50,7 @@ class DomainValidator
 end
 
 class ChangedTermsOfServicesValidator
-  include Hanami::Validations::Form
+  include Hanami::Validations::Params
 
   predicates SharedPredicates
 

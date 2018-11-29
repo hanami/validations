@@ -1,8 +1,8 @@
-RSpec.describe Hanami::Validations::Form do
+RSpec.describe Hanami::Validations::Params do
   describe '#initialize' do
     before do
       @validator = Class.new do
-        include Hanami::Validations::Form
+        include Hanami::Validations::Params
 
         validations do
           required(:attr) { type?(Integer) }
@@ -10,7 +10,7 @@ RSpec.describe Hanami::Validations::Form do
       end
 
       @nested = Class.new do
-        include Hanami::Validations::Form
+        include Hanami::Validations::Params
 
         validations do
           required(:foo) { filled? }
