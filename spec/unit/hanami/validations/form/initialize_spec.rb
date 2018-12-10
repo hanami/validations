@@ -60,8 +60,8 @@ RSpec.describe Hanami::Validations::Form do
 
     it 'accepts strings as keys, only for the defined attributes' do
       validator = @nested.new(
-        'foo'     => 'ok',
-        'num'     => '23',
+        'foo' => 'ok',
+        'num' => '23',
         'unknown' => 'no',
         'bar' => {
           'baz' => 'yo',
