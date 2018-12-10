@@ -30,10 +30,10 @@ RSpec.describe Hanami::Validations::Form do
 
     let(:input) do
       Hash[
-        "type"        => "1",
-        "title"       => "Developer",
+        "type" => "1",
+        "title" => "Developer",
         "description" => "You know, to write code.",
-        "company"     => "Acme Inc."
+        "company" => "Acme Inc."
       ]
     end
 
