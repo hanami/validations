@@ -65,8 +65,8 @@ RSpec.describe Hanami::Validations do
 
     it 'accepts symbols as keys, without coercing and whitelisting' do
       validator = @nested.new(
-        foo:     'ok',
-        num:     23,
+        foo: 'ok',
+        num: 23,
         unknown: 'no',
         bar: {
           baz: 'yo',
@@ -78,8 +78,8 @@ RSpec.describe Hanami::Validations do
 
       expect(result).to be_success
       expect(result.output).to eq(
-        foo:     'ok',
-        num:     23,
+        foo: 'ok',
+        num: 23,
         unknown: 'no',
         bar: {
           baz: 'yo',
