@@ -13,7 +13,7 @@ RSpec.describe Hanami::Validations do
                 en: {
                   errors: {
                     quick_code_presence: 'you must set quick code for connection type "a"',
-                    uuid_presence:       'you must set uuid for connection type "b"'
+                    uuid_presence: 'you must set uuid for connection type "b"'
                   }
                 }
               )
