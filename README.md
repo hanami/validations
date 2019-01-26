@@ -22,7 +22,7 @@ Validations mixin for Ruby objects
 
 ## Rubies
 
-__Hanami::Validations__ supports Ruby (MRI) 2.3+ and JRuby 9.1.5.0+.
+__Hanami::Validations__ supports Ruby (MRI) 2.5+
 
 ## Installation
 
@@ -798,6 +798,6 @@ Thanks to [dry-rb](http://dry-rb.org) Community for their priceless support. ❤
 
 ## Copyright
 
-Copyright © 2014-2017 Luca Guidi – Released under MIT License
+Copyright © 2014-2019 Luca Guidi – Released under MIT License
 
 This project was formerly known as Lotus (`lotus-validations`).
