@@ -132,12 +132,10 @@ RSpec.describe "Predicates: custom" do
         end
 
         predicate :api_date?, message: "must be in iso8601 format" do |value|
-          begin
-            Date.iso8601(value)
-            true
-          rescue ArgumentError
-            false
-          end
+          Date.iso8601(value)
+          true
+        rescue ArgumentError
+          false
         end
 
         validations do
