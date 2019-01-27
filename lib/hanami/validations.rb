@@ -330,7 +330,7 @@ module Hanami
           def self.extended(base)
             base.instance_eval do
               def __messages
-                Hash[en: { errors: @@__messages }]
+                ::Hash[en: { errors: @@__messages }]
               end
             end
           end
