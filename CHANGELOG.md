@@ -1,6 +1,10 @@
 # Hanami::Validations
 Validations mixin for Ruby objects
 
+## v1.3.2 - 2019-01-30
+### Fixed
+- [Luca Guidi] Depend on `dry-validation` `~> 0.11.2`, `< 0.12` in order to skip non compatible `dry-logic` `0.5.0`
+
 ## v1.3.1 - 2019-01-18
 ### Added
 - [Luca Guidi] Official support for Ruby: MRI 2.6
