@@ -6,14 +6,12 @@ require 'hanami/validations/inline_predicate'
 require 'set'
 
 Dry::Validation::Messages::Namespaced.configure do |config|
-  # rubocop:disable Lint/NestedPercentLiteral
   #
   # This is probably a false positive.
   # See: https://github.com/bbatsov/rubocop/issues/5314
   config.lookup_paths = config.lookup_paths + %w[
     %<root>s.%<rule>s.%<predicate>s
   ].freeze
-  # rubocop:enable Lint/NestedPercentLiteral
 end
 
 # @since 0.1.0
@@ -45,7 +43,7 @@ module Hanami
     # @api private
     #
     # @see http://www.ruby-doc.org/core/Module.html#method-i-included
-    def self.included(base) # rubocop:disable Metrics/MethodLength
+    def self.included(base)
       base.class_eval do
         extend ClassMethods
 
@@ -95,7 +93,7 @@ module Hanami
       #   result.success? # => false
       #   result.messages # => {:name=>["must be filled"]}
       #   result.output   # => {:name=>""}
-      def validations(&blk) # rubocop:disable Metrics/AbcSize
+      def validations(&blk)
         schema_predicates = _predicates_module || __predicates
 
         base   = _build(predicates: schema_predicates, &_base_rules)
@@ -291,11 +289,14 @@ module Hanami
       # @since 0.6.0
       # @api private
       def _schema_predicates
-        return if _predicates_module.nil? && _predicates.empty?
+        # rubocop:disable Style/NilComparison
+        return if _predicates_module == nil && _predicates.empty?
+
+        # rubocop:enable Style/NilComparison
 
         lambda do |config|
           config.messages      = _predicates_module&.messages || DEFAULT_MESSAGES_ENGINE
-          config.messages_file = _predicates_module.messages_path unless _predicates_module.nil?
+          config.messages_file = _predicates_module.messages_path if _predicates_module
         end
       end
 
@@ -315,14 +316,14 @@ module Hanami
 
       # @since 0.6.0
       # @api private
-      def __messages # rubocop:disable Metrics/MethodLength
+      def __messages
         result = _predicates.each_with_object({}) do |p, ret|
           ret[p.name] = p.message
         end
 
         # @api private
         Module.new do
-          @@__messages = result # rubocop:disable Style/ClassVars
+          @@__messages = result
 
           # @api private
           def self.extended(base)
