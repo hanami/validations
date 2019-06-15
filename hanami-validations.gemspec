@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'hanami-utils',   '~> 1.3'
   spec.add_dependency 'dry-validation', '~> 0.11', '< 0.12'
-  spec.add_dependency 'dry-logic',      '~> 0.4.2', '< 0.5'
+  spec.add_dependency 'dry-logic',      '~> 1.0.2', '<= 1.0.2'
 
   spec.add_development_dependency 'bundler', '>= 1.6', '< 3'
   spec.add_development_dependency 'rake',    '~> 12'
