@@ -5,6 +5,11 @@ Validations mixin for Ruby objects
 ### Changed
 - [Luca Guidi] Drop support for Ruby: MRI 2.3, and 2.4.
 
+## v1.3.3 - 2019-01-31
+### Fixed
+- [Luca Guidi] Depend on `dry-validation` `~> 0.11`, `< 0.12`
+- [Luca Guidi] Depend on `dry-logic` `~> 0.4.2`, `< 0.5`
+
 ## v1.3.2 - 2019-01-30
 ### Fixed
 - [Luca Guidi] Depend on `dry-validation` `~> 0.11.2`, `< 0.12` in order to skip non compatible `dry-logic` `0.5.0`

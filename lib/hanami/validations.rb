@@ -73,7 +73,7 @@ module Hanami
       #
       # @since 0.6.0
       #
-      # @see http://hanamirb.org/guides/validations/overview/
+      # @see https://guides.hanamirb.org/validations/overview
       #
       # @example Basic Example
       #   require 'hanami/validations'
