@@ -14,6 +14,8 @@ Validations mixin for Ruby objects
 ## Contact
 
 * Home page: http://hanamirb.org
+* Community: http://hanamirb.org/community
+* Guides: https://guides.hanamirb.org
 * Mailing List: http://hanamirb.org/mailing-list
 * API Doc: http://rdoc.info/gems/hanami-validations
 * Bugs/Issues: https://github.com/hanami/validations/issues
