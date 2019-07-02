@@ -2,3 +2,6 @@
 # alphabetically
 inherit_from:
   - https://raw.githubusercontent.com/hanami/devtools/master/.rubocop-unstable.yml
+
+AllCops:
+  TargetRubyVersion: 2.3
