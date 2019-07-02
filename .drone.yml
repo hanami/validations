@@ -164,7 +164,7 @@ group: build
 
 steps:
 - name: install
-  image: jruby:9.2
+  image: hanami/jruby-9.2
   volumes:
   - name: bundle
     path: /usr/local/bundle
@@ -174,7 +174,7 @@ steps:
   - bundle install --jobs=3 --retry=3
 
 - name: unit
-  image: jruby:9.2
+  image: hanami/jruby-9.2
   volumes:
   - name: bundle
     path: /usr/local/bundle
@@ -182,7 +182,7 @@ steps:
   - COVERAGE=true bundle exec rake spec:unit
 
 - name: quality
-  image: jruby:9.2
+  image: hanami/jruby-9.2
   environment:
     CODECOV_TOKEN:
       from_secret: codecov
@@ -204,7 +204,7 @@ group: build
 
 steps:
 - name: install
-  image: jruby:9.1
+  image: hanami/jruby-9.1
   volumes:
   - name: bundle
     path: /usr/local/bundle
@@ -214,7 +214,7 @@ steps:
   - bundle install --jobs=3 --retry=3
 
 - name: unit
-  image: jruby:9.1
+  image: hanami/jruby-9.1
   volumes:
   - name: bundle
     path: /usr/local/bundle
@@ -222,7 +222,7 @@ steps:
   - COVERAGE=true bundle exec rake spec:unit
 
 - name: quality
-  image: jruby:9.1
+  image: hanami/jruby-9.1
   environment:
     CODECOV_TOKEN:
       from_secret: codecov
