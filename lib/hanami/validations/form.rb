@@ -41,7 +41,7 @@ module Hanami
       # @api private
       class BaseValidator < Dry::Validation::Contract
         params do
-          optional(:_csrf_token).filled(:str?)
+          optional(:_csrf_token).filled(:string)
         end
       end
 
