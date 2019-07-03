@@ -2,8 +2,22 @@
 Validations mixin for Ruby objects
 
 ## v2.0.0.alpha1 (unreleased)
+### Added
+- [Luca Guidi] Introduced `Hanami::Validator`
+- [Luca Guidi] Added support to validate JSON data
+- [Luca Guidi] Added rules
+- [Luca Guidi] Allow to inherit validations from superclasses (e.g. `ApplicationValidator < Hanami::Validator` => `SignupValidator < ApplicationValidator`)
+- [Luca Guidi] Allow to error messages to receive arbitrary information as a `Hash` (e.g. `error_code: 123`), which will be interpolated in the final error message.
+- [Luca Guidi] Added support for validator external dependencies
+
 ### Changed
-- [Luca Guidi] Drop support for Ruby: MRI 2.3, and 2.4.
+- [Luca Guidi] Drop support for Ruby: MRI 2.3, JRuby 9.1.
+- [Luca Guidi] New validation syntax
+- [Luca Guidi] Removed custom predicates (`Hanami::Validations.predicate`)
+- [Luca Guidi] Removed global custom predicates (`Hanami::Validations::Predicates`)
+- [Luca Guidi] Removed messages path setting (`Hanami::Validations.messages_path=`)
+- [Luca Guidi] Removed messages namespace setting (`Hanami::Validations.namespace`)
+- [Luca Guidi] Removed messages engine setting (`Hanami::Validations.messages`)
 
 ## v1.3.3 - 2019-01-31
 ### Fixed
