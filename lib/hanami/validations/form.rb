@@ -47,7 +47,7 @@ module Hanami
 
       # Override Ruby's hook for modules.
       #
-      # @param base [Class] the target action
+      # @param klass [Class] the target action
       #
       # @since 0.6.0
       # @api private
