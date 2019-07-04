@@ -51,7 +51,7 @@ module Hanami
       #     include Hanami::Validations
       #
       #     validations do
-      #       required(:name).value(:string)
+      #       required(:name).filled(:string)
       #     end
       #   end
       #

@@ -16,8 +16,8 @@ module Hanami
     #     include Hanami::Validations::Form
     #
     #     validations do
-    #       required(:name).value(:string)
-    #       optional(:location).value(:string)
+    #       required(:name).filled(:string)
+    #       optional(:location).filled(:string)
     #     end
     #   end
     #
