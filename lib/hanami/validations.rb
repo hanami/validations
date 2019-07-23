@@ -294,7 +294,7 @@ module Hanami
         return if _predicates_module.nil? && _predicates.empty?
 
         lambda do |config|
-          config.messages      = _predicates_module&.messages || DEFAULT_MESSAGES_ENGINE
+          config.messages      = _predicates_module&.messages || @_messages || DEFAULT_MESSAGES_ENGINE
           config.messages_file = _predicates_module.messages_path unless _predicates_module.nil?
         end
       end
@@ -336,6 +336,8 @@ module Hanami
           # @api private
           def messages
             engine = super
+
+            return engine.messages if @_config.messages == :i18n
 
             if engine.respond_to?(:merge)
               engine
