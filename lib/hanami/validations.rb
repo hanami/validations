@@ -337,8 +337,6 @@ module Hanami
           def messages
             engine = super
 
-            return engine.messages if @_config.messages == :i18n
-
             if engine.respond_to?(:merge)
               engine
             else
