@@ -285,6 +285,8 @@ module Hanami
           config.messages      = _messages      unless _messages.nil?
           config.messages_file = _messages_path unless _messages_path.nil?
           config.namespace     = namespace
+
+          require "dry/validation/messages/i18n" if config.messages == :i18n
         end
       end
 
@@ -296,6 +298,8 @@ module Hanami
         lambda do |config|
           config.messages      = _predicates_module&.messages || DEFAULT_MESSAGES_ENGINE
           config.messages_file = _predicates_module.messages_path unless _predicates_module.nil?
+
+          require "dry/validation/messages/i18n" if config.messages == :i18n
         end
       end
 
