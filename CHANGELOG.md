@@ -1,7 +1,7 @@
 # Hanami::Validations
 Validations mixin for Ruby objects
 
-## v2.0.0.alpha1 (unreleased)
+## v2.0.0.alpha1 - 2019-07-26
 ### Added
 - [Luca Guidi] Introduced `Hanami::Validator`
 - [Luca Guidi] Added support to validate JSON data
@@ -18,6 +18,10 @@ Validations mixin for Ruby objects
 - [Luca Guidi] Removed messages path setting (`Hanami::Validations.messages_path=`)
 - [Luca Guidi] Removed messages namespace setting (`Hanami::Validations.namespace`)
 - [Luca Guidi] Removed messages engine setting (`Hanami::Validations.messages`)
+
+## v1.3.4 - 2019-07-26
+### Fixed
+- [Luca Guidi] Ensure to load i18n backend (including `i18n` gem), when messages engine is `:i18n`
 
 ## v1.3.3 - 2019-01-31
 ### Fixed
