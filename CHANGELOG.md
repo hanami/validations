@@ -1,6 +1,10 @@
 # Hanami::Validations
 Validations mixin for Ruby objects
 
+## v1.3.4 - 2019-07-26
+### Fixed
+- [Luca Guidi] Ensure to load i18n backend (including `i18n` gem), when messages engine is `:i18n`
+
 ## v1.3.3 - 2019-01-31
 ### Fixed
 - [Luca Guidi] Depend on `dry-validation` `~> 0.11`, `< 0.12`
