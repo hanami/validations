@@ -290,7 +290,7 @@ module Hanami
 
       # @since 0.6.0
       # @api private
-      def _schema_predicates
+      def _schema_predicates # rubocop:disabled Metrics/CyclomaticComplexity
         return if _predicates_module.nil? && _predicates.empty?
 
         lambda do |config|
