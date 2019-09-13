@@ -120,6 +120,44 @@ RSpec.describe 'Predicates: custom' do
     end
   end
 
+  describe 'with i18n' do
+    before do
+      @validator = Class.new do
+        include Hanami::Validations
+
+        def self.name
+          'Validator'
+        end
+
+        messages :i18n
+
+        predicate :url? do |current|
+          current.start_with?('http')
+        end
+
+        validations do
+          required(:foo) { url? }
+        end
+      end
+    end
+
+    describe 'with valid input' do
+      let(:input) { { foo: 'http://hanamirb.org' } }
+
+      it 'is successful' do
+        expect_successful result
+      end
+    end
+
+    describe 'with invalid input' do
+      let(:input) { { foo: 'test' } }
+
+      it 'is successful' do
+        expect_not_successful result, ['must be an URL']
+      end
+    end
+  end
+
   describe 'without custom predicate' do
     it 'raises error if try to use an unknown predicate' do
       expect do
