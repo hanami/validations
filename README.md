@@ -5,7 +5,7 @@ Data validation library for Ruby
 ## Status
 
 [![Gem Version](https://badge.fury.io/rb/hanami-validations.svg)](https://badge.fury.io/rb/hanami-validations)
-[![TravisCI](https://travis-ci.org/hanami/validations.svg?branch=master)](https://travis-ci.org/hanami/validations)
+[![Build Status](https://ci.hanamirb.org/api/badges/hanami/validations/status.svg)](https://ci.hanamirb.org/hanami/validations)
 [![CircleCI](https://circleci.com/gh/hanami/validations/tree/master.svg?style=svg)](https://circleci.com/gh/hanami/validations/tree/master)
 [![Build Status](https://ci.hanamirb.org/api/badges/hanami/validations/status.svg)](https://ci.hanamirb.org/hanami/validations)
 [![Test Coverage](https://codecov.io/gh/hanami/validations/branch/master/graph/badge.svg)](https://codecov.io/gh/hanami/validations)
