@@ -150,8 +150,16 @@ RSpec.describe 'Predicates: custom' do
       end
     end
 
-    describe 'with valid input' do
-      let(:input) { { foo: %w[http://hanamirb.org foo@mailinator.com].sample } }
+    describe 'with valid ulr input' do
+      let(:input) { { foo: 'http://hanamirb.org' } }
+
+      it 'is successful' do
+        expect_successful result
+      end
+    end
+
+    describe 'with valid email input' do
+      let(:input) { { foo: 'foo@mailinator.com' } }
 
       it 'is successful' do
         expect_successful result
