@@ -120,7 +120,7 @@ RSpec.describe 'Predicates: custom' do
     end
   end
 
-  describe 'with custom predicate within predicates block followed by a predicates module' do
+  describe 'with inline custom predicate followed by a custom predicates module' do
     before do
       @validator = Class.new do
         include Hanami::Validations
@@ -175,7 +175,7 @@ RSpec.describe 'Predicates: custom' do
     end
   end
 
-  describe 'with custom predicate as predicates module followed by a predicates block' do
+  describe 'with custom predicates module followed by an inline custom predicate block' do
     before do
       @validator = Class.new do
         include Hanami::Validations
