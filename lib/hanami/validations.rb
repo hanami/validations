@@ -1,9 +1,11 @@
-require 'dry-validation'
-require 'hanami/utils/class_attribute'
-require 'hanami/validations/namespace'
-require 'hanami/validations/predicates'
-require 'hanami/validations/inline_predicate'
-require 'set'
+# frozen_string_literal: true
+
+require "dry-validation"
+require "hanami/utils/class_attribute"
+require "hanami/validations/namespace"
+require "hanami/validations/predicates"
+require "hanami/validations/inline_predicate"
+require "set"
 
 Dry::Validation::Messages::Namespaced.configure do |config|
   # rubocop:disable Lint/NestedPercentLiteral
@@ -45,7 +47,7 @@ module Hanami
     # @api private
     #
     # @see http://www.ruby-doc.org/core/Module.html#method-i-included
-    def self.included(base) # rubocop:disable Metrics/MethodLength
+    def self.included(base)
       base.class_eval do
         extend ClassMethods
 
@@ -95,7 +97,7 @@ module Hanami
       #   result.success? # => false
       #   result.messages # => {:name=>["must be filled"]}
       #   result.output   # => {:name=>""}
-      def validations(&blk) # rubocop:disable Metrics/AbcSize
+      def validations(&blk)
         schema_predicates = _predicates_module || __predicates
 
         base   = _build(predicates: schema_predicates, &_base_rules)
@@ -152,7 +154,7 @@ module Hanami
       #
       #   result = Signup.new(name: nil).call
       #   result.messages # => { :name => ['must be foo'] }
-      def predicate(name, message: 'is invalid', &blk)
+      def predicate(name, message: "is invalid", &blk)
         _predicates << InlinePredicate.new(name, message, &blk)
       end
 
@@ -261,7 +263,7 @@ module Hanami
       # @since 0.6.0
       # @api private
       def _build(options = {}, &blk)
-        options = { build: false }.merge(options)
+        options = {build: false}.merge(options)
         Dry::Validation.__send__(_schema_type, options, &blk)
       end
 
@@ -292,7 +294,7 @@ module Hanami
 
       # @since 0.6.0
       # @api private
-      def _schema_predicates # rubocop:disable Metrics/CyclomaticComplexity
+      def _schema_predicates
         return if _predicates_module.nil? && _predicates.empty?
 
         lambda do |config|
@@ -319,7 +321,7 @@ module Hanami
 
       # @since 0.6.0
       # @api private
-      def __messages # rubocop:disable Metrics/MethodLength
+      def __messages
         result = _predicates.each_with_object({}) do |p, ret|
           ret[p.name] = p.message
         end
@@ -332,7 +334,7 @@ module Hanami
           def self.extended(base)
             base.instance_eval do
               def __messages
-                Hash[en: { errors: @@__messages }]
+                Hash[en: {errors: @@__messages}]
               end
             end
           end
