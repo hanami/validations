@@ -14,19 +14,19 @@ module Hanami
     class Namespace
       # @since 0.6.0
       # @api private
-      SUFFIX = "Validator".freeze
+      SUFFIX = "Validator"
 
       # @since 0.6.0
       # @api private
-      SUFFIX_REPLACEMENT = "".freeze
+      SUFFIX_REPLACEMENT = ""
 
       # @since 0.6.0
       # @api private
-      RUBY_NAMESPACE_SEPARATOR = "/".freeze
+      RUBY_NAMESPACE_SEPARATOR = "/"
 
       # @since 0.6.0
       # @api private
-      RUBY_NAMESPACE_REPLACEMENT = ".".freeze
+      RUBY_NAMESPACE_REPLACEMENT = "."
 
       # @since 0.6.0
       # @api private
