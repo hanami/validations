@@ -5,7 +5,6 @@ Validations mixin for Ruby objects
 ## Status
 
 [![Gem Version](https://badge.fury.io/rb/hanami-validations.svg)](https://badge.fury.io/rb/hanami-validations)
-[![Build Status](https://ci.hanamirb.org/api/badges/hanami/validations/status.svg)](https://ci.hanamirb.org/hanami/validations)
 [![CircleCI](https://circleci.com/gh/hanami/validations/tree/master.svg?style=svg)](https://circleci.com/gh/hanami/validations/tree/master)
 [![Test Coverage](https://codecov.io/gh/hanami/validations/branch/master/graph/badge.svg)](https://codecov.io/gh/hanami/validations)
 [![Depfu](https://badges.depfu.com/badges/af6c6be539d9d587c7541ae7a013c9ff/overview.svg)](https://depfu.com/github/hanami/validations?project=Bundler)
@@ -800,6 +799,6 @@ Thanks to [dry-rb](http://dry-rb.org) Community for their priceless support. ❤
 
 ## Copyright
 
-Copyright © 2014-2017 Luca Guidi – Released under MIT License
+Copyright © 2014-2020 Luca Guidi – Released under MIT License
 
 This project was formerly known as Lotus (`lotus-validations`).
