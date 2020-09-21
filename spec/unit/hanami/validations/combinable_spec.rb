@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 RSpec.describe Hanami::Validations do
   describe "combinable validations" do
     before do

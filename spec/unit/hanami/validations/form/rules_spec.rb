@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "uri"
 
 RSpec.describe Hanami::Validations::Form do

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 RSpec.describe Hanami::Validations::Form do
   describe "#initialize" do
     before do

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 RSpec.describe "Messages" do
   describe "with anonymous class" do
     before do

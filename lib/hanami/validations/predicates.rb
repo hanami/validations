@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "dry/logic/predicates"
 require "hanami/utils/class_attribute"
 
