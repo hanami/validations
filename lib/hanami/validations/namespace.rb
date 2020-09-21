@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'hanami/utils/string'
+require "hanami/utils/string"
 
 module Hanami
   module Validations
@@ -13,19 +13,19 @@ module Hanami
     class Namespace
       # @since 0.6.0
       # @api private
-      SUFFIX = 'Validator'.freeze
+      SUFFIX = "Validator".freeze
 
       # @since 0.6.0
       # @api private
-      SUFFIX_REPLACEMENT = ''.freeze
+      SUFFIX_REPLACEMENT = "".freeze
 
       # @since 0.6.0
       # @api private
-      RUBY_NAMESPACE_SEPARATOR = '/'.freeze
+      RUBY_NAMESPACE_SEPARATOR = "/".freeze
 
       # @since 0.6.0
       # @api private
-      RUBY_NAMESPACE_REPLACEMENT = '.'.freeze
+      RUBY_NAMESPACE_REPLACEMENT = ".".freeze
 
       # @since 0.6.0
       # @api private

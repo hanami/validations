@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 RSpec.describe Hanami::Validations do
-  describe '#initialize' do
+  describe "#initialize" do
     before do
       @validator = Class.new do
         include Hanami::Validations
@@ -34,44 +34,44 @@ RSpec.describe Hanami::Validations do
       end
     end
 
-    it 'returns a value for the given attribute' do
+    it "returns a value for the given attribute" do
       validator = @validator.new(attr: 23)
       expect(validator.to_h.fetch(:attr)).to eq 23
     end
 
-    it 'returns nil when not set' do
+    it "returns nil when not set" do
       validator = @validator.new({})
       expect(validator.to_h.fetch(:attr, :missing)).to eq :missing
     end
 
-    it 'accepts any object that implements #to_h' do
+    it "accepts any object that implements #to_h" do
       params    = @params.new([:attr, 23])
       validator = @validator.new(params)
 
       expect(validator.to_h.fetch(:attr)).to eq 23
     end
 
-    it 'accepts zero arguments' do
+    it "accepts zero arguments" do
       validator = @validator.new
       expect(validator.to_h).to eq({})
     end
 
     it "doesn't modify the original attributes" do
-      data       = { attr: '23' }
+      data       = { attr: "23" }
       validator  = @validator.new(data)
       validator.validate
 
-      expect(data[:attr]).to eq('23')
+      expect(data[:attr]).to eq("23")
     end
 
-    it 'accepts symbols as keys, without coercing and whitelisting' do
+    it "accepts symbols as keys, without coercing and whitelisting" do
       validator = @nested.new(
-        foo: 'ok',
+        foo: "ok",
         num: 23,
-        unknown: 'no',
+        unknown: "no",
         bar: {
-          baz: 'yo',
-          wat: 'oh'
+          baz: "yo",
+          wat: "oh"
         }
       )
 
@@ -79,12 +79,12 @@ RSpec.describe Hanami::Validations do
 
       expect(result).to be_success
       expect(result.output).to eq(
-        foo: 'ok',
+        foo: "ok",
         num: 23,
-        unknown: 'no',
+        unknown: "no",
         bar: {
-          baz: 'yo',
-          wat: 'oh'
+          baz: "yo",
+          wat: "oh"
         }
       )
 

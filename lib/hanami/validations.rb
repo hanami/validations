@@ -1,10 +1,10 @@
 # frozen_string_literal: true
-require 'dry-validation'
-require 'hanami/utils/class_attribute'
-require 'hanami/validations/namespace'
-require 'hanami/validations/predicates'
-require 'hanami/validations/inline_predicate'
-require 'set'
+require "dry-validation"
+require "hanami/utils/class_attribute"
+require "hanami/validations/namespace"
+require "hanami/validations/predicates"
+require "hanami/validations/inline_predicate"
+require "set"
 
 Dry::Validation::Messages::Namespaced.configure do |config|
   # rubocop:disable Lint/NestedPercentLiteral
@@ -153,7 +153,7 @@ module Hanami
       #
       #   result = Signup.new(name: nil).call
       #   result.messages # => { :name => ['must be foo'] }
-      def predicate(name, message: 'is invalid', &blk)
+      def predicate(name, message: "is invalid", &blk)
         _predicates << InlinePredicate.new(name, message, &blk)
       end
 
