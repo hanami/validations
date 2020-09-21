@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 RSpec.describe Hanami::Validations do
   describe 'base validations' do
     before do

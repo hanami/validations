@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 RSpec.describe 'Predicates: Size' do
   include_context 'validator result'
 

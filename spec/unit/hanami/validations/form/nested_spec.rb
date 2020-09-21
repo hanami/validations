@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 RSpec.describe Hanami::Validations::Form do
   describe 'nested validations' do
     before do

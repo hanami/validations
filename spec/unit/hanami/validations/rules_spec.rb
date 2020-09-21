@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'securerandom'
 
 RSpec.describe Hanami::Validations do
