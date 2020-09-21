@@ -47,7 +47,7 @@ module Hanami
     # @api private
     #
     # @see http://www.ruby-doc.org/core/Module.html#method-i-included
-    def self.included(base) # rubocop:disable Metrics/MethodLength
+    def self.included(base)
       base.class_eval do
         extend ClassMethods
 
@@ -97,7 +97,7 @@ module Hanami
       #   result.success? # => false
       #   result.messages # => {:name=>["must be filled"]}
       #   result.output   # => {:name=>""}
-      def validations(&blk) # rubocop:disable Metrics/AbcSize
+      def validations(&blk)
         schema_predicates = _predicates_module || __predicates
 
         base   = _build(predicates: schema_predicates, &_base_rules)
@@ -294,7 +294,7 @@ module Hanami
 
       # @since 0.6.0
       # @api private
-      def _schema_predicates # rubocop:disable Metrics/CyclomaticComplexity
+      def _schema_predicates
         return if _predicates_module.nil? && _predicates.empty?
 
         lambda do |config|
@@ -321,7 +321,7 @@ module Hanami
 
       # @since 0.6.0
       # @api private
-      def __messages # rubocop:disable Metrics/MethodLength
+      def __messages
         result = _predicates.each_with_object({}) do |p, ret|
           ret[p.name] = p.message
         end
