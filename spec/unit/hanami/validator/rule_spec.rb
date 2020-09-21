@@ -135,7 +135,7 @@ RSpec.describe Hanami::Validator do
         end
 
         it "yields value" do
-          result = subject.call(dates: { start: Date.today + 1 })
+          result = subject.call(dates: {start: Date.today + 1})
 
           expect(result).to_not be_success
           expect(result.errors[:dates][:start]).to match_array(["must be today"])
@@ -159,7 +159,7 @@ RSpec.describe Hanami::Validator do
         end
 
         it "yields values" do
-          result = subject.call(dates: { start: Date.today, ending: Date.today - 1 })
+          result = subject.call(dates: {start: Date.today, ending: Date.today - 1})
 
           expect(result).to_not be_success
           expect(result.errors[:dates][%i[start ending]]).to match_array(["must be after start date"])
