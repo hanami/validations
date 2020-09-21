@@ -263,7 +263,7 @@ module Hanami
       # @since 0.6.0
       # @api private
       def _build(options = {}, &blk)
-        options = { build: false }.merge(options)
+        options = {build: false}.merge(options)
         Dry::Validation.__send__(_schema_type, options, &blk)
       end
 
@@ -334,7 +334,7 @@ module Hanami
           def self.extended(base)
             base.instance_eval do
               def __messages
-                Hash[en: { errors: @@__messages }]
+                Hash[en: {errors: @@__messages}]
               end
             end
           end

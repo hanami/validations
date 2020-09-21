@@ -53,7 +53,7 @@ RSpec.describe Hanami::Validations::Form do
     end
 
     it "doesn't modify the original attributes" do
-      data       = { attr: "23" }
+      data       = {attr: "23"}
       validator  = @validator.new(data)
       validator.validate
 

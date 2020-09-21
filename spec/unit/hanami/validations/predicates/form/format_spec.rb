@@ -15,7 +15,7 @@ RSpec.describe "Predicates: Format" do
     end
 
     describe "with valid input" do
-      let(:input) { { "foo" => "bar baz" } }
+      let(:input) { {"foo" => "bar baz"} }
 
       it "is successful" do
         expect_successful result
@@ -32,7 +32,7 @@ RSpec.describe "Predicates: Format" do
     end
 
     describe "with nil input" do
-      let(:input) { { "foo" => nil } }
+      let(:input) { {"foo" => nil} }
 
       it "is not successful" do
         expect_not_successful result, ["is in invalid format"]
@@ -40,7 +40,7 @@ RSpec.describe "Predicates: Format" do
     end
 
     describe "with blank input" do
-      let(:input) { { "foo" => "" } }
+      let(:input) { {"foo" => ""} }
 
       it "is not successful" do
         expect_not_successful result, ["is in invalid format"]
@@ -48,7 +48,7 @@ RSpec.describe "Predicates: Format" do
     end
 
     describe "with invalid type" do
-      let(:input) { { "foo" => { "a" => "1" } } }
+      let(:input) { {"foo" => {"a" => "1"}} }
 
       it "raises error" do
         expect { result }.to raise_error TypeError
@@ -56,7 +56,7 @@ RSpec.describe "Predicates: Format" do
     end
 
     describe "with invalid input" do
-      let(:input) { { "foo" => "wat" } }
+      let(:input) { {"foo" => "wat"} }
 
       it "is not successful" do
         expect_not_successful result, ["is in invalid format"]
@@ -76,7 +76,7 @@ RSpec.describe "Predicates: Format" do
     end
 
     describe "with valid input" do
-      let(:input) { { "foo" => "bar baz" } }
+      let(:input) { {"foo" => "bar baz"} }
 
       it "is successful" do
         expect_successful result
@@ -92,7 +92,7 @@ RSpec.describe "Predicates: Format" do
     end
 
     describe "with nil input" do
-      let(:input) { { "foo" => nil } }
+      let(:input) { {"foo" => nil} }
 
       it "is not successful" do
         expect_not_successful result, ["is in invalid format"]
@@ -100,7 +100,7 @@ RSpec.describe "Predicates: Format" do
     end
 
     describe "with blank input" do
-      let(:input) { { "foo" => "" } }
+      let(:input) { {"foo" => ""} }
 
       it "is not successful" do
         expect_not_successful result, ["is in invalid format"]
@@ -108,7 +108,7 @@ RSpec.describe "Predicates: Format" do
     end
 
     describe "with invalid type" do
-      let(:input) { { "foo" => { "a" => "1" } } }
+      let(:input) { {"foo" => {"a" => "1"}} }
 
       it "raises error" do
         expect { result }.to raise_error TypeError
@@ -116,7 +116,7 @@ RSpec.describe "Predicates: Format" do
     end
 
     describe "with invalid input" do
-      let(:input) { { "foo" => "wat" } }
+      let(:input) { {"foo" => "wat"} }
 
       it "is not successful" do
         expect_not_successful result, ["is in invalid format"]
@@ -138,7 +138,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with valid input" do
-          let(:input) { { "foo" => "bar baz" } }
+          let(:input) { {"foo" => "bar baz"} }
 
           it "is successful" do
             expect_successful result
@@ -154,7 +154,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with nil input" do
-          let(:input) { { "foo" => nil } }
+          let(:input) { {"foo" => nil} }
 
           it "is not successful" do
             expect_not_successful result, ["is in invalid format"]
@@ -162,7 +162,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with blank input" do
-          let(:input) { { "foo" => "" } }
+          let(:input) { {"foo" => ""} }
 
           it "is not successful" do
             expect_not_successful result, ["is in invalid format"]
@@ -170,7 +170,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with invalid type" do
-          let(:input) { { "foo" => { "a" => "1" } } }
+          let(:input) { {"foo" => {"a" => "1"}} }
 
           it "raises error" do
             expect { result }.to raise_error TypeError
@@ -178,7 +178,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with invalid input" do
-          let(:input) { { "foo" => "wat" } }
+          let(:input) { {"foo" => "wat"} }
 
           it "is not successful" do
             expect_not_successful result, ["is in invalid format"]
@@ -198,7 +198,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with valid input" do
-          let(:input) { { "foo" => "bar baz" } }
+          let(:input) { {"foo" => "bar baz"} }
 
           it "is successful" do
             expect_successful result
@@ -214,7 +214,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with nil input" do
-          let(:input) { { "foo" => nil } }
+          let(:input) { {"foo" => nil} }
 
           it "is not successful" do
             expect_not_successful result, ["must be filled"]
@@ -222,7 +222,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with blank input" do
-          let(:input) { { "foo" => "" } }
+          let(:input) { {"foo" => ""} }
 
           it "is not successful" do
             expect_not_successful result, ["must be filled"]
@@ -230,7 +230,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with invalid type" do
-          let(:input) { { "foo" => { "a" => "1" } } }
+          let(:input) { {"foo" => {"a" => "1"}} }
 
           it "raises error" do
             expect { result }.to raise_error TypeError
@@ -238,7 +238,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with invalid input" do
-          let(:input) { { "foo" => "wat" } }
+          let(:input) { {"foo" => "wat"} }
 
           it "is not successful" do
             expect_not_successful result, ["is in invalid format"]
@@ -258,7 +258,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with valid input" do
-          let(:input) { { "foo" => "bar baz" } }
+          let(:input) { {"foo" => "bar baz"} }
 
           it "is successful" do
             expect_successful result
@@ -274,7 +274,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with nil input" do
-          let(:input) { { "foo" => nil } }
+          let(:input) { {"foo" => nil} }
 
           it "is successful" do
             expect_successful result
@@ -282,7 +282,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with blank input" do
-          let(:input) { { "foo" => "" } }
+          let(:input) { {"foo" => ""} }
 
           it "is successful" do
             expect_successful result
@@ -290,7 +290,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with invalid type" do
-          let(:input) { { "foo" => { "a" => "1" } } }
+          let(:input) { {"foo" => {"a" => "1"}} }
 
           it "is not successful"
           # it 'is not successful' do
@@ -299,7 +299,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with invalid input" do
-          let(:input) { { "foo" => "wat" } }
+          let(:input) { {"foo" => "wat"} }
 
           it "is not successful" do
             expect_not_successful result, ["is in invalid format"]
@@ -321,7 +321,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with valid input" do
-          let(:input) { { "foo" => "bar baz" } }
+          let(:input) { {"foo" => "bar baz"} }
 
           it "is successful" do
             expect_successful result
@@ -337,7 +337,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with nil input" do
-          let(:input) { { "foo" => nil } }
+          let(:input) { {"foo" => nil} }
 
           it "is not successful" do
             expect_not_successful result, ["is in invalid format"]
@@ -345,7 +345,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with blank input" do
-          let(:input) { { "foo" => "" } }
+          let(:input) { {"foo" => ""} }
 
           it "is not successful" do
             expect_not_successful result, ["is in invalid format"]
@@ -353,7 +353,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with invalid type" do
-          let(:input) { { "foo" => { "a" => "1" } } }
+          let(:input) { {"foo" => {"a" => "1"}} }
 
           it "raises error" do
             expect { result }.to raise_error TypeError
@@ -361,7 +361,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with invalid input" do
-          let(:input) { { "foo" => "wat" } }
+          let(:input) { {"foo" => "wat"} }
 
           it "is not successful" do
             expect_not_successful result, ["is in invalid format"]
@@ -381,7 +381,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with valid input" do
-          let(:input) { { "foo" => "bar baz" } }
+          let(:input) { {"foo" => "bar baz"} }
 
           it "is successful" do
             expect_successful result
@@ -397,7 +397,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with nil input" do
-          let(:input) { { "foo" => nil } }
+          let(:input) { {"foo" => nil} }
 
           it "is not successful" do
             expect_not_successful result, ["must be filled"]
@@ -405,7 +405,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with blank input" do
-          let(:input) { { "foo" => "" } }
+          let(:input) { {"foo" => ""} }
 
           it "is not successful" do
             expect_not_successful result, ["must be filled"]
@@ -413,7 +413,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with invalid type" do
-          let(:input) { { "foo" => { "a" => "1" } } }
+          let(:input) { {"foo" => {"a" => "1"}} }
 
           it "raises error" do
             expect { result }.to raise_error TypeError
@@ -421,7 +421,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with invalid input" do
-          let(:input) { { "foo" => "wat" } }
+          let(:input) { {"foo" => "wat"} }
 
           it "is not successful" do
             expect_not_successful result, ["is in invalid format"]
@@ -441,7 +441,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with valid input" do
-          let(:input) { { "foo" => "bar baz" } }
+          let(:input) { {"foo" => "bar baz"} }
 
           it "is successful" do
             expect_successful result
@@ -457,7 +457,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with nil input" do
-          let(:input) { { "foo" => nil } }
+          let(:input) { {"foo" => nil} }
 
           it "is successful" do
             expect_successful result
@@ -465,7 +465,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with blank input" do
-          let(:input) { { "foo" => "" } }
+          let(:input) { {"foo" => ""} }
 
           it "is successful" do
             expect_successful result
@@ -473,7 +473,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with invalid type" do
-          let(:input) { { "foo" => { "a" => "1" } } }
+          let(:input) { {"foo" => {"a" => "1"}} }
 
           it "raises error"
           # it 'raises error' do
@@ -482,7 +482,7 @@ RSpec.describe "Predicates: Format" do
         end
 
         describe "with invalid input" do
-          let(:input) { { "foo" => "wat" } }
+          let(:input) { {"foo" => "wat"} }
 
           it "is not successful" do
             expect_not_successful result, ["is in invalid format"]

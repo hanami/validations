@@ -18,7 +18,7 @@ describe "Predicates: Size" do
       end
 
       describe "with valid input" do
-        let(:input) { { "foo" => %w[1 2 3] } }
+        let(:input) { {"foo" => %w[1 2 3]} }
 
         it "is successful" do
           expect_successful result
@@ -34,7 +34,7 @@ describe "Predicates: Size" do
       end
 
       describe "with nil input" do
-        let(:input) { { "foo" => nil } }
+        let(:input) { {"foo" => nil} }
 
         it "is raises error" do
           -> { result }.must_raise(NoMethodError)
@@ -42,7 +42,7 @@ describe "Predicates: Size" do
       end
 
       describe "with blank input" do
-        let(:input) { { "foo" => "" } }
+        let(:input) { {"foo" => ""} }
 
         it "is not successful" do
           expect_not_successful result, ["length must be 3"]
@@ -50,7 +50,7 @@ describe "Predicates: Size" do
       end
 
       describe "with invalid input" do
-        let(:input) { { "foo" => { "a" => "1", "b" => "2", "c" => "3", "d" => "4" } } }
+        let(:input) { {"foo" => {"a" => "1", "b" => "2", "c" => "3", "d" => "4"}} }
 
         it "is not successful" do
           expect_not_successful result, ["size must be 3"]
@@ -70,7 +70,7 @@ describe "Predicates: Size" do
       end
 
       describe "with valid input" do
-        let(:input) { { "foo" => %w[1 2 3] } }
+        let(:input) { {"foo" => %w[1 2 3]} }
 
         it "is successful" do
           expect_successful result
@@ -86,7 +86,7 @@ describe "Predicates: Size" do
       end
 
       describe "with nil input" do
-        let(:input) { { "foo" => nil } }
+        let(:input) { {"foo" => nil} }
 
         it "is raises error" do
           -> { result }.must_raise(NoMethodError)
@@ -94,7 +94,7 @@ describe "Predicates: Size" do
       end
 
       describe "with blank input" do
-        let(:input) { { "foo" => "" } }
+        let(:input) { {"foo" => ""} }
 
         it "is not successful" do
           expect_not_successful result, ["length must be 3"]
@@ -102,7 +102,7 @@ describe "Predicates: Size" do
       end
 
       describe "with invalid input" do
-        let(:input) { { "foo" => { "a" => "1", "b" => "2", "c" => "3", "d" => "4" } } }
+        let(:input) { {"foo" => {"a" => "1", "b" => "2", "c" => "3", "d" => "4"}} }
 
         it "is not successful" do
           expect_not_successful result, ["size must be 3"]
@@ -124,7 +124,7 @@ describe "Predicates: Size" do
           end
 
           describe "with valid input" do
-            let(:input) { { "foo" => %w[1 2 3] } }
+            let(:input) { {"foo" => %w[1 2 3]} }
 
             it "is successful" do
               expect_successful result
@@ -140,7 +140,7 @@ describe "Predicates: Size" do
           end
 
           describe "with nil input" do
-            let(:input) { { "foo" => nil } }
+            let(:input) { {"foo" => nil} }
 
             it "is raises error" do
               -> { result }.must_raise(NoMethodError)
@@ -148,7 +148,7 @@ describe "Predicates: Size" do
           end
 
           describe "with blank input" do
-            let(:input) { { "foo" => "" } }
+            let(:input) { {"foo" => ""} }
 
             it "is not successful" do
               expect_not_successful result, ["length must be 3"]
@@ -156,7 +156,7 @@ describe "Predicates: Size" do
           end
 
           describe "with invalid input" do
-            let(:input) { { "foo" => { "a" => "1", "b" => "2", "c" => "3", "d" => "4" } } }
+            let(:input) { {"foo" => {"a" => "1", "b" => "2", "c" => "3", "d" => "4"}} }
 
             it "is not successful" do
               expect_not_successful result, ["size must be 3"]
@@ -176,7 +176,7 @@ describe "Predicates: Size" do
           end
 
           describe "with valid input" do
-            let(:input) { { "foo" => %w[1 2 3] } }
+            let(:input) { {"foo" => %w[1 2 3]} }
 
             it "is successful" do
               expect_successful result
@@ -192,7 +192,7 @@ describe "Predicates: Size" do
           end
 
           describe "with nil input" do
-            let(:input) { { "foo" => nil } }
+            let(:input) { {"foo" => nil} }
 
             it "is not successful" do
               expect_not_successful result, ["must be filled", "size must be 3"]
@@ -200,7 +200,7 @@ describe "Predicates: Size" do
           end
 
           describe "with blank input" do
-            let(:input) { { "foo" => "" } }
+            let(:input) { {"foo" => ""} }
 
             it "is not successful" do
               expect_not_successful result, ["must be filled", "length must be 3"]
@@ -208,7 +208,7 @@ describe "Predicates: Size" do
           end
 
           describe "with invalid input" do
-            let(:input) { { "foo" => { "a" => "1", "b" => "2", "c" => "3", "d" => "4" } } }
+            let(:input) { {"foo" => {"a" => "1", "b" => "2", "c" => "3", "d" => "4"}} }
 
             it "is not successful" do
               expect_not_successful result, ["size must be 3"]
@@ -228,7 +228,7 @@ describe "Predicates: Size" do
           end
 
           describe "with valid input" do
-            let(:input) { { "foo" => %w[1 2 3] } }
+            let(:input) { {"foo" => %w[1 2 3]} }
 
             it "is successful" do
               expect_successful result
@@ -244,7 +244,7 @@ describe "Predicates: Size" do
           end
 
           describe "with nil input" do
-            let(:input) { { "foo" => nil } }
+            let(:input) { {"foo" => nil} }
 
             it "is successful" do
               expect_successful result
@@ -252,7 +252,7 @@ describe "Predicates: Size" do
           end
 
           describe "with blank input" do
-            let(:input) { { "foo" => "" } }
+            let(:input) { {"foo" => ""} }
 
             it "is successful" do
               expect_successful result
@@ -260,7 +260,7 @@ describe "Predicates: Size" do
           end
 
           describe "with invalid input" do
-            let(:input) { { "foo" => { "a" => "1", "b" => "2", "c" => "3", "d" => "4" } } }
+            let(:input) { {"foo" => {"a" => "1", "b" => "2", "c" => "3", "d" => "4"}} }
 
             it "is not successful" do
               expect_not_successful result, ["size must be 3"]
@@ -282,7 +282,7 @@ describe "Predicates: Size" do
           end
 
           describe "with valid input" do
-            let(:input) { { "foo" => %w[1 2 3] } }
+            let(:input) { {"foo" => %w[1 2 3]} }
 
             it "is successful" do
               expect_successful result
@@ -298,7 +298,7 @@ describe "Predicates: Size" do
           end
 
           describe "with nil input" do
-            let(:input) { { "foo" => nil } }
+            let(:input) { {"foo" => nil} }
 
             it "is raises error" do
               -> { result }.must_raise(NoMethodError)
@@ -306,7 +306,7 @@ describe "Predicates: Size" do
           end
 
           describe "with blank input" do
-            let(:input) { { "foo" => "" } }
+            let(:input) { {"foo" => ""} }
 
             it "is not successful" do
               expect_not_successful result, ["length must be 3"]
@@ -314,7 +314,7 @@ describe "Predicates: Size" do
           end
 
           describe "with invalid input" do
-            let(:input) { { "foo" => { "a" => "1", "b" => "2", "c" => "3", "d" => "4" } } }
+            let(:input) { {"foo" => {"a" => "1", "b" => "2", "c" => "3", "d" => "4"}} }
 
             it "is not successful" do
               expect_not_successful result, ["size must be 3"]
@@ -334,7 +334,7 @@ describe "Predicates: Size" do
           end
 
           describe "with valid input" do
-            let(:input) { { "foo" => %w[1 2 3] } }
+            let(:input) { {"foo" => %w[1 2 3]} }
 
             it "is successful" do
               expect_successful result
@@ -350,7 +350,7 @@ describe "Predicates: Size" do
           end
 
           describe "with nil input" do
-            let(:input) { { "foo" => nil } }
+            let(:input) { {"foo" => nil} }
 
             it "is not successful" do
               expect_not_successful result, ["must be filled", "size must be 3"]
@@ -358,7 +358,7 @@ describe "Predicates: Size" do
           end
 
           describe "with blank input" do
-            let(:input) { { "foo" => "" } }
+            let(:input) { {"foo" => ""} }
 
             it "is not successful" do
               expect_not_successful result, ["must be filled", "length must be 3"]
@@ -366,7 +366,7 @@ describe "Predicates: Size" do
           end
 
           describe "with invalid input" do
-            let(:input) { { "foo" => { "a" => "1", "b" => "2", "c" => "3", "d" => "4" } } }
+            let(:input) { {"foo" => {"a" => "1", "b" => "2", "c" => "3", "d" => "4"}} }
 
             it "is not successful" do
               expect_not_successful result, ["size must be 3"]
@@ -386,7 +386,7 @@ describe "Predicates: Size" do
           end
 
           describe "with valid input" do
-            let(:input) { { "foo" => %w[1 2 3] } }
+            let(:input) { {"foo" => %w[1 2 3]} }
 
             it "is successful" do
               expect_successful result
@@ -402,7 +402,7 @@ describe "Predicates: Size" do
           end
 
           describe "with nil input" do
-            let(:input) { { "foo" => nil } }
+            let(:input) { {"foo" => nil} }
 
             it "is successful" do
               expect_successful result
@@ -410,7 +410,7 @@ describe "Predicates: Size" do
           end
 
           describe "with blank input" do
-            let(:input) { { "foo" => "" } }
+            let(:input) { {"foo" => ""} }
 
             it "is successful" do
               expect_successful result
@@ -418,7 +418,7 @@ describe "Predicates: Size" do
           end
 
           describe "with invalid input" do
-            let(:input) { { "foo" => { "a" => "1", "b" => "2", "c" => "3", "d" => "4" } } }
+            let(:input) { {"foo" => {"a" => "1", "b" => "2", "c" => "3", "d" => "4"}} }
 
             it "is not successful" do
               expect_not_successful result, ["size must be 3"]

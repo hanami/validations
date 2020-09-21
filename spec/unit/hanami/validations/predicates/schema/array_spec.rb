@@ -15,7 +15,7 @@ RSpec.describe "Predicates: Array" do
     end
 
     describe "with valid input" do
-      let(:input) { { foo: [3] } }
+      let(:input) { {foo: [3]} }
 
       it "is successful" do
         expect_successful result
@@ -34,7 +34,7 @@ RSpec.describe "Predicates: Array" do
     end
 
     describe "with nil input" do
-      let(:input) { { foo: nil } }
+      let(:input) { {foo: nil} }
 
       it "is not successful" do
         expect_not_successful result, ["must be an array"]
@@ -42,7 +42,7 @@ RSpec.describe "Predicates: Array" do
     end
 
     describe "with blank input" do
-      let(:input) { { foo: "" } }
+      let(:input) { {foo: ""} }
 
       it "is not successful" do
         expect_not_successful result, ["must be an array"]
@@ -50,7 +50,7 @@ RSpec.describe "Predicates: Array" do
     end
 
     describe "with invalid type" do
-      let(:input) { { foo: { a: 1 } } }
+      let(:input) { {foo: {a: 1}} }
 
       it "is not successful" do
         expect_not_successful result, ["must be an array"]
@@ -58,7 +58,7 @@ RSpec.describe "Predicates: Array" do
     end
 
     describe "with invalid input (integer)" do
-      let(:input) { { foo: 4 } }
+      let(:input) { {foo: 4} }
 
       it "is not successful" do
         expect_not_successful result, ["must be an array"]
@@ -66,7 +66,7 @@ RSpec.describe "Predicates: Array" do
     end
 
     describe "with invalid input (array with non-integers)" do
-      let(:input) { { foo: %i[foo bar] } }
+      let(:input) { {foo: %i[foo bar]} }
 
       it "is not successful" do
         expect_not_successful result, 0 => ["must be an integer"], 1 => ["must be an integer"]
@@ -74,7 +74,7 @@ RSpec.describe "Predicates: Array" do
     end
 
     describe "with invalid input (miexed array)" do
-      let(:input) { { foo: [1, "2", :bar] } }
+      let(:input) { {foo: [1, "2", :bar]} }
 
       it "is not successful" do
         expect_not_successful result, 1 => ["must be an integer"], 2 => ["must be an integer"]
@@ -94,7 +94,7 @@ RSpec.describe "Predicates: Array" do
     end
 
     describe "with valid input" do
-      let(:input) { { foo: 3 } }
+      let(:input) { {foo: 3} }
 
       it "is successful" do
         expect_successful result
@@ -110,7 +110,7 @@ RSpec.describe "Predicates: Array" do
     end
 
     describe "with nil input" do
-      let(:input) { { foo: nil } }
+      let(:input) { {foo: nil} }
 
       it "is not successful" do
         expect_not_successful result, ["must be one of: 1, 3, 5"]
@@ -118,7 +118,7 @@ RSpec.describe "Predicates: Array" do
     end
 
     describe "with blank input" do
-      let(:input) { { foo: "" } }
+      let(:input) { {foo: ""} }
 
       it "is not successful" do
         expect_not_successful result, ["must be one of: 1, 3, 5"]
@@ -126,7 +126,7 @@ RSpec.describe "Predicates: Array" do
     end
 
     describe "with invalid type" do
-      let(:input) { { foo: { a: 1 } } }
+      let(:input) { {foo: {a: 1}} }
 
       it "is not successful" do
         expect_not_successful result, ["must be one of: 1, 3, 5"]
@@ -134,7 +134,7 @@ RSpec.describe "Predicates: Array" do
     end
 
     describe "with invalid input" do
-      let(:input) { { foo: 4 } }
+      let(:input) { {foo: 4} }
 
       it "is not successful" do
         expect_not_successful result, ["must be one of: 1, 3, 5"]
@@ -163,7 +163,7 @@ RSpec.describe "Predicates: Array" do
       end
 
       describe "with nil input" do
-        let(:input) { { foo: nil } }
+        let(:input) { {foo: nil} }
 
         it "is not successful" do
           expect_not_successful result, ["must be an array"]
@@ -171,7 +171,7 @@ RSpec.describe "Predicates: Array" do
       end
 
       describe "with blank input" do
-        let(:input) { { foo: "" } }
+        let(:input) { {foo: ""} }
 
         it "is not successful" do
           expect_not_successful result, ["must be an array"]
@@ -179,7 +179,7 @@ RSpec.describe "Predicates: Array" do
       end
 
       describe "with valid input" do
-        let(:input) { { foo: [3] } }
+        let(:input) { {foo: [3]} }
 
         it "is successful" do
           expect_successful result
@@ -187,7 +187,7 @@ RSpec.describe "Predicates: Array" do
       end
 
       describe "with invalid input" do
-        let(:input) { { foo: [:bar] } }
+        let(:input) { {foo: [:bar]} }
 
         it "is not successful" do
           expect_not_successful result, 0 => ["must be an integer"]
@@ -215,7 +215,7 @@ RSpec.describe "Predicates: Array" do
       end
 
       describe "with nil input" do
-        let(:input) { { foo: nil } }
+        let(:input) { {foo: nil} }
 
         it "is not successful" do
           expect_not_successful result, ["must be an array"]
@@ -223,7 +223,7 @@ RSpec.describe "Predicates: Array" do
       end
 
       describe "with blank input" do
-        let(:input) { { foo: "" } }
+        let(:input) { {foo: ""} }
 
         it "is not successful" do
           expect_not_successful result, ["must be an array"]
@@ -231,7 +231,7 @@ RSpec.describe "Predicates: Array" do
       end
 
       describe "with valid input" do
-        let(:input) { { foo: [3] } }
+        let(:input) { {foo: [3]} }
 
         it "is successful" do
           expect_successful result
@@ -239,7 +239,7 @@ RSpec.describe "Predicates: Array" do
       end
 
       describe "with invalid input" do
-        let(:input) { { foo: [:bar] } }
+        let(:input) { {foo: [:bar]} }
 
         it "is not successful" do
           expect_not_successful result, 0 => ["must be an integer"]

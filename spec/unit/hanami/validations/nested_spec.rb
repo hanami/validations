@@ -23,7 +23,7 @@ RSpec.describe Hanami::Validations do
     end
 
     it "returns successful validation result for valid data" do
-      result = @validator.new(number: 23, code: "foo", customer: { name: "Luca", code: "bar", address: { city: "Rome" } }).validate
+      result = @validator.new(number: 23, code: "foo", customer: {name: "Luca", code: "bar", address: {city: "Rome"}}).validate
 
       expect(result).to be_success
       expect(result.errors).to be_empty
@@ -38,7 +38,7 @@ RSpec.describe Hanami::Validations do
     end
 
     it "returns different failing validations for keys with the same name" do
-      result = @validator.new(code: "x", customer: { code: "y" }).validate
+      result = @validator.new(code: "x", customer: {code: "y"}).validate
 
       expect(result).not_to be_success
       expect(result.messages.fetch(:code)).to eq ["must be equal to foo"]
@@ -48,7 +48,7 @@ RSpec.describe Hanami::Validations do
     # Bug
     # See https://github.com/hanami/validations/issues/58
     it "safely serialize to nested Hash" do
-      data      = { name: "John Smith", address: { line_one: "10 High Street" } }
+      data      = {name: "John Smith", address: {line_one: "10 High Street"}}
       validator = @validator.new(data)
 
       expect(validator.to_h).to eq(data)
@@ -57,7 +57,7 @@ RSpec.describe Hanami::Validations do
     # Bug
     # See https://github.com/hanami/validations/issues/58#issuecomment-99144243
     it "safely serialize to Hash" do
-      data      = { name: "John Smith", tags: [1, 2] }
+      data      = {name: "John Smith", tags: [1, 2]}
       validator = @validator.new(data)
 
       expect(validator.to_h).to eq(data)

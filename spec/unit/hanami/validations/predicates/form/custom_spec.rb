@@ -27,7 +27,7 @@ RSpec.describe "Predicates: custom" do
     end
 
     describe "with valid input" do
-      let(:input) { { foo: "test@hanamirb.org" } }
+      let(:input) { {foo: "test@hanamirb.org"} }
 
       it "is successful" do
         expect_successful result
@@ -35,7 +35,7 @@ RSpec.describe "Predicates: custom" do
     end
 
     describe "with invalid input" do
-      let(:input) { { foo: "test" } }
+      let(:input) { {foo: "test"} }
 
       it "is not successful" do
         expect_not_successful result, ["must be an email"]
@@ -70,7 +70,7 @@ RSpec.describe "Predicates: custom" do
     end
 
     describe "with valid input" do
-      let(:input) { { foo: "test@hanamirb.org" } }
+      let(:input) { {foo: "test@hanamirb.org"} }
 
       it "is successful" do
         expect_successful result
@@ -78,7 +78,7 @@ RSpec.describe "Predicates: custom" do
     end
 
     describe "with invalid input" do
-      let(:input) { { foo: "test" } }
+      let(:input) { {foo: "test"} }
 
       it "is not successful" do
         expect_not_successful result, ["must be an email"]
@@ -106,7 +106,7 @@ RSpec.describe "Predicates: custom" do
     end
 
     describe "with valid input" do
-      let(:input) { { foo: "http://hanamirb.org" } }
+      let(:input) { {foo: "http://hanamirb.org"} }
 
       it "is successful" do
         expect_successful result
@@ -114,7 +114,7 @@ RSpec.describe "Predicates: custom" do
     end
 
     describe "with invalid input" do
-      let(:input) { { foo: "test" } }
+      let(:input) { {foo: "test"} }
 
       it "is successful" do
         expect_not_successful result, ["must be an URL"]
@@ -144,7 +144,7 @@ RSpec.describe "Predicates: custom" do
     end
 
     describe "with valid input" do
-      let(:input) { { foo: "http://hanamirb.org" } }
+      let(:input) { {foo: "http://hanamirb.org"} }
 
       it "is successful" do
         expect_successful result
@@ -152,7 +152,7 @@ RSpec.describe "Predicates: custom" do
     end
 
     describe "with invalid input" do
-      let(:input) { { foo: "test" } }
+      let(:input) { {foo: "test"} }
 
       it "is successful" do
         expect_not_successful result, ["must be an URL"]
@@ -186,7 +186,7 @@ RSpec.describe "Predicates: custom" do
     end
 
     describe "with valid data" do
-      let(:input) { { id: 1, confirmed_at: Date.today.iso8601 } }
+      let(:input) { {id: 1, confirmed_at: Date.today.iso8601} }
 
       it "is successful" do
         expect_successful result
@@ -194,7 +194,7 @@ RSpec.describe "Predicates: custom" do
     end
 
     describe "with invalid data" do
-      let(:input) { { id: 1, confirmed_at: "foo" } }
+      let(:input) { {id: 1, confirmed_at: "foo"} }
 
       it "is not successful" do
         expect_not_successful result, ["must be in iso8601 format"], :confirmed_at
@@ -246,7 +246,7 @@ RSpec.describe "Predicates: custom" do
     end
 
     it "allows groups to define their own custom predicates" do
-      result = @validator.new(details: { foo: 2 }).validate
+      result = @validator.new(details: {foo: 2}).validate
 
       expect(result).not_to be_success
       expect(result.messages[:details][:foo]).to eq ["must be odd"]

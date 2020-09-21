@@ -15,7 +15,7 @@ RSpec.describe "Predicates: Eql" do
     end
 
     describe "with valid input" do
-      let(:input) { { "foo" => "23" } }
+      let(:input) { {"foo" => "23"} }
 
       it "is successful" do
         expect_successful result
@@ -31,7 +31,7 @@ RSpec.describe "Predicates: Eql" do
     end
 
     describe "with nil input" do
-      let(:input) { { "foo" => nil } }
+      let(:input) { {"foo" => nil} }
 
       it "is not successful" do
         expect_not_successful result, ["must be equal to 23"]
@@ -39,7 +39,7 @@ RSpec.describe "Predicates: Eql" do
     end
 
     describe "with blank input" do
-      let(:input) { { "foo" => "" } }
+      let(:input) { {"foo" => ""} }
 
       it "is not successful" do
         expect_not_successful result, ["must be equal to 23"]
@@ -59,7 +59,7 @@ RSpec.describe "Predicates: Eql" do
     end
 
     describe "with valid input" do
-      let(:input) { { "foo" => "23" } }
+      let(:input) { {"foo" => "23"} }
 
       it "is successful" do
         expect_successful result
@@ -75,7 +75,7 @@ RSpec.describe "Predicates: Eql" do
     end
 
     describe "with nil input" do
-      let(:input) { { "foo" => nil } }
+      let(:input) { {"foo" => nil} }
 
       it "is not successful" do
         expect_not_successful result, ["must be equal to 23"]
@@ -83,7 +83,7 @@ RSpec.describe "Predicates: Eql" do
     end
 
     describe "with blank input" do
-      let(:input) { { "foo" => "" } }
+      let(:input) { {"foo" => ""} }
 
       it "is not successful" do
         expect_not_successful result, ["must be equal to 23"]
@@ -105,7 +105,7 @@ RSpec.describe "Predicates: Eql" do
         end
 
         describe "with valid input" do
-          let(:input) { { "foo" => "23" } }
+          let(:input) { {"foo" => "23"} }
 
           it "is successful" do
             expect_successful result
@@ -121,7 +121,7 @@ RSpec.describe "Predicates: Eql" do
         end
 
         describe "with nil input" do
-          let(:input) { { "foo" => nil } }
+          let(:input) { {"foo" => nil} }
 
           it "is not successful" do
             expect_not_successful result, ["must be equal to 23"]
@@ -129,7 +129,7 @@ RSpec.describe "Predicates: Eql" do
         end
 
         describe "with blank input" do
-          let(:input) { { "foo" => "" } }
+          let(:input) { {"foo" => ""} }
 
           it "is not successful" do
             expect_not_successful result, ["must be equal to 23"]
@@ -149,7 +149,7 @@ RSpec.describe "Predicates: Eql" do
         end
 
         describe "with valid input" do
-          let(:input) { { "foo" => "23" } }
+          let(:input) { {"foo" => "23"} }
 
           it "is successful" do
             expect_successful result
@@ -165,7 +165,7 @@ RSpec.describe "Predicates: Eql" do
         end
 
         describe "with nil input" do
-          let(:input) { { "foo" => nil } }
+          let(:input) { {"foo" => nil} }
 
           it "is not successful" do
             expect_not_successful result, ["must be filled", "must be equal to 23"]
@@ -173,7 +173,7 @@ RSpec.describe "Predicates: Eql" do
         end
 
         describe "with blank input" do
-          let(:input) { { "foo" => "" } }
+          let(:input) { {"foo" => ""} }
 
           it "is not successful" do
             expect_not_successful result, ["must be filled", "must be equal to 23"]
@@ -193,7 +193,7 @@ RSpec.describe "Predicates: Eql" do
         end
 
         describe "with valid input" do
-          let(:input) { { "foo" => "23" } }
+          let(:input) { {"foo" => "23"} }
 
           it "is successful" do
             expect_successful result
@@ -209,7 +209,7 @@ RSpec.describe "Predicates: Eql" do
         end
 
         describe "with nil input" do
-          let(:input) { { "foo" => nil } }
+          let(:input) { {"foo" => nil} }
 
           it "is successful" do
             expect_successful result
@@ -217,7 +217,7 @@ RSpec.describe "Predicates: Eql" do
         end
 
         describe "with blank input" do
-          let(:input) { { "foo" => "" } }
+          let(:input) { {"foo" => ""} }
 
           it "is successful" do
             expect_successful result
@@ -239,7 +239,7 @@ RSpec.describe "Predicates: Eql" do
         end
 
         describe "with valid input" do
-          let(:input) { { "foo" => "23" } }
+          let(:input) { {"foo" => "23"} }
 
           it "is successful" do
             expect_successful result
@@ -255,7 +255,7 @@ RSpec.describe "Predicates: Eql" do
         end
 
         describe "with nil input" do
-          let(:input) { { "foo" => nil } }
+          let(:input) { {"foo" => nil} }
 
           it "is not successful" do
             expect_not_successful result, ["must be equal to 23"]
@@ -263,7 +263,7 @@ RSpec.describe "Predicates: Eql" do
         end
 
         describe "with blank input" do
-          let(:input) { { "foo" => "" } }
+          let(:input) { {"foo" => ""} }
 
           it "is not successful" do
             expect_not_successful result, ["must be equal to 23"]
@@ -283,7 +283,7 @@ RSpec.describe "Predicates: Eql" do
         end
 
         describe "with valid input" do
-          let(:input) { { "foo" => "23" } }
+          let(:input) { {"foo" => "23"} }
 
           it "is successful" do
             expect_successful result
@@ -299,7 +299,7 @@ RSpec.describe "Predicates: Eql" do
         end
 
         describe "with nil input" do
-          let(:input) { { "foo" => nil } }
+          let(:input) { {"foo" => nil} }
 
           it "is not successful" do
             expect_not_successful result, ["must be filled", "must be equal to 23"]
@@ -307,7 +307,7 @@ RSpec.describe "Predicates: Eql" do
         end
 
         describe "with blank input" do
-          let(:input) { { "foo" => "" } }
+          let(:input) { {"foo" => ""} }
 
           it "is not successful" do
             expect_not_successful result, ["must be filled", "must be equal to 23"]
@@ -327,7 +327,7 @@ RSpec.describe "Predicates: Eql" do
         end
 
         describe "with valid input" do
-          let(:input) { { "foo" => "23" } }
+          let(:input) { {"foo" => "23"} }
 
           it "is successful" do
             expect_successful result
@@ -343,7 +343,7 @@ RSpec.describe "Predicates: Eql" do
         end
 
         describe "with nil input" do
-          let(:input) { { "foo" => nil } }
+          let(:input) { {"foo" => nil} }
 
           it "is successful" do
             expect_successful result
@@ -351,7 +351,7 @@ RSpec.describe "Predicates: Eql" do
         end
 
         describe "with blank input" do
-          let(:input) { { "foo" => "" } }
+          let(:input) { {"foo" => ""} }
 
           it "is successful" do
             expect_successful result

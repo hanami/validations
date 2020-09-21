@@ -15,7 +15,7 @@ RSpec.describe "Predicates: Min Size" do
     end
 
     describe "with valid input" do
-      let(:input) { { foo: [1, 2, 3] } }
+      let(:input) { {foo: [1, 2, 3]} }
 
       it "is successful" do
         expect_successful result
@@ -31,7 +31,7 @@ RSpec.describe "Predicates: Min Size" do
     end
 
     describe "with nil input" do
-      let(:input) { { foo: nil } }
+      let(:input) { {foo: nil} }
 
       it "is raises error" do
         expect { result }.to raise_error(NoMethodError)
@@ -39,7 +39,7 @@ RSpec.describe "Predicates: Min Size" do
     end
 
     describe "with blank input" do
-      let(:input) { { foo: "" } }
+      let(:input) { {foo: ""} }
 
       it "is not successful" do
         expect_not_successful result, ["size cannot be less than 3"]
@@ -47,7 +47,7 @@ RSpec.describe "Predicates: Min Size" do
     end
 
     describe "with invalid input" do
-      let(:input) { { foo: { a: 1, b: 2 } } }
+      let(:input) { {foo: {a: 1, b: 2}} }
 
       it "is not successful" do
         expect_not_successful result, ["size cannot be less than 3"]
@@ -67,7 +67,7 @@ RSpec.describe "Predicates: Min Size" do
     end
 
     describe "with valid input" do
-      let(:input) { { foo: [1, 2, 3] } }
+      let(:input) { {foo: [1, 2, 3]} }
 
       it "is successful" do
         expect_successful result
@@ -83,7 +83,7 @@ RSpec.describe "Predicates: Min Size" do
     end
 
     describe "with nil input" do
-      let(:input) { { foo: nil } }
+      let(:input) { {foo: nil} }
 
       it "is raises error" do
         expect { result }.to raise_error(NoMethodError)
@@ -91,7 +91,7 @@ RSpec.describe "Predicates: Min Size" do
     end
 
     describe "with blank input" do
-      let(:input) { { foo: "" } }
+      let(:input) { {foo: ""} }
 
       it "is not successful" do
         expect_not_successful result, ["size cannot be less than 3"]
@@ -99,7 +99,7 @@ RSpec.describe "Predicates: Min Size" do
     end
 
     describe "with invalid input" do
-      let(:input) { { foo: { a: 1, b: 2 } } }
+      let(:input) { {foo: {a: 1, b: 2}} }
 
       it "is not successful" do
         expect_not_successful result, ["size cannot be less than 3"]
@@ -121,7 +121,7 @@ RSpec.describe "Predicates: Min Size" do
         end
 
         describe "with valid input" do
-          let(:input) { { foo: [1, 2, 3] } }
+          let(:input) { {foo: [1, 2, 3]} }
 
           it "is successful" do
             expect_successful result
@@ -137,7 +137,7 @@ RSpec.describe "Predicates: Min Size" do
         end
 
         describe "with nil input" do
-          let(:input) { { foo: nil } }
+          let(:input) { {foo: nil} }
 
           it "is raises error" do
             expect { result }.to raise_error(NoMethodError)
@@ -145,7 +145,7 @@ RSpec.describe "Predicates: Min Size" do
         end
 
         describe "with blank input" do
-          let(:input) { { foo: "" } }
+          let(:input) { {foo: ""} }
 
           it "is not successful" do
             expect_not_successful result, ["size cannot be less than 3"]
@@ -153,7 +153,7 @@ RSpec.describe "Predicates: Min Size" do
         end
 
         describe "with invalid input" do
-          let(:input) { { foo: { a: 1, b: 2 } } }
+          let(:input) { {foo: {a: 1, b: 2}} }
 
           it "is not successful" do
             expect_not_successful result, ["size cannot be less than 3"]
@@ -173,7 +173,7 @@ RSpec.describe "Predicates: Min Size" do
         end
 
         describe "with valid input" do
-          let(:input) { { foo: [1, 2, 3] } }
+          let(:input) { {foo: [1, 2, 3]} }
 
           it "is successful" do
             expect_successful result
@@ -189,7 +189,7 @@ RSpec.describe "Predicates: Min Size" do
         end
 
         describe "with nil input" do
-          let(:input) { { foo: nil } }
+          let(:input) { {foo: nil} }
 
           it "is not successful" do
             expect_not_successful result, ["must be filled", "size cannot be less than 3"]
@@ -197,7 +197,7 @@ RSpec.describe "Predicates: Min Size" do
         end
 
         describe "with blank input" do
-          let(:input) { { foo: "" } }
+          let(:input) { {foo: ""} }
 
           it "is not successful" do
             expect_not_successful result, ["must be filled", "size cannot be less than 3"]
@@ -205,7 +205,7 @@ RSpec.describe "Predicates: Min Size" do
         end
 
         describe "with invalid input" do
-          let(:input) { { foo: { a: 1, b: 2 } } }
+          let(:input) { {foo: {a: 1, b: 2}} }
 
           it "is not successful" do
             expect_not_successful result, ["size cannot be less than 3"]
@@ -225,7 +225,7 @@ RSpec.describe "Predicates: Min Size" do
         end
 
         describe "with valid input" do
-          let(:input) { { foo: [1, 2, 3] } }
+          let(:input) { {foo: [1, 2, 3]} }
 
           it "is successful" do
             expect_successful result
@@ -241,7 +241,7 @@ RSpec.describe "Predicates: Min Size" do
         end
 
         describe "with nil input" do
-          let(:input) { { foo: nil } }
+          let(:input) { {foo: nil} }
 
           it "is successful" do
             expect_successful result
@@ -249,7 +249,7 @@ RSpec.describe "Predicates: Min Size" do
         end
 
         describe "with blank input" do
-          let(:input) { { foo: "" } }
+          let(:input) { {foo: ""} }
 
           it "is not successful" do
             expect_not_successful result, ["size cannot be less than 3"]
@@ -257,7 +257,7 @@ RSpec.describe "Predicates: Min Size" do
         end
 
         describe "with invalid input" do
-          let(:input) { { foo: { a: 1, b: 2 } } }
+          let(:input) { {foo: {a: 1, b: 2}} }
 
           it "is not successful" do
             expect_not_successful result, ["size cannot be less than 3"]
@@ -279,7 +279,7 @@ RSpec.describe "Predicates: Min Size" do
         end
 
         describe "with valid input" do
-          let(:input) { { foo: [1, 2, 3] } }
+          let(:input) { {foo: [1, 2, 3]} }
 
           it "is successful" do
             expect_successful result
@@ -295,7 +295,7 @@ RSpec.describe "Predicates: Min Size" do
         end
 
         describe "with nil input" do
-          let(:input) { { foo: nil } }
+          let(:input) { {foo: nil} }
 
           it "is raises error" do
             expect { result }.to raise_error(NoMethodError)
@@ -303,7 +303,7 @@ RSpec.describe "Predicates: Min Size" do
         end
 
         describe "with blank input" do
-          let(:input) { { foo: "" } }
+          let(:input) { {foo: ""} }
 
           it "is not successful" do
             expect_not_successful result, ["size cannot be less than 3"]
@@ -311,7 +311,7 @@ RSpec.describe "Predicates: Min Size" do
         end
 
         describe "with invalid input" do
-          let(:input) { { foo: { a: 1, b: 2 } } }
+          let(:input) { {foo: {a: 1, b: 2}} }
 
           it "is not successful" do
             expect_not_successful result, ["size cannot be less than 3"]
@@ -331,7 +331,7 @@ RSpec.describe "Predicates: Min Size" do
         end
 
         describe "with valid input" do
-          let(:input) { { foo: [1, 2, 3] } }
+          let(:input) { {foo: [1, 2, 3]} }
 
           it "is successful" do
             expect_successful result
@@ -347,7 +347,7 @@ RSpec.describe "Predicates: Min Size" do
         end
 
         describe "with nil input" do
-          let(:input) { { foo: nil } }
+          let(:input) { {foo: nil} }
 
           it "is not successful" do
             expect_not_successful result, ["must be filled", "size cannot be less than 3"]
@@ -355,7 +355,7 @@ RSpec.describe "Predicates: Min Size" do
         end
 
         describe "with blank input" do
-          let(:input) { { foo: "" } }
+          let(:input) { {foo: ""} }
 
           it "is not successful" do
             expect_not_successful result, ["must be filled", "size cannot be less than 3"]
@@ -363,7 +363,7 @@ RSpec.describe "Predicates: Min Size" do
         end
 
         describe "with invalid input" do
-          let(:input) { { foo: { a: 1, b: 2 } } }
+          let(:input) { {foo: {a: 1, b: 2}} }
 
           it "is not successful" do
             expect_not_successful result, ["size cannot be less than 3"]
@@ -383,7 +383,7 @@ RSpec.describe "Predicates: Min Size" do
         end
 
         describe "with valid input" do
-          let(:input) { { foo: [1, 2, 3] } }
+          let(:input) { {foo: [1, 2, 3]} }
 
           it "is successful" do
             expect_successful result
@@ -399,7 +399,7 @@ RSpec.describe "Predicates: Min Size" do
         end
 
         describe "with nil input" do
-          let(:input) { { foo: nil } }
+          let(:input) { {foo: nil} }
 
           it "is successful" do
             expect_successful result
@@ -407,7 +407,7 @@ RSpec.describe "Predicates: Min Size" do
         end
 
         describe "with blank input" do
-          let(:input) { { foo: "" } }
+          let(:input) { {foo: ""} }
 
           it "is not successful" do
             expect_not_successful result, ["size cannot be less than 3"]
@@ -415,7 +415,7 @@ RSpec.describe "Predicates: Min Size" do
         end
 
         describe "with invalid input" do
-          let(:input) { { foo: { a: 1, b: 2 } } }
+          let(:input) { {foo: {a: 1, b: 2}} }
 
           it "is not successful" do
             expect_not_successful result, ["size cannot be less than 3"]

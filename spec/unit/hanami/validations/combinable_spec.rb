@@ -32,7 +32,7 @@ RSpec.describe Hanami::Validations do
     end
 
     it "returns successful validation result for valid data" do
-      result = @order.new(number: 23, customer: { name: "Luca", address: { city: "Rome" } }).validate
+      result = @order.new(number: 23, customer: {name: "Luca", address: {city: "Rome"}}).validate
       expect(result).to be_success
       expect(result.errors).to be_empty
     end
@@ -48,7 +48,7 @@ RSpec.describe Hanami::Validations do
     # Bug
     # See https://github.com/hanami/validations/issues/58
     it "safely serialize to nested Hash" do
-      data      = { name: "John Smith", address: { line_one: "10 High Street" } }
+      data      = {name: "John Smith", address: {line_one: "10 High Street"}}
       validator = @order.new(data)
 
       expect(validator.to_h).to eq(data)
@@ -57,7 +57,7 @@ RSpec.describe Hanami::Validations do
     # Bug
     # See https://github.com/hanami/validations/issues/58#issuecomment-99144243
     it "safely serialize to Hash" do
-      data      = { name: "John Smith", tags: [1, 2] }
+      data      = {name: "John Smith", tags: [1, 2]}
       validator = @order.new(data)
 
       expect(validator.to_h).to eq(data)

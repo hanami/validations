@@ -15,7 +15,7 @@ RSpec.describe "Predicates: Lt" do
     end
 
     describe "with valid input" do
-      let(:input) { { "foo" => "1" } }
+      let(:input) { {"foo" => "1"} }
 
       it "is successful" do
         expect_successful result
@@ -31,7 +31,7 @@ RSpec.describe "Predicates: Lt" do
     end
 
     describe "with nil input" do
-      let(:input) { { "foo" => nil } }
+      let(:input) { {"foo" => nil} }
 
       it "is not successful" do
         expect_not_successful result, ["must be an integer", "must be less than 23"]
@@ -39,7 +39,7 @@ RSpec.describe "Predicates: Lt" do
     end
 
     describe "with blank input" do
-      let(:input) { { "foo" => "" } }
+      let(:input) { {"foo" => ""} }
 
       it "is not successful" do
         expect_not_successful result, ["must be an integer", "must be less than 23"]
@@ -47,7 +47,7 @@ RSpec.describe "Predicates: Lt" do
     end
 
     describe "with invalid input type" do
-      let(:input) { { "foo" => [] } }
+      let(:input) { {"foo" => []} }
 
       it "is not successful" do
         expect_not_successful result, ["must be an integer", "must be less than 23"]
@@ -55,7 +55,7 @@ RSpec.describe "Predicates: Lt" do
     end
 
     describe "with equal input" do
-      let(:input) { { "foo" => "23" } }
+      let(:input) { {"foo" => "23"} }
 
       it "is not successful" do
         expect_not_successful result, ["must be less than 23"]
@@ -63,7 +63,7 @@ RSpec.describe "Predicates: Lt" do
     end
 
     describe "with greater than input" do
-      let(:input) { { "foo" => "99" } }
+      let(:input) { {"foo" => "99"} }
 
       it "is not successful" do
         expect_not_successful result, ["must be less than 23"]
@@ -83,7 +83,7 @@ RSpec.describe "Predicates: Lt" do
     end
 
     describe "with valid input" do
-      let(:input) { { "foo" => "1" } }
+      let(:input) { {"foo" => "1"} }
 
       it "is successful" do
         expect_successful result
@@ -99,7 +99,7 @@ RSpec.describe "Predicates: Lt" do
     end
 
     describe "with nil input" do
-      let(:input) { { "foo" => nil } }
+      let(:input) { {"foo" => nil} }
 
       it "is not successful" do
         expect_not_successful result, ["must be an integer", "must be less than 23"]
@@ -107,7 +107,7 @@ RSpec.describe "Predicates: Lt" do
     end
 
     describe "with blank input" do
-      let(:input) { { "foo" => "" } }
+      let(:input) { {"foo" => ""} }
 
       it "is not successful" do
         expect_not_successful result, ["must be an integer", "must be less than 23"]
@@ -115,7 +115,7 @@ RSpec.describe "Predicates: Lt" do
     end
 
     describe "with invalid input type" do
-      let(:input) { { "foo" => [] } }
+      let(:input) { {"foo" => []} }
 
       it "is not successful" do
         expect_not_successful result, ["must be an integer", "must be less than 23"]
@@ -123,7 +123,7 @@ RSpec.describe "Predicates: Lt" do
     end
 
     describe "with equal input" do
-      let(:input) { { "foo" => "23" } }
+      let(:input) { {"foo" => "23"} }
 
       it "is not successful" do
         expect_not_successful result, ["must be less than 23"]
@@ -131,7 +131,7 @@ RSpec.describe "Predicates: Lt" do
     end
 
     describe "with greater than input" do
-      let(:input) { { "foo" => "99" } }
+      let(:input) { {"foo" => "99"} }
 
       it "is not successful" do
         expect_not_successful result, ["must be less than 23"]
@@ -153,7 +153,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with valid input" do
-          let(:input) { { "foo" => "1" } }
+          let(:input) { {"foo" => "1"} }
 
           it "is successful" do
             expect_successful result
@@ -169,7 +169,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with nil input" do
-          let(:input) { { "foo" => nil } }
+          let(:input) { {"foo" => nil} }
 
           it "is not successful" do
             expect_not_successful result, ["must be an integer", "must be less than 23"]
@@ -177,7 +177,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with blank input" do
-          let(:input) { { "foo" => "" } }
+          let(:input) { {"foo" => ""} }
 
           it "is not successful" do
             expect_not_successful result, ["must be an integer", "must be less than 23"]
@@ -185,7 +185,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with invalid input type" do
-          let(:input) { { "foo" => [] } }
+          let(:input) { {"foo" => []} }
 
           it "is not successful" do
             expect_not_successful result, ["must be an integer", "must be less than 23"]
@@ -193,7 +193,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with equal input" do
-          let(:input) { { "foo" => "23" } }
+          let(:input) { {"foo" => "23"} }
 
           it "is not successful" do
             expect_not_successful result, ["must be less than 23"]
@@ -201,7 +201,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with greater than input" do
-          let(:input) { { "foo" => "99" } }
+          let(:input) { {"foo" => "99"} }
 
           it "is not successful" do
             expect_not_successful result, ["must be less than 23"]
@@ -221,7 +221,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with valid input" do
-          let(:input) { { "foo" => "1" } }
+          let(:input) { {"foo" => "1"} }
 
           it "is successful" do
             expect_successful result
@@ -237,7 +237,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with nil input" do
-          let(:input) { { "foo" => nil } }
+          let(:input) { {"foo" => nil} }
 
           it "is not successful" do
             expect_not_successful result, ["must be filled", "must be less than 23"]
@@ -245,7 +245,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with blank input" do
-          let(:input) { { "foo" => "" } }
+          let(:input) { {"foo" => ""} }
 
           it "is not successful" do
             expect_not_successful result, ["must be filled", "must be less than 23"]
@@ -253,7 +253,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with invalid input type" do
-          let(:input) { { "foo" => [] } }
+          let(:input) { {"foo" => []} }
 
           it "is not successful" do
             expect_not_successful result, ["must be filled", "must be less than 23"]
@@ -261,7 +261,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with equal input" do
-          let(:input) { { "foo" => "23" } }
+          let(:input) { {"foo" => "23"} }
 
           it "is not successful" do
             expect_not_successful result, ["must be less than 23"]
@@ -269,7 +269,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with greater than input" do
-          let(:input) { { "foo" => "99" } }
+          let(:input) { {"foo" => "99"} }
 
           it "is not successful" do
             expect_not_successful result, ["must be less than 23"]
@@ -289,7 +289,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with valid input" do
-          let(:input) { { "foo" => "1" } }
+          let(:input) { {"foo" => "1"} }
 
           it "is successful" do
             expect_successful result
@@ -305,7 +305,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with nil input" do
-          let(:input) { { "foo" => nil } }
+          let(:input) { {"foo" => nil} }
 
           it "is successful" do
             expect_successful result
@@ -313,7 +313,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with blank input" do
-          let(:input) { { "foo" => "" } }
+          let(:input) { {"foo" => ""} }
 
           it "is successful" do
             expect_successful result
@@ -321,7 +321,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with invalid input type" do
-          let(:input) { { "foo" => [] } }
+          let(:input) { {"foo" => []} }
 
           it "is not successful" do
             expect_not_successful result, ["must be an integer", "must be less than 23"]
@@ -329,7 +329,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with equal input" do
-          let(:input) { { "foo" => "23" } }
+          let(:input) { {"foo" => "23"} }
 
           it "is not successful" do
             expect_not_successful result, ["must be less than 23"]
@@ -337,7 +337,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with greater than input" do
-          let(:input) { { "foo" => "99" } }
+          let(:input) { {"foo" => "99"} }
 
           it "is not successful" do
             expect_not_successful result, ["must be less than 23"]
@@ -359,7 +359,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with valid input" do
-          let(:input) { { "foo" => "1" } }
+          let(:input) { {"foo" => "1"} }
 
           it "is successful" do
             expect_successful result
@@ -375,7 +375,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with nil input" do
-          let(:input) { { "foo" => nil } }
+          let(:input) { {"foo" => nil} }
 
           it "is not successful" do
             expect_not_successful result, ["must be an integer", "must be less than 23"]
@@ -383,7 +383,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with blank input" do
-          let(:input) { { "foo" => "" } }
+          let(:input) { {"foo" => ""} }
 
           it "is not successful" do
             expect_not_successful result, ["must be an integer", "must be less than 23"]
@@ -391,7 +391,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with invalid input type" do
-          let(:input) { { "foo" => [] } }
+          let(:input) { {"foo" => []} }
 
           it "is not successful" do
             expect_not_successful result, ["must be an integer", "must be less than 23"]
@@ -399,7 +399,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with equal input" do
-          let(:input) { { "foo" => "23" } }
+          let(:input) { {"foo" => "23"} }
 
           it "is not successful" do
             expect_not_successful result, ["must be less than 23"]
@@ -407,7 +407,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with greater than input" do
-          let(:input) { { "foo" => "99" } }
+          let(:input) { {"foo" => "99"} }
 
           it "is not successful" do
             expect_not_successful result, ["must be less than 23"]
@@ -427,7 +427,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with valid input" do
-          let(:input) { { "foo" => "1" } }
+          let(:input) { {"foo" => "1"} }
 
           it "is successful" do
             expect_successful result
@@ -443,7 +443,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with nil input" do
-          let(:input) { { "foo" => nil } }
+          let(:input) { {"foo" => nil} }
 
           it "is not successful" do
             expect_not_successful result, ["must be filled", "must be less than 23"]
@@ -451,7 +451,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with blank input" do
-          let(:input) { { "foo" => "" } }
+          let(:input) { {"foo" => ""} }
 
           it "is not successful" do
             expect_not_successful result, ["must be filled", "must be less than 23"]
@@ -459,7 +459,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with invalid input type" do
-          let(:input) { { "foo" => [] } }
+          let(:input) { {"foo" => []} }
 
           it "is not successful" do
             expect_not_successful result, ["must be filled", "must be less than 23"]
@@ -467,7 +467,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with equal input" do
-          let(:input) { { "foo" => "23" } }
+          let(:input) { {"foo" => "23"} }
 
           it "is not successful" do
             expect_not_successful result, ["must be less than 23"]
@@ -475,7 +475,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with greater than input" do
-          let(:input) { { "foo" => "99" } }
+          let(:input) { {"foo" => "99"} }
 
           it "is not successful" do
             expect_not_successful result, ["must be less than 23"]
@@ -495,7 +495,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with valid input" do
-          let(:input) { { "foo" => "1" } }
+          let(:input) { {"foo" => "1"} }
 
           it "is successful" do
             expect_successful result
@@ -511,7 +511,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with nil input" do
-          let(:input) { { "foo" => nil } }
+          let(:input) { {"foo" => nil} }
 
           it "is successful" do
             expect_successful result
@@ -519,7 +519,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with blank input" do
-          let(:input) { { "foo" => "" } }
+          let(:input) { {"foo" => ""} }
 
           it "is successful" do
             expect_successful result, []
@@ -527,7 +527,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with invalid input type" do
-          let(:input) { { "foo" => [] } }
+          let(:input) { {"foo" => []} }
 
           it "is not successful" do
             expect_not_successful result, ["must be an integer", "must be less than 23"]
@@ -535,7 +535,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with equal input" do
-          let(:input) { { "foo" => "23" } }
+          let(:input) { {"foo" => "23"} }
 
           it "is not successful" do
             expect_not_successful result, ["must be less than 23"]
@@ -543,7 +543,7 @@ RSpec.describe "Predicates: Lt" do
         end
 
         describe "with greater than input" do
-          let(:input) { { "foo" => "99" } }
+          let(:input) { {"foo" => "99"} }
 
           it "is not successful" do
             expect_not_successful result, ["must be less than 23"]

@@ -15,7 +15,7 @@ RSpec.describe "Predicates: Included In" do
     end
 
     describe "with valid input" do
-      let(:input) { { "foo" => "3" } }
+      let(:input) { {"foo" => "3"} }
 
       it "is successful" do
         expect_successful result
@@ -31,7 +31,7 @@ RSpec.describe "Predicates: Included In" do
     end
 
     describe "with nil input" do
-      let(:input) { { "foo" => nil } }
+      let(:input) { {"foo" => nil} }
 
       it "is not successful" do
         expect_not_successful result, ["must be one of: 1, 3, 5"]
@@ -39,7 +39,7 @@ RSpec.describe "Predicates: Included In" do
     end
 
     describe "with blank input" do
-      let(:input) { { "foo" => "" } }
+      let(:input) { {"foo" => ""} }
 
       it "is not successful" do
         expect_not_successful result, ["must be one of: 1, 3, 5"]
@@ -47,7 +47,7 @@ RSpec.describe "Predicates: Included In" do
     end
 
     describe "with invalid type" do
-      let(:input) { { "foo" => { "a" => "1" } } }
+      let(:input) { {"foo" => {"a" => "1"}} }
 
       it "is not successful" do
         expect_not_successful result, ["must be one of: 1, 3, 5"]
@@ -55,7 +55,7 @@ RSpec.describe "Predicates: Included In" do
     end
 
     describe "with invalid input" do
-      let(:input) { { "foo" => "4" } }
+      let(:input) { {"foo" => "4"} }
 
       it "is not successful" do
         expect_not_successful result, ["must be one of: 1, 3, 5"]
@@ -75,7 +75,7 @@ RSpec.describe "Predicates: Included In" do
     end
 
     describe "with valid input" do
-      let(:input) { { "foo" => "3" } }
+      let(:input) { {"foo" => "3"} }
 
       it "is successful" do
         expect_successful result
@@ -91,7 +91,7 @@ RSpec.describe "Predicates: Included In" do
     end
 
     describe "with nil input" do
-      let(:input) { { "foo" => nil } }
+      let(:input) { {"foo" => nil} }
 
       it "is not successful" do
         expect_not_successful result, ["must be one of: 1, 3, 5"]
@@ -99,7 +99,7 @@ RSpec.describe "Predicates: Included In" do
     end
 
     describe "with blank input" do
-      let(:input) { { "foo" => "" } }
+      let(:input) { {"foo" => ""} }
 
       it "is not successful" do
         expect_not_successful result, ["must be one of: 1, 3, 5"]
@@ -107,7 +107,7 @@ RSpec.describe "Predicates: Included In" do
     end
 
     describe "with invalid type" do
-      let(:input) { { "foo" => { "a" => "1" } } }
+      let(:input) { {"foo" => {"a" => "1"}} }
 
       it "is not successful" do
         expect_not_successful result, ["must be one of: 1, 3, 5"]
@@ -115,7 +115,7 @@ RSpec.describe "Predicates: Included In" do
     end
 
     describe "with invalid input" do
-      let(:input) { { "foo" => "4" } }
+      let(:input) { {"foo" => "4"} }
 
       it "is not successful" do
         expect_not_successful result, ["must be one of: 1, 3, 5"]
@@ -137,7 +137,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with valid input" do
-          let(:input) { { "foo" => "3" } }
+          let(:input) { {"foo" => "3"} }
 
           it "is successful" do
             expect_successful result
@@ -153,7 +153,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with nil input" do
-          let(:input) { { "foo" => nil } }
+          let(:input) { {"foo" => nil} }
 
           it "is not successful" do
             expect_not_successful result, ["must be one of: 1, 3, 5"]
@@ -161,7 +161,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with blank input" do
-          let(:input) { { "foo" => "" } }
+          let(:input) { {"foo" => ""} }
 
           it "is not successful" do
             expect_not_successful result, ["must be one of: 1, 3, 5"]
@@ -169,7 +169,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with invalid type" do
-          let(:input) { { "foo" => { "a" => "1" } } }
+          let(:input) { {"foo" => {"a" => "1"}} }
 
           it "is not successful" do
             expect_not_successful result, ["must be one of: 1, 3, 5"]
@@ -177,7 +177,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with invalid input" do
-          let(:input) { { "foo" => "4" } }
+          let(:input) { {"foo" => "4"} }
 
           it "is not successful" do
             expect_not_successful result, ["must be one of: 1, 3, 5"]
@@ -197,7 +197,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with valid input" do
-          let(:input) { { "foo" => "3" } }
+          let(:input) { {"foo" => "3"} }
 
           it "is successful" do
             expect_successful result
@@ -213,7 +213,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with nil input" do
-          let(:input) { { "foo" => nil } }
+          let(:input) { {"foo" => nil} }
 
           it "is not successful" do
             expect_not_successful result, ["must be filled", "must be one of: 1, 3, 5"]
@@ -221,7 +221,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with blank input" do
-          let(:input) { { "foo" => "" } }
+          let(:input) { {"foo" => ""} }
 
           it "is not successful" do
             expect_not_successful result, ["must be filled", "must be one of: 1, 3, 5"]
@@ -229,7 +229,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with invalid type" do
-          let(:input) { { "foo" => { "a" => "1" } } }
+          let(:input) { {"foo" => {"a" => "1"}} }
 
           it "is not successful" do
             expect_not_successful result, ["must be one of: 1, 3, 5"]
@@ -237,7 +237,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with invalid input" do
-          let(:input) { { "foo" => "4" } }
+          let(:input) { {"foo" => "4"} }
 
           it "is not successful" do
             expect_not_successful result, ["must be one of: 1, 3, 5"]
@@ -257,7 +257,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with valid input" do
-          let(:input) { { "foo" => "3" } }
+          let(:input) { {"foo" => "3"} }
 
           it "is successful" do
             expect_successful result
@@ -273,7 +273,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with nil input" do
-          let(:input) { { "foo" => nil } }
+          let(:input) { {"foo" => nil} }
 
           it "is successful" do
             expect_successful result
@@ -281,7 +281,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with blank input" do
-          let(:input) { { "foo" => "" } }
+          let(:input) { {"foo" => ""} }
 
           it "is successful" do
             expect_successful result
@@ -289,7 +289,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with invalid type" do
-          let(:input) { { "foo" => { "a" => "1" } } }
+          let(:input) { {"foo" => {"a" => "1"}} }
 
           it "is not successful" do
             expect_not_successful result, ["must be one of: 1, 3, 5"]
@@ -297,7 +297,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with invalid input" do
-          let(:input) { { "foo" => "4" } }
+          let(:input) { {"foo" => "4"} }
 
           it "is not successful" do
             expect_not_successful result, ["must be one of: 1, 3, 5"]
@@ -319,7 +319,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with valid input" do
-          let(:input) { { "foo" => "3" } }
+          let(:input) { {"foo" => "3"} }
 
           it "is successful" do
             expect_successful result
@@ -335,7 +335,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with nil input" do
-          let(:input) { { "foo" => nil } }
+          let(:input) { {"foo" => nil} }
 
           it "is not successful" do
             expect_not_successful result, ["must be one of: 1, 3, 5"]
@@ -343,7 +343,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with blank input" do
-          let(:input) { { "foo" => "" } }
+          let(:input) { {"foo" => ""} }
 
           it "is not successful" do
             expect_not_successful result, ["must be one of: 1, 3, 5"]
@@ -351,7 +351,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with invalid type" do
-          let(:input) { { "foo" => { "a" => "1" } } }
+          let(:input) { {"foo" => {"a" => "1"}} }
 
           it "is not successful" do
             expect_not_successful result, ["must be one of: 1, 3, 5"]
@@ -359,7 +359,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with invalid input" do
-          let(:input) { { "foo" => "4" } }
+          let(:input) { {"foo" => "4"} }
 
           it "is not successful" do
             expect_not_successful result, ["must be one of: 1, 3, 5"]
@@ -379,7 +379,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with valid input" do
-          let(:input) { { "foo" => "3" } }
+          let(:input) { {"foo" => "3"} }
 
           it "is successful" do
             expect_successful result
@@ -395,7 +395,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with nil input" do
-          let(:input) { { "foo" => nil } }
+          let(:input) { {"foo" => nil} }
 
           it "is not successful" do
             expect_not_successful result, ["must be filled", "must be one of: 1, 3, 5"]
@@ -403,7 +403,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with blank input" do
-          let(:input) { { "foo" => "" } }
+          let(:input) { {"foo" => ""} }
 
           it "is not successful" do
             expect_not_successful result, ["must be filled", "must be one of: 1, 3, 5"]
@@ -411,7 +411,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with invalid type" do
-          let(:input) { { "foo" => { "a" => "1" } } }
+          let(:input) { {"foo" => {"a" => "1"}} }
 
           it "is not successful" do
             expect_not_successful result, ["must be one of: 1, 3, 5"]
@@ -419,7 +419,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with invalid input" do
-          let(:input) { { "foo" => "4" } }
+          let(:input) { {"foo" => "4"} }
 
           it "is not successful" do
             expect_not_successful result, ["must be one of: 1, 3, 5"]
@@ -439,7 +439,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with valid input" do
-          let(:input) { { "foo" => "3" } }
+          let(:input) { {"foo" => "3"} }
 
           it "is successful" do
             expect_successful result
@@ -455,7 +455,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with nil input" do
-          let(:input) { { "foo" => nil } }
+          let(:input) { {"foo" => nil} }
 
           it "is successful" do
             expect_successful result
@@ -463,7 +463,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with blank input" do
-          let(:input) { { "foo" => "" } }
+          let(:input) { {"foo" => ""} }
 
           it "is successful" do
             expect_successful result
@@ -471,7 +471,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with invalid type" do
-          let(:input) { { "foo" => { "a" => "1" } } }
+          let(:input) { {"foo" => {"a" => "1"}} }
 
           it "is not successful" do
             expect_not_successful result, ["must be one of: 1, 3, 5"]
@@ -479,7 +479,7 @@ RSpec.describe "Predicates: Included In" do
         end
 
         describe "with invalid input" do
-          let(:input) { { "foo" => "4" } }
+          let(:input) { {"foo" => "4"} }
 
           it "is not successful" do
             expect_not_successful result, ["must be one of: 1, 3, 5"]
