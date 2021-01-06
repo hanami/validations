@@ -122,6 +122,116 @@ RSpec.describe "Predicates: custom" do
     end
   end
 
+  describe "with inline custom predicate followed by a custom predicates module" do
+    before do
+      @validator = Class.new do
+        include Hanami::Validations
+
+        def self.name
+          "Validator"
+        end
+
+        predicate :url?, message: "must be an URL" do |current|
+          current.start_with?("http")
+        end
+
+        predicates(
+          Module.new do
+            include Hanami::Validations::Predicates
+            self.messages_path = "spec/support/fixtures/messages.yml"
+
+            predicate(:email?) do |current|
+              current.match(/@/)
+            end
+          end
+        )
+
+        validations do
+          required(:foo) { url? | email? }
+        end
+      end
+    end
+
+    describe "with valid url input" do
+      let(:input) { {foo: "http://hanamirb.org"} }
+
+      it "is successful" do
+        expect_successful result
+      end
+    end
+
+    describe "with valid email input" do
+      let(:input) { {foo: "foo@mailinator.com"} }
+
+      it "is successful" do
+        expect_successful result
+      end
+    end
+
+    describe "with invalid input" do
+      let(:input) { {foo: "test"} }
+
+      it "is not successful" do
+        expect_not_successful result, ["must be an URL or must be an email"]
+      end
+    end
+  end
+
+  describe "with custom predicates module followed by an inline custom predicate block" do
+    before do
+      @validator = Class.new do
+        include Hanami::Validations
+
+        def self.name
+          "Validator"
+        end
+
+        predicates(
+          Module.new do
+            include Hanami::Validations::Predicates
+            self.messages_path = "spec/support/fixtures/messages.yml"
+
+            predicate(:email?) do |current|
+              current.match(/@/)
+            end
+          end
+        )
+
+        predicate :url?, message: "must be an URL" do |current|
+          current.start_with?("http")
+        end
+
+        validations do
+          required(:foo) { url? | email? }
+        end
+      end
+    end
+
+    describe "with valid url input" do
+      let(:input) { {foo: "http://hanamirb.org"} }
+
+      it "is successful" do
+        expect_successful result
+      end
+    end
+
+    describe "with valid email input" do
+      let(:input) { {foo: "foo@mailinator.com"} }
+
+      it "is successful" do
+        expect_successful result
+      end
+    end
+
+    describe "with invalid input" do
+      let(:input) { {foo: "test"} }
+
+      it "is not successful" do
+        expect_not_successful result, ["must be an URL or must be an email"]
+      end
+    end
+  end
+
   describe "with i18n" do
     before do
       @validator = Class.new do
