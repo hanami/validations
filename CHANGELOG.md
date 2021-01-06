@@ -19,6 +19,10 @@ Validations mixin for Ruby objects
 - [Luca Guidi] Removed messages namespace setting (`Hanami::Validations.namespace`)
 - [Luca Guidi] Removed messages engine setting (`Hanami::Validations.messages`)
 
+## v1.3.7 - 2021-01-06
+### Fixed
+- [Panagiotis Matsinopoulos] Ensure `predicate` and `predicates` to work together
+
 ## v1.3.6 - 2020-01-08
 ### Added
 - [Luca Guidi] Official support for Ruby: MRI 2.7
@@ -26,7 +30,6 @@ Validations mixin for Ruby objects
 ## v1.3.5 - 2019-07-26
 ### Fixed
 - [ippachi] Ensure I18n doesn't crash when used for inline predicates
->>>>>>> develop
 
 ## v1.3.4 - 2019-07-26
 ### Fixed

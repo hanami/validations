@@ -70,8 +70,6 @@ module Hanami
         @_validator = Dry::Validation::Contract.build { schema(&blk) }
       end
 
-      # @since 2.0.0
-      # @api private
       def _validator
         @_validator
       end
