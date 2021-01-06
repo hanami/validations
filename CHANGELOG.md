@@ -1,6 +1,10 @@
 # Hanami::Validations
 Validations mixin for Ruby objects
 
+## v1.3.7 - 2021-01-06
+### Fixed
+- [Panagiotis Matsinopoulos] Ensure `predicate` and `predicates` to work together
+
 ## v1.3.6 - 2020-01-08
 ### Added
 - [Luca Guidi] Official support for Ruby: MRI 2.7

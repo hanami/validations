@@ -98,7 +98,7 @@ module Hanami
       #   result.messages # => {:name=>["must be filled"]}
       #   result.output   # => {:name=>""}
       def validations(&blk)
-        schema_predicates = _predicates_module || __predicates
+        schema_predicates = __predicates
 
         base   = _build(predicates: schema_predicates, &_base_rules)
         schema = _build(predicates: schema_predicates, rules: base.rules, &blk)
@@ -308,7 +308,7 @@ module Hanami
       # @since 0.6.0
       # @api private
       def __predicates
-        mod = Module.new { include Hanami::Validations::Predicates }
+        mod = _predicates_module || Module.new { include Hanami::Validations::Predicates }
 
         _predicates.each do |p|
           mod.module_eval do
