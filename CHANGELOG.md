@@ -1,6 +1,11 @@
 # Hanami::Validations
 Validations mixin for Ruby objects
 
+## v2.0.0.alpha2 - 2021-05-04
+### Changed
+- [Luca Guidi] Official support for Ruby: MRI 3.0
+- [Luca Guidi] Drop support for Ruby: MRI 2.4, 2.5
+
 ## v2.0.0.alpha1 - 2019-07-26
 ### Added
 - [Luca Guidi] Introduced `Hanami::Validator`
