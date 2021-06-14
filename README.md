@@ -10,6 +10,10 @@ Data validation library for Ruby
 [![Depfu](https://badges.depfu.com/badges/af6c6be539d9d587c7541ae7a013c9ff/overview.svg)](https://depfu.com/github/hanami/validations?project=Bundler)
 [![Inline Docs](http://inch-ci.org/github/hanami/validations.svg)](http://inch-ci.org/github/hanami/validations)
 
+## Version
+
+**This branch contains the code for `hanami-validations` 2.x.**
+
 ## Contact
 
 * Home page: http://hanamirb.org
