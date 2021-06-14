@@ -2,11 +2,15 @@
 
 Validations mixin for Ruby objects
 
+## Version
+
+**This branch contains the code for `hanami-validations` 1.3.x.**
+
 ## Status
 
 [![Gem Version](https://badge.fury.io/rb/hanami-validations.svg)](https://badge.fury.io/rb/hanami-validations)
-[![CI](https://github.com/hanami/validations/workflows/ci/badge.svg?branch=master)](https://github.com/hanami/validations/actions?query=workflow%3Aci+branch%3Amaster)
-[![Test Coverage](https://codecov.io/gh/hanami/validations/branch/master/graph/badge.svg)](https://codecov.io/gh/hanami/validations)
+[![CI](https://github.com/hanami/validations/workflows/ci/badge.svg?branch=1.3.x)](https://github.com/hanami/validations/actions?query=workflow%3Aci+branch%3A1.3.x)
+[![Test Coverage](https://codecov.io/gh/hanami/validations/branch/1.3.x/graph/badge.svg)](https://codecov.io/gh/hanami/validations)
 [![Depfu](https://badges.depfu.com/badges/af6c6be539d9d587c7541ae7a013c9ff/overview.svg)](https://depfu.com/github/hanami/validations?project=Bundler)
 [![Inline Docs](http://inch-ci.org/github/hanami/validations.svg)](http://inch-ci.org/github/hanami/validations)
 
