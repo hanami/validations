@@ -5,12 +5,6 @@ require "bundler/gem_tasks"
 require "rspec/core/rake_task"
 require "hanami/devtools/rake_tasks"
 
-require "rake/testtask"
-Rake::TestTask.new do |t|
-  t.pattern = "test/**/*_test.rb"
-  t.libs.push "test"
-end
-
 namespace :spec do
   RSpec::Core::RakeTask.new(:unit) do |task|
     file_list = FileList["spec/**/*_spec.rb"]
