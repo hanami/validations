@@ -5,8 +5,8 @@ Data validation library for Ruby
 ## Status
 
 [![Gem Version](https://badge.fury.io/rb/hanami-validations.svg)](https://badge.fury.io/rb/hanami-validations)
-[![CI](https://github.com/hanami/validations/workflows/ci/badge.svg?branch=unstable)](https://github.com/hanami/validations/actions?query=workflow%3Aci+branch%3Aunstable)
-[![Test Coverage](https://codecov.io/gh/hanami/validations/branch/unstable/graph/badge.svg)](https://codecov.io/gh/hanami/validations)
+[![CI](https://github.com/hanami/validations/workflows/ci/badge.svg?branch=main)](https://github.com/hanami/validations/actions?query=workflow%3Aci+branch%3Amain)
+[![Test Coverage](https://codecov.io/gh/hanami/validations/branch/main/graph/badge.svg)](https://codecov.io/gh/hanami/validations)
 [![Depfu](https://badges.depfu.com/badges/af6c6be539d9d587c7541ae7a013c9ff/overview.svg)](https://depfu.com/github/hanami/validations?project=Bundler)
 [![Inline Docs](http://inch-ci.org/github/hanami/validations.svg)](http://inch-ci.org/github/hanami/validations)
 
