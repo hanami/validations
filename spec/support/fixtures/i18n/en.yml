@@ -1,8 +1,0 @@
-en:
-  errors:
-    accepted?: "must be accepted"
-    url?: "must be an URL"
-    rules:
-      domain:
-        name:
-          max_size?: "is too long"

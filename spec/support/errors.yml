@@ -1,0 +1,10 @@
+en:
+  bookshelf:
+    errors:
+      taken: "oh noes, it's already taken"
+      network: "there is a network error (%{code})"
+      rules:
+        age:
+          invalid: "must be greater than 18"
+        email:
+          invalid: "not a valid email"
