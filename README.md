@@ -52,7 +52,7 @@ $ gem install hanami-validations
 ## Usage
 
 [Hanami](http://hanamirb.org), [ROM](https://rom-rb.org), and [DRY](https://dry-rb.org) projects are working together to create a strong Ruby ecosystem.
-`hanami-validations` is based on [`dry-validation`](https://dry-rb.org/gems/dry-validation), for this reason the documentation explains the basics of this gem, but for advanced topics, it links to `dry-validation` docs.
+`hanami-validations` is based on [`dry-validation`](https://dry-rb.org/gems/dry-validation/master/), for this reason the documentation explains the basics of this gem, but for advanced topics, it links to `dry-validation` docs.
 
 ### Overview
 
@@ -257,7 +257,7 @@ puts result.success? # => true
 puts result.to_h # => {:start_date=>#<Date: 2019-07-03 ((2458668j,0s,0n),+0s,2299161j)>}
 ```
 
-Learn more about rules: https://dry-rb.org/gems/dry-validation/rules/
+Learn more about rules: https://dry-rb.org/gems/dry-validation/master/rules/
 
 ### Inheritance
 
@@ -403,7 +403,7 @@ puts result.success? # => false
 puts result.errors.to_h # => {:refunded_code=>["there is a network error (123)"]}
 ```
 
-Learn more about messages: https://dry-rb.org/gems/dry-validation/messages/
+Learn more about messages: https://dry-rb.org/gems/dry-validation/master/messages/
 
 ### External dependencies
 
@@ -440,7 +440,7 @@ puts result.success? # => false
 puts result.errors.to_h # => {:address=>["not a valid address"]}
 ```
 
-Read more about external dependencies: https://dry-rb.org/gems/dry-validation/external-dependencies/
+Read more about external dependencies: https://dry-rb.org/gems/dry-validation/master/external-dependencies/
 
 ### Mixin
 
