@@ -1,6 +1,10 @@
 # Hanami::Validations
 Validations mixin for Ruby objects
 
+## v1.3.8 - 2021-10-14
+### Fixed
+- [Luca Guidi] Ensure `.validations` to not raise `NoMethodError: undefined method 'size' for nil:NilClass`. Due to a breaking change in transitive dependency (`dry-configurable` `0.13.x`).
+
 ## v1.3.7 - 2021-01-06
 ### Fixed
 - [Panagiotis Matsinopoulos] Ensure `predicate` and `predicates` to work together
