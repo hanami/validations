@@ -27,7 +27,7 @@ Data validation library for Ruby
 
 ## Rubies
 
-__Hanami::Validations__ supports Ruby (MRI) 2.6+
+__Hanami::Validations__ supports Ruby (MRI) 3.0+
 
 ## Installation
 
