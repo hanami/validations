@@ -3,6 +3,6 @@
 module Hanami
   module Validations
     # @since 0.1.0
-    VERSION = "2.0.0.alpha2"
+    VERSION = "2.0.0.beta1"
   end
 end
