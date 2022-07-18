@@ -2,7 +2,7 @@
 
 Validations mixin for Ruby objects
 
-## v2.0.0.beta1 - 2022-07-13
+## v2.0.0.beta1 - 2022-07-20
 
 ### Added
 
