@@ -1,6 +1,10 @@
 # Hanami::Validations
 Validations mixin for Ruby objects
 
+## v1.3.9 - 2022-07-21
+### Fixed
+- [Sean Collins] Depend on `dry-container` `<= 0.9`
+
 ## v1.3.8 - 2021-10-14
 ### Fixed
 - [Luca Guidi] Ensure `.validations` to not raise `NoMethodError: undefined method 'size' for nil:NilClass`. Due to a breaking change in transitive dependency (`dry-configurable` `0.13.x`).
