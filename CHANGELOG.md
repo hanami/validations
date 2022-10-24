@@ -2,6 +2,12 @@
 
 Validations mixin for Ruby objects
 
+## v2.0.0.beta4 - 2022-10-24
+
+### Changed
+
+- [Tim Riley] Require latest dry-validation (to ensure best compatibility with Zeitwerk-enabled dry-rb gems) (#224)
+
 ## v2.0.0.beta1 - 2022-07-20
 
 ### Added
