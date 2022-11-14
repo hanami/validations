@@ -10,7 +10,7 @@ RSpec.describe Hanami::Validator do
         end
 
         rule(:email) do
-          key.failure("has invalid format") unless /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i.match?(value)
+          key.failure("has invalid format") unless /\A[\w+\-.]+@[a-z\d-]+(\.[a-z\d-]+)*\.[a-z]+\z/i.match?(value)
         end
 
         rule(:age) do
