@@ -23,6 +23,7 @@ module Hanami
     end
 
     gem_loader.setup
+    require_relative "validations/version"
 
     class Error < StandardError; end
 
