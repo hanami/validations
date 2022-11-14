@@ -2,14 +2,29 @@
 
 require "dry/validation"
 require "delegate"
+require "zeitwerk"
 
 module Hanami
   # @since 0.1.0
   module Validations
-    class Error < StandardError; end
+    # @since 2.0.0
+    # @api private
+    def self.gem_loader
+      @gem_loader ||= Zeitwerk::Loader.new.tap do |loader|
+        root = File.expand_path("..", __dir__)
+        loader.tag = "hanami-validations"
+        loader.inflector = Zeitwerk::GemInflector.new("#{root}/hanami-validations.rb")
+        loader.push_dir(root)
+        loader.ignore(
+          "#{root}/hanami-validations.rb",
+          "#{root}/hanami/validations/version.rb"
+        )
+      end
+    end
 
-    require "hanami/validations/version"
-    require "hanami/validator"
+    gem_loader.setup
+
+    class Error < StandardError; end
 
     def self.included(klass)
       super
