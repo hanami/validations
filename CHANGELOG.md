@@ -4,6 +4,10 @@ Validations mixin for Ruby objects
 
 ## v2.0.0 - 2022-11-22
 
+### Added
+
+- [Tim Riley] Use Zeitwerk to autoload the gem
+
 ## v2.0.0.rc1 - 2022-11-08
 
 ## v2.0.0.beta4 - 2022-10-24
