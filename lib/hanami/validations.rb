@@ -4,8 +4,11 @@ require "dry/validation"
 require "delegate"
 require "zeitwerk"
 
+# @see Hanami::Validations
+# @since 0.1.0
 module Hanami
   # @since 0.1.0
+  # @api private
   module Validations
     # @since 2.0.0
     # @api private
@@ -25,8 +28,8 @@ module Hanami
     gem_loader.setup
     require_relative "validations/version"
 
-    class Error < StandardError; end
-
+    # @since 0.1.0
+    # @api private
     def self.included(klass)
       super
       klass.extend(ClassMethods)
@@ -51,37 +54,14 @@ module Hanami
     # Validations DSL
     #
     # @since 0.1.0
+    # @api private
     module ClassMethods
       # Define validation rules from the given block.
       #
       # @param blk [Proc] validation rules
       #
       # @since 0.6.0
-      #
-      # @see https://guides.hanamirb.org/validations/overview
-      #
-      # @example Basic Example
-      #   require "hanami/validations"
-      #
-      #   class Signup
-      #     include Hanami::Validations
-      #
-      #     validations do
-      #       required(:name).filled(:string)
-      #     end
-      #   end
-      #
-      #   result = Signup.new(name: "Luca").validate
-      #
-      #   result.success? # => true
-      #   result.messages # => []
-      #   result.output   # => {:name=>""}
-      #
-      #   result = Signup.new(name: "").validate
-      #
-      #   result.success? # => false
-      #   result.messages # => {:name=>["must be filled"]}
-      #   result.output   # => {:name=>""}
+      # @api private
       def validations(&blk)
         @_validator = Dry::Validation::Contract.build { schema(&blk) }
       end
@@ -98,6 +78,7 @@ module Hanami
     # @param input [#to_h] a set of input data
     #
     # @since 0.6.0
+    # @api private
     def initialize(input)
       @input = input
     end
@@ -107,6 +88,7 @@ module Hanami
     # @return [Hanami::Validations::Result]
     #
     # @since 0.2.4
+    # @api private
     def validate
       Result.new(
         self.class._validator.call(@input)
@@ -119,6 +101,7 @@ module Hanami
     # @return [Hash]
     #
     # @since 0.1.0
+    # @api private
     def to_h
       validate.to_h
     end
