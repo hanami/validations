@@ -10,8 +10,6 @@ module Hanami
       # @since 2.0.0
       # @api private
       class BaseValidator < Dry::Validation::Contract
-        require "byebug"
-        byebug
         unless Hanami.respond_to?(:env?) && Hanami.env?(:test)
           params do
             optional(:_csrf_token).filled(:string)
