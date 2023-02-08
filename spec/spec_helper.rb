@@ -28,4 +28,11 @@ require "i18n"
 require "pathname"
 SPEC_ROOT = Pathname.new(__dir__)
 
+unless Hanami.respond_to?(:env)
+  module Hanami
+    def self.env?(*)
+    end
+  end
+end
+
 require "hanami/validations"
