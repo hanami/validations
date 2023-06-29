@@ -86,6 +86,4 @@ See [hanami-controller][controller] for more detail on params validation.
 
 ## Copyright
 
-Copyright © 2014-2022 Hanami Team – Released under MIT License
-
-This project was formerly known as Lotus (`lotus-validations`).
+Copyright © 2014 Hanami Team – Released under MIT License
