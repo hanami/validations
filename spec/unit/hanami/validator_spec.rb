@@ -36,10 +36,7 @@ RSpec.describe Hanami::Validator do
 
       expect(result.errors.to_h).to eq(number: ["must be an integer"])
 
-      errors = []
-      result.errors.each do |error|
-        errors << error.text
-      end
+      errors = result.errors.map(&:text)
 
       expect(errors).to match_array(["must be an integer"])
     end
