@@ -5,14 +5,8 @@ Internal support gem for `Hanami::Action` params validation.
 ## Status
 
 [![Gem Version](https://badge.fury.io/rb/hanami-validations.svg)](https://badge.fury.io/rb/hanami-validations)
-[![CI](https://github.com/hanami/validations/workflows/ci/badge.svg?branch=main)](https://github.com/hanami/validations/actions?query=workflow%3Aci+branch%3Amain)
-[![Test Coverage](https://codecov.io/gh/hanami/validations/branch/main/graph/badge.svg)](https://codecov.io/gh/hanami/validations)
+[![CI](https://github.com/hanami/validations/actions/workflows/ci.yml/badge.svg)](https://github.com/hanami/validations/actions?query=workflow%3Aci+branch%3Amain)
 [![Depfu](https://badges.depfu.com/badges/af6c6be539d9d587c7541ae7a013c9ff/overview.svg)](https://depfu.com/github/hanami/validations?project=Bundler)
-[![Inline Docs](http://inch-ci.org/github/hanami/validations.svg)](http://inch-ci.org/github/hanami/validations)
-
-## Version
-
-**This branch contains the code for `hanami-validations` 2.x.**
 
 ## Contact
 
@@ -20,16 +14,13 @@ Internal support gem for `Hanami::Action` params validation.
 * Community: http://hanamirb.org/community
 * Guides: https://guides.hanamirb.org
 * Mailing List: http://hanamirb.org/mailing-list
-* API Doc: http://rdoc.info/gems/hanami-validations
+* API Doc: http://rubydoc.info/gems/hanami-validations
 * Bugs/Issues: https://github.com/hanami/validations/issues
-* Support: http://stackoverflow.com/questions/tagged/hanami
 * Chat: http://chat.hanamirb.org
 
-## Rubies
-
-__Hanami::Validations__ supports Ruby (MRI) 3.0+
-
 ## Installation
+
+__Hanami::Validations__ supports Ruby (MRI) 3.1+
 
 Add this line to your application's Gemfile:
 
@@ -86,4 +77,4 @@ See [hanami-controller][controller] for more detail on params validation.
 
 ## Copyright
 
-Copyright © 2014 Hanami Team – Released under MIT License
+Copyright © 2014–2024 Hanami Team – Released under MIT License
