@@ -2,6 +2,12 @@
 
 Validations mixin for Ruby objects
 
+## v2.2.0.beta2 - 2024-09-25
+
+### Changed
+
+- [Tim Riley] Remove all Ruby code from the gem. This gem now exists only to manage the dependency on dry-validation. (#230)
+
 ## v2.2.0.beta1 - 2024-07-16
 
 ### Changed
